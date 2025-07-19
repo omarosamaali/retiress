@@ -1,24 +1,27 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\LanguageController;
-use App\Http\Controllers\Admin\RecipeController;
-use App\Http\Controllers\Admin\PackageController;
-use App\Http\Controllers\Admin\PlanController;
-use App\Http\Controllers\Admin\MainCategoriesController;
-use App\Http\Controllers\Admin\SubCategoryController;
-use App\Http\Controllers\Admin\KitchensController;
-use App\Http\Controllers\Admin\TermsController;
-use App\Http\Controllers\Admin\HospController;
-use App\Http\Controllers\Admin\FamiliesController;
-use App\Http\Controllers\Admin\NewsController;
-use App\Http\Controllers\Admin\AboutUsController;
-use App\Http\Controllers\Admin\FaqController;
-use App\Http\Controllers\Admin\BannerController;
-use App\Http\Controllers\Admin\RecipesController;
 use App\Http\Middleware\CheckUserStatus;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\HospController;
+use App\Http\Controllers\Admin\NewsController;
+use App\Http\Controllers\Admin\PlanController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\TermsController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\RecipeController;
+use App\Http\Controllers\Admin\AboutUsController;
+use App\Http\Controllers\Admin\CouncilController;
+use App\Http\Controllers\Admin\PackageController;
+use App\Http\Controllers\Admin\RecipesController;
+use App\Http\Controllers\Admin\FamiliesController;
+use App\Http\Controllers\Admin\KitchensController;
+use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\Admin\CommitteeController;
+use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\MainCategoriesController;
 
 
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -45,6 +48,9 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::resource('families', FamiliesController::class);
     Route::resource('news', NewsController::class);
     Route::resource('about-us', AboutUsController::class);
+    Route::resource('member', MemberController::class);
+    Route::resource('committee', CommitteeController::class);
+    Route::resource('council', CouncilController::class);
     Route::resource('terms', TermsController::class);
     Route::resource('hosp', HospController::class);
     Route::resource('faqs', FaqController::class);

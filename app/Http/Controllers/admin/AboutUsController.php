@@ -14,32 +14,18 @@ use Illuminate\Validation\Rule; // لإضافة validation rule
 
 class AboutUsController extends Controller
 {
-    protected $targetLanguages = [
-        'en' => 'الإنجليزية',
-        // 'id' => 'الإندونيسية',
-        // 'am' => 'الأمهرية',
-        // 'hi' => 'الهندية',
-        // 'bn' => 'البنغالية',
-        // 'ml' => 'المالايالامية',
-        // 'fil' => 'الفلبينية',
-        // 'ur' => 'الأردية',
-        // 'ta' => 'التاميلية',
-        // 'ne' => 'النيبالية',
-        // 'ps' => 'الأفغانية',
-    ];
-
     /**
      * Display a listing of the resource for AboutUs, Terms, and Hosp.
      * لعرض قائمة بالموارد لكل من "معلومات عنا" و "اتفاقية الاستخدام" و "سياسة الضيافة"
      */
     public function index()
     {
-        $aboutUs = AboutUs::first();
+        $aboutUs = AboutUs::all();
         $terms = Terms::first();
-        $hosp = Hosp::first(); // جلب سجل سياسة الضيافة
+        $hosp = Hosp::first();
 
         // قم بتمرير جميع المتغيرات إلى الـ View
-        return view('admin.about-us.index', compact('aboutUs', 'terms', 'hosp'));
+        return view('admin.about-us.index', get_defined_vars());
     }
 
     // -----------------------------------------------------------
@@ -52,11 +38,14 @@ class AboutUsController extends Controller
      */
     public function create()
     {
-        $aboutUs = AboutUs::first();
+        $aboutUs = AboutUs::where('key', request()->key)->first();
         if ($aboutUs) {
             return redirect()->route('admin.about-us.edit', $aboutUs->id);
         }
-        return view('admin.about-us.create');
+        return view('admin.about-us.create', [
+            'targetLanguages' => $this->targetLanguages,
+            'key' => request()->key,
+        ]);
     }
 
     /**
@@ -66,17 +55,19 @@ class AboutUsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title_ar' => 'required|string|max:255|unique:about_us,title_ar',
+            'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
+            'key' => 'required|string',
         ]);
 
         $aboutUsData = [
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
+            'key' => $request->key,
         ];
 
         $tr = new GoogleTranslate('ar');
@@ -142,12 +133,7 @@ class AboutUsController extends Controller
         $aboutUs = AboutUs::findOrFail($about_u);
 
         $request->validate([
-            'title_ar' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('about_us', 'title_ar')->ignore($aboutUs->id),
-            ],
+            'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

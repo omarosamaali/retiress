@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Council extends Model
+{
+    protected $fillable = [
+        'name_ar',
+        'name_en',
+        'status',
+    ];
+
+    // Relations
+    public function members()
+    {
+        return $this->hasMany(Member::class);
+    }
+
+    public function getStatusBadgeClassAttribute()
+    {
+        return $this->status ? 'bg-success' : 'bg-danger';
+    }
+
+    public function getStatusTextAttribute()
+    {
+        return $this->status ? 'فعال' : 'غير فعال';
+    }
+}

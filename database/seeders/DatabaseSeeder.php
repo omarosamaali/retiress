@@ -22,5 +22,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(AboutUsSeeder::class);
+        $this->call(MemberSeeder::class);
+        $this->call(CommitteeSeeder::class);
+        $this->call(CouncilSeeder::class);
     }
 }

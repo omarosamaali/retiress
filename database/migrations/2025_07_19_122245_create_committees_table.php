@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('recipes', function (Blueprint $table) {
-            $table->string('recipe_code', 5)->unique()->after('id');
+        Schema::create('committees', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('name_ar');
+            $table->string('name_en');
+            $table->boolean('status')->default(true);
+
+            $table->timestamps();
         });
     }
 
@@ -21,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('recipes', function (Blueprint $table) {
-            $table->dropColumn('recipe_code');
-        });
+        Schema::dropIfExists('committees');
     }
 };

@@ -18,8 +18,8 @@
 
     <style>
         :root {
-            --primary: #660099;
-            --hover-primary: #8009bb;
+            --primary: #212529;
+            --hover-primary: #4d4d4d;
             --secondary: #6c757d;
             --success: #28a745;
             --info: #17a2b8;
@@ -127,7 +127,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #212529;
             border: none;
             border-radius: 8px;
             padding: 10px 20px;
@@ -146,7 +146,7 @@
         }
 
         .table thead th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #212529;
             color: white;
             border: none;
             font-weight: 600;
@@ -231,7 +231,7 @@
         }
 
         .edit-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #212529;
             border: none;
             padding: 12px 30px;
             border-radius: 8px;
@@ -246,7 +246,7 @@
         }
 
         .update-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #212529;
             border: none;
             padding: 12px 30px;
             border-radius: 8px;
@@ -276,10 +276,49 @@
                 <i class="fas fa-home"></i>
                 الرئيسية
             </a>
+
+            <a class="nav-link" href="{{ route('admin.users.index') }}">
+                <i class="fas fa-users"></i>
+                المستخدمين
+            </a>
+
+
+            {{-- قائمة الجمعية --}}
+            @can('isAdmin')
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-book"></i>
+                        عن الجمعية
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('admin.about-us.index') }}">
+                                <i class="fas fa-info-circle"></i> من نحن
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('admin.member.index') }}">
+                                <i class="fas fa-users"></i> الأعضاء
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('admin.committee.index') }}">
+                                <i class="fas fa-users"></i> اللجان
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ route('admin.council.index') }}">
+                                <i class="fas fa-users"></i> المجالس
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            @endcan
+
+
             <!-- قائمة الإعدادات -->
             <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-book"></i>
                     الوصفات
                 </a>
@@ -320,18 +359,11 @@
             {{-- قائمة الإعدادات --}}
             @can('isAdmin')
                 <div class="dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-cog"></i>
                         الإعدادات
                     </a>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a class="dropdown-item" href="{{ route('admin.users.index') }}">
-                                <i class="fas fa-users"></i>
-                                المستخدمين
-                            </a>
-                        </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('admin.languages.index') }}">
                                 <i class="fas fa-globe"></i>
@@ -400,15 +432,14 @@
                         </li>
                     </ul>
                 </div>
-            @endcan 
-            
+            @endcan
+
             <a class="nav-link" href="{{ route('admin.messages.index') }}">
                 <i class="fas fa-message"></i>
                 الرسائل
             </a>
 
-            <a class="nav-link" href="{{ route('logout') }}"
-                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="fas fa-sign-out-alt"></i>
                 تسجيل الخروج
             </a>
@@ -420,9 +451,9 @@
         <!-- Header -->
         <div class="header">
             <div class="d-flex justify-content-between align-items-center">
-                <h4 class="mb-0" style="font-weight: 700; color: #660099;">@yield('page-title', 'لوحة التحكم')</h4>
+                <h4 class="mb-0" style="font-weight: 700; color: #212529;">@yield('page-title', 'لوحة التحكم')</h4>
                 <div>
-                    <span style="font-weight: 700; color: #660099;">مرحباً، {{ Auth::user()->name }}</span>
+                    <span style="font-weight: 700; color: #212529;">مرحباً، {{ Auth::user()->name }}</span>
                 </div>
             </div>
         </div>
