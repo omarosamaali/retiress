@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('status')->default('draft');
             $table->foreignId('kitchen_id')->nullable()->constrained('kitchens')->onDelete('set null');
             $table->foreignId('main_category_id')->nullable()->constrained('main_categories')->onDelete('set null');
-            $table->foreignId('sub_category_id')->nullable()->constrained('sub_categories')->onDelete('set null');
+            $table->json('sub_category_id')->nullable();
             $table->foreignId('recipe_id')->nullable()->constrained('recipes')->onDelete('set null');
             $table->timestamps();
         });

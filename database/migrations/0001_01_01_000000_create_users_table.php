@@ -13,11 +13,21 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+
             $table->string('name');
+            $table->string('name_ar')->nullable();
+            $table->string('name_en')->nullable();
             $table->string('email')->unique();
+            $table->enum('role', ['مدير', 'موظف استقبال', 'أمين سر', 'عضو', 'مدخل بيانات'])->default('مدخل بيانات');
             $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('is_contract_signed')->default(false);
+            $table->string('otp_code')->nullable();
+            $table->timestamp('otp_expires_at')->nullable();
+            $table->timestamp('contract_signed_at')->nullable();
             $table->string('password');
+            $table->enum('status', ['فعال', 'غير فعال', 'بانتظار التفعيل', 'بإنتظار إستكمال البيانات'])->default('فعال');
             $table->rememberToken();
+
             $table->timestamps();
         });
 

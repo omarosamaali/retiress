@@ -24,15 +24,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'name', // <--- تأكد أن 'name' موجود هنا
         'name_ar', // <--- وتأكد من وجود هذه أيضاً إذا كنت تريد حفظها
         'name_en',
-        'name_id',
-        'name_am',
-        'name_hi',
-        'name_bn',
-        'name_ml',
-        'name_fil',
-        'name_ur',
-        'name_ta',
-        'name_ps',
+        // 'name_id',
+        // 'name_am',
+        // 'name_hi',
+        // 'name_bn',
+        // 'name_ml',
+        // 'name_fil',
+        // 'name_ur',
+        // 'name_ta',
+        // 'name_ps',
         'email',
         'password',
         'phone_number',
@@ -83,33 +83,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role === 'مدير';
     }
 
-    public function isSupervisor()
-    {
-        return $this->role === 'مشرف';
-    }
-
-    public function isDataEntry()
-    {
-        return $this->role === 'مدخل بيانات';
-    }
-
     public function isActive()
     {
         return $this->status === 'فعال';
-    }
-
-    public function isChef()
-    {
-        return $this->role === 'طاه';
     }
 
     public function getRoleBadgeClass()
     {
         return match ($this->role) {
             'مدير' => 'bg-primary',
-            'مشرف' => 'bg-success',
+            'موظف استقبال' => 'bg-success',
             'مدخل بيانات' => 'bg-warning text-dark',
-            'طاه' => 'bg-info',
+            'عضو' => 'bg-info',
             default => 'bg-secondary'
         };
     }
