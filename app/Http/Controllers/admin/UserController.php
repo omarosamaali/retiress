@@ -19,237 +19,28 @@ use Illuminate\Support\Facades\Mail; // <--- ADD THIS LINE
 
 class UserController extends Controller
 {
-    protected $targetLanguages = [
-        'ar' => 'العربية',
-        'id' => 'الإندونيسية',
-        'am' => 'الأمهرية',
-        'hi' => 'الهندية',
-        'bn' => 'البنغالية',
-        'ml' => 'المالايالامية',
-        'fil' => 'الفلبينية',
-        'ur' => 'الأردية',
-        'ta' => 'التاميلية',
-        'ps' => 'الباشتو',
-    ];
 
     public function index(Request $request)
     {
         $query = User::latest();
-
-        // ** الأهم هنا: تحميل علاقة chefProfile مع المستخدمين **
-        $query->with(['chefProfile' => function ($q) {
-            // يمكنك هنا تحديد الأعمدة التي تريد تحميلها من chef_profiles
-            // $q->select('id', 'user_id', 'official_image', 'contract_type', 'bio', 'status');
-        }]);
 
         if ($request->has('role') && $request->role != '') {
             $query->where('role', $request->role);
         }
         $users = $query->paginate(10);
 
-        // لم تعد بحاجة لـ $chefsProfiles بشكل منفصل بهذه الطريقة إذا كنت ستمررها لكل user
-        // $chefsProfiles = ChefProfile::with('user')->get();
-
-        // نمرر فقط $users
-        return view('admin.users.index', compact('users')); // تم إزالة 'chefsProfiles'
-    }
-
-
-    public function updateChefAgreementType(Request $request)
-    {
-        // 1. التأكد أن المستخدم مسجل الدخول وهو طاه
-        if (!Auth::check() || Auth::user()->role !== 'طاه') {
-            return redirect()->route('sign-in.get')->with('error', 'لا تملك الصلاحية للوصول لهذه الصفحة.');
-        }
-
-        $user = Auth::user(); // جلب المستخدم المسجل دخوله حالياً
-
-        // 2. التحقق من صحة البيانات المرسلة
-        $rules = [
-            'contract_type' => 'required|in:per_recipe,annual_subscription',
-            'subscription_3_months_price' => 'nullable|numeric|min:0',
-            'subscription_6_months_price' => 'nullable|numeric|min:0',
-            'subscription_12_months_price' => 'nullable|numeric|min:0',
-        ];
-
-        $messages = [
-            'contract_type.required' => 'حقل نوع التعاقد مطلوب.',
-            'contract_type.in' => 'قيمة غير صالحة لحقل نوع التعاقد.',
-            'subscription_3_months_price.numeric' => 'يجب أن يكون سعر اشتراك 3 شهور رقمًا.',
-            'subscription_6_months_price.numeric' => 'يجب أن يكون سعر اشتراك 6 شهور رقمًا.',
-            'subscription_12_months_price.numeric' => 'يجب أن يكون سعر اشتراك 12 شهرًا رقمًا.',
-            'subscription_3_months_price.min' => 'يجب أن يكون سعر اشتراك 3 شهور قيمة موجبة.',
-            'subscription_6_months_price.min' => 'يجب أن يكون سعر اشتراك 6 شهور قيمة موجبة.',
-            'subscription_12_months_price.min' => 'يجب أن يكون سعر اشتراك 12 شهرًا قيمة موجبة.',
-        ];
-
-        // منطق required_if للأسعار
-        // هذا المنطق يضمن أن على الأقل أحد حقول الأسعار الثلاثة مطلوب إذا كان نوع التعاقد "annual_subscription"
-        if ($request->contract_type === 'annual_subscription') {
-            // هذا الجزء من الكود غير ضروري هنا إذا كان لديك حقول input في الفورم
-            // $request->mergeIfMissing([
-            //     'subscription_3_months_price' => '',
-            //     'subscription_6_months_price' => '',
-            //     'subscription_12_months_price' => '',
-            // ]);
-
-            // استخدام required_if لتطبيق شروط "يجب إدخال سعر واحد على الأقل"
-            // هذا يحل مشكلة أن كل الحقول "nullable" بشكل فردي
-            $rules['subscription_3_months_price'] .= '|required_if:contract_type,annual_subscription,' .
-                '|required_if:subscription_6_months_price,"",null,' .
-                '|required_if:subscription_12_months_price,"",null';
-
-            $rules['subscription_6_months_price'] .= '|required_if:contract_type,annual_subscription,' .
-                '|required_if:subscription_3_months_price,"",null,' .
-                '|required_if:subscription_12_months_price,"",null';
-
-            $rules['subscription_12_months_price'] .= '|required_if:contract_type,annual_subscription,' .
-                '|required_if:subscription_3_months_price,"",null,' .
-                '|required_if:subscription_6_months_price,"",null';
-
-            $messages += [
-                'subscription_3_months_price.required_if' => 'عند اختيار الاشتراك السنوي، يجب إدخال سعر اشتراك 3 شهور أو 6 شهور أو 12 شهرًا على الأقل.',
-                'subscription_6_months_price.required_if' => 'عند اختيار الاشتراك السنوي، يجب إدخال سعر اشتراك 3 شهور أو 6 شهور أو 12 شهرًا على الأقل.',
-                'subscription_12_months_price.required_if' => 'عند اختيار الاشتراك السنوي، يجب إدخال سعر اشتراك 3 شهور أو 6 شهور أو 12 شهرًا على الأقل.',
-            ];
-        }
-
-
-        $validatedData = $request->validate($rules, $messages);
-
-        // 3. تحديث بيانات ChefProfile
-        // البحث عن الـ ChefProfile المرتبط بالمستخدم الحالي أو إنشائه إذا لم يكن موجودًا
-        // updateOrCreate سيقوم بالبحث بناءً على user_id، إذا وجده يقوم بالتحديث، وإلا ينشئ جديد
-        $chefProfile = $user->chefProfile()->updateOrCreate(
-            ['user_id' => $user->id], // الشرط للبحث عن الصف
-            [
-                'contract_type' => $validatedData['contract_type'],
-                // قم بتعيين حقول الأسعار بناءً على نوع التعاقد
-                'subscription_3_months_price' => ($validatedData['contract_type'] === 'annual_subscription') ? $validatedData['subscription_3_months_price'] : null,
-                'subscription_6_months_price' => ($validatedData['contract_type'] === 'annual_subscription') ? $validatedData['subscription_6_months_price'] : null,
-                'subscription_12_months_price' => ($validatedData['contract_type'] === 'annual_subscription') ? $validatedData['subscription_12_months_price'] : null,
-                // يمكنك إضافة حقول أخرى هنا إذا كانت قابلة للتحديث عبر هذا الفورم
-            ]
-        );
-
-        // 4. إعادة التوجيه بعد النجاح
-        // هذا هو المسار الذي طلبته: c1he3f.profile.profile
-        return redirect()->route('c1he3f.profile.profile') // توجيه لصفحة نوع التعاقد نفسها
-            ->with('success', 'تم تحديث نوع التعاقد بنجاح!');
-    }
-
-    public function updateChefBio(Request $request)
-    {
-        // 1. التأكد أن المستخدم مسجل الدخول
-        if (!Auth::check()) {
-            return redirect()->route('sign-in.get')->with('error', 'يجب تسجيل الدخول أولاً.');
-        }
-
-        $user = Auth::user(); // جلب المستخدم المسجل دخوله حالياً
-
-        // 2. التحقق من صحة البيانات (اختياري، لكن يوصى به دائمًا)
-        $request->validate([
-            'bio' => 'nullable|string|max:1000', // مثال: يمكن أن يكون فارغًا، يجب أن يكون نصًا، والحد الأقصى 1000 حرف
-        ], [
-            'bio.string' => 'البيو يجب أن يكون نصًا.',
-            'bio.max' => 'البيو لا يمكن أن يتجاوز 1000 حرف.',
-        ]);
-
-        // 3. البحث عن الـ ChefProfile المرتبط بالمستخدم أو إنشائه إذا لم يكن موجودًا
-        // (هذا مهم لضمان وجود سجل ChefProfile قبل محاولة تحديثه)
-        $chefProfile = $user->chefProfile; // حاول جلب ChefProfile الحالي
-        if (!$chefProfile) {
-            // إذا لم يكن هناك ChefProfile، قم بإنشاء واحد جديد وربطه بالمستخدم
-            $chefProfile = new ChefProfile();
-            $chefProfile->user_id = $user->id;
-        }
-
-        // 4. تحديث حقل 'bio' في كائن ChefProfile
-        $chefProfile->bio = $request->bio;
-
-        // 5. حفظ التغييرات في قاعدة البيانات
-        $chefProfile->save();
-
-        // 6. إعادة التوجيه برسالة نجاح
-        return redirect()->route('c1he3f.profile.profile')
-            ->with('success', 'تم تحديث البيو بنجاح!');
-    }
-
-    public function updateTransfer(Request $request)
-    {
-        // 1. التأكد أن المستخدم مسجل الدخول وهو طاه (أضفت شرط الدور كأفضل ممارسة)
-        if (!Auth::check() || Auth::user()->role !== 'طاه') {
-            return redirect()->route('sign-in.get')->with('error', 'لا تملك الصلاحية للوصول لهذه الصفحة.');
-        }
-
-        $user = Auth::user(); // جلب المستخدم المسجل دخوله حالياً
-
-        // 2. التحقق من صحة البيانات
-        $request->validate([
-            'profit_transfer_details' => 'nullable|string|max:1000',
-        ], [
-            'profit_transfer_details.string' => 'تفاصيل تحويل الأرباح يجب أن تكون نصًا.',
-            'profit_transfer_details.max' => 'تفاصيل تحويل الأرباح لا يمكن أن تتجاوز 1000 حرف.',
-        ]);
-
-        // 3. البحث عن الـ ChefProfile المرتبط بالمستخدم أو إنشائه إذا لم يكن موجودًا
-        $chefProfile = $user->chefProfile;
-        if (!$chefProfile) {
-            $chefProfile = new ChefProfile();
-            $chefProfile->user_id = $user->id;
-        }
-
-        // 4. تحديث حقل 'profit_transfer_details' في كائن ChefProfile
-        $chefProfile->profit_transfer_details = $request->profit_transfer_details;
-
-        // 5. حفظ التغييرات في قاعدة البيانات
-        $chefProfile->save();
-
-        // 6. إعادة التوجيه برسالة نجاح
-        return redirect()->route('c1he3f.profile.profile') // العودة لنفس صفحة بيانات التحويل
-            ->with('success', 'تم تحديث بيانات تحويل الأرباح بنجاح!');
-    }
-
-    public function create()
-    {
-        return view('admin.users.create');
+        return view('admin.users.index', compact('users'));
     }
 
     public function store(Request $request)
     {
-        $rules = [
+        $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'role' => 'required|in:مدير,مشرف,مدخل بيانات,طاه',
             'status' => 'sometimes|in:فعال,غير فعال,بانتظار التفعيل',
-        ];
-
-        $messages = [
-            'name.required' => 'حقل الاسم مطلوب',
-            'email.required' => 'حقل البريد الإلكتروني مطلوب',
-            'email.email' => 'يرجى إدخال بريد إلكتروني صحيح',
-            'email.unique' => 'هذا البريد الإلكتروني مسجل مسبقاً',
-            'password.required' => 'حقل كلمة السر مطلوب',
-            'password.min' => 'كلمة السر يجب أن تكون 8 أحرف على الأقل',
-            'role.required' => 'حقل الصلاحية مطلوب',
-        ];
-
-        // إضافة قواعد التحقق الخاصة بالطاهي إذا كان الدور 'طاه'
-        if ($request->role === 'طاه') {
-            $rules += [
-                'country' => 'nullable|string|max:255',
-                'bio' => 'nullable|string',
-                'contract_type' => 'nullable|in:per_recipe,annual_subscription',
-                'profit_transfer_details' => 'nullable|string',
-                'official_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-                'subscription_3_months_price' => 'nullable|numeric|min:0',
-                'subscription_6_months_price' => 'nullable|numeric|min:0',
-                'subscription_12_months_price' => 'nullable|numeric|min:0',
-            ];
-        }
-
-        $request->validate($rules, $messages);
+        ]);
 
         // إعداد بيانات المستخدم
         $userData = [
@@ -259,7 +50,6 @@ class UserController extends Controller
             'role' => $request->role,
             'status' => $request->status ?? 'بانتظار التفعيل', // الحالة الأولية
             'email_verified_at' => null, // يجب أن تكون null حتى يتم تأكيد الـ OTP
-            'otp' => null, // سيتم تعيينه لاحقاً إذا كان طاهياً
             'otp_expires_at' => null, // سيتم تعيينه لاحقاً إذا كان طاهياً
         ];
 
@@ -336,8 +126,6 @@ class UserController extends Controller
 
 
     // End of public function store
-
-
     public function show(User $user)
     {
         $user->load('chefProfile');
@@ -355,96 +143,11 @@ class UserController extends Controller
             'name' => 'required|string|max:255', // name_en
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => 'nullable|string|min:8',
-            'role' => 'required|in:مدير,مشرف,مدخل بيانات,طاه',
-            'status' => 'required|in:فعال,غير فعال,بانتظار التفعيل',
+            'role' => 'required|in:مدير,موظف استقبال,أمين سر,عضو,مدخل بيانات',
+            'status' => 'required|in:فعال,غير فعال,بانتظار التفعيل,بإنتظار إستكمال البيانات',
         ];
 
-        $messages = [
-            'name.required' => 'حقل الاسم (بالإنجليزية) مطلوب',
-            'email.required' => 'حقل البريد الإلكتروني مطلوب',
-            'email.email' => 'يرجى إدخال بريد إلكتروني صحيح',
-            'email.unique' => 'هذا البريد الإلكتروني مسجل مسبقاً',
-            'password.min' => 'كلمة السر يجب أن تكون 8 أحرف على الأقل',
-            'role.required' => 'حقل الصلاحية مطلوب',
-            'status.required' => 'حقل الحالة مطلوب',
-            'status.in' => 'يجب أن تكون الحالة قيمة صحيحة (فعال، غير فعال، أو بانتظار التفعيل)',
-        ];
-
-        if ($request->role === 'طاه') {
-            $rules += [
-                'country' => 'required|string|max:255',
-                'bio' => 'required|string',
-                'contract_type' => 'required|in:per_recipe,annual_subscription',
-                'profit_transfer_details' => 'required|string',
-                'official_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            ];
-            $messages += [
-                'country.required' => 'حقل الدولة مطلوب عند اختيار دور الطاه',
-                'bio.required' => 'حقل النبذة التعريفية مطلوب عند اختيار دور الطاه',
-                'contract_type.required' => 'حقل نوع التعاقد مطلوب عند اختيار دور الطاه',
-                'profit_transfer_details.required' => 'حقل بيانات تحويل الأرباح مطلوب عند اختيار دور الطاه',
-                'official_image.image' => 'الملف المختار ليس صورة',
-                'official_image.mimes' => 'الصورة يجب أن تكون بصيغة jpeg, png, أو jpg',
-                'official_image.max' => 'حجم الصورة يجب ألا يزيد عن 2 ميجابايت',
-            ];
-
-            if ($request->contract_type === 'annual_subscription') {
-                $rules += [
-                    'subscription_3_months_price' => 'nullable|numeric|min:0',
-                    'subscription_6_months_price' => 'nullable|numeric|min:0',
-                    'subscription_12_months_price' => 'nullable|numeric|min:0',
-                ];
-                $request->mergeIfMissing([
-                    'subscription_3_months_price' => '',
-                    'subscription_6_months_price' => '',
-                    'subscription_12_months_price' => '',
-                ]);
-                $rules['subscription_3_months_price'] = [
-                    'nullable',
-                    'numeric',
-                    'min:0',
-                    Rule::requiredIf(function () use ($request) {
-                        return $request->contract_type === 'annual_subscription' &&
-                            empty($request->subscription_6_months_price) &&
-                            empty($request->subscription_12_months_price);
-                    }),
-                ];
-                $rules['subscription_6_months_price'] = [
-                    'nullable',
-                    'numeric',
-                    'min:0',
-                    Rule::requiredIf(function () use ($request) {
-                        return $request->contract_type === 'annual_subscription' &&
-                            empty($request->subscription_3_months_price) &&
-                            empty($request->subscription_12_months_price);
-                    }),
-                ];
-                $rules['subscription_12_months_price'] = [
-                    'nullable',
-                    'numeric',
-                    'min:0',
-                    Rule::requiredIf(function () use ($request) {
-                        return $request->contract_type === 'annual_subscription' &&
-                            empty($request->subscription_3_months_price) &&
-                            empty($request->subscription_6_months_price);
-                    }),
-                ];
-
-                $messages += [
-                    'subscription_3_months_price.required_if' => 'يجب إدخال سعر اشتراك 3 شهور أو 6 شهور أو 12 شهرًا على الأقل.',
-                    'subscription_6_months_price.required_if' => 'يجب إدخال سعر اشتراك 3 شهور أو 6 شهور أو 12 شهرًا على الأقل.',
-                    'subscription_12_months_price.required_if' => 'يجب إدخال سعر اشتراك 3 شهور أو 6 شهور أو 12 شهرًا على الأقل.',
-                    'subscription_3_months_price.numeric' => 'يجب أن يكون سعر اشتراك 3 شهور رقمًا.',
-                    'subscription_6_months_price.numeric' => 'يجب أن يكون سعر اشتراك 6 شهور رقمًا.',
-                    'subscription_12_months_price.numeric' => 'يجب أن يكون سعر اشتراك 12 شهرًا رقمًا.',
-                    'subscription_3_months_price.min' => 'يجب أن يكون سعر اشتراك 3 شهور قيمة موجبة.',
-                    'subscription_6_months_price.min' => 'يجب أن يكون سعر اشتراك 6 شهور قيمة موجبة.',
-                    'subscription_12_months_price.min' => 'يجب أن يكون سعر اشتراك 12 شهرًا قيمة موجبة.',
-                ];
-            }
-        }
-
-        $request->validate($rules, $messages);
+        $request->validate($rules);
 
         $data = [
             'name_en' => $request->name, // Save input as name_en

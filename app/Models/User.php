@@ -24,15 +24,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'name', // <--- تأكد أن 'name' موجود هنا
         'name_ar', // <--- وتأكد من وجود هذه أيضاً إذا كنت تريد حفظها
         'name_en',
-        // 'name_id',
-        // 'name_am',
-        // 'name_hi',
-        // 'name_bn',
-        // 'name_ml',
-        // 'name_fil',
-        // 'name_ur',
-        // 'name_ta',
-        // 'name_ps',
         'email',
         'password',
         'phone_number',
@@ -41,7 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'user_type',
         'status',
         'role',
-        'otp',
+        // 'otp',
         'otp_expires_at', // Make sure this is in fillable if you set it directly
         'contract_signed_at',
     ];
@@ -104,6 +95,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'فعال' => 'فعال',
             'غير فعال' => 'غير فعال',
             'بانتظار التفعيل' => 'بانتظار التفعيل',
+            'بإنتظار إستكمال البيانات' => 'بإنتظار إستكمال البيانات',
             default => 'غير معروف'
         };
     }

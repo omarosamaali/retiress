@@ -67,9 +67,9 @@
                 <div class="col-md-3">
                     <div class="mb-3">
                         <label class="form-label">الاسم</label>
-                        <input type="text" class="form-control" name="name" value="{{ old('name') }}" required>
+                        <input type="text" class="form-control" name="name" value="{{ old('name') }}" >
                         @error('name')
-                            <div class="text-white">{{ $message }}</div>
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -77,9 +77,9 @@
                 <div class="col-md-3">
                     <div class="mb-3">
                         <label class="form-label">البريد الإلكتروني</label>
-                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                        <input type="email" class="form-control" name="email" value="{{ old('email') }}" >
                         @error('email')
-                            <div class="text-white">{{ $message }}</div>
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -87,9 +87,9 @@
                 <div class="col-md-2">
                     <div class="mb-3">
                         <label class="form-label">كلمة السر</label>
-                        <input type="password" class="form-control" name="password" required>
+                        <input type="password" class="form-control" name="password" >
                         @error('password')
-                            <div class="text-white">{{ $message }}</div>
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -97,16 +97,16 @@
                 <div class="col-md-2">
                     <div class="mb-3">
                         <label class="form-label">الصلاحية</label>
-                        <select class="form-select" name="role" id="role" required>
+                        <select class="form-select" name="role" id="role" >
                             <option value="">اختر الصلاحية</option>
                             <option value="مدير" {{ old('role') == 'مدير' ? 'selected' : '' }}>مدير</option>
-                            <option value="مشرف" {{ old('role') == 'مشرف' ? 'selected' : '' }}>مشرف</option>
-                            <option value="مدخل بيانات" {{ old('role') == 'مدخل بيانات' ? 'selected' : '' }}>مدخل بيانات
-                            </option>
-                            <option value="طاه" {{ old('role') == 'طاه' ? 'selected' : '' }}>طاه</option>
+                            <option value="موظف استقبال" {{ old('role') == 'موظف استقبال' ? 'selected' : '' }}>موظف استقبال</option>
+                            <option value="أمين سر" {{ old('role') == 'أمين سر' ? 'selected' : '' }}>أمين سر</option>
+                            <option value="عضو" {{ old('role') == 'عضو' ? 'selected' : '' }}>عضو</option>
+                            <option value="مدخل بيانات" {{ old('role') == 'مدخل بيانات' ? 'selected' : '' }}>مدخل بيانات</option>
                         </select>
                         @error('role')
-                            <div class="text-white">{{ $message }}</div>
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                 <div class="col-md-2">
                     <div class="mb-3">
                         <label for="status" class="form-label">الحالة</label>
-                        <select class="form-select" name="status" id="status" required>
+                        <select class="form-select" name="status" id="status" >
                             <option value="فعال" {{ old('status') == 'فعال' ? 'selected' : '' }}>فعال</option>
                             <option value="غير فعال" {{ old('status') == 'غير فعال' ? 'selected' : '' }}>غير فعال</option>
                             <option value="بانتظار التفعيل" {{ old('status') == 'بانتظار التفعيل' ? 'selected' : '' }}>
@@ -124,125 +124,8 @@
                                 بانتظار التفعيل</option>
                         </select>
                         @error('status')
-                            <div class="text-white">{{ $message }}</div>
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div>
-                </div>
-
-                <!-- حقول إضافية لدور الطاه -->
-                <div id="chef-fields" class="chef-fields">
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">الدولة</label>
-                            <select class="form-select" name="country" value="{{ old('country') }}">
-                                <option value="">اختر الدولة</option>
-                                <option value="مصر" {{ old('country') == 'مصر' ? 'selected' : '' }}>مصر</option>
-                                <option value="السعودية" {{ old('country') == 'السعودية' ? 'selected' : '' }}>السعودية
-                                </option>
-                                <option value="الإمارات" {{ old('country') == 'الإمارات' ? 'selected' : '' }}>الإمارات
-                                </option>
-                                <option value="الأردن" {{ old('country') == 'الأردن' ? 'selected' : '' }}>الأردن</option>
-                                <option value="المغرب" {{ old('country') == 'المغرب' ? 'selected' : '' }}>المغرب</option>
-                                <option value="الجزائر" {{ old('country') == 'الجزائر' ? 'selected' : '' }}>الجزائر
-                                </option>
-                                <option value="السودان" {{ old('country') == 'السودان' ? 'selected' : '' }}>السودان
-                                </option>
-                                <option value="تونس" {{ old('country') == 'تونس' ? 'selected' : '' }}>تونس</option>
-                                <option value="لبنان" {{ old('country') == 'لبنان' ? 'selected' : '' }}>لبنان</option>
-                                <option value="قطر" {{ old('country') == 'قطر' ? 'selected' : '' }}>قطر</option>
-                            </select>
-                            @error('country')
-                                <div class="text-white">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">نبذة تعريفية</label>
-                            <textarea class="form-control" name="bio" rows="4">{{ old('bio') }}</textarea>
-                            @error('bio')
-                                <div class="text-white">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">نوع التعاقد</label>
-                            <select class="form-select" name="contract_type" id="contract_type">
-                                <option value="">اختر نوع التعاقد</option>
-                                <option value="per_recipe" {{ old('contract_type') == 'per_recipe' ? 'selected' : '' }}>
-                                    بالوصفة</option>
-                                <option value="annual_subscription"
-                                    {{ old('contract_type') == 'annual_subscription' ? 'selected' : '' }}>بنظام الاشتراك
-                                </option>
-                            </select>
-                            @error('contract_type')
-                                <div class="text-white">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div id="subscription-fields" class="col-md-12" style="display: none;">
-                        <div class="">
-                            الاسعار بالدرهم الاماراتي فقط
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">سعر اشتراك 3 شهور</label>
-                                    <input type="number" step="0.01" class="form-control"
-                                        name="subscription_3_months_price"
-                                        value="{{ old('subscription_3_months_price') }}">
-                                    @error('subscription_3_months_price')
-                                        <div class="text-white">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">سعر اشتراك 6 شهور</label>
-                                    <input type="number" step="0.01" class="form-control"
-                                        name="subscription_6_months_price"
-                                        value="{{ old('subscription_6_months_price') }}">
-                                    @error('subscription_6_months_price')
-                                        <div class="text-white">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label class="form-label">سعر اشتراك 12 شهر</label>
-                                    <input type="number" step="0.01" class="form-control"
-                                        name="subscription_12_months_price"
-                                        value="{{ old('subscription_12_months_price') }}">
-                                    @error('subscription_12_months_price')
-                                        <div class="text-white">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label class="form-label">بيانات تحويل الأرباح</label>
-                            <textarea class="form-control" name="profit_transfer_details" rows="4">{{ old('profit_transfer_details') }}</textarea>
-                            @error('profit_transfer_details')
-                                <div class="text-white">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label class="form-label">الصورة الرسمية</label>
-                            <input type="file" class="form-control" name="official_image" accept="image/*">
-                            @error('official_image')
-                                <div class="text-white">{{ $message }}</div>
-                            @enderror
-                        </div>
                     </div>
                 </div>
             </div>
@@ -277,17 +160,21 @@
             class="btn {{ request()->get('role') == 'مدير' ? 'btn-primary' : 'btn-outline-primary' }}">
             المدراء
         </a>
-        <a href="{{ route('admin.users.index', ['role' => 'مشرف']) }}"
-            class="btn {{ request()->get('role') == 'مشرف' ? 'btn-primary' : 'btn-outline-primary' }}">
-            المشرفون
+        <a href="{{ route('admin.users.index', ['role' => 'موظف استقبال']) }}"
+            class="btn {{ request()->get('role') == 'موظف استقبال' ? 'btn-primary' : 'btn-outline-primary' }}">
+            موظف الإستقبال
         </a>
         <a href="{{ route('admin.users.index', ['role' => 'مدخل بيانات']) }}"
             class="btn {{ request()->get('role') == 'مدخل بيانات' ? 'btn-primary' : 'btn-outline-primary' }}">
             مدخل البيانات
         </a>
-        <a href="{{ route('admin.users.index', ['role' => 'طاه']) }}"
-            class="btn {{ request()->get('role') == 'طاه' ? 'btn-primary' : 'btn-outline-primary' }}">
-            الطهاة
+        <a href="{{ route('admin.users.index', ['role' => 'عضو']) }}"
+            class="btn {{ request()->get('role') == 'عضو' ? 'btn-primary' : 'btn-outline-primary' }}">
+            عضو
+        </a>
+        <a href="{{ route('admin.users.index', ['role' => 'أمين سر']) }}"
+            class="btn {{ request()->get('role') == 'أمين سر' ? 'btn-primary' : 'btn-outline-primary' }}">
+            أمين سر
         </a>
     </div>
 
@@ -344,42 +231,6 @@
                                         break;
                                 }
 
-                                // *** منطق خاص للطهاة لتحديد إذا كان جاهزاً للتفعيل ***
-                                if ($user->role === 'طاه' && $user->chefProfile) {
-                                    $chefProfile = $user->chefProfile;
-
-                                    $isOfficialImageComplete = !empty($chefProfile->official_image);
-                                    $isContractTypeComplete = !empty($chefProfile->contract_type);
-                                    $isBioComplete = !empty($chefProfile->bio);
-                                    $isContractSigned = !empty($user->contract_signed_at);
-
-                                    $isProfileDataComplete =
-                                        $isOfficialImageComplete &&
-                                        $isContractTypeComplete &&
-                                        $isBioComplete &&
-                                        $isContractSigned;
-
-                                    if ($isProfileDataComplete) {
-                                        // إذا كانت البيانات مكتملة، نتحقق من حالته النهائية
-                                        if ($user->status === 'فعال') {
-                                            $statusDisplay = 'مفعل'; // أو فعال، كما تفضل
-                                            $badgeClass = 'success';
-                                        } elseif ($user->status === 'مرفوض') {
-                                            // إذا كان لديك حالة "مرفوض" في جدول المستخدم
-                                            $statusDisplay = 'مرفوض';
-                                            $badgeClass = 'danger';
-                                        } else {
-                                            // البيانات مكتملة، ولكن حالته ليست "فعال" أو "مرفوض"
-                                            // هذا يعني أنه جاهز للمراجعة والتفعيل
-                                            $statusDisplay = 'جاهز للتفعيل';
-                                            $badgeClass = 'info'; // لون مميز للأدمن
-                                        }
-                                    } else {
-                                        // البيانات غير مكتملة، بغض النظر عن الـ $user->status
-                                        $statusDisplay = 'بانتظار إستكمال البيانات';
-                                        $badgeClass = 'warning';
-                                    }
-                                }
                             @endphp
 
                             <span class="badge bg-{{ $badgeClass }}">
