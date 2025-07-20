@@ -110,11 +110,16 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
-                        <label for="description_ar" class="form-label font-bold">وصف الخبر (بالعربية)</label>
-                        <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar', $news->description_ar) }}</textarea>
-                        @error('description_ar')
+                        <label for="status" class="form-label font-bold">الحالة</label>
+                        <select class="form-select" name="status" id="status" required>
+                            <option value="1" {{ old('status', $news->status) == '1' ? 'selected' : '' }}>فعال
+                            </option>
+                            <option value="0" {{ old('status', $news->status) == '0' ? 'selected' : '' }}>غير فعال
+                            </option>
+                        </select>
+                        @error('status')
                             <div class="text-black">{{ $message }}</div>
                         @enderror
                     </div>
@@ -164,16 +169,26 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="mb-3">
+                    <input @checked($news->price) name="is_payed" type="checkbox" id="togglePrice" onchange="togglePriceField()">
+                    <label for="togglePrice">مدفوع ؟</label>
+                </div>
+
+                <div class="col-md-6" id="priceField" style="display: none;">
                     <div class="mb-3">
-                        <label for="status" class="form-label font-bold">الحالة</label>
-                        <select class="form-select" name="status" id="status" required>
-                            <option value="1" {{ old('status', $news->status) == '1' ? 'selected' : '' }}>فعال
-                            </option>
-                            <option value="0" {{ old('status', $news->status) == '0' ? 'selected' : '' }}>غير فعال
-                            </option>
-                        </select>
-                        @error('status')
+                        <label for="price" class="form-label">السعر</label>
+                        <input type="number" class="form-control" value="{{ old('price', $news->price) }}" name="price" id="price">
+                        @error('price')
+                            <div class="text-white">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="description_ar" class="form-label font-bold">وصف الخبر (بالعربية)</label>
+                        <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar', $news->description_ar) }}</textarea>
+                        @error('description_ar')
                             <div class="text-black">{{ $message }}</div>
                         @enderror
                     </div>
@@ -215,6 +230,18 @@
 
 @push('scripts')
     <script>
+        function togglePriceField() {
+            const checkbox = document.getElementById('togglePrice');
+            const priceField = document.getElementById('priceField');
+
+            if (checkbox.checked) {
+                priceField.style.display = 'block';
+            } else {
+                priceField.style.display = 'none';
+            }
+        }
+        togglePriceField()
+
         document.addEventListener('DOMContentLoaded', function() {
             const mainImageInput = document.getElementById('main_image_input');
             const mainImagePreview = document.getElementById('main_image_preview');

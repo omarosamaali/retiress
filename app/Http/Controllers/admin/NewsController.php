@@ -12,29 +12,10 @@ use Illuminate\Validation\Rule;
 
 class NewsController extends Controller
 {
-    protected $targetLanguages = [
-        'id' => 'الإندونيسية',
-        'am' => 'الأمهرية',
-        'hi' => 'الهندية',
-        'bn' => 'البنغالية',
-        'ml' => 'المالايالامية',
-        'fil' => 'الفلبينية',
-        'ur' => 'الأردية',
-        'ta' => 'التاميلية',
-        'en' => 'الإنجليزية',
-        'ne' => 'النيبالية',
-        'ps' => 'الأفغانية',
-    ];
-
     public function index()
     {
         $news = News::latest()->paginate(10);
         return view('admin.news.index', compact('news'));
-    }
-
-    public function create()
-    {
-        return view('admin.news.create');
     }
 
     public function store(Request $request)
@@ -42,6 +23,7 @@ class NewsController extends Controller
         $request->validate([
             'title_ar' => 'required|string|max:255|unique:news,title_ar',
             'description_ar' => 'required|string',
+            'price' => 'nullable|integer',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
@@ -51,6 +33,7 @@ class NewsController extends Controller
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
+            'price' => $request->is_payed === 'on' ? $request->price : null,
         ];
 
         $tr = new GoogleTranslate('ar');
@@ -107,6 +90,7 @@ class NewsController extends Controller
                 Rule::unique('news', 'title_ar')->ignore($news->id),
             ],
             'description_ar' => 'required|string',
+            'price' => 'nullable|integer',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
@@ -116,6 +100,7 @@ class NewsController extends Controller
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
+            'price' => $request->is_payed === 'on' ? $request->price : null,
         ];
 
         $tr = new GoogleTranslate('ar');

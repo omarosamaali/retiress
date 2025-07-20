@@ -6,7 +6,7 @@
 @push('styles')
     <style>
         .add-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #212529;
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -59,7 +59,7 @@
     <div class="add-section">
         <h5 class="mb-4">
             <i class="fas fa-newspaper ms-2"></i>
-            إضافة خبر جديد
+            إضافة فعاليه جديد
         </h5>
 
         @if ($errors->any())
@@ -76,52 +76,17 @@
         <form action="{{ route('admin.news.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="title_ar" class="form-label">عنوان الخبر (بالعربية)</label>
-                        <input type="text" class="form-control" id="title_ar" name="title_ar"
-                            value="{{ old('title_ar') }}" required>
+                        <label for="title_ar" class="form-label">عنوان الفعاليه (بالعربية)</label>
+                        <input type="text" class="form-control" id="title_ar" name="title_ar" value="{{ old('title_ar') }}" required>
                         @error('title_ar')
                             <div class="text-white">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label for="description_ar" class="form-label">وصف الخبر (بالعربية)</label>
-                        <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar') }}</textarea>
-                        @error('description_ar')
-                            <div class="text-white">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label for="main_image_input" class="form-label">الصورة الرئيسية</label>
-                        <input type="file" class="form-control" name="main_image" id="main_image_input" accept="image/*">
-                        @error('main_image')
-                            <div class="text-white">{{ $message }}</div>
-                        @enderror
-                        <img id="main_image_preview" src="#" alt="معاينة الصورة" class="news-preview"
-                            style="display: {{ old('main_image') ? 'block' : 'none' }};">
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label for="sub_image_input" class="form-label">الصورة الفرعية</label>
-                        <input type="file" class="form-control" name="sub_image" id="sub_image_input" accept="image/*">
-                        @error('sub_image')
-                            <div class="text-white">{{ $message }}</div>
-                        @enderror
-                        <img id="sub_image_preview" src="#" alt="معاينة الصورة" class="news-preview"
-                            style="display: {{ old('sub_image') ? 'block' : 'none' }};">
-                    </div>
-                </div>
-
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label for="status" class="form-label">الحالة</label>
                         <select class="form-select" name="status" id="status" required>
@@ -133,11 +98,58 @@
                         @enderror
                     </div>
                 </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="main_image_input" class="form-label">الصورة الرئيسية</label>
+                        <input type="file" class="form-control" name="main_image" id="main_image_input" accept="image/*">
+                        @error('main_image')
+                            <div class="text-white">{{ $message }}</div>
+                        @enderror
+                        <img id="main_image_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: {{ old('main_image') ? 'block' : 'none' }};">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="sub_image_input" class="form-label">الصورة الفرعية</label>
+                        <input type="file" class="form-control" name="sub_image" id="sub_image_input" accept="image/*">
+                        @error('sub_image')
+                            <div class="text-white">{{ $message }}</div>
+                        @enderror
+                        <img id="sub_image_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: {{ old('sub_image') ? 'block' : 'none' }};">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <input type="checkbox" id="togglePrice" name="is_payed" onchange="togglePriceField()">
+                    <label for="togglePrice">مدفوع ؟</label>
+                </div>
+
+                <div class="col-md-6" id="priceField" style="display: none;">
+                    <div class="mb-3">
+                        <label for="price" class="form-label">السعر</label>
+                        <input type="number" class="form-control" value="{{ old('price') }}" name="price" id="price">
+                        @error('price')
+                            <div class="text-white">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <label for="description_ar" class="form-label">وصف الفعاليه (بالعربية)</label>
+                        <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar') }}</textarea>
+                        @error('description_ar')
+                            <div class="text-white">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
             </div>
 
             <button type="submit" class="btn btn-light mt-3">
                 <i class="fas fa-plus ms-1"></i>
-                إضافة الخبر
+                إضافة الفعاليه
             </button>
         </form>
     </div>
@@ -163,6 +175,8 @@
                     <th>#</th>
                     <th>تاريخ الإضافة</th>
                     <th>العنوان (عربي)</th>
+                    <th>مدفوع</th>
+                    <th>السعر</th>
                     <th>الصورة الرئيسية</th>
                     <th>الحالة</th>
                     <th>الإجراءات</th>
@@ -174,6 +188,13 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->created_at->format('d/m/Y') }}</td>
                         <td>{{ $item->title_ar }}</td>
+                        @if ($item->price)
+                            <td class="text-success">مدفوع</td>
+                            <td class="text-success">{{ $item->price }}</td>
+                        @else
+                            <td class="text-primary">مجاني</td>
+                            <td class="text-primary">0</td>
+                        @endif
                         <td>
                             @if ($item->main_image)
                                 <img src="{{ $item->main_image_url }}" alt="{{ $item->title_ar }}" class="news-img">
@@ -226,7 +247,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    هل أنت متأكد من حذف هذا الخبر؟
+                    هل أنت متأكد من حذف هذه الفعاليه؟
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
@@ -243,6 +264,18 @@
 
 @push('scripts')
     <script>
+        function togglePriceField() {
+            const checkbox = document.getElementById('togglePrice');
+            const priceField = document.getElementById('priceField');
+
+            if (checkbox.checked) {
+                priceField.style.display = 'block';
+            } else {
+                priceField.style.display = 'none';
+            }
+        }
+
+
         document.addEventListener('DOMContentLoaded', function() {
             const mainImageInput = document.getElementById('main_image_input');
             const mainImagePreview = document.getElementById('main_image_preview');

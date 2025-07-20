@@ -71,13 +71,13 @@
         }
 
         .sidebar .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: #ffffff1a;
             color: var(--hover-primary);
             transform: translateX(-5px);
         }
 
         .sidebar .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: #ffffff33;
             color: white;
         }
 
@@ -87,9 +87,9 @@
         }
 
         .dropdown-menu {
-            background: rgba(255, 255, 255, 0.95);
+            background: #fffffff2;
             border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px #0000001a;
             margin-right: 20px;
             border-radius: 8px;
         }
@@ -115,7 +115,7 @@
             background: white;
             padding: 15px 30px;
             border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px #0000001a;
             margin-bottom: 30px;
         }
 
@@ -123,7 +123,7 @@
             background: white;
             border-radius: 10px;
             padding: 30px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px #0000001a;
         }
 
         .btn-primary {
@@ -136,13 +136,13 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px #00000033;
         }
 
         .table {
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px #0000001a;
         }
 
         .table thead th {
