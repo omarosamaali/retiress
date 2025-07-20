@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\CouncilController;
 use App\Http\Controllers\Admin\PackageController;
 use App\Http\Controllers\Admin\RecipesController;
+use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\FamiliesController;
 use App\Http\Controllers\Admin\KitchensController;
 use App\Http\Controllers\Admin\LanguageController;
@@ -49,6 +50,7 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::resource('families', FamiliesController::class);
     Route::resource('news', NewsController::class);
     Route::resource('magazines', MagazineController::class);
+    Route::resource('services', ServiceController::class);
     Route::resource('about-us', AboutUsController::class);
     Route::resource('member', MemberController::class);
     Route::resource('committee', CommitteeController::class);

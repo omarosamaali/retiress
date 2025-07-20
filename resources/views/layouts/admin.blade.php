@@ -333,6 +333,10 @@
                 </div>
             @endcan
 
+            <a class="nav-link" href="{{ route('admin.services.index') }}">
+                <i class="fas fa-users"></i>
+                الخدمات
+            </a>
 
 
 
