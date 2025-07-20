@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\RecipesController;
 use App\Http\Controllers\Admin\FamiliesController;
 use App\Http\Controllers\Admin\KitchensController;
 use App\Http\Controllers\Admin\LanguageController;
+use App\Http\Controllers\Admin\MagazineController;
 use App\Http\Controllers\Admin\CommitteeController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\MainCategoriesController;
@@ -47,6 +48,7 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::resource('kitchens', KitchensController::class);
     Route::resource('families', FamiliesController::class);
     Route::resource('news', NewsController::class);
+    Route::resource('magazines', MagazineController::class);
     Route::resource('about-us', AboutUsController::class);
     Route::resource('member', MemberController::class);
     Route::resource('committee', CommitteeController::class);

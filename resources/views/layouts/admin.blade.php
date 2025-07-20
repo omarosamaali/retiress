@@ -314,8 +314,33 @@
                     </ul>
                 </div>
             @endcan
+            @can('isAdmin')
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-book"></i>
+                        المركز الإعلامي
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('admin.news.index') }}">
+                                <i class="fas fa-newspaper"></i> اخبار الجمعية
+                            </a>
+                            <a class="dropdown-item" href="{{ route('admin.magazines.index') }}">
+                                <i class="fas fa-newspaper"></i> المجلة
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            @endcan
 
 
+
+
+
+
+
+
+            {{-- ---------------------- --}}
             <!-- قائمة الإعدادات -->
             <div class="dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

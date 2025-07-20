@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'إدارة الفعاليات')
-@section('page-title', 'إدارة الفعاليات')
+@section('title', 'إدارة المجلات')
+@section('page-title', 'إدارة المجلات')
 
 @push('styles')
     <style>
@@ -59,7 +59,7 @@
     <div class="add-section">
         <h5 class="mb-4">
             <i class="fas fa-newspaper ms-2"></i>
-            إضافة فعاليه جديد
+            إضافة مجله جديد
         </h5>
 
         @if ($errors->any())
@@ -73,12 +73,12 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.news.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.magazines.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="title_ar" class="form-label">عنوان الفعاليه (بالعربية)</label>
+                        <label for="title_ar" class="form-label">عنوان المجله (بالعربية)</label>
                         <input type="text" class="form-control" id="title_ar" name="title_ar" value="{{ old('title_ar') }}" required>
                         @error('title_ar')
                             <div class="text-white">{{ $message }}</div>
@@ -113,24 +113,10 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="sub_image_input" class="form-label">الصورة الفرعية</label>
-                        <input type="file" class="form-control" name="sub_image" id="sub_image_input" accept="image/*">
+                        <input type="file" class="form-control" name="sub_image[]" id="sub_image_input" accept="image/*" multiple>
+                        <div id="sub_image_preview_container" class="d-flex mt-2"></div>
+
                         @error('sub_image')
-                            <div class="text-white">{{ $message }}</div>
-                        @enderror
-                        <img id="sub_image_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: {{ old('sub_image') ? 'block' : 'none' }};">
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <input type="checkbox" id="togglePrice" name="is_payed" onchange="togglePriceField()">
-                    <label for="togglePrice">مدفوع ؟</label>
-                </div>
-
-                <div class="col-md-6" id="priceField" style="display: none;">
-                    <div class="mb-3">
-                        <label for="price" class="form-label">السعر</label>
-                        <input type="number" class="form-control" value="{{ old('price') }}" name="price" id="price">
-                        @error('price')
                             <div class="text-white">{{ $message }}</div>
                         @enderror
                     </div>
@@ -138,7 +124,7 @@
 
                 <div class="col-md-12">
                     <div class="mb-3">
-                        <label for="description_ar" class="form-label">وصف الفعاليه (بالعربية)</label>
+                        <label for="description_ar" class="form-label">وصف المجله (بالعربية)</label>
                         <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar') }}</textarea>
                         @error('description_ar')
                             <div class="text-white">{{ $message }}</div>
@@ -149,7 +135,7 @@
 
             <button type="submit" class="btn btn-light mt-3">
                 <i class="fas fa-plus ms-1"></i>
-                إضافة الفعاليه
+                إضافة المجله
             </button>
         </form>
     </div>
@@ -175,26 +161,17 @@
                     <th>#</th>
                     <th>تاريخ الإضافة</th>
                     <th>العنوان (عربي)</th>
-                    <th>مدفوع</th>
-                    <th>السعر</th>
                     <th>الصورة الرئيسية</th>
                     <th>الحالة</th>
                     <th>الإجراءات</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($news ?? [] as $item)
+                @forelse($magazines ?? [] as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->created_at->format('d/m/Y') }}</td>
                         <td>{{ $item->title_ar }}</td>
-                        @if ($item->price)
-                            <td class="text-success">مدفوع</td>
-                            <td class="text-success">{{ $item->price }}</td>
-                        @else
-                            <td class="text-primary">مجاني</td>
-                            <td class="text-primary">0</td>
-                        @endif
                         <td>
                             @if ($item->main_image)
                                 <img src="{{ $item->main_image_url }}" alt="{{ $item->title_ar }}" class="news-img">
@@ -209,10 +186,10 @@
                         </td>
                         <td>
                             <div class="action-buttons">
-                                <a href="{{ route('admin.news.show', $item->id) }}" class="btn btn-info btn-sm" title="عرض">
+                                <a href="{{ route('admin.magazines.show', $item->id) }}" class="btn btn-info btn-sm" title="عرض">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('admin.news.edit', $item->id) }}" class="btn btn-warning btn-sm" title="تعديل">
+                                <a href="{{ route('admin.magazines.edit', $item->id) }}" class="btn btn-warning btn-sm" title="تعديل">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <button class="btn btn-danger btn-sm" title="حذف" onclick="confirmDelete({{ $item->id }})">
@@ -225,7 +202,7 @@
                     <tr>
                         <td colspan="6" class="text-center py-4">
                             <i class="fas fa-newspaper text-muted" style="font-size: 3rem;"></i>
-                            <p class="text-muted mt-2">لا توجد فعاليات</p>
+                            <p class="text-muted mt-2">لا توجد مجلات</p>
                         </td>
                     </tr>
                 @endforelse
@@ -233,9 +210,9 @@
         </table>
     </div>
 
-    @if (isset($news) && $news->hasPages())
+    @if (isset($magazines) && $magazines->hasPages())
         <div class="d-flex justify-content-center mt-4">
-            {{ $news->links() }}
+            {{ $magazines->links() }}
         </div>
     @endif
 
@@ -247,7 +224,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    هل أنت متأكد من حذف هذه الفعاليه؟
+                    هل أنت متأكد من حذف هذه المجله؟
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
@@ -264,23 +241,37 @@
 
 @push('scripts')
     <script>
-        function togglePriceField() {
-            const checkbox = document.getElementById('togglePrice');
-            const priceField = document.getElementById('priceField');
-
-            if (checkbox.checked) {
-                priceField.style.display = 'block';
-            } else {
-                priceField.style.display = 'none';
-            }
-        }
 
 
         document.addEventListener('DOMContentLoaded', function() {
             const mainImageInput = document.getElementById('main_image_input');
             const mainImagePreview = document.getElementById('main_image_preview');
             const subImageInput = document.getElementById('sub_image_input');
-            const subImagePreview = document.getElementById('sub_image_preview');
+            const subImagePreviewContainer = document.getElementById('sub_image_preview_container');
+
+            if (subImageInput) {
+                subImageInput.addEventListener('change', function(event) {
+                    subImagePreviewContainer.innerHTML = ''; // مسح المعاينات السابقة
+                    const files = event.target.files;
+
+                    if (files.length > 0) {
+                        Array.from(files).forEach(file => {
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                const img = document.createElement('img');
+                                img.src = e.target.result;
+                                img.alt = "معاينة الصورة";
+                                img.className = "news-preview me-2 mb-2";
+                                img.style.maxWidth = "100px";
+                                img.style.borderRadius = "8px";
+                                subImagePreviewContainer.appendChild(img);
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    }
+                });
+            }
+
 
             if (mainImageInput) {
                 mainImageInput.addEventListener('change', function(event) {
@@ -298,28 +289,11 @@
                     }
                 });
             }
-
-            if (subImageInput) {
-                subImageInput.addEventListener('change', function(event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            subImagePreview.src = e.target.result;
-                            subImagePreview.style.display = 'block';
-                        };
-                        reader.readAsDataURL(file);
-                    } else {
-                        subImagePreview.src = '#';
-                        subImagePreview.style.display = 'none';
-                    }
-                });
-            }
         });
 
         function confirmDelete(newsId) {
             const deleteForm = document.getElementById('deleteForm');
-            deleteForm.action = `/admin/news/${newsId}`;
+            deleteForm.action = `/admin/magazines/${newsId}`;
 
             const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             deleteModal.show();
