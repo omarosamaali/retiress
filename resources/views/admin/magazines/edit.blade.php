@@ -148,6 +148,26 @@
 
                 <div class="col-md-6">
                     <div class="mb-3">
+                        <label for="pdf_input" class="form-label font-bold">ملف PDF</label>
+                        <input type="file" class="form-control" name="pdf" id="pdf_input">
+                        @error('pdf')
+                            <div class="text-black">{{ $message }}</div>
+                        @enderror
+                        @if ($magazine->pdf)
+                            <a href="{{ $magazine->pdf_url }}" class="btn btn-success mt-2" download>تحميل ال pdf</a>
+
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="remove_pdf" id="remove_pdf">
+                                <label class="form-check-label text-black" for="remove_pdf">
+                                    حذف الملف PDF الحالي
+                                </label>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
                         <label for="sub_image_input" class="form-label font-bold">الصورة الفرعية</label>
                         <input type="file" class="form-control" name="sub_image[]" id="sub_image_input" accept="image/*" multiple>
                         @error('sub_image')

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'تعديل الأخبار')
-@section('page-title', 'تعديل الأخبار')
+@section('title', 'تعديل الفعالية')
+@section('page-title', 'تعديل الفعالية')
 
 @push('styles')
     <style>
@@ -32,13 +32,11 @@
             border-radius: 8px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
         }
-
         .translated-name-field {
             background-color: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.3);
             color: black;
         }
-
         .translated-name-field:focus {
             background-color: rgba(255, 255, 255, 0.15);
             border-color: white;
@@ -82,7 +80,7 @@
     <div class="add-section">
         <h5 class="mb-4">
             <i class="fas fa-newspaper ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
-            تعديل الأخبار: {{ $news->title_ar }}
+            تعديل الفعالية: {{ $event->title_ar }}
         </h5>
 
         @if ($errors->any())
@@ -96,28 +94,29 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.news.update', $news->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.event.update', $event->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="title_ar" class="form-label font-bold">عنوان الأخبار (بالعربية)</label>
-                        <input type="text" class="form-control" id="title_ar" name="title_ar" value="{{ old('title_ar', $news->title_ar) }}" required>
+                        <label for="title_ar" class="form-label font-bold">عنوان الفعالية (بالعربية)</label>
+                        <input type="text" class="form-control" id="title_ar" name="title_ar"
+                            value="{{ old('title_ar', $event->title_ar) }}" required>
                         @error('title_ar')
                             <div class="text-black">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="mb-3">
                         <label for="status" class="form-label font-bold">الحالة</label>
                         <select class="form-select" name="status" id="status" required>
-                            <option value="1" {{ old('status', $news->status) == '1' ? 'selected' : '' }}>فعال
+                            <option value="1" {{ old('status', $event->status) == '1' ? 'selected' : '' }}>فعال
                             </option>
-                            <option value="0" {{ old('status', $news->status) == '0' ? 'selected' : '' }}>غير فعال
+                            <option value="0" {{ old('status', $event->status) == '0' ? 'selected' : '' }}>غير فعال
                             </option>
                         </select>
                         @error('status')
@@ -133,8 +132,9 @@
                         @error('main_image')
                             <div class="text-black">{{ $message }}</div>
                         @enderror
-                        @if ($news->main_image)
-                            <img id="current_main_image_preview" src="{{ $news->main_image_url }}" alt="الصورة الحالية" class="news-preview mt-2 p-2 current-image-preview">
+                        @if ($event->main_image)
+                            <img id="current_main_image_preview" src="{{ $event->main_image_url }}" alt="الصورة الحالية"
+                                class="news-preview mt-2 p-2 current-image-preview">
                             <div class="form-check mt-2">
                                 <input class="form-check-input" type="checkbox" name="remove_main_image" id="remove_main_image">
                                 <label class="form-check-label text-black" for="remove_main_image">
@@ -142,39 +142,52 @@
                                 </label>
                             </div>
                         @endif
-                        <img id="main_image_preview" src="#" alt="معاينة الصورة الجديدة" class="news-preview mt-2" style="display: none;">
+                        <img id="main_image_preview" src="#" alt="معاينة الصورة الجديدة" class="news-preview mt-2"
+                            style="display: none;">
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="sub_image_input" class="form-label font-bold">الصورة الفرعية</label>
-                        <input type="file" class="form-control" name="sub_image[]" id="sub_image_input" accept="image/*" multiple>
+                        <input type="file" class="form-control" name="sub_image" id="sub_image_input" accept="image/*">
                         @error('sub_image')
                             <div class="text-black">{{ $message }}</div>
                         @enderror
-                        @if ($news->sub_image)
-                            <div id="sub_image_preview_container" class="d-flex mt-2">
-                                @foreach ($news->sub_image_url as $image)
-                                    <img id="current_sub_image_preview" src="{{ $image }}" alt="الصورة الحالية" class="news-preview mt-2 p-2 current-image-preview">
-                                @endforeach
-                            </div>
-
+                        @if ($event->sub_image)
+                            <img id="current_sub_image_preview" src="{{ $event->sub_image_url }}" alt="الصورة الحالية"
+                                class="news-preview mt-2 p-2 current-image-preview">
                             <div class="form-check mt-2">
                                 <input class="form-check-input" type="checkbox" name="remove_sub_image" id="remove_sub_image">
                                 <label class="form-check-label text-black" for="remove_sub_image">
-                                    حذف الصور الفرعية الحالية
+                                    حذف الصورة الفرعية الحالية
                                 </label>
                             </div>
                         @endif
-                        <img id="sub_image_preview" src="#" alt="معاينة الصورة الجديدة" class="news-preview mt-2" style="display: none;">
+                        <img id="sub_image_preview" src="#" alt="معاينة الصورة الجديدة" class="news-preview mt-2"
+                            style="display: none;">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <input @checked($event->price) name="is_payed" type="checkbox" id="togglePrice" onchange="togglePriceField()">
+                    <label for="togglePrice">مدفوع ؟</label>
+                </div>
+
+                <div class="col-md-6" id="priceField" style="display: none;">
+                    <div class="mb-3">
+                        <label for="price" class="form-label">السعر</label>
+                        <input type="number" class="form-control" value="{{ old('price', $event->price) }}" name="price" id="price">
+                        @error('price')
+                            <div class="text-white">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <div class="mb-3">
-                        <label for="description_ar" class="form-label font-bold">وصف الأخبار (بالعربية)</label>
-                        <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar', $news->description_ar) }}</textarea>
+                        <label for="description_ar" class="form-label font-bold">وصف الفعالية (بالعربية)</label>
+                        <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar', $event->description_ar) }}</textarea>
                         @error('description_ar')
                             <div class="text-black">{{ $message }}</div>
                         @enderror
@@ -188,19 +201,19 @@
                     <div class="col-md-12 mb-3 border rounded-lg p-2">
                         <label for="title_{{ $code }}" class="form-label font-bold">{{ $name }} (العنوان):</label>
                         <span class="text-right">
-                            {{ old('title_' . $code, $news->{'title_' . $code}) }}
+                            {{ old('title_' . $code, $event->{'title_' . $code}) }}
                         </span>
                         <br>
                         <label for="description_{{ $code }}" class="form-label font-bold">{{ $name }} (الوصف):</label>
                         <span class="text-right">
-                            {{ old('description_' . $code, $news->{'description_' . $code}) }}
+                            {{ old('description_' . $code, $event->{'description_' . $code}) }}
                         </span>
                     </div>
                 @endforeach
             </div>
 
             <div class="btn-section text-center">
-                <a href="{{ route('admin.news.index') }}" class="back-btn">
+                <a href="{{ route('admin.event.index') }}" class="back-btn">
                     <i class="fas fa-arrow-right ms-1"></i>
                     العودة للقائمة
                 </a>
@@ -217,6 +230,18 @@
 
 @push('scripts')
     <script>
+        function togglePriceField() {
+            const checkbox = document.getElementById('togglePrice');
+            const priceField = document.getElementById('priceField');
+
+            if (checkbox.checked) {
+                priceField.style.display = 'block';
+            } else {
+                priceField.style.display = 'none';
+            }
+        }
+        togglePriceField()
+
         document.addEventListener('DOMContentLoaded', function() {
             const mainImageInput = document.getElementById('main_image_input');
             const mainImagePreview = document.getElementById('main_image_preview');
@@ -227,31 +252,6 @@
             const subImagePreview = document.getElementById('sub_image_preview');
             const currentSubImagePreview = document.getElementById('current_sub_image_preview');
             const removeSubImageCheckbox = document.getElementById('remove_sub_image');
-            const subImagePreviewContainer = document.getElementById('sub_image_preview_container');
-
-            if (subImageInput) {
-                subImageInput.addEventListener('change', function(event) {
-                    subImagePreviewContainer.innerHTML = ''; // مسح المعاينات السابقة
-                    const files = event.target.files;
-
-                    if (files.length > 0) {
-                        Array.from(files).forEach(file => {
-                            const reader = new FileReader();
-                            reader.onload = function(e) {
-                                const img = document.createElement('img');
-                                img.src = e.target.result;
-                                img.alt = "معاينة الصورة";
-                                img.className = "news-preview me-2 mb-2";
-                                img.style.maxWidth = "100px";
-                                img.style.borderRadius = "8px";
-                                subImagePreviewContainer.appendChild(img);
-                            };
-                            reader.readAsDataURL(file);
-                        });
-                    }
-                });
-            }
-
 
             if (mainImageInput) {
                 mainImageInput.addEventListener('change', function(event) {
@@ -300,26 +300,52 @@
                 });
             }
 
+            if (subImageInput) {
+                subImageInput.addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            subImagePreview.src = e.target.result;
+                            subImagePreview.style.display = 'block';
+                            if (currentSubImagePreview) {
+                                currentSubImagePreview.style.display = 'none';
+                            }
+                            if (removeSubImageCheckbox) {
+                                removeSubImageCheckbox.checked = false;
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        subImagePreview.src = '#';
+                        subImagePreview.style.display = 'none';
+                        if (currentSubImagePreview && !removeSubImageCheckbox.checked) {
+                            currentSubImagePreview.style.display = 'block';
+                        }
+                    }
+                });
+            }
+
             if (removeSubImageCheckbox) {
                 removeSubImageCheckbox.addEventListener('change', function() {
                     if (this.checked) {
-                        if (subImagePreviewContainer) {
-                            subImagePreviewContainer.style.setProperty('display', 'none', 'important');
+                        if (currentSubImagePreview) {
+                            currentSubImagePreview.style.display = 'none';
                         }
                         if (subImagePreview) {
                             subImagePreview.src = '#';
-                            subImagePreview.style.setProperty('display', 'none', 'important');
+                            subImagePreview.style.display = 'none';
                         }
                         if (subImageInput) {
                             subImageInput.value = '';
                         }
                     } else {
-                        subImagePreviewContainer.style.setProperty('display', 'flex', 'important');
-
+                        if (currentSubImagePreview && currentSubImagePreview.src && currentSubImagePreview.src !== window.location.href) {
+                            currentSubImagePreview.style.display = 'block';
+                        }
                     }
                 });
             }
-
         });
     </script>
 @endpush

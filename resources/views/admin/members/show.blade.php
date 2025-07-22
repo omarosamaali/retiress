@@ -114,8 +114,8 @@
         <div class="row">
             @foreach ($targetLanguages as $code => $name)
                 @php
-                    $titleColumn = 'title_' . $code;
-                    $descColumn = 'description_' . $code;
+                    $titleColumn = 'name_' . $code;
+                    $descColumn = 'position_' . $code;
                     $translatedTitle = $member->$titleColumn;
                     $translatedDesc = $member->$descColumn;
                 @endphp

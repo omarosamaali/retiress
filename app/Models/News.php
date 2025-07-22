@@ -20,6 +20,8 @@ class News extends Model
         'status',
     ];
 
+    protected $casts = ['sub_image' => 'array'];
+
     public function getMainImageUrlAttribute()
     {
         return $this->main_image ? Storage::url($this->main_image) : null;
@@ -27,7 +29,11 @@ class News extends Model
 
     public function getSubImageUrlAttribute()
     {
-        return $this->sub_image ? Storage::url($this->sub_image) : null;
+        $imgs = [];
+        foreach ($this->sub_image as $image) {
+            $imgs[] = Storage::url($image);
+        }
+        return $imgs;
     }
 
     public function getStatusBadgeClassAttribute()

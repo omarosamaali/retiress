@@ -105,15 +105,6 @@
                 </div>
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="answer_ar" class="form-label font-bold">الإجابة (بالعربية)</label>
-                        <textarea class="form-control" id="answer_ar" name="answer_ar" rows="4" required>{{ old('answer_ar', $faq->answer_ar) }}</textarea>
-                        @error('answer_ar')
-                            <div class="text-black">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-3">
                         <label for="status" class="form-label font-bold">الحالة</label>
                         <select class="form-select" name="status" id="status" required>
                             <option value="1" {{ old('status', $faq->status) == '1' ? 'selected' : '' }}>فعال
@@ -126,7 +117,16 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="answer_ar" class="form-label font-bold">الإجابة (بالعربية)</label>
+                        <textarea class="form-control" id="answer_ar" name="answer_ar" rows="4" required>{{ old('answer_ar', $faq->answer_ar) }}</textarea>
+                        @error('answer_ar')
+                            <div class="text-black">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label for="order" class="form-label font-bold">ترتيب العرض</label>
                         <input type="number" class="form-control" id="order" name="order"
@@ -135,19 +135,6 @@
                             <div class="text-black">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label for="place" class="form-label">مكان العرض</label>
-                        <select name="place" id="place" class="form-control" required>
-                            <option value="chef" {{ old('place', $faq->place) == 'chef' ? 'selected' : '' }}>واجهة الطاهي فقط</option>
-                            <option value="user" {{ old('place', $faq->place) == 'user' ? 'selected' : ''  }}>واجهة المستخدم فقط</option>
-                            <option value="both" {{ old('place', $faq->place) == 'both' ? 'selected' : ''  }}>كلاهما</option>
-                        </select>
-                    </div>
-                    @error('place')
-                        <div class="text-white">{{ $message }}</div>
-                    @enderror
                 </div>
 
             </div>

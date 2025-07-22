@@ -6,7 +6,7 @@
 @push('styles')
     <style>
         .add-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #212529;
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -80,7 +80,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label for="status" class="form-label">الحالة</label>
                         <select class="form-select" name="status" id="status" required>
@@ -92,7 +92,7 @@
                         @enderror
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label for="order" class="form-label">ترتيب العرض</label>
                         <input type="number" class="form-control" id="order" name="order"
@@ -101,19 +101,6 @@
                             <div class="text-white">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mb-3">
-                        <label for="place" class="form-label">مكان العرض</label>
-                        <select name="place" id="place" class="form-control" required>
-                            <option value="chef">واجهة الطاهي فقط</option>
-                            <option value="user">واجهة المستخدم فقط</option>
-                            <option value="both" selected>كلاهما</option>
-                        </select>
-                    </div>
-                    @error('place')
-                        <div class="text-white">{{ $message }}</div>
-                    @enderror
                 </div>
             </div>
             <button type="submit" class="btn btn-light mt-3">
@@ -148,7 +135,6 @@
                         <th>السؤال (عربي)</th>
                         <th>الحالة</th>
                         <th>الترتيب</th>
-                        <th>المكان</th>
                         <th>الإجراءات</th>
                     </tr>
                 </thead>
@@ -164,7 +150,6 @@
                                 </span>
                             </td>
                             <td>{{ $faq->order }}</td>
-                            <td>{{ $faq->place == 'chef' ? 'واجهة الطاهي فقط' : ($faq->place == 'user' ? 'واجهة المستخدم فقط' : 'كلاهما') }}
                             </td>
                             <td>
                                 <div class="action-buttons">

@@ -314,6 +314,9 @@
                     </ul>
                 </div>
             @endcan
+            <a class="dropdown-item" href="{{ route('admin.event.index') }}">
+                <i class="fas fa-newspaper"></i> البرامج والفعاليات
+            </a>
             @can('isAdmin')
                 <div class="dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -323,7 +326,7 @@
                     <ul class="dropdown-menu">
                         <li>
                             <a class="dropdown-item" href="{{ route('admin.news.index') }}">
-                                <i class="fas fa-newspaper"></i> اخبار الجمعية
+                                <i class="fas fa-newspaper"></i> أخبار الجمعية
                             </a>
                             <a class="dropdown-item" href="{{ route('admin.magazines.index') }}">
                                 <i class="fas fa-newspaper"></i> المجلة
@@ -336,6 +339,12 @@
             <a class="nav-link" href="{{ route('admin.services.index') }}">
                 <i class="fas fa-users"></i>
                 الخدمات
+            </a>
+            <a class="nav-link" href="{{ route('admin.faqs.index') }}">
+                <i class="fas fa-question-circle"></i> الأسئلة الشائقة
+            </a>
+            <a class="nav-link" href="{{ route('admin.setting.index') }}">
+                <i class="fas fa-cog"></i> الإعدادات
             </a>
 
 
@@ -437,9 +446,9 @@
                         </li>
                         <li>
                             {{-- 9. الأخبار --}}
-                            <a class="dropdown-item" href="{{ route('admin.news.index') }}">
+                            {{-- <a class="dropdown-item" href="{{ route('admin.news.index') }}">
                                 <i class="fas fa-newspaper"></i> الأخبار
-                            </a>
+                            </a> --}}
                         </li>
                         <li>
                             {{-- 10. معلومات عنا --}}
@@ -465,7 +474,7 @@
 
             <a class="nav-link" href="{{ route('admin.messages.index') }}">
                 <i class="fas fa-message"></i>
-                الرسائل
+                المراسلات
             </a>
 
             <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

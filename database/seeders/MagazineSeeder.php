@@ -21,7 +21,7 @@ class MagazineSeeder extends Seeder
             'main_image' => '/about-us/main/RpDdolZurlQ0gNP4jQrkCdgArfNjDZGY9ldWF4iY.png',
             'sub_image' => [
                 '/about-us/main/RpDdolZurlQ0gNP4jQrkCdgArfNjDZGY9ldWF4iY.png',
-                '/about-us/sub/9SkxvZ7cMtA2KhvVNRS4bEPgqR629kNFgtQ6O354.png',
+                // '/about-us/sub/9SkxvZ7cMtA2KhvVNRS4bEPgqR629kNFgtQ6O354.png',
             ]
         ]);
         Magazine::create([
@@ -32,7 +32,7 @@ class MagazineSeeder extends Seeder
             'main_image' => '/about-us/main/RpDdolZurlQ0gNP4jQrkCdgArfNjDZGY9ldWF4iY.png',
             'sub_image' => [
                 '/about-us/main/RpDdolZurlQ0gNP4jQrkCdgArfNjDZGY9ldWF4iY.png',
-                '/about-us/sub/9SkxvZ7cMtA2KhvVNRS4bEPgqR629kNFgtQ6O354.png',
+                // '/about-us/sub/9SkxvZ7cMtA2KhvVNRS4bEPgqR629kNFgtQ6O354.png',
             ]
         ]);
         Magazine::create([
@@ -43,7 +43,7 @@ class MagazineSeeder extends Seeder
             'main_image' => '/about-us/main/RpDdolZurlQ0gNP4jQrkCdgArfNjDZGY9ldWF4iY.png',
             'sub_image' => [
                 '/about-us/main/RpDdolZurlQ0gNP4jQrkCdgArfNjDZGY9ldWF4iY.png',
-                '/about-us/sub/9SkxvZ7cMtA2KhvVNRS4bEPgqR629kNFgtQ6O354.png',
+                // '/about-us/sub/9SkxvZ7cMtA2KhvVNRS4bEPgqR629kNFgtQ6O354.png',
             ]
         ]);
     }

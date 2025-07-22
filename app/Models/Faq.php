@@ -15,40 +15,13 @@ class Faq extends Model
         'answer_ar',
         'question_en',
         'answer_en',
-        'question_id',
-        'answer_id',
-        'question_am',
-        'answer_am',
-        'question_hi',
-        'answer_hi',
-        'question_bn',
-        'answer_bn',
-        'question_ml',
-        'answer_ml',
-        'question_fil',
-        'answer_fil',
-        'question_ur',
-        'answer_ur',
-        'question_ta',
-        'answer_ta',
-        'question_ne',
-        'answer_ne',
-        'question_ps',
-        'answer_ps',
         'status',
         'order',
-        'place',
     ];
 
     protected $casts = [
         'status' => 'boolean',
-        'place' => 'string',
     ];
-
-    public function scopeByPlace($query, $place)
-    {
-        return $query->where('place', $place);
-    }
 
     public function scopeActive($query)
     {

@@ -23,7 +23,8 @@ class MagazineController extends Controller
         $request->validate([
             'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_image' => 'nullable|image|max:2048',
+            'pdf' => 'nullable|mimes:pdf',
             'sub_image' => 'nullable|array',
             'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
@@ -56,6 +57,10 @@ class MagazineController extends Controller
 
         if ($request->hasFile('main_image')) {
             $magazinesData['main_image'] = $request->file('main_image')->store('magazines/main', 'public');
+        }
+
+        if ($request->hasFile('pdf')) {
+            $magazinesData['pdf'] = $request->file('pdf')->store('magazines/main', 'public');
         }
 
         if ($request->sub_image) {
@@ -91,7 +96,8 @@ class MagazineController extends Controller
                 'max:255',
             ],
             'description_ar' => 'required|string',
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_image' => 'nullable|image',
+            'pdf' => 'nullable|mimes:pdf',
             'sub_image' => 'nullable|array',
             'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
@@ -134,6 +140,18 @@ class MagazineController extends Controller
             }
         }
 
+        if ($request->hasFile('pdf')) {
+            if ($magazine->pdf) {
+                Storage::disk('public')->delete($magazine->pdf);
+            }
+            $magazinesData['pdf'] = $request->file('pdf')->store('magazines/main', 'public');
+        } elseif ($request->boolean('remove_pdf')) {
+            if ($magazine->pdf) {
+                Storage::disk('public')->delete($magazine->pdf);
+                $magazinesData['pdf'] = null;
+            }
+        }
+
 
         if ($request->sub_image) {
             foreach ($magazine->sub_image as $image) {
@@ -162,6 +180,9 @@ class MagazineController extends Controller
     {
         if ($magazine->main_image) {
             Storage::disk('public')->delete($magazine->main_image);
+        }
+        if ($magazine->pdf) {
+            Storage::disk('public')->delete($magazine->pdf);
         }
 
         foreach ($magazine->sub_image as $image) {

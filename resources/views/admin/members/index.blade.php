@@ -81,6 +81,7 @@
                             <th>تاريخ الإضافة</th>
                             <th>الإسم (عربي)</th>
                             <th>اللجنه</th>
+                            <th>المجلس</th>
                             <th>الصورة الرئيسية</th>
                             <th>الحالة</th>
                             <th>الإجراءات</th>
@@ -95,6 +96,7 @@
                                     <td>{{ optional($member->created_at)->format('d/m/Y') ?? 'N/A' }}</td>
                                     <td>{{ $member->name_ar ?? 'لا يوجد عنوان' }}</td>
                                     <td>{{ $member->committee?->name_ar ?? 'لا توجد لجنه' }}</td>
+                                    <td>{{ $member->council?->name_ar ?? 'لا يوجد مجلس' }}</td>
                                     <td>
                                         @if ($member->image)
                                             <img src="{{ $member->image_url }}" alt="{{ $member->name_ar }}" class="about-img">

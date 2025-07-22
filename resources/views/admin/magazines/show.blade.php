@@ -118,6 +118,13 @@
                         @endif
                     </div>
                 </div>
+                <div>
+                    @if ($magazine->pdf)
+                        <a href="{{ $magazine->pdf_url }}" class="btn btn-success mt-2" download>تحميل ال pdf</a>
+                    @else
+                        <span>لا يوجد ملف PDF</span>
+                    @endif
+                </div>
             </div>
         </div>
 

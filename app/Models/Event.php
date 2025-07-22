@@ -5,41 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-class Magazine extends Model
+class Event extends Model
 {
-    protected $table = 'magazines';
-
     protected $fillable = [
         'title_ar',
         'title_en',
         'description_ar',
         'description_en',
         'main_image',
-        'pdf',
         'sub_image',
         'price',
         'status',
     ];
-
-    protected $casts = ['sub_image' => 'array'];
 
     public function getMainImageUrlAttribute()
     {
         return $this->main_image ? Storage::url($this->main_image) : null;
     }
 
-    public function getPdfUrlAttribute()
-    {
-        return $this->pdf ? Storage::url($this->pdf) : null;
-    }
-
     public function getSubImageUrlAttribute()
     {
-        $imgs = [];
-        foreach ($this->sub_image as $image) {
-            $imgs[] = Storage::url($image);
-        }
-        return $imgs;
+        return $this->sub_image ? Storage::url($this->sub_image) : null;
     }
 
     public function getStatusBadgeClassAttribute()

@@ -112,8 +112,19 @@
 
                 <div class="col-md-6">
                     <div class="mb-3">
+                        <label for="pdf_input" class="form-label">ملف pdf</label>
+                        <input type="file" class="form-control" name="pdf" id="pdf_input">
+                        @error('pdf')
+                            <div class="text-white">{{ $message }}</div>
+                        @enderror
+                        <img id="pdf_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: {{ old('pdf') ? 'block' : 'none' }};">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
                         <label for="sub_image_input" class="form-label">الصورة الفرعية</label>
-                        <input type="file" class="form-control" name="sub_image[]" id="sub_image_input" accept="image/*" multiple>
+                        <input type="file" class="form-control" name="sub_image[]" id="sub_image_input" accept="image/*">
                         <div id="sub_image_preview_container" class="d-flex mt-2"></div>
 
                         @error('sub_image')

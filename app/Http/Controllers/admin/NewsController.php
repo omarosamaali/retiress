@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
 
 class NewsController extends Controller
 {
@@ -21,11 +20,11 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title_ar' => 'required|string|max:255|unique:news,title_ar',
+            'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
-            'price' => 'nullable|integer',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'sub_image' => 'nullable|array',
+            'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
         ]);
 
@@ -33,7 +32,6 @@ class NewsController extends Controller
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
-            'price' => $request->is_payed === 'on' ? $request->price : null,
         ];
 
         $tr = new GoogleTranslate('ar');
@@ -59,8 +57,11 @@ class NewsController extends Controller
             $newsData['main_image'] = $request->file('main_image')->store('news/main', 'public');
         }
 
-        if ($request->hasFile('sub_image')) {
-            $newsData['sub_image'] = $request->file('sub_image')->store('news/sub', 'public');
+        if ($request->sub_image) {
+            $newsData['sub_image'] = [];
+            foreach ($request->sub_image as $image) {
+                $newsData['sub_image'][] = $image->store('news/sub', 'public');
+            }
         }
 
         News::create($newsData);
@@ -87,12 +88,11 @@ class NewsController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('news', 'title_ar')->ignore($news->id),
             ],
             'description_ar' => 'required|string',
-            'price' => 'nullable|integer',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'sub_image' => 'nullable|array',
+            'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
         ]);
 
@@ -100,7 +100,6 @@ class NewsController extends Controller
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
-            'price' => $request->is_payed === 'on' ? $request->price : null,
         ];
 
         $tr = new GoogleTranslate('ar');
@@ -134,14 +133,21 @@ class NewsController extends Controller
             }
         }
 
-        if ($request->hasFile('sub_image')) {
-            if ($news->sub_image) {
-                Storage::disk('public')->delete($news->sub_image);
+
+        if ($request->sub_image) {
+            foreach ($news->sub_image as $image) {
+                Storage::disk('public')->delete($image);
             }
-            $newsData['sub_image'] = $request->file('sub_image')->store('news/sub', 'public');
+
+            $newsData['sub_image'] = [];
+            foreach ($request->sub_image as $image) {
+                $newsData['sub_image'][] = $image->store('news/sub', 'public');
+            }
         } elseif ($request->boolean('remove_sub_image')) {
             if ($news->sub_image) {
-                Storage::disk('public')->delete($news->sub_image);
+                foreach ($news->sub_image as $image) {
+                    Storage::disk('public')->delete($image);
+                }
                 $newsData['sub_image'] = null;
             }
         }
@@ -156,8 +162,9 @@ class NewsController extends Controller
         if ($news->main_image) {
             Storage::disk('public')->delete($news->main_image);
         }
-        if ($news->sub_image) {
-            Storage::disk('public')->delete($news->sub_image);
+
+        foreach ($news->sub_image as $image) {
+            Storage::disk('public')->delete($image);
         }
 
         $news->delete();

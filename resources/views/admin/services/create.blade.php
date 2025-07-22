@@ -121,7 +121,7 @@
 
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="chanel" class="form-label">الجمهور المستهدف (بالعربية)</label>
+                        <label for="chanel" class="form-label">قناة تقديم الخدمه</label>
                         <input type="text" class="form-control" id="chanel" name="chanel" value="{{ old('chanel') }}" required>
                         @error('chanel')
                             <div class="text-white">{{ $message }}</div>
