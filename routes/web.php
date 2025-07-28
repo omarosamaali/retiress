@@ -29,7 +29,7 @@ Route::get('/members/councils_members_list/{id}', function ($id) {
     return view('members.sidebar.members_counclis_list', compact('members', 'council'));
 })->name('members.councils_members_list');
 
-Route::get('/members/committee-members/{id}', function ($id) { // استقبل الـ ID هنا
+Route::get('/members/committee-members/{id}', function ($id) {
     $committee = Committee::find($id);
     $members = Member::where([
         'status' => 1,
