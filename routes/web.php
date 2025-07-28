@@ -38,7 +38,7 @@ Route::get('/members/committee-members/{id}', function ($id) {
     ])->get();
 
     return view('members.sidebar.members_committees_list', compact('members', 'committee'));
-})->name('members.committee_members_list'); // غيرنا اسم الـ route لاسم أفضل
+})->name('members.committee_members_list');
 
 
 Route::middleware('auth')->group(function () {
