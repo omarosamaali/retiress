@@ -31,10 +31,9 @@ Route::get('/members/councils_members_list/{id}', function ($id) {
 
 Route::get('/members/committee-members/{id}', function ($id) { // استقبل الـ ID هنا
     $committee = Committee::find($id);
-    // يجب أن تكون committee_id = $id عشان تعرض أعضاء لجنة معينة
     $members = Member::where([
         'status' => 1,
-        'committee_id' => null, // هنا نستخدم الـ ID اللي استقبلناه
+        'committee_id' => null,
         'council_id' => $id
     ])->get();
 
