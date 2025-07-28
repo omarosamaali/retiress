@@ -20,17 +20,14 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\ChatController;
 
 Route::get('/members/councils_members_list/{id}', function ($id) {
-    
     $council = Council::find($id);
-    // هنا أنت بتجيب أعضاء المجلس (Council)، يبقى لازم تستخدم council_id
     $members = Member::where([
         'status' => 1,
-        'council_id' => $id, // **غيرت هنا من committee_id إلى council_id**
-        'committee_id' => null // أعضاء المجلس فقط، ليسوا أعضاء لجنة
+        'council_id' => $id, 
+        'committee_id' => null
     ])->get();
-
     return view('members.sidebar.members_counclis_list', compact('members', 'council'));
-})->name('members.councils_members_list'); // **غيرت اسم الـ route ليطابق ما في الـ url() helper**
+})->name('members.councils_members_list');
 
 Route::get('/members/committee-members/{id}', function ($id) { // استقبل الـ ID هنا
     $committee = Committee::find($id);
