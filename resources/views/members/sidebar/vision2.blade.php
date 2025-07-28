@@ -51,7 +51,7 @@
         </div>
         <div id="iconsblocks">
             <ul id="alliconsandtext">
-                <li class="icon-right">
+                {{-- <li class="icon-right">
                     <span style="margin-top:-5px;">رؤيتنا</span>
                     <div class="icon-holder">
                         @if($vision)
@@ -70,8 +70,8 @@
                         </p>
                         @endif
                     </div>
-                </li>
-{{-- 
+                </li> --}}
+
                 <li class="-mt-9 icon-left">
                     <span>رسالتنا</span>
                     <div class="icon-holder">
@@ -92,7 +92,7 @@
                         @endif
                     </div>
                 </li>
- --}}
+{{-- 
                 <li class="-mt-9 icon-left">
                     <span>أهدافنا</span>
                     <div class="icon-holder">
@@ -111,9 +111,9 @@
                         </ul>
                         @endif
                     </div>
-                </li>
+                </li> --}}
 
-                {{-- <li class="-mt-9 icon-left">
+                <li class="-mt-9 icon-right">
                     <span>رسالتنا</span>
                     <div class="icon-holder">
                         @if($values)
@@ -122,7 +122,7 @@
                     </div>
                 </li>
 
-                <li class="-mt-9 text-right">
+                <li class="-mt-9 text-left">
                     <div class="text-holder">
                         @if($values)
                         <h3 class="main-titles">{{ $values->title_ar }}</h3>
@@ -131,7 +131,7 @@
                         </ul>
                         @endif
                     </div>
-                </li> --}}
+                </li>
             </ul>
         </div>
 

@@ -63,7 +63,7 @@
                                                 </div>
                                                 <div class="column-dx4 content-zgb">
                                                     <div>
-                                                        <p dir="rtl" id="style-DRlzk" class="style-DRlzk">
+                                                        <p style="white-space: pre-line;" dir="rtl" id="style-DRlzk" class="style-DRlzk">
                                                             {{ $about->description_ar }}
                                                         </p>
                                                     </div>

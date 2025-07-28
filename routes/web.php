@@ -144,6 +144,13 @@ Route::get('/members/committees', function () {
     return view('members.sidebar.committees', compact('committees', 'councils'));
 })->name('members.committees');
 
+Route::get('/members/vision2', function () {
+    $vision = AboutUs::where('key', 'our_vision')->first();
+    $company_message = AboutUs::where('key', 'company_message')->first();
+    $values = AboutUs::where('key', 'our_values')->first();
+    $goals = AboutUs::where('key', 'our_goals')->first();
+    return view('members.sidebar.vision2', compact('vision', 'company_message', 'values', 'goals'));
+})->name('members.vision2');
 Route::get('/members/vision', function () {
     $vision = AboutUs::where('key', 'our_vision')->first();
     $company_message = AboutUs::where('key', 'company_message')->first();

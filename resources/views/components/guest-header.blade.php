@@ -45,9 +45,7 @@
                                 <a href="{{ route('members.vision') }}">الرؤية والرساله</a>
                             </li>
                             <li>
-                                <a href="
-                                {{-- {{ route('members.goals') }} --}}
-                                 ">الأهداف والقيم</a>
+                                <a href="{{ route('members.vision2') }}">الأهداف والقيم</a>
                             </li>
                             <li>
                                 <a href="{{ route('members.committees') }}">اللجان والمجالس</a>
