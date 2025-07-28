@@ -5308,13 +5308,6 @@
                                 {{ \Illuminate\Support\Str::limit($committee->description_ar, 250) }} {{-- قطع الوصف لـ 250 حرف --}}
                             </span>
                         </p>
-
-                        {{-- <div class="text-jdt">
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h"> لطلب
-                                    الانضمام .. يرجى <a href="{{ route('login') }}"> تسجيل الدخول </a> أو <a href="{{ route('register') }}"> إنشاء
-                            حساب </a> جديد
-                    </div>
-                </div> --}}
             </div>
         </div>
     </div>

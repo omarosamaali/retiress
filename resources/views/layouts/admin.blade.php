@@ -391,12 +391,11 @@
                         <i class="fas fa-newspaper"></i> الأخبار
                         </a> --}}
                     </li>
-                    <li>
-                        {{-- 10. معلومات عنا --}}
+                    {{-- <li>
                         <a class="dropdown-item" href="{{ route('admin.about-us.index') }}">
                             <i class="fas fa-info-circle"></i> معلومات عنا
                         </a>
-                    </li>
+                    </li> --}}
                     <li>
                         {{-- 11. الأسئلة الشائعة --}}
                         <a class="dropdown-item" href="{{ route('admin.faqs.index') }}">

@@ -5146,43 +5146,54 @@
                                 </div>
                                 {{-- <div style="display: inline-block; margin-right: 15px;">
                                     <i class="fa fa-calendar"></i> من: {{ \Carbon\Carbon::parse($event->start_time)->format('h:i A') }}
-                                </div>
-                                <div style="display: inline-block;">
-                                    <i class="fa-vxc fa-otp mx-8rj"></i> إلى: {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
-                                </div> --}}
-                                <div style="display: inline-block; margin-right: 15px;">
-
-                                    <i class="fa-vxc fa-p16 mx-8rj"></i> السعر: {{ number_format($event->price, 2) }} درهم إماراتي
-                                </div>
                             </div>
-                            <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
+                            <div style="display: inline-block;">
+                                <i class="fa-vxc fa-otp mx-8rj"></i> إلى: {{ \Carbon\Carbon::parse($event->end_time)->format('h:i A') }}
+                            </div> --}}
+                            <div style="display: inline-block; margin-right: 15px;">
 
-                                <span class="text-7zo block-osq"> {{ $event->description_ar }} </span>
-                            </p>
-                            <div>
-                                <a href="/events-show.html" class="btn-o2b btn-link-6oj mb-xpg mr-i7e btn-dex">
-                                    <i class="fa-solid fa-list-ul"></i> المزيد </a>
+                                <i class="fa-vxc fa-p16 mx-8rj"></i> السعر: {{ number_format($event->price, 2) }} درهم إماراتي
                             </div>
-                            <p></p>
+                        </div>
+                        <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
+
+                            <span class="text-7zo block-osq"> {{ $event->description_ar }} </span>
+                        </p>
+                        <div>
+                            <a href="/events-show.html" class="btn-o2b btn-link-6oj mb-xpg mr-i7e btn-dex">
+                                <i class="fa-solid fa-list-ul"></i> المزيد </a>
+                        </div>
+                        <p></p>
+                        <hr>
+                        <div>
                             <hr>
-                            <div>
-                                <hr>
+                        </div>
+                        <div class="text-jdt">
+                            @auth
+                            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                اشترك في الخدمة
+                                <a href="#" onclick="alert('قريبا')">إضفط هنا</a>
                             </div>
-                            <div class="text-jdt">
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;"> لطلب
-                                    الانضمام .. يرجى <a href="{{ route('login') }}"> تسجيل الدخول </a> أو <a href="{{ route('members.register') }}"> إنشاء
-                                        حساب </a> جديد </div>
+                            @endauth
+                            
+                            @guest
+                            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;"> لطلب
+                                الانضمام .. يرجى
+                                <a href="{{ route('login') }}"> تسجيل الدخول </a> أو <a href="{{ route('members.register') }}"> إنشاء
+                                    حساب </a> جديد
                             </div>
+                            @endguest
                         </div>
                     </div>
                 </div>
-                @endforeach
             </div>
-        </section>
+            @endforeach
+    </div>
+    </section>
 
-        <x-footer-section></x-footer-section>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
-        <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+    <x-footer-section></x-footer-section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+    <script src="{{ asset('assets/js/scriptU.js') }}"></script>
     </div>
 </body>
 </html>

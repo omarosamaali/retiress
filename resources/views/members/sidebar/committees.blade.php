@@ -5294,12 +5294,24 @@
                                 </span>
                             </p>
 
-                            {{-- <div class="text-jdt">
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h"> لطلب
-                                    الانضمام .. يرجى <a href="{{ route('login') }}"> تسجيل الدخول </a> أو <a href="{{ route('register') }}"> إنشاء
-                                حساب </a> جديد
+                        <div class="text-jdt">
+                            @auth
+                            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                اشترك في الخدمة
+                                <a href="#" onclick="alert('قريبا')">إضفط هنا</a>
+                            </div>
+                            @endauth
+
+                            @guest
+                            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;"> لطلب
+                                الانضمام .. يرجى
+                                <a href="{{ route('login') }}"> تسجيل الدخول </a> أو <a href="{{ route('members.register') }}"> إنشاء
+                                    حساب </a> جديد
+                            </div>
+                            @endguest
                         </div>
-                    </div> --}}
+
+
                 </div>
             </div>
                 </div>
@@ -5343,35 +5355,6 @@
         @endforeach
 
 
-        <div class="board-members-grid">
-            @forelse($committees as $committee)
-            <div class="board-member-card">
-                {{-- <img src="{{ asset('storage/' . $member->image) }}" alt="{{ $member->name_ar }}"> --}}
-                <div>
-                    <h2>{{ $committee->name_ar }}</h2>
-                    {{-- <h3>{{ $member->position_ar }}</h3> --}}
-                </div>
-            </div>
-            @empty
-            <div style="text-align: center; width: 100%;">
-                <p>لا يوجد أعضاء لجان ومجالس.</p>
-            </div>
-            @endforelse
-            @forelse($councils as $committee)
-            <div class="board-member-card">
-                {{-- <img src="{{ asset('storage/' . $member->image) }}" alt="{{ $member->name_ar }}"> --}}
-                <div>
-                    <h2>{{ $committee->name_ar }}</h2>
-                    {{-- <h3>{{ $member->position_ar }}</h3> --}}
-                </div>
-            </div>
-            @empty
-            <div style="text-align: center; width: 100%;">
-                <p>لا يوجد أعضاء لجان ومجالس.</p>
-            </div>
-            @endforelse
-
-        </div>
     </div>
     </div>
     </div>
