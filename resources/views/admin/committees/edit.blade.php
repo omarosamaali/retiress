@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'تعديل صفحة معلومات عنا')
-@section('page-title', 'تعديل صفحة معلومات عنا')
+@section('title', 'تعديل اللجنة')
+@section('page-title', 'تعديل اللجنة')
 
 @push('styles')
     <style>
@@ -22,7 +22,7 @@
 
         .form-control:focus,
         .form-select:focus {
-            border-color: #667eea;
+            border-color: #0e6939;
             box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
         }
 
@@ -109,8 +109,45 @@
                         @enderror
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="description_ar" class="form-label font-bold">الوصف (بالعربية)</label>
+                        <textarea type="text" class="form-control" id="description_ar" name="description_ar" 
+                         required>{{ $committee->description_ar }}</textarea>
 
-                <div class="col-md-4">
+                        @error('description_ar')
+                        <div class="text-black">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+<div class="col-md-6">
+    <div class="mb-3">
+        <label for="image_input" class="form-label font-bold">الصورة الرئيسية</label>
+        <input type="file" class="form-control" name="image" id="image_input" accept="image/*">
+        @error('image')
+        <div class="text-black">{{ $message }}</div>
+        @enderror
+
+        @if ($committee->image)
+        <img id="current_image_preview" src="{{ asset('storage/' . $committee->image) }}" alt="الصورة الحالية" class="about-preview mt-2">
+        @endif
+
+        <img id="image_preview" src="#" alt="معاينة الصورة الجديدة" class="about-preview mt-2" style="display: none;">
+
+        @if ($committee->image)
+        <div class="form-check mt-2">
+            <input class="form-check-input" type="checkbox" name="remove_image" value="1" id="remove_image">
+            <label class="form-check-label" for="remove_image">
+                حذف الصورة الحالية
+            </label>
+        </div>
+        @endif
+    </div>
+</div>
+
+
+                <div class="col-md-6">
                     <div class="mb-3">
                         <label for="status" class="form-label font-bold">الحالة</label>
                         <select class="form-select" name="status" id="status" required>

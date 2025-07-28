@@ -38,7 +38,7 @@ class LanguageController extends Controller
                 // Accessors for Blade (سنحتاج لعملها يدوياً أو تكييفها)
                 'status_text' => $lang ? ($lang->status ? 'فعال' : 'غير فعال') : 'غير فعال',
                 'status_badge_class' => $lang ? ($lang->status ? 'bg-success' : 'bg-danger') : 'bg-danger',
-                'flag_image_url' => $lang ? $lang->flag_image_url : asset('assets/img/logo.svg'),
+                'flag_image_url' => $lang ? $lang->flag_image_url : asset('assets/img/Group.png'),
             ];
         }
 
@@ -164,7 +164,7 @@ class LanguageController extends Controller
             // لتبسيط الأمر في الـ view، يمكننا إضافة هذه الخصائص هنا:
             $language->status_text = 'غير فعال';
             $language->status_badge_class = 'bg-danger';
-            $language->flag_image_url = asset('assets/img/logo.svg');
+            $language->flag_image_url = asset('assets/img/Group.png');
         }
 
         return view('admin.languages.show', compact('language'));

@@ -6,7 +6,7 @@
 @push('styles')
 <style>
     .stats-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #0e6939;
         color: white;
         border-radius: 15px;
         padding: 30px;
@@ -75,7 +75,7 @@
         width: 100%;
         padding: 15px 20px;
         margin-bottom: 15px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #0e6939 0%, #0e6939 100%);
         color: white;
         text-decoration: none;
         border-radius: 10px;

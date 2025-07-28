@@ -67,7 +67,6 @@ class CheckUserStatus
                 // الصفحات المسموح بيها لـ 'مدخل بيانات'
                 $allowedRoutes = [
                     'admin.dashboard', // لو عايز تسمح بالوصول للداشبورد
-                    'admin.recipes.index',
                     'admin.recipes.create',
                     'admin.recipes.store',
                     'admin.recipes.show',

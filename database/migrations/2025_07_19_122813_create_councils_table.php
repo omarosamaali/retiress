@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('councils', function (Blueprint $table) {
             $table->id();
-
             $table->string('name_ar');
             $table->string('name_en');
             $table->boolean('status')->default(true);

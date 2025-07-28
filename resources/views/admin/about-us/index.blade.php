@@ -6,7 +6,7 @@
 @push('styles')
     <style>
         .add-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0e6939 0%, #0e6939 100%);
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -22,7 +22,7 @@
 
         .form-control:focus,
         .form-select:focus {
-            border-color: #667eea;
+            border-color: #0e6939;
             box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
         }
 
@@ -159,10 +159,6 @@
 
 @push('scripts')
     <script>
-        // الدوال الخاصة بمعاينة الصور (إذا كنت تستخدم هذا الـ view للإضافة/التعديل، ولكن غالباً هذا الـ view للعرض فقط)
-        // تم حذف هذا الجزء من السكربت لتجنب الازدواجية حيث أن هذا الـ view هو لعرض البيانات فقط.
-        // إذا كنت تحتاج هذه الوظائف، يجب أن تكون في view الإضافة/التعديل.
-
         function confirmDeleteModal(type, id) {
             const deleteForm = document.getElementById('deleteForm');
             const deleteModalBody = document.getElementById('deleteModalBody');

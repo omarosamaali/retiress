@@ -65,7 +65,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            // إزالة casts لـ status لأنه enum نصي
         ];
     }
 
@@ -109,20 +108,18 @@ class User extends Authenticatable implements MustVerifyEmail
         };
     }
 
-    public function recipes()
+    public function membership()
     {
-        return $this->hasMany(Recipe::class, 'chef_id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function chefProfile()
+    public function sentMessages()
     {
-        return $this->hasOne(ChefProfile::class);
+        return $this->hasMany(Message::class, 'from_user_id');
     }
 
-    public function deliveryLocations()
+    public function receivedMessages()
     {
-        return $this->hasMany(DeliveryLocation::class);
+        return $this->hasMany(Message::class, 'to_user_id');
     }
-
-    
 }

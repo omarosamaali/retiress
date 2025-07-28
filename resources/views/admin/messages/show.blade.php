@@ -13,7 +13,7 @@
 
     /* body {
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0e6939 0%, #0e6939 100%);
             color: #333;
             overflow-x: hidden;
         } */

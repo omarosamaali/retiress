@@ -38,6 +38,6 @@ class Language extends Model
     {
         // إذا كان هناك flag_image مخزن، استخدمه، وإلا استخدم صورة علم افتراضية.
         // تأكد أن المسار asset('images/default_flag.png') صحيح.
-        return $this->flag_image ? Storage::url($this->flag_image) : asset('assets/img/logo.svg');
+        return $this->flag_image ? Storage::url($this->flag_image) : asset('assets/img/Group.png');
     }
 }

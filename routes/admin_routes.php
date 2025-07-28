@@ -12,20 +12,15 @@ use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Admin\TermsController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\MemberController;
-use App\Http\Controllers\Admin\RecipeController;
+use App\Http\Controllers\Admin\MembershipController;
 use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\CouncilController;
 use App\Http\Controllers\Admin\PackageController;
-use App\Http\Controllers\Admin\RecipesController;
 use App\Http\Controllers\Admin\ServiceController;
-use App\Http\Controllers\Admin\FamiliesController;
-use App\Http\Controllers\Admin\KitchensController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\MagazineController;
 use App\Http\Controllers\Admin\CommitteeController;
-use App\Http\Controllers\Admin\SubCategoryController;
-use App\Http\Controllers\Admin\MainCategoriesController;
-
+use App\Http\Controllers\Admin\ManageMembershipController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/messages', [MessageController::class, 'adminIndex'])->name('messages.index');
@@ -36,19 +31,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/messages/{message}', [MessageController::class, 'adminShowAndReply'])->name('messages.message-show');
     Route::post('/messages/{message}/update-status-and-reply', [MessageController::class, 'adminUpdateStatusAndReply'])->name('messages.update-status-and-reply');
 });
+
 Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
-        return view('admin.dashboard');
+        return view('admin.dashboard'); 
     })->name('dashboard');
-
     Route::resource('users', UserController::class);
+    Route::resource('membership', MembershipController::class);
+    Route::resource('manageMembership', ManageMembershipController::class);
     Route::resource('languages', LanguageController::class);
     Route::resource('packages', PackageController::class);
     Route::resource('plans', PlanController::class);
-    Route::resource('mainCategories', MainCategoriesController::class);
-    Route::resource('subCategories', SubCategoryController::class);
-    Route::resource('kitchens', KitchensController::class);
-    Route::resource('families', FamiliesController::class);
     Route::resource('event', EventController::class);
     Route::resource('news', NewsController::class);
     Route::resource('magazines', MagazineController::class);
@@ -62,29 +55,4 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::resource('hosp', HospController::class);
     Route::resource('faqs', FaqController::class);
     Route::resource('banners', BannerController::class);
-    Route::resource('recipes', RecipesController::class);
-    Route::resource('recipeView', RecipeController::class);
-
-    Route::post('/recipes/{recipe}/ajax-update', [RecipesController::class, 'ajaxUpdate'])->name('recipes.ajax-update');
-
-    Route::prefix('recipes/{recipe}')->name('recipes.')->group(function () {
-        Route::get('translate/{lang_code}', [RecipeController::class, 'translate'])->name('translate');
-        Route::post('translate/{lang_code}', [RecipeController::class, 'storeTranslation'])->name('store-translation');
-        Route::put('translate/{lang_code}', [RecipeController::class, 'updateTranslation'])->name('update-translation');
-        Route::delete('translation', [RecipeController::class, 'deleteTranslation'])->name('delete-translation');
-        Route::post('copy/{lang_code}', [RecipeController::class, 'copyToLanguage'])->name('copy-to-language');
-        Route::get('export/{lang_code}', [RecipeController::class, 'exportToLanguage'])->name('export-language');
-    });
-
-    Route::prefix('recipes')->name('recipes.')->group(function () {
-        Route::get('search', [RecipeController::class, 'search'])->name('search');
-        Route::get('export', [RecipeController::class, 'export'])->name('export');
-        Route::post('import', [RecipeController::class, 'import'])->name('import');
-        Route::get('translation-stats', [RecipeController::class, 'translationStats'])->name('translation-stats');
-        Route::post('bulk-translate', [RecipeController::class, 'bulkTranslate'])->name('bulk-translate');
-    });
-
-    Route::get('/recipes/subcategories', [RecipesController::class, 'getSubCategories'])->name('recipes.subcategories');
-
-    Route::get('/recipes/{recipe}/preview/{lang_code}', [RecipesController::class, 'preview'])->name('recipes.preview');
 });

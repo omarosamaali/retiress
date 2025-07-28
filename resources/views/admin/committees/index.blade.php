@@ -6,7 +6,7 @@
 @push('styles')
     <style>
         .add-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0e6939 0%, #0e6939 100%);
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -22,7 +22,7 @@
 
         .form-control:focus,
         .form-select:focus {
-            border-color: #667eea;
+            border-color: #0e6939;
             box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
         }
 
@@ -69,7 +69,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
-            <h6 class="m-0 font-weight-bold text-dark">كل الأعضاء</h6>
+            <h6 class="m-0 font-weight-bold text-dark">كل اللجان</h6>
             <a href="{{ route('admin.committee.create') }}" class="btn btn-success btn-sm">إضافة لجان</a>
         </div>
         <div class="card-body">
@@ -79,7 +79,9 @@
                         <tr>
                             <th>#</th>
                             <th>تاريخ الإضافة</th>
-                            <th>العنوان (عربي)</th>
+                            <th>الإسم (عربي)</th>
+                            <th>الوصف (عربي)</th>
+                            <th>الصورة</th>
                             <th>الحالة</th>
                             <th>الإجراءات</th>
                         </tr>
@@ -92,6 +94,14 @@
                                     <td>{{ $committee->id }}</td>
                                     <td>{{ optional($committee->created_at)->format('d/m/Y') ?? 'N/A' }}</td>
                                     <td>{{ $committee->name_ar ?? 'لا يوجد عنوان' }}</td>
+                                    <td>{{ Str::limit($committee->description_ar ?? 'لا يوجد وصف','30') }}</td>
+                                    <td>
+                                        @if ($committee->image)
+                                            <img src="{{ asset('storage/' . $committee->image) }}" alt="{{ $committee->name_ar }}" class="about-img">
+                                        @else
+                                            لا توجد صورة
+                                        @endif
+                                    </td>
                                     <td>
                                         <span class="badge {{ $committee->status_badge_class }}">
                                             {{ $committee->status_text }}

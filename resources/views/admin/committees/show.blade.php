@@ -69,39 +69,39 @@
     <div class="detail-section">
         <h5 class="mb-4">
             <i class="fas fa-info-circle ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
-            تفاصيل صفحة معلومات عنا: {{ $member->name_ar }}
+            تفاصيل صفحة معلومات عنا: {{ $committee->name_ar }}
         </h5>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="detail-item">
                     <strong class="text-black">الإسم (عربي):</strong>
-                    <span>{{ $member->name_ar }}</span>
+                    <span>{{ $committee->name_ar }}</span>
                 </div>
                 <div class="detail-item">
-                    <strong class="text-black">المنصب (عربي):</strong>
-                    <span>{{ $member->position_ar }}</span>
+                    <strong class="text-black">الوصف (عربي):</strong>
+                    <span>{{ $committee->description_ar }}</span>
                 </div>
                 <div class="detail-item">
                     <strong class="text-black">تاريخ الإضافة:</strong>
-                    <span>{{ $member->created_at ? $member->created_at->format('d/m/Y H:i') : 'غير متوفر' }}</span>
+                    <span>{{ $committee->created_at ? $committee->created_at->format('d/m/Y H:i') : 'غير متوفر' }}</span>
                 </div>
                 <div class="detail-item">
                     <strong class="text-black">تاريخ آخر تحديث:</strong>
-                    <span>{{ $member->updated_at ? $member->updated_at->format('d/m/Y H:i') : 'غير متوفر' }}</span>
+                    <span>{{ $committee->updated_at ? $committee->updated_at->format('d/m/Y H:i') : 'غير متوفر' }}</span>
                 </div>
                 <div class="detail-item">
                     <strong class="text-black">الحالة:</strong>
-                    <span class="badge text-white {{ $member->status_badge_class }}">
-                        {{ $member->status_text }}
+                    <span class="badge text-white {{ $committee->status_badge_class }}">
+                        {{ $committee->status_text }}
                     </span>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="detail-item">
                     <strong class="text-black">الصورة الرئيسية:</strong>
-                    @if ($member->image)
-                        <img src="{{ $member->image_url }}" alt="{{ $member->name_ar }}"
+                    @if ($committee->image)
+                        <img src="{{ asset('storage/' .$committee->image) }}" alt="{{ $committee->name_ar }}"
                             class="p-3 detail-image mt-2">
                     @else
                         <span>لا توجد صورة</span>
@@ -116,8 +116,8 @@
                 @php
                     $titleColumn = 'title_' . $code;
                     $descColumn = 'description_' . $code;
-                    $translatedTitle = $member->$titleColumn;
-                    $translatedDesc = $member->$descColumn;
+                    $translatedTitle = $committee->$titleColumn;
+                    $translatedDesc = $committee->$descColumn;
                 @endphp
                 @if ($translatedTitle || $translatedDesc)
                     <div class="col-md-12 mb-3">
@@ -138,7 +138,7 @@
                 <i class="fas fa-arrow-right ms-1"></i>
                 العودة
             </a>
-            <a href="{{ route('admin.member.edit', $member->id) }}" class="edit-btn">
+            <a href="{{ route('admin.committee.edit', $committee->id) }}" class="edit-btn">
                 <i class="fas fa-edit ms-1"></i>
                 تعديل
             </a>
