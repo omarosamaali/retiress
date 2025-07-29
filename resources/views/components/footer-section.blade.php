@@ -14,6 +14,24 @@
         font-size: 16px !important;
     }
 
+    .wid-6bk.footer-8vj ul li {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 2px;
+        color: #000000 !important;
+    }
+
+    .address span {
+        display: block;
+        min-width: 100px;
+        color: #000000;
+    }
+
+    .address .fa {
+        color: black !important;
+    }
+
 </style>
 <div class="footer-35d" id="footer-section">
     <div class="container-he4">
@@ -57,29 +75,25 @@
                 <div class="title-opx">
                     <h4>اتصل بنا</h4>
                 </div>
-                <div>
-                    <div class="text-apb">
-                        <i class="fa-solid fa-house icon-custom"></i> <span class="text-o77"> ص.ب: 740. الشارقة,
-                            الإمارات
-                            العربية المتحدة. </span>
-                    </div>
-                    <div class="text-apb">
-                        <i class="fa-solid fa-calendar icon-custom"></i> <span class="text-o77"> 2452 522 6 00971
-                        </span>
-                    </div>
-                    <div class="text-apb">
-                        <i class="fa-solid fa-phone-volume icon-custom"></i> <span class="text-o77"> 1118 868 56
-                            00971 </span>
-                    </div>
-                    <div class="text-apb">
-                        <i class="fa-solid fa-blender-phone icon-custom"></i> <span class="text-o77">
-                            <a class="stm-qoa" href="mailto:info@uaeca.ae"> info@uaeca.ae </a>
-                        </span>
-                    </div>
-                    <div class="text-apb">
-                        <i class="fa-solid fa-envelope icon-custom"></i> <span class="text-o77"> 09:00 - 17:00
-                        </span>
-                    </div>
+                <div class="address">
+                    <ul>
+                        <li>
+                            <i class="fa fa-mobile"></i>&nbsp;
+                            <span style="min-width: 77px !important;">رقم المكتب: </span> +97167044998
+                        </li>
+                        <li >
+
+                            <i class="fa fa-mobile"></i>&nbsp;
+                            <span style="min-width: 60px !important;">الواتساب: </span> +97167044998
+                        </li>
+
+                        <li>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope"></i>&nbsp;
+                            <span>البريد الالكترونى:</span> emiassor@uaeretired.ae
+                        </li>
+                    </ul>
                 </div>
             </aside>
             <aside class="wid-6bk footer-8vj">
