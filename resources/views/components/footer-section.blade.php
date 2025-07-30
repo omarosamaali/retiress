@@ -38,67 +38,66 @@
         <div class="footer-9z1">
             <aside class="wid-6bk footer-8vj">
                 <div class="title-opx">
-                    <h4>روابط سريعة</h4>
+                    <h4>{{ __('app.quick_links') }}</h4>
                 </div>
                 <div>
                     <ul id="men-er1">
-                        <li><a href="https://uaeca.ae/ar/%d8%a7%d9%84%d9%85%d8%b1%d9%83%d8%b2-%d8%a7%d9%84%d8%a7%d8%b9%d9%84%d8%a7%d9%85%d9%8a/">
-                                مجلة نبض</a></li>
-                        <li><a href="https://uaeca.ae/ar/%d8%a7%d9%84%d8%a7%d9%86%d8%b4%d8%b7%d8%a9-%d9%88%d8%a7%d9%84%d9%81%d8%b9%d8%a7%d9%84%d9%8a%d8%a7%d8%aa/">من
-                                نحن</a></li>
-                        <li><a href="https://uaeca.ae/ar/%d8%a7%d9%84%d8%ae%d8%af%d9%85%d8%a7%d8%aa-%d8%a7%d9%84%d8%a7%d8%b3%d8%aa%d8%b4%d8%a7%d8%b1%d9%8a%d8%a9/">أعضاء
-                                مجلس الاإدارة</a></li>
-                        <li><a href="https://uaeca.ae/ar/%d9%82%d8%b5%d8%b5-%d9%86%d8%ac%d8%a7%d8%ad-%d8%a7%d9%84%d9%85%d8%a8%d8%af%d8%b9%d9%8a%d9%86/">الخدمات
+                        <li><a href="{{ route('magazines.all-magazines') }}"> {{-- Assuming this links to all magazines --}}
+                                {{ __('app.magazine_pulse') }}</a></li>
+                        <li><a href="{{ route('members.about') }}"> {{-- Assuming this links to 'about us' --}}
+                                {{ __('app.who_we_are') }}</a></li>
+                        <li><a href="{{ route('members.members-list') }}"> {{-- Assuming this links to board members --}}
+                                {{ __('app.board_members_footer') }}</a></li>
+                        <li><a href="{{ route('services.all-services') }}"> {{-- Assuming this links to all services --}}
+                                {{ __('app.services_footer') }}
                             </a></li>
-                        <li><a href="https://uaeca.ae/ar/%d9%85%d8%b9%d8%b1%d8%b6-%d8%a7%d9%84%d8%b5%d9%88%d8%b1/">
-                                اللجان والمجالس</a></li>
+                        <li><a href="{{ route('members.committees') }}"> {{-- Assuming this links to committees --}}
+                                {{ __('app.committees_and_councils') }}</a></li>
                     </ul>
                 </div>
             </aside>
             <aside class="wid-6bk footer-8vj">
                 <div class="title-opx">
-                    <h4>قراءة المزيد</h4>
+                    <h4>{{ __('app.read_more') }}</h4>
                 </div>
                 <div>
                     <ul id="men-54n">
-                        <li><a href="https://uaeca.ae/ar/%d8%b9%d9%86-%d8%a7%d9%84%d8%ac%d9%85%d8%b9%d9%8a%d8%a9/">
-                                بطاقة إسعاد</a></li>
-                        <li><a href="https://uaeca.ae/ar/%d8%a7%d9%84%d8%a3%d8%b3%d8%a6%d9%84%d8%a9-%d8%a7%d9%84%d8%b4%d8%a7%d8%a6%d8%b9%d8%a9/">صندوق
-                                الزكاة
+                        <li><a href="{{ route('services.show', ['id'=>1]) }}"> {{-- Assuming this links to Es'ad card service --}}
+                                {{ __('app.esaad_card_footer') }}</a></li>
+                        <li><a href="{{ route('services.show', ['id'=>2]) }}"> {{-- Assuming this links to Zakat Fund service --}}
+                                {{ __('app.zakat_fund_footer') }}
                             </a></li>
-                        <li><a href="https://uaeca.ae/ar/%d8%a3%d9%86%d8%b4%d8%b1-%d9%85%d9%82%d8%a7%d9%84%d9%83-%d8%a7%d9%84%d8%a5%d8%a8%d8%af%d8%a7%d8%b9%d9%8a/">التطوع</a>
+                        <li><a href="{{ route('services.show', ['id'=>3]) }}"> {{-- Assuming this links to Volunteering service --}}
+                                {{ __('app.volunteering_footer') }}
+                            </a>
                         </li>
                     </ul>
                 </div>
             </aside>
             <aside class="wid-6bk footer-8vj wid-jyj">
                 <div class="title-opx">
-                    <h4>اتصل بنا</h4>
+                    <h4>{{ __('app.contact_us_footer') }}</h4>
                 </div>
                 <div class="address">
                     <ul>
                         <li>
                             <i class="fa fa-mobile"></i>&nbsp;
-                            <span style="min-width: 77px !important;">رقم المكتب: </span> +97167044998
+                            <span style="min-width: 77px !important;">{{ __('app.office_number') }}: </span> +97167044998
                         </li>
-                        <li >
-
-                            <i class="fa fa-mobile"></i>&nbsp;
-                            <span style="min-width: 60px !important;">الواتساب: </span> +97167044998
-                        </li>
-
                         <li>
+                            <i class="fa fa-mobile"></i>&nbsp;
+                            <span style="min-width: 60px !important;">{{ __('app.whatsapp') }}: </span> +97167044998
                         </li>
                         <li>
                             <i class="fa fa-envelope"></i>&nbsp;
-                            <span>البريد الالكترونى:</span> emiassor@uaeretired.ae
+                            <span>{{ __('app.email') }}:</span> emiassor@uaeretired.ae
                         </li>
                     </ul>
                 </div>
             </aside>
             <aside class="wid-6bk footer-8vj">
                 <div class="title-opx">
-                    <h4>اشترك بالنشرة الاخبارية</h4>
+                    <h4>{{ __('app.subscribe_newsletter') }}</h4>
                 </div>
                 <div class="overlay-7bx"></div>
                 <div id="mai-fcd" class="form-wtb">
@@ -108,27 +107,33 @@
                         <input type="hidden" name="api_version" value="v1" id="api-ccf">
                         <input type="hidden" name="endpoint" value="subscribers" id="end-g8r">
                         <input type="hidden" name="mailpoet_method" value="subscribe" id="mai-goe">
-                        <p class="form-e4y style-h3SVz" id="style-h3SVz">قم بمشاركتنا جميع الفعاليات والانشطة عن
-                            طريق
-                            الاشتراك بالخدمة الاخبارية</p>
-                        <div class="mai-b3r"><label for="form_email_1" class="text-j65">البريد الإلكتروني
-                                <span>*</span></label><input type="email" class="text-xoe style-KBklM" id="dat-3xg" name="data[form_field_MGU0MzkwOGUyZGZlX2VtYWls]" value="" placeholder="البريد الإلكتروني *"></div>
-                        <div class="mai-b3r las-b87"><input type="submit" class="mai-7wi style-LFBwk" value="اشترك" id="style-LFBwk"><span class="loading-t8z"><span class="mai-kfs"></span><span class="mai-wtd"></span><span></span></span></div>
+                        <p class="form-e4y style-h3SVz" id="style-h3SVz">
+                            {{ __('app.newsletter_desc') }}
+                        </p>
+                        <div class="mai-b3r">
+                            <label for="form_email_1" class="text-j65">{{ __('app.email') }}
+                                <span>*</span></label>
+                            <input type="email" class="text-xoe style-KBklM" id="dat-3xg" name="data[form_field_MGU0MzkwOGUyZGZlX2VtYWls]" value="" placeholder="{{ __('app.email_placeholder') }}">
+                        </div>
+                        <div class="mai-b3r las-b87">
+                            <input type="submit" class="mai-7wi style-LFBwk" value="{{ __('app.subscribe_button') }}" id="style-LFBwk">
+                            <span class="loading-t8z"><span class="mai-kfs"></span><span class="mai-wtd"></span><span></span></span>
+                        </div>
                     </form>
                 </div>
             </aside>
         </div>
-
     </div>
 </div>
 
 <div class="bg_-3kn text-7nf py-sp2 cle-6ew">
     <div class="container-9zp cle-6ew font-weight-3ik">
-        <div class="fs--hoe py-ac9 float-8xn"> كافة الحقوق محفوظة لــ جمعية الإمارات للمتقاعدين © 2025
+        <div class="fs--hoe py-ac9 float-8xn">
+            {{ __('app.all_rights_reserved') }} &copy; {{ date('Y') }} {{-- تم تغيير 2025 إلى دالة date('Y') لجعله ديناميكيًا --}}
         </div>
         <div class="fs--hoe py-ac9 float-prj" style="text-transform: uppercase">
-            <a href="#" class="text-7nf" id="kodoLink">
-                تم تطويره بواسطة إيفورك للتكنولوجيا
+            <a href="https://evorq.com/" target="_blank" class="text-7nf" id="kodoLink">
+                {{ __('app.developed_by') }}
             </a>
         </div>
     </div>
@@ -146,20 +151,19 @@
 
         <div class="modal-content">
             <div class="kodo-logo">
-                <img style="width: 82px;" src="https://evorq.com/storage/footer-logo-1-1.png" alt="">
+                <img style="width: 82px;" src="https://evorq.com/storage/footer-logo-1-1.png" alt="Evorq Logo">
             </div>
-            <h2>تم التنفيذ بواسطة إيفورك</h2>
+            <h2>{{ __('app.implemented_by_evorq') }}</h2>
 
             <div class="contact-info">
-                <div class="phone">طارق محمد بن كلبان</div>
+                <div class="phone">{{ __('app.tareq_mohamed_bn_kalban') }}</div>
                 <div class="phone">📞 0501774477</div>
                 <div class="website">🌐 <a href="https://evorq.com/" target="_blank">https://evorq.com</a></div>
             </div>
 
             <div class="modal-info">
-                شركة إيفورك للحلول التقنية<br>
-                نحن نقدم أفضل الحلول التقنية المبتكرة<br>
-                لتطوير مواقع الويب والتطبيقات
+                {{ __('app.evorq_company_slogan') }}<br>
+                {{ __('app.evorq_description') }}
             </div>
         </div>
     </div>

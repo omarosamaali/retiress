@@ -5,7 +5,7 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/images/fav.png') }}" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width; initial-scale=1;" />
-    <title>أعضاء مجلس الإدارة</title>
+    <title>{{ __('app.board_members_page_title') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/other-devices.css') }}" />
@@ -175,34 +175,40 @@
 
 <body>
     <x-guest-header></x-guest-header>
-    <div id="in-cont">
-        <div class="inn-title" style="padding-top: 150px">
-            <h2><span><a href="{{ url('/') }}">الرئيسية</a> &raquo;</span>
-                أعضاء مجلس الإدارة </h2>
-        </div>
-        <div style="padding-top: 50px; padding-bottom: 50px;">
-            <h3 style="text-align: center; margin-bottom: 10px;">أعضاء مجلس الإدارة</h3>
-            <div class="container-i1t">
-                <div class="board-members-grid">
-                    @forelse($members as $member)
-                    <div class="board-member-card">
-                        <img src="{{ asset('storage/' . $member->image) }}" alt="{{ $member->name_ar }}">
-                        <div>
-                            <h2>{{ $member->name_ar }}</h2>
-                            <h3>{{ $member->position_ar }}</h3>
-                        </div>
+<div id="in-cont">
+    <div class="inn-title" style="padding-top: 150px">
+        <h2>
+            <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
+            {{ __('app.board_members_page_title') }}
+        </h2>
+    </div>
+    <div style="padding-top: 50px; padding-bottom: 50px;">
+        <h3 style="text-align: center; margin-bottom: 10px;">{{ __('app.board_members_page_title') }}</h3>
+        <div class="container-i1t">
+            <div class="board-members-grid">
+                @forelse($members as $member)
+                <div class="board-member-card">
+                    {{-- Display alt text based on current locale --}}
+                    <img src="{{ asset('storage/' . $member->image) }}" alt="{{ app()->getLocale() == 'ar' ? ($member->name_ar ?? 'عضو مجلس إدارة') : ($member->name_en ?? 'Board Member') }}">
+                    <div>
+                        {{-- Display name based on current locale --}}
+                        <h2>{{ app()->getLocale() == 'ar' ? $member->name_ar : $member->name_en }}</h2>
+                        {{-- Display position based on current locale --}}
+                        <h3>{{ app()->getLocale() == 'ar' ? $member->position_ar : $member->position_en }}</h3>
                     </div>
-                    @empty
-                    <div style="text-align: center; width: 100%;">
-                        <p>لا يوجد أعضاء مجلس إدارة متاحون حالياً.</p>
-                    </div>
-                    @endforelse
                 </div>
+                @empty
+                <div style="text-align: center; width: 100%;">
+                    {{-- Display message if no board members are available --}}
+                    <p>{{ __('app.no_board_members_available') }}</p>
+                </div>
+                @endforelse
             </div>
         </div>
     </div>
+</div>
+</div>
 
-    </div>
     <x-footer-section></x-footer-section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>

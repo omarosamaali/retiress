@@ -5,7 +5,7 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/images/fav.png') }}" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width; initial-scale=1;" />
-    <title>اللجان والمجالس</title>
+    <title> {{ __('app.committees_councils_title') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/other-devices.css') }}" />
@@ -5254,110 +5254,125 @@
 
 <body>
     <x-guest-header></x-guest-header>
-    <div id="in-cont">
-        <div class="inn-title" style="padding-top: 150px">
-            <h2><span><a href="{{ url('/') }}">الرئيسية</a> &raquo;</span>
-                اللجان والمجالس </h2>
-        </div>
-        <div style="padding-top: 50px; padding-bottom: 50px;">
-            <div class="container-i1t">
-                <h3 style="text-align: center; margin-bottom: 10px;">اللجان والمجالس</h3>
+<div id="in-cont">
+    <div class="inn-title" style="padding-top: 150px">
+        <h2>
+            <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
+            {{ __('app.committees_councils_title') }}
+        </h2>
+    </div>
+    <div style="padding-top: 50px; padding-bottom: 50px;">
+        <div class="container-i1t">
+            <h3 style="text-align: center; margin-bottom: 10px;">{{ __('app.committees_councils_title') }}</h3>
 
-                @foreach($councils as $newsItem)
-                <div class="my-kck p-7p2 bg-xf5 shadow-t3k">
-                    <div style=" " class="row-cwp py-hp3">
-                        <div class="col-igy col-cvg">
-                            <div class="bg-xf5 shadow-primary-sxe position-1lp">
-                                <a href="{{ url('members/councils_members_list', ['id' => $newsItem->id]) }}" class="block-osq text-b1x">
-                                    <figure class="m-38w text-m1o overflow-khm">
-                                        {{-- الصورة --}}
-                                        <img style="height: 180px; width: 100%;" class="img-odq rou-m3b" src="{{ asset('storage/' . $newsItem->image) }}" alt="{{ $newsItem->name_ar ?? 'صورة الخبر' }}">
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-5vc col-cvg my-mpv">
+            @forelse($councils as $newsItem)
+            <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                <div class="row-cwp py-hp3">
+                    <div class="col-igy col-cvg">
+                        <div class="bg-xf5 shadow-primary-sxe position-1lp">
                             <a href="{{ url('members/councils_members_list', ['id' => $newsItem->id]) }}" class="block-osq text-b1x">
-                                <h2 class="qvtmx font-weight-s3h text-7zo">{{ $newsItem->name_ar }}</h2>
+                                <figure class="m-38w text-m1o overflow-khm">
+                                    <img style="height: 180px; width: 100%;" class="img-odq rou-m3b" src="{{ asset('storage/' . $newsItem->image) }}" alt="{{ app()->getLocale() == 'ar' ? ($newsItem->name_ar ?? __('app.image_alt_fallback')) : ($newsItem->name_en ?? __('app.image_alt_fallback')) }}">
+                                </figure>
                             </a>
-                            <hr>
-                            <div class="my-7z8 fs--oox">
-                                <i class="fa fa-calendar"></i>
-                                {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('Y-m-d') }}
-                                <i class="fa fa-clock" style="margin-right: 15px !important;"></i>
-                                {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('h:i A') }} {{-- تنسيق الوقت صباحا/مساء --}}
-                            </div>
-                            <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                                <span class="text-7zo block-osq">
-                                    {{-- الوصف / المحتوى --}}
-                                    {{ \Illuminate\Support\Str::limit($newsItem->description_ar, 250) }} {{-- قطع الوصف لـ 250 حرف --}}
-                                </span>
-                            </p>
+                        </div>
+                    </div>
+                    <div class="col-5vc col-cvg my-mpv">
+                        <a href="{{ url('members/councils_members_list', ['id' => $newsItem->id]) }}" class="block-osq text-b1x">
+                            <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $newsItem->name_ar : $newsItem->name_en }}</h2>
+                        </a>
+                        <hr>
+                        <div class="my-7z8 fs--oox">
+                            <i class="fa fa-calendar"></i>
+                            {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('Y-m-d') }}
+                            <i class="fa fa-clock" style="margin-right: 15px !important;"></i>
+                            {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('h:i A') }}
+                        </div>
+                        <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
+                            <span class="text-7zo block-osq">
+                                {{ \Illuminate\Support\Str::limit(app()->getLocale() == 'ar' ? $newsItem->description_ar : $newsItem->description_en, 250) }}
+                            </span>
+                        </p>
 
                         <div class="text-jdt">
                             @auth
                             <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
-                                اشترك في الخدمة
-                                <a href="#" onclick="alert('قريبا')">إضفط هنا</a>
+                                {{ __('app.subscribe_to_service') }}
+                                <a href="#" onclick="alert('{{ __('app.coming_soon') }}')">{{ __('app.click_here') }}</a>
                             </div>
                             @endauth
 
                             @guest
-                            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;"> لطلب
-                                الانضمام .. يرجى
-                                <a href="{{ route('login') }}"> تسجيل الدخول </a> أو <a href="{{ route('members.register') }}"> إنشاء
-                                    حساب </a> جديد
+                            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                {{ __('app.request_to_join_please') }}
+                                <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }} <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
                             </div>
                             @endguest
                         </div>
-
-
+                    </div>
                 </div>
             </div>
-                </div>
-                @endforeach
+            @empty
+            <div class="text-center w-100">
+                <p>{{ __('app.no_councils_available') }}</p>
+            </div>
+            @endforelse
 
-        @foreach($committees as $newsItem)
-
-        <div class="my-kck p-7p2 bg-xf5 shadow-t3k">
-            <div style=" " class="row-cwp py-hp3">
-
-                <div class="col-igy col-cvg">
-                    <div class="bg-xf5 shadow-primary-sxe position-1lp">
-                        {{-- استخدم route() helper وأرسل الـ ID كـ parameter --}}
-                        <a href="{{ route('members.committee_members_list', ['id' => $newsItem->id]) }}" class="block-osq text-b1x">
-                            <figure class="m-38w text-m1o overflow-khm">
-                                <img style="height: 180px; width: 100%;" class="img-odq rou-m3b" src="{{ asset('storage/' . $newsItem->image) }}" alt="{{ $newsItem->name_ar ?? 'صورة الخبر' }}">
-                            </figure>
+            @forelse($committees as $newsItem)
+            <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                <div class="row-cwp py-hp3">
+                    <div class="col-igy col-cvg">
+                        <div class="bg-xf5 shadow-primary-sxe position-1lp">
+                            <a href="{{ route('members.committee_members_list', ['id' => $newsItem->id]) }}" class="block-osq text-b1x">
+                                <figure class="m-38w text-m1o overflow-khm">
+                                    <img style="height: 180px; width: 100%;" class="img-odq rou-m3b" src="{{ asset('storage/' . $newsItem->image) }}" alt="{{ app()->getLocale() == 'ar' ? ($newsItem->name_ar ?? __('app.image_alt_fallback')) : ($newsItem->name_en ?? __('app.image_alt_fallback')) }}">
+                                </figure>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-5vc col-cvg my-mpv">
+                        <a class="text-7zo text-b1x" href="{{ route('members.committee_members_list', ['id' => $newsItem->id]) }}">
+                            <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $newsItem->name_ar : $newsItem->name_en }}</h2>
                         </a>
+                        <hr>
+                        <div class="my-7z8 fs--oox">
+                            <i class="fa fa-calendar"></i>
+                            {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('Y-m-d') }}
+                            <i class="fa fa-clock" style="margin-right: 15px !important;"></i>
+                            {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('h:i A') }}
+                        </div>
+                        <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
+                            <span class="text-7zo block-osq">
+                                {{ \Illuminate\Support\Str::limit(app()->getLocale() == 'ar' ? $newsItem->description_ar : $newsItem->description_en, 250) }}
+                            </span>
+                        </p>
+                        <div class="text-jdt">
+                            @auth
+                            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                {{ __('app.subscribe_to_service') }}
+                                <a href="#" onclick="alert('{{ __('app.coming_soon') }}')">{{ __('app.click_here') }}</a>
+                            </div>
+                            @endauth
+
+                            @guest
+                            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                {{ __('app.request_to_join_please') }}
+                                <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }} <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
+                            </div>
+                            @endguest
+                        </div>
                     </div>
-                </div>
-                <div class="col-5vc col-cvg my-mpv">
-                    {{-- استخدم route() helper هنا أيضاً --}}
-                    <a class="text-7zo text-b1x" href="{{ route('members.committee_members_list', ['id' => $newsItem->id]) }}">
-                        <h2 class="qvtmx font-weight-s3h text-7zo">{{ $newsItem->name_ar }}</h2>
-                    </a>
-                    <hr>
-                    <div class="my-7z8 fs--oox">
-                        <i class="fa fa-calendar"></i>
-                        {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('Y-m-d') }}
-                        <i class="fa fa-clock" style="margin-right: 15px !important;"></i>
-                        {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('h:i A') }}
-                    </div>
-                    <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                        <span class="text-7zo block-osq">
-                            {{ \Illuminate\Support\Str::limit($newsItem->description_ar, 250) }}
-                        </span>
-                    </p>
                 </div>
             </div>
+            @empty
+            <div class="text-center w-100">
+                <p>{{ __('app.no_committees_available') }}</p>
+            </div>
+            @endforelse
+
         </div>
-        @endforeach
-
-
     </div>
-    </div>
-    </div>
+</div>
 
     </div>
     <x-footer-section></x-footer-section>

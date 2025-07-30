@@ -5,7 +5,7 @@
     <link rel="icon" type="image/png" href="images/fav.png" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width; initial-scale=1;" />
-    <title>بلدية مدينة الذيد</title>
+    <title>{{ __('app.event_details_page_title') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/other-devices.css') }}" />
@@ -5135,87 +5135,104 @@
 
 <body>
     <x-guest-header></x-guest-header>
-    <div id="in-cont">
-        <div class="inn-title" style="padding-top: 150px">
-            <h2><span><a href="{{ url('/') }}">الرئيسية</a> &raquo;</span>
-                تفاصيل الفعالية
-            </h2>
-        </div>
+<div id="in-cont">
+    <div class="inn-title" style="padding-top: 150px">
+        <h2>
+            <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
+            {{ __('app.event_details_page_title') }}
+        </h2>
+    </div>
 
-        <section class="py-hp3">
-            <div class="container-rni">
-                <div class="my-kck p-7p2 bg-xf5 shadow-t3k">
-                    <div style="flex-direction: column;" class="row-cwp py-hp3">
-                        <div class="col-igy col-cvg" style="margin: auto; ">
-                            <div class="bg-xf5 shadow-primary-sxe position-1lp">
-                                <div class="block-osq text-b1x">
-                                    <figure class="m-38w text-m1o overflow-khm">
-                                        <img class="img-odq rou-m3b" src="{{ asset('storage/' . $events->main_image) }}">
-                                    </figure>
-                                </div>
+    <section class="py-hp3">
+        <div class="container-rni">
+            {{-- Check if $events is available before attempting to display details --}}
+            @if($events)
+            <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                <div style="flex-direction: column;" class="row-cwp py-hp3">
+                    <div class="col-igy col-cvg" style="margin: auto;">
+                        <div class="bg-xf5 shadow-primary-sxe position-1lp">
+                            <div class="block-osq text-b1x">
+                                <figure class="m-38w text-m1o overflow-khm">
+                                    <img class="img-odq rou-m3b" src="{{ asset('storage/' . $events->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($events->title_ar ?? __('app.event_image_alt_fallback')) : ($events->title_en ?? __('app.event_image_alt_fallback')) }}">
+                                </figure>
                             </div>
-                        </div>
-                        <div class="col-5vc col-cvg my-mpv">
-                            <a class="text-7zo text-b1x" href="?do=v&amp;id={{ $events->id }}">
-                                <h2 class="qvtmx font-weight-s3h text-7zo">{{ $events->title_ar }}</h2>
-                            </a>
-                            <hr>
-                           <div class="my-7z8 fs--oox">
-                               <div style="display: inline-block;">
-                                   <i class="fa fa-calendar"></i> التاريخ: {{ \Carbon\Carbon::parse($events->date)->format('Y-m-d') }}
-                               </div>
-                               {{-- <div style="display: inline-block; margin-right: 15px;">
-                                   <i class="fa fa-calendar"></i> من: {{ \Carbon\Carbon::parse($events->start_time)->format('h:i A') }}
-                               </div>
-                               <div style="display: inline-block;">
-                                   <i class="fa-vxc fa-otp mx-8rj"></i> إلى: {{ \Carbon\Carbon::parse($events->end_time)->format('h:i A') }}
-                               </div> --}}
-                               <div style="display: inline-block; margin-right: 15px;">
-
-                                   <i class="fa-vxc fa-p16 mx-8rj"></i> السعر: {{ number_format($events->price, 2) }} درهم إماراتي
-                               </div>
-                           </div>
-
-                            <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                                <span class="text-7zo block-osq"> {{ $events->description_ar }} </span>
-                            </p>
-                            <p>{{ $events->long_description }}</p>
-                            <hr>
-                            {{-- <div>
-                                @foreach($events->tags as $tag)
-                                <a class="tag-qdr" href="javascript:void(0)">
-                                    <span class="vrkqv"><i class="cvhcv tag-7vr mx-8rj"></i>{{ $tag->name }}</span>
-                                </a>
-                                @endforeach
-                                <hr>
-                            </div> --}}
-                        <div class="text-jdt">
-                            @auth
-                            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
-                                اشترك في الخدمة
-                                <a href="#" onclick="alert('قريبا')">إضفط هنا</a>
-                            </div>
-                            @endauth
-
-                            @guest
-                            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;"> لطلب
-                                الانضمام .. يرجى
-                                <a href="{{ route('login') }}"> تسجيل الدخول </a> أو <a href="{{ route('members.register') }}"> إنشاء
-                                    حساب </a> جديد
-                            </div>
-                            @endguest
-                        </div>
-
                         </div>
                     </div>
+                    <div class="col-5vc col-cvg my-mpv">
+                        {{-- Make sure this link is correct. If it's a detail page, this link might be self-referential or lead nowhere.
+                             If it's meant to navigate, you should use a named route to the list page or similar.
+                             For a details page, this <a> tag around the title might be removed or changed to just a <span> or <div>.
+                             I'm keeping the original structure for now, but be mindful of its purpose here. --}}
+                        <a class="text-7zo text-b1x" href="{{ route('events.show', $events->id) }}">
+                            <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $events->title_ar : $events->title_en }}</h2>
+                        </a>
+                        <hr>
+                        <div class="my-7z8 fs--oox">
+                            <div style="display: inline-block;">
+                                <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{ \Carbon\Carbon::parse($events->date)->translatedFormat('Y-m-d') }}
+                            </div>
+                            {{-- Uncomment and translate if you need these time fields --}}
+                            {{--
+                            <div style="display: inline-block; margin-right: 15px;">
+                                <i class="fa fa-calendar"></i> {{ __('app.from') }}: {{ \Carbon\Carbon::parse($events->start_time)->translatedFormat('h:i A') }}
+                        </div>
+                        <div style="display: inline-block;">
+                            <i class="fa-vxc fa-otp mx-8rj"></i> {{ __('app.to') }}: {{ \Carbon\Carbon::parse($events->end_time)->translatedFormat('h:i A') }}
+                        </div>
+                        --}}
+                        <div style="display: inline-block; margin-right: 15px;">
+                            <i class="fa-vxc fa-p16 mx-8rj"></i> {{ __('app.price') }}: {{ number_format($events->price, 2) }} {{ __('app.aed') }}
+                        </div>
+                    </div>
+
+                    <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
+                        <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ? $events->description_ar : $events->description_en }} </span>
+                    </p>
+                    {{-- Assuming 'long_description' also has English equivalent 'long_description_en' --}}
+                    <p>{{ app()->getLocale() == 'ar' ? $events->long_description : $events->long_description_en }}</p>
+                    <hr>
+                    {{-- Uncomment and translate if you need this tags section --}}
+                    {{--
+                        <div>
+                            @foreach($events->tags as $tag)
+                            <a class="tag-qdr" href="javascript:void(0)">
+                                <span class="vrkqv"><i class="cvhcv tag-7vr mx-8rj"></i>{{ app()->getLocale() == 'ar' ? ($tag->name_ar ?? __('app.tag_name_fallback')) : ($tag->name_en ?? __('app.tag_name_fallback')) }}</span>
+                    </a>
+                    @endforeach
+                    <hr>
+                </div>
+                --}}
+                <div class="text-jdt">
+                    @auth
+                    <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                        {{ __('app.subscribe_to_service') }}
+                        <a href="#" onclick="alert('{{ __('app.coming_soon') }}')">{{ __('app.click_here') }}</a>
+                    </div>
+                    @endauth
+
+                    @guest
+                    <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                        {{ __('app.request_to_join_please') }}
+                        <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }} <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
+                    </div>
+                    @endguest
                 </div>
             </div>
-        </section>
+        </div>
+</div>
+@else
+<div class="text-center w-100">
+    <p>{{ __('app.no_events_available') }}</p>
+</div>
+@endif
+</div>
+</section>
 
-        <x-footer-section></x-footer-section>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
-        <script src="{{ asset('assets/js/scriptU.js') }}"></script>
-    </div>
+<x-footer-section></x-footer-section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+<script src="{{ asset('assets/js/scriptU.js') }}"></script>
+</div>
 </body>
+
 
 </html>

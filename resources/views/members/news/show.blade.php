@@ -19,7 +19,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/amazingslider-2.css') }}">
     <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
-
     <style>
         @font-face {
             font-family: 'FontAwesome';
@@ -5135,90 +5134,92 @@
 
 <body>
     <x-guest-header></x-guest-header>
-    <div id="in-cont">
-        <div class="inn-title" style="padding-top: 150px">
-            <h2><span><a href="{{ url('/') }}">الرئيسية</a> &raquo;</span>
-                تفاصيل الخبر
-            </h2>
-        </div>
+  <div id="in-cont">
+      <div class="inn-title" style="padding-top: 150px">
+          <h2>
+              <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
+              {{ __('app.news_details_page_title') }}
+          </h2>
+      </div>
 
-<section class="py-hp3">
-    <div class="container-rni">
-        <div>
-            @if($news)
-            <h1 class="ixrdh form-zwx stm-jdl">{{ $news->title_ar }}</h1>
-            <p>تاريخ النشر : {{ \Carbon\Carbon::parse($news->created_at)->translatedFormat('d F Y') }}</p>
-            <div class="stm-kf1">
-                <section class="content-xio">
-                    <div class="container-alf container-ebx">
-                        <div class="row-pbh" style="flex-direction: row; display: flex; gap: 2rem;">
-                            <div class="container-jor col-fo2">
-                                <div class="column-l9n">
-                                    <div>
-                                        <div class="image-7bl content-vi3 vc_-vb8">
-                                            <figure class="vc_-6d1">
-                                                <div class="wrapper-4kq">
-                                                    {{-- الصورة الرئيسية: أضف كلاس clickable-image --}}
-                                                    <img class="clickable-image" style="cursor: pointer !important;" width="736" height="1096" src="{{ asset('storage/' . $news->main_image) }}" alt="{{ $news->title_ar }}">
-                                                </div>
-                                            </figure>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+      <section class="py-hp3">
+          <div class="container-rni">
+              <div dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}"> {{-- Apply text direction to the main content container --}}
+                  @if($news)
+                  <h1 class="ixrdh form-zwx stm-jdl">{{ app()->getLocale() == 'ar' ? $news->title_ar : $news->title_en }}</h1>
+                  <p>{{ __('app.publication_date') }} : {{ \Carbon\Carbon::parse($news->created_at)->translatedFormat('d F Y') }}</p>
+                  <div class="stm-kf1">
+                      <section class="content-xio">
+                          <div class="container-alf container-ebx">
+                              <div class="row-pbh" style="flex-direction: row; display: flex; gap: 2rem;">
+                                  <div class="container-jor col-fo2">
+                                      <div class="column-l9n">
+                                          <div>
+                                              <div class="image-7bl content-vi3 vc_-vb8">
+                                                  <figure class="vc_-6d1">
+                                                      <div class="wrapper-4kq">
+                                                          {{-- Main Image --}}
+                                                          <img class="clickable-image" style="cursor: pointer !important;" width="736" height="1096" src="{{ asset('storage/' . $news->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($news->title_ar ?? __('app.news_image_alt_fallback')) : ($news->title_en ?? __('app.news_image_alt_fallback')) }}">
+                                                      </div>
+                                                  </figure>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
 
-                            <div class="container-jor col-fo2">
-                                <div class="column-l9n">
-                                    <div>
-                                        <div class="column-9kr content-vi3">
-                                            <div>
-                                                {!! $news->description_ar !!}
-                                                @if($news->author_name)
-                                                <p>الكاتبة : {{ $news->author_name }}</p>
-                                                @endif
-                                                <div class="sub-images-gallery" style="display: flex; flex-wrap: wrap; gap: 10px;"> {{-- أضفت ستايل بسيط هنا للتنسيق --}}
-                                                    @if(isset($news->sub_image) && is_array($news->sub_image) && count($news->sub_image) > 0)
-                                                    @foreach($news->sub_image as $subImage)
-                                                    <figure class="vc_-6d1" style="cursor: pointer;"> {{-- إضافة cursor: pointer --}}
-                                                        <div>
-                                                            {{-- الصور الفرعية: أضف كلاس clickable-image --}}
-                                                            <img class="clickable-image" style="height: 100px; width: 100px; margin-top: 26px; object-fit: cover;" src="{{ asset('storage/' . $subImage) }}" alt="{{ $news->title_ar ?? 'صورة فرعية' }}">
-                                                        </div>
-                                                    </figure>
-                                                    @endforeach
-                                                    @else
-                                                    <p>لا توجد صور فرعية إضافية لهذا الخبر.</p>
-                                                    @endif
-                                                </div>
+                                  <div class="container-jor col-fo2">
+                                      <div class="column-l9n">
+                                          <div>
+                                              <div class="column-9kr content-vi3">
+                                                  <div>
+                                                      {{-- News Description/Content --}}
+                                                      {!! app()->getLocale() == 'ar' ? $news->description_ar : $news->description_en !!}
 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            {{-- جزء أيقونات المشاركة (إذا أردت جعلها ديناميكية، ستحتاج مكتبة أو كود خاص) --}}
-            <div class="stm-45i stm-o74 stm-934">
-                <div class="stm-lrm">
-                    {{-- هذه الروابط تحتاج لربطها بخدمات مشاركة حقيقية (مثل AddThis أو ShareThis) --}}
-                    <a href="#" class="icon-ho3 icon-8ec fa-wpo"><i class="fa-s7k fa-95q"></i></a>
-                    <a href="#" class="icon-ho3 icon-8ec stm-d1o"><i class="fa-s7k fa-9lz"></i></a>
-                    <a href="#" class="icon-ho3 icon-8ec link-i7o"><i class="fa-s7k link-yno"></i></a>
-                    <a href="#" class="icon-ho3 icon-8ec stm-jj7"><i class="fa-s7k fa-h7a"></i></a>
-                </div>
-            </div>
-            @else
-            {{-- رسالة تظهر إذا لم يتم العثور على الخبر (مثلاً ID خاطئ) --}}
-            <p>عذراً، لم يتم العثور على هذا الخبر.</p>
-            @endif
-        </div>
-    </div>
-</section>
+                                                      @if($news->author_name)
+                                                      <p>{{ __('app.author') }} : {{ $news->author_name }}</p>
+                                                      @endif
+                                                      <div class="sub-images-gallery" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                                          @if(isset($news->sub_image) && is_array($news->sub_image) && count($news->sub_image) > 0)
+                                                          @foreach($news->sub_image as $subImage)
+                                                          <figure class="vc_-6d1" style="cursor: pointer;">
+                                                              <div>
+                                                                  {{-- Sub-images --}}
+                                                                  <img class="clickable-image" style="height: 100px; width: 100px; margin-top: 26px; object-fit: cover;" src="{{ asset('storage/' . $subImage) }}" alt="{{ app()->getLocale() == 'ar' ? ($news->title_ar ?? __('app.sub_image_alt_fallback')) : ($news->title_en ?? __('app.sub_image_alt_fallback')) }}">
+                                                              </div>
+                                                          </figure>
+                                                          @endforeach
+                                                          @else
+                                                          <p>{{ __('app.no_sub_images_available') }}</p>
+                                                          @endif
+                                                      </div>
 
-<div id="imageModal" style="
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </section>
+                  </div>
+                  {{-- Social Share Icons (these links need actual social sharing URLs, not just #) --}}
+                  <div class="stm-45i stm-o74 stm-934">
+                      <div class="stm-lrm">
+                          <a href="#" class="icon-ho3 icon-8ec fa-wpo"><i class="fa-s7k fa-95q"></i></a>
+                          <a href="#" class="icon-ho3 icon-8ec stm-d1o"><i class="fa-s7k fa-9lz"></i></a>
+                          <a href="#" class="icon-ho3 icon-8ec link-i7o"><i class="fa-s7k link-yno"></i></a>
+                          <a href="#" class="icon-ho3 icon-8ec stm-jj7"><i class="fa-s7k fa-h7a"></i></a>
+                      </div>
+                  </div>
+                  @else
+                  {{-- Message displayed if news item is not found (e.g., wrong ID) --}}
+                  <p>{{ __('app.news_not_found') }}</p>
+                  @endif
+              </div>
+          </div>
+      </section>
+
+      <div id="imageModal" style="
     display: none; /* Initially hidden */
     position: fixed; /* Stay in place even when scrolling */
     z-index: 1000; /* Sit on top */
@@ -5231,7 +5232,7 @@
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
 ">
-    <span id="closeModal" style="
+          <span id="closeModal" style="
         position: absolute;
         top: 15px;
         right: 35px;
@@ -5241,59 +5242,60 @@
         transition: 0.3s;
         cursor: pointer;
     ">&times;</span>
-    <img id="modalImage" src="" alt="Zoomed Image" style="
+          <img id="modalImage" src="" alt="Zoomed Image" style="
         margin: auto;
         display: block;
         max-width: 90%;
         max-height: 90%;
         object-fit: contain; /* Ensure the image fits within the modal */
     ">
-</div>
+      </div>
 
-{{-- JavaScript Section --}}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-        const closeModal = document.getElementById('closeModal');
-        const clickableImages = document.querySelectorAll('.clickable-image');
+      {{-- JavaScript Section (No changes needed for localization here) --}}
+      <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              const modal = document.getElementById('imageModal');
+              const modalImage = document.getElementById('modalImage');
+              const closeModal = document.getElementById('closeModal');
+              const clickableImages = document.querySelectorAll('.clickable-image');
 
-        clickableImages.forEach(image => {
-            image.addEventListener('click', function() {
-                modal.style.display = 'flex'; // Use flex to center the image
-                modalImage.src = this.src; // Set the clicked image as the modal's source
-            });
-        });
+              clickableImages.forEach(image => {
+                  image.addEventListener('click', function() {
+                      modal.style.display = 'flex'; // Use flex to center the image
+                      modalImage.src = this.src; // Set the clicked image as the modal's source
+                  });
+              });
 
-        // Close modal when clicking on the close button
-        closeModal.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
+              // Close modal when clicking on the close button
+              closeModal.addEventListener('click', function() {
+                  modal.style.display = 'none';
+              });
 
-        // Close modal when clicking outside the image (on the overlay)
-        modal.addEventListener('click', function(event) {
-            // Check if the click occurred directly on the modal background, not the image itself
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
+              // Close modal when clicking outside the image (on the overlay)
+              modal.addEventListener('click', function(event) {
+                  // Check if the click occurred directly on the modal background, not the image itself
+                  if (event.target === modal) {
+                      modal.style.display = 'none';
+                  }
+              });
 
-        // Optional: Close modal with Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' || event.key === 'Esc') {
-                if (modal.style.display === 'flex') {
-                    modal.style.display = 'none';
-                }
-            }
-        });
-    });
+              // Optional: Close modal with Escape key
+              document.addEventListener('keydown', function(event) {
+                  if (event.key === 'Escape' || event.key === 'Esc') {
+                      if (modal.style.display === 'flex') {
+                          modal.style.display = 'none';
+                      }
+                  }
+              });
+          });
 
-</script>
+      </script>
 
-        <x-footer-section></x-footer-section>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
-        <script src="{{ asset('assets/js/scriptU.js') }}"></script>
-    </div>
+      <x-footer-section></x-footer-section>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+      <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+  </div>
+
 </body>
 
 </html>

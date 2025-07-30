@@ -84,76 +84,72 @@
     </div>
     </div> --}}
 
-    <div id="latest-news" style="margin-bottom: 16px !important; margin-top: 100px !important; display: flex; align-items: center; max-width: 1200px; width: 100%; 
+<div id="latest-news" style="margin-bottom: 16px !important; margin-top: 100px !important; display: flex; align-items: center; max-width: 1200px; width: 100%;
     margin: auto; justify-content: space-between;">
-        <h3 style="text-align: center; font-size: 36px;">أحدث
-            الأخبار</h3>
-        <div class="c-morebtn" >
-            <a href="{{ route("news.all-news") }}" class="main-btn" style="background-color: black;">المزيد
-                من الأخبار</a></div>
+    <h3 style="text-align: center; font-size: 36px;">{{ __('app.latest_news') }}</h3>
+    <div class="c-morebtn">
+        <a href="{{ route("news.all-news") }}" class="main-btn" style="background-color: black;">{{ __('app.more_news') }}</a>
     </div>
-    <div style="max-width: 1200px; margin: auto;" class="list-l88 list-vja">
-        @foreach($news as $singleNews)
-        <a href="{{ url('/news/show/' . $singleNews->id) }}" style="border-radius: 13px !important;" class="list-2nx">
-            <span class="image-dvm">
-                <img width="688" height="1024" src="{{ asset('storage/' . $singleNews->main_image) }}" alt="{{ $singleNews->title_ar }}">
+</div>
+<div style="max-width: 1200px; margin: auto;" class="list-l88 list-vja">
+    @foreach($news as $singleNews)
+    <a href="{{ url('/news/show/' . $singleNews->id) }}" style="border-radius: 13px !important;" class="list-2nx">
+        <span class="image-dvm">
+            {{-- هنا بنستخدم الـ title الخاص باللغة الحالية --}}
+            <img width="688" height="1024" src="{{ asset('storage/' . $singleNews->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? $singleNews->title_ar : $singleNews->title_en }}">
+        </span>
+        <span class="list-o16 hqqhi">
+            <span class="list-m72">{{ \Carbon\Carbon::parse($singleNews->created_at)->day }}</span>
+            <span>{{ \Carbon\Carbon::parse($singleNews->created_at)->translatedFormat('F') }}</span>
+        </span>
+        <span class="list-zkk">
+            <span class="title-n5f qhngb">
+                {{ app()->getLocale() == 'ar' ? $singleNews->title_ar : $singleNews->title_en }}
             </span>
-            <span class="list-o16 hqqhi">
-                <span class="list-m72">{{ \Carbon\Carbon::parse($singleNews->created_at)->day }}</span>
-                <span>{{ \Carbon\Carbon::parse($singleNews->created_at)->translatedFormat('F') }}</span>
+            <span class="list-mzq">
+                <p>{{ \Illuminate\Support\Str::limit(app()->getLocale() == 'ar' ? $singleNews->description_ar : $singleNews->description_en, 200) }}</p>
             </span>
-            <span class="list-zkk">
-                <span class="title-n5f qhngb">
-                    {{ $singleNews->title_ar }}
-                </span>
-                <span class="list-mzq">
-                    <p>{{ \Illuminate\Support\Str::limit($singleNews->description_ar, 200) }}</p>
-                </span>
-            </span>
-        </a>
-        @endforeach
-    </div>
-    <section style="background: #016330; margin-top: 100px;">
-        <div class="container-e3z">
-            <div class="row-sy7">
-                <div class="col-w5q">
-                    <h1 class="font-weight-5zk text-jli" style="margin-top: 25px;">أحدث
-                        الفعاليات</h1>
-                    <p class="text-jli">برامج وخدمات اجتماعية وتربوية وثقافية منوعة لكافة
-                        شرائح المجتمع مع التركيز على
-                        فئة
-                        الشباب بالتعاون والشراكة مع مختلف الجهات المعنية</p>
-                </div>
-                <div class="col-bpd">
-                    <!-- Swiper -->
-                    <div class="swiper eventsSwiper">
-                        <div class="swiper-wrapper">
-                            @foreach ($events as $event)
-                            <div class="swiper-slide">
-                                <a href="{{ url('/events/show/' . $event->id) }}" class="slide-content">
-                                    <img src="{{ asset('storage/' . $event->main_image) }}" alt="{{ $event->title_ar }}" class="slide-image">
-                                    <div class="slide-title">
-                                        {{ $event->title_ar }}
-                                    </div>
-                                    <p style="padding-top: 20px; padding-right: 20px; margin-bottom: 15px;">التاريخ : {{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}</p> {{-- الكود هنا --}}
-                                </a>
-                            </div>
-                            @endforeach
+        </span>
+    </a>
+    @endforeach
+</div>
+<section style="background: #016330; margin-top: 100px;">
+    <div class="container-e3z">
+        <div class="row-sy7">
+            <div class="col-w5q">
+                <h1 class="font-weight-5zk text-jli" style="margin-top: 25px;">{{ __('app.latest_events') }}</h1>
+                <p class="text-jli">{{ __('app.events_description') }}</p>
+            </div>
+            <div class="col-bpd">
+                <div class="swiper eventsSwiper">
+                    <div class="swiper-wrapper">
+                        @foreach ($events as $event)
+                        <div class="swiper-slide">
+                            <a href="{{ url('/events/show/' . $event->id) }}" class="slide-content">
+                                {{-- هنا بنستخدم الـ title الخاص باللغة الحالية --}}
+                                <img src="{{ asset('storage/' . $event->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}" class="slide-image">
+                                <div class="slide-title">
+                                    {{-- هنا بنستخدم الـ title الخاص باللغة الحالية --}}
+                                    {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
+                                </div>
+                                <p style="padding-top: 20px; padding-right: 20px; margin-bottom: 15px;">{{ __('app.date') }} : {{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}</p>
+                            </a>
                         </div>
-                        <!-- Add Pagination -->
-                        <div class="swiper-pagination"></div>
-                        <!-- Add Navigation -->
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
+                        @endforeach
                     </div>
-                    <a href="{{ route('events.all-events') }}" class="btn-dwo block-qlo" style="display: block; text-align: center; margin-top: 30px;">
-                        <i class="fas fa-eye"></i>
-                        <span>شاهد المزيد</span>
-                    </a>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                 </div>
+                <a href="{{ route('events.all-events') }}" class="btn-dwo block-qlo" style="display: block; text-align: center; margin-top: 30px;">
+                    <i class="fas fa-eye"></i>
+                    <span>{{ __('app.view_more') }}</span>
+                </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
     <x-events-section :services="$services"></x-events-section>
     <x-latest-section :magazines="$magazines"></x-latest-section>
     <x-footer-section></x-footer-section>

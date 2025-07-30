@@ -8,6 +8,7 @@
     }
 
 </style>
+
 <div class="container-9l2 container-s5k vc_-9ok" id="latest-section">
     <div class="row-gtg">
         <div class="container-i1t">
@@ -22,7 +23,8 @@
                                         <div class="image-ksy content-zgb vc_-lpq">
                                             <figure class="vc_-ao4">
                                                 <div class="wrapper-j81">
-                                                    <img width="1275" height="743" src="{{ asset('storage/' . $magazines->main_image) }}" alt="{{ $magazines->title_ar ?? 'أحدث إصدار' }}">
+                                                    {{-- استخدام عنوان المجلة بناءً على اللغة الحالية --}}
+                                                    <img width="1275" height="743" src="{{ asset('storage/' . $magazines->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($magazines->title_ar ?? __('app.latest_magazine_issue')) : ($magazines->title_en ?? __('app.latest_magazine_issue')) }}">
                                                 </div>
                                             </figure>
                                         </div>
@@ -35,27 +37,30 @@
                                         <div class="column-dx4 content-zgb header-f37">
                                             <div class="all-version" style="display: flex; align-items: center; justify-content: space-between;">
                                                 <h1 id="style-Ksnz9" class="style-Ksnz9">
-                                                    أخر إصدار مجلة نبض المتقاعد
+                                                    {{ __('app.latest_magazine_issue') }}
                                                 </h1>
-                                                <a href="{{ route('magazines.all-magazines') }}">جميع الإصدارات</a>
+                                                <a href="{{ route('magazines.all-magazines') }}">{{ __('app.all_issues') }}</a>
                                             </div>
                                         </div>
                                         <div class="column-dx4 content-zgb">
                                             <div>
-                                                <p dir="rtl" id="style-DRlzk" class="style-DRlzk">
-                                                    {{ $magazines->description_ar ?? 'لا يوجد وصف متاح.' }}
+                                                <p dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}" id="style-DRlzk" class="style-DRlzk">
+                                                    {{-- استخدام وصف المجلة بناءً على اللغة الحالية --}}
+                                                    {{ app()->getLocale() == 'ar' ? ($magazines->description_ar ?? __('app.no_description_available')) : ($magazines->description_en ?? __('app.no_description_available')) }}
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="column-dx4 content-zgb">
-                                            <p dir="rtl">تاريخ الإصدار: {{ \Carbon\Carbon::parse($magazines->created_at)->translatedFormat('d F Y') }}</p>
+                                            {{-- ترجمة "تاريخ الإصدار" واستخدام translatedFormat للوقت --}}
+                                            <p dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">{{ __('app.issue_date') }}: {{ \Carbon\Carbon::parse($magazines->created_at)->translatedFormat('d F Y') }}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         @else
-                        <p>لا توجد مجلات متاحة حالياً.</p>
+                        {{-- ترجمة نص "لا توجد مجلات متاحة حالياً." --}}
+                        <p>{{ __('app.no_magazines_available') }}</p>
                         @endif
                     </div>
                 </div>

@@ -5,7 +5,7 @@
     <link rel="icon" type="image/png" href="images/fav.png" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width; initial-scale=1;" />
-    <title>بلدية مدينة الذيد</title>
+    <title>{{ __('app.all_news_page_title') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/other-devices.css') }}" />
@@ -5116,55 +5116,61 @@
 <body>
     <x-guest-header></x-guest-header>
 
-    <div id="in-cont">
-        <div class="inn-title" style="padding-top: 150px">
-            <h2><span><a href="{{ url('/') }}">الرئيسية</a> &raquo;</span>جميع الأخبار</h2>
-        </div>
+<div id="in-cont">
+    <div class="inn-title" style="padding-top: 150px">
+        <h2>
+            <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
+            {{ __('app.all_news_page_title') }}
+        </h2>
+    </div>
 
-        <section class="py-hp3">
-            <div class="container-rni">
-                @foreach($news as $newsItem)
-                <div class="my-kck p-7p2 bg-xf5 shadow-t3k">
-                    <div class="row-cwp py-hp3">
-                        <div class="col-igy col-cvg">
-                            <div class="bg-xf5 shadow-primary-sxe position-1lp">
-                                <a href="{{ url('/news/show/' . $newsItem->id) }}" class="block-osq text-b1x">
-                                    <figure class="m-38w text-m1o overflow-khm">
-                                        {{-- الصورة --}}
-                                        <img style="max-height: 220px; width: 100%;" class="img-odq rou-m3b" src="{{ asset('storage/' . $newsItem->main_image) }}" alt="{{ $newsItem->title_ar ?? 'صورة الخبر' }}">
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-5vc col-cvg my-mpv">
-                            <a class="text-7zo text-b1x" href="{{ url('/news/show/' . $newsItem->id) }}">
-                                <h2 class="qvtmx font-weight-s3h text-7zo">{{ $newsItem->title_ar }}</h2>
+    <section class="py-hp3">
+        <div class="container-rni">
+            @forelse($news as $newsItem)
+            <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                <div class="row-cwp py-hp3">
+                    <div class="col-igy col-cvg">
+                        <div class="bg-xf5 shadow-primary-sxe position-1lp">
+                            <a href="{{ url('/news/show/' . $newsItem->id) }}" class="block-osq text-b1x">
+                                <figure class="m-38w text-m1o overflow-khm">
+                                    {{-- Image --}}
+                                    <img style="max-height: 220px; width: 100%;" class="img-odq rou-m3b" src="{{ asset('storage/' . $newsItem->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($newsItem->title_ar ?? __('app.news_image_alt_fallback')) : ($newsItem->title_en ?? __('app.news_image_alt_fallback')) }}">
+                                </figure>
                             </a>
-                            <hr>
-                            <div class="my-7z8 fs--oox">
-                                <i class="fa fa-calendar"></i> {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('Y-m-d') }}
-                                <i class="fa fa-clock" style="margin-right: 15px !important;"></i> {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('h:i A') }} {{-- تنسيق الوقت صباحا/مساء --}}
-                                {{-- إذا كان لديك حقول منفصلة للوقت والرسوم مثل سعر ورسوم الاشتراك، فاستخدمها --}}
-                                {{-- <i class="fa-vxc fa-otp mx-8rj"></i> 07:30 مساء <i class="fa-vxc fa-p16 mx-8rj"></i> 100.00 درهم إماراتي --}}
-                            </div>
-                            <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                                <span class="text-7zo block-osq">
-                                    {{-- الوصف / المحتوى --}}
-                                    {{ \Illuminate\Support\Str::limit($newsItem->description_ar, 250) }} {{-- قطع الوصف لـ 250 حرف --}}
-                                </span>
-                            </p>
-
                         </div>
                     </div>
+                    <div class="col-5vc col-cvg my-mpv">
+                        <a class="text-7zo text-b1x" href="{{ url('/news/show/' . $newsItem->id) }}">
+                            <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $newsItem->title_ar : $newsItem->title_en }}</h2>
+                        </a>
+                        <hr>
+                        <div class="my-7z8 fs--oox">
+                            <i class="fa fa-calendar"></i> {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('Y-m-d') }}
+                            <i class="fa fa-clock" style="margin-right: 15px !important;"></i> {{ \Carbon\Carbon::parse($newsItem->created_at)->translatedFormat('h:i A') }}
+                            {{-- If you have separate time and fee fields like subscription price, use them --}}
+                            {{-- <i class="fa-vxc fa-otp mx-8rj"></i> 07:30 مساء <i class="fa-vxc fa-p16 mx-8rj"></i> 100.00 درهم إماراتي --}}
+                        </div>
+                        <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
+                            <span class="text-7zo block-osq">
+                                {{-- Description / Content --}}
+                                {{ \Illuminate\Support\Str::limit(app()->getLocale() == 'ar' ? $newsItem->description_ar : $newsItem->description_en, 250) }}
+                            </span>
+                        </p>
+                    </div>
                 </div>
-                @endforeach
-
             </div>
-        </section>
+            @empty
+            <div class="text-center w-100">
+                <p>{{ __('app.no_news_available') }}</p>
+            </div>
+            @endforelse
+        </div>
+    </section>
 
-        <x-footer-section></x-footer-section>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+    <x-footer-section></x-footer-section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
 </body>
 

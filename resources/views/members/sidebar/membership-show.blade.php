@@ -1786,34 +1786,46 @@
 
     </style>
 
-
 </head>
 
 <body>
     <div id="renewalModal" class="">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h3 class="modal-title">نموذج تجديد العضوية</h3>
-            <form id="renewalForm" method="POST" action="{{ route('members.renewal') }}">
-                @csrf
-                <div class="country-grid">
-                    <div class="country-section">
-                        <div class="form-group">
-                            <label for="membership_id_kw">رقم العضوية <span class="required">*</span></label>
-                            <input type="text" id="membership_id_kw" name="membership_id_kw" placeholder="أدخل رقم العضوية">
-                        </div>
-                        <div class="form-group">
-                            <label for="national_id_kw">رقم الهوية <span class="required">*</span></label>
-                            <input type="text" id="national_id_kw" name="national_id_kw" placeholder="أدخل رقم الهوية">
-                        </div>
-                        <div class="form-group">
-                            <label for="email_kw">البريد الإلكتروني <span class="required">*</span></label>
-                            <input type="email" id="email_kw" name="email_kw" placeholder="example@email.com">
-                        </div>
-                    </div>
-                </div>
-                <button onclick="renewMembership()" type="submit" class="submit-btn" style="color: white !important; background-color: #b68a35 !important;">تأكيد التجديد</button>
-            </form>
+<h3 class="modal-title" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+    {{ __('app.membership_renewal_form_title') }}
+</h3>
+
+   <form id="renewalForm" method="POST" action="{{ route('members.renewal') }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+       @csrf
+       <div class="country-grid">
+           <div class="country-section">
+               <div class="form-group">
+                   <label for="membership_id_kw">
+                       {{ __('app.membership_id') }} <span class="required">{{ __('app.required_field_indicator') }}</span>
+                   </label>
+                   <input type="text" id="membership_id_kw" name="membership_id_kw" placeholder="{{ __('app.enter_membership_id') }}">
+               </div>
+               <div class="form-group">
+                   <label for="national_id_kw">
+                       {{ __('app.national_id') }} <span class="required">{{ __('app.required_field_indicator') }}</span>
+                   </label>
+                   <input type="text" id="national_id_kw" name="national_id_kw" placeholder="{{ __('app.enter_national_id') }}">
+               </div>
+               <div class="form-group">
+                   <label for="email_kw">
+                       {{ __('app.email') }} <span class="required">{{ __('app.required_field_indicator') }}</span>
+                   </label>
+                   <input type="email" id="email_kw" name="email_kw" placeholder="{{ __('app.email_placeholder') }}">
+               </div>
+           </div>
+       </div>
+       <button onclick="renewMembership()" type="submit" class="submit-btn" style="color: white !important; background-color: #b68a35 !important;">
+           {{ __('app.confirm_renewal') }}
+       </button>
+   </form>
+
+
         </div>
     </div>
     <x-guest-header></x-guest-header>
@@ -1838,17 +1850,19 @@
                                             </div>
                                             @endif
 
-                                            <h2 id="style-HrvSv" class="style-HrvSv">تقديم طلب العضوية</h2>
-                                            <div class="radio-group">
-                                                <label class="radio-label" for="new1">
-                                                    <span>جديد</span>
-                                                    <input id="new1" name="membership_type" type="radio" value="new">
-                                                </label>
-                                                <label class="radio-label" for="renewal">
-                                                    <span>تجديد</span>
-                                                    <input id="renewal" name="membership_type" type="radio" value="renewal">
-                                                </label>
-                                            </div>
+                                            <h2 id="style-HrvSv" class="style-HrvSv">{{ __('app.membership_renewal_form_title') }}</h2>
+
+<div class="radio-group" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+    <label class="radio-label" for="new1">
+        <span>{{ __('app.new') }}</span>
+        <input id="new1" name="membership_type" type="radio" value="new">
+    </label>
+    <label class="radio-label" for="renewal">
+        <span>{{ __('app.renewal') }}</span>
+        <input id="renewal" name="membership_type" type="radio" value="renewal">
+    </label>
+</div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -1856,523 +1870,527 @@
                                     <div>
                                         <div class="form-6cc">
                                             <form class="form-7fx form-mke" action="{{ route('members.application.store') }}" method="POST" enctype="multipart/form-data">
-                                                @csrf <div class="container-8ka container-gx5 column-p79">
+                                                @csrf 
+                                                <div class="container-8ka container-gx5 column-p79">
                                                     <div class="ff-t-r5r style-Djnqr" id="style-Djnqr">
-                                                        <div>
-                                                            <div class="container-8ka">
-                                                                <div class="ff-t-r5r">
-                                                                    <div class="ff-el-qhz">
-                                                                        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                            <label for="ff_3_full_name">الإسم الكامل</label>
-                                                                        </div>
-                                                                        <div class="content-mar">
-                                                                            <input type="text" name="full_name" id="ff_3_full_name" class="form-control-27x">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ff-t-r5r">
-                                                                    <div class="ff-el-qhz">
-                                                                        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                            <label for="ff_3_nationality">الجنسية</label>
-                                                                        </div>
-                                                                        <select name="nationality" id="ff_3_nationality" class="form-control-27x">
-                                                                            <option value="">اختر...</option>
-                                                                            <option value="أفغانستان">أفغانستان</option>
-                                                                            <option value="ألبانيا">ألبانيا</option>
-                                                                            <option value="الجزائر">الجزائر</option>
-                                                                            <option value="أندورا">أندورا</option>
-                                                                            <option value="أنغولا">أنغولا</option>
-                                                                            <option value="أنتيغوا وباربودا">أنتيغوا وباربودا</option>
-                                                                            <option value="الأرجنتين">الأرجنتين</option>
-                                                                            <option value="أرمينيا">أرمينيا</option>
-                                                                            <option value="أستراليا">أستراليا</option>
-                                                                            <option value="النمسا">النمسا</option>
-                                                                            <option value="أذربيجان">أذربيجان</option>
-                                                                            <option value="البهاما">البهاما</option>
-                                                                            <option value="البحرين">البحرين</option>
-                                                                            <option value="بنغلاديش">بنغلاديش</option>
-                                                                            <option value="بربادوس">بربادوس</option>
-                                                                            <option value="بيلاروسيا">بيلاروسيا</option>
-                                                                            <option value="بلجيكا">بلجيكا</option>
-                                                                            <option value="بليز">بليز</option>
-                                                                            <option value="بنين">بنين</option>
-                                                                            <option value="بوتان">بوتان</option>
-                                                                            <option value="بوليفيا">بوليفيا</option>
-                                                                            <option value="البوسنة والهرسك">البوسنة والهرسك</option>
-                                                                            <option value="بوتسوانا">بوتسوانا</option>
-                                                                            <option value="البرازيل">البرازيل</option>
-                                                                            <option value="بروناي">بروناي</option>
-                                                                            <option value="بلغاريا">بلغاريا</option>
-                                                                            <option value="بوركينا فاسو">بوركينا فاسو</option>
-                                                                            <option value="بوروندي">بوروندي</option>
-                                                                            <option value="كمبوديا">كمبوديا</option>
-                                                                            <option value="الكاميرون">الكاميرون</option>
-                                                                            <option value="كندا">كندا</option>
-                                                                            <option value="الرأس الأخضر">الرأس الأخضر</option>
-                                                                            <option value="جمهورية أفريقيا الوسطى">جمهورية أفريقيا الوسطى</option>
-                                                                            <option value="تشاد">تشاد</option>
-                                                                            <option value="تشيلي">تشيلي</option>
-                                                                            <option value="الصين">الصين</option>
-                                                                            <option value="كولومبيا">كولومبيا</option>
-                                                                            <option value="جزر القمر">جزر القمر</option>
-                                                                            <option value="الكونغو">الكونغو</option>
-                                                                            <option value="جمهورية الكونغو الديمقراطية">جمهورية الكونغو الديمقراطية</option>
-                                                                            <option value="كوستاريكا">كوستاريكا</option>
-                                                                            <option value="ساحل العاج">ساحل العاج</option>
-                                                                            <option value="كرواتيا">كرواتيا</option>
-                                                                            <option value="كوبا">كوبا</option>
-                                                                            <option value="قبرص">قبرص</option>
-                                                                            <option value="التشيك">التشيك</option>
-                                                                            <option value="الدنمارك">الدنمارك</option>
-                                                                            <option value="جيبوتي">جيبوتي</option>
-                                                                            <option value="دومينيكا">دومينيكا</option>
-                                                                            <option value="جمهورية الدومينيك">جمهورية الدومينيك</option>
-                                                                            <option value="الإكوادور">الإكوادور</option>
-                                                                            <option value="مصر">مصر</option>
-                                                                            <option value="السلفادور">السلفادور</option>
-                                                                            <option value="غينيا الاستوائية">غينيا الاستوائية</option>
-                                                                            <option value="إريتريا">إريتريا</option>
-                                                                            <option value="إستونيا">إستونيا</option>
-                                                                            <option value="إسواتيني">إسواتيني</option>
-                                                                            <option value="إثيوبيا">إثيوبيا</option>
-                                                                            <option value="فيجي">فيجي</option>
-                                                                            <option value="فنلندا">فنلندا</option>
-                                                                            <option value="فرنسا">فرنسا</option>
-                                                                            <option value="الغابون">الغابون</option>
-                                                                            <option value="غامبيا">غامبيا</option>
-                                                                            <option value="جورجيا">جورجيا</option>
-                                                                            <option value="ألمانيا">ألمانيا</option>
-                                                                            <option value="غانا">غانا</option>
-                                                                            <option value="اليونان">اليونان</option>
-                                                                            <option value="غرينادا">غرينادا</option>
-                                                                            <option value="غواتيمالا">غواتيمالا</option>
-                                                                            <option value="غينيا">غينيا</option>
-                                                                            <option value="غينيا بيساو">غينيا بيساو</option>
-                                                                            <option value="غويانا">غويانا</option>
-                                                                            <option value="هايتي">هايتي</option>
-                                                                            <option value="هندوراس">هندوراس</option>
-                                                                            <option value="المجر">المجر</option>
-                                                                            <option value="آيسلندا">آيسلندا</option>
-                                                                            <option value="الهند">الهند</option>
-                                                                            <option value="إندونيسيا">إندونيسيا</option>
-                                                                            <option value="إيران">إيران</option>
-                                                                            <option value="العراق">العراق</option>
-                                                                            <option value="أيرلندا">أيرلندا</option>
-                                                                            <option value="إسرائيل">إسرائيل</option>
-                                                                            <option value="إيطاليا">إيطاليا</option>
-                                                                            <option value="جامايكا">جامايكا</option>
-                                                                            <option value="اليابان">اليابان</option>
-                                                                            <option value="الأردن">الأردن</option>
-                                                                            <option value="كازاخستان">كازاخستان</option>
-                                                                            <option value="كينيا">كينيا</option>
-                                                                            <option value="كيريباتي">كيريباتي</option>
-                                                                            <option value="كوريا الشمالية">كوريا الشمالية</option>
-                                                                            <option value="كوريا الجنوبية">كوريا الجنوبية</option>
-                                                                            <option value="الكويت">الكويت</option>
-                                                                            <option value="قيرغيزستان">قيرغيزستان</option>
-                                                                            <option value="لاوس">لاوس</option>
-                                                                            <option value="لاتفيا">لاتفيا</option>
-                                                                            <option value="لبنان">لبنان</option>
-                                                                            <option value="ليسوتو">ليسوتو</option>
-                                                                            <option value="ليبيريا">ليبيريا</option>
-                                                                            <option value="ليبيا">ليبيا</option>
-                                                                            <option value="ليختنشتاين">ليختنشتاين</option>
-                                                                            <option value="ليتوانيا">ليتوانيا</option>
-                                                                            <option value="لوكسمبورغ">لوكسمبورغ</option>
-                                                                            <option value="مدغشقر">مدغشقر</option>
-                                                                            <option value="ملاوي">ملاوي</option>
-                                                                            <option value="ماليزيا">ماليزيا</option>
-                                                                            <option value="المالديف">المالديف</option>
-                                                                            <option value="مالي">مالي</option>
-                                                                            <option value="مالطا">مالطا</option>
-                                                                            <option value="جزر مارشال">جزر مارشال</option>
-                                                                            <option value="موريتانيا">موريتانيا</option>
-                                                                            <option value="موريشيوس">موريشيوس</option>
-                                                                            <option value="المكسيك">المكسيك</option>
-                                                                            <option value="ميكرونيسيا">ميكرونيسيا</option>
-                                                                            <option value="مولدوفا">مولدوفا</option>
-                                                                            <option value="موناكو">موناكو</option>
-                                                                            <option value="منغوليا">منغوليا</option>
-                                                                            <option value="الجبل الأسود">الجبل الأسود</option>
-                                                                            <option value="المغرب">المغرب</option>
-                                                                            <option value="موزمبيق">موزمبيق</option>
-                                                                            <option value="ميانمار">ميانمار</option>
-                                                                            <option value="ناميبيا">ناميبيا</option>
-                                                                            <option value="ناورو">ناورو</option>
-                                                                            <option value="نيبال">نيبال</option>
-                                                                            <option value="هولندا">هولندا</option>
-                                                                            <option value="نيوزيلندا">نيوزيلندا</option>
-                                                                            <option value="نيكاراغوا">نيكاراغوا</option>
-                                                                            <option value="النيجر">النيجر</option>
-                                                                            <option value="نيجيريا">نيجيريا</option>
-                                                                            <option value="مقدونيا الشمالية">مقدونيا الشمالية</option>
-                                                                            <option value="النرويج">النرويج</option>
-                                                                            <option value="عُمان">عُمان</option>
-                                                                            <option value="باكستان">باكستان</option>
-                                                                            <option value="بالاو">بالاو</option>
-                                                                            <option value="فلسطين">فلسطين</option>
-                                                                            <option value="بنما">بنما</option>
-                                                                            <option value="بابوا غينيا الجديدة">بابوا غينيا الجديدة</option>
-                                                                            <option value="باراغواي">باراغواي</option>
-                                                                            <option value="بيرو">بيرو</option>
-                                                                            <option value="الفلبين">الفلبين</option>
-                                                                            <option value="بولندا">بولندا</option>
-                                                                            <option value="البرتغال">البرتغال</option>
-                                                                            <option value="قطر">قطر</option>
-                                                                            <option value="رومانيا">رومانيا</option>
-                                                                            <option value="روسيا">روسيا</option>
-                                                                            <option value="رواندا">رواندا</option>
-                                                                            <option value="سانت كيتس ونيفيس">سانت كيتس ونيفيس</option>
-                                                                            <option value="سانت لوسيا">سانت لوسيا</option>
-                                                                            <option value="سانت فنسنت والغرينادين">سانت فنسنت والغرينادين</option>
-                                                                            <option value="ساموا">ساموا</option>
-                                                                            <option value="سان مارينو">سان مارينو</option>
-                                                                            <option value="ساو تومي وبرينسيبي">ساو تومي وبرينسيبي</option>
-                                                                            <option value="السعودية">السعودية</option>
-                                                                            <option value="السنغال">السنغال</option>
-                                                                            <option value="صربيا">صربيا</option>
-                                                                            <option value="سيشل">سيشل</option>
-                                                                            <option value="سيراليون">سيراليون</option>
-                                                                            <option value="سنغافورة">سنغافورة</option>
-                                                                            <option value="سلوفاكيا">سلوفاكيا</option>
-                                                                            <option value="سلوفينيا">سلوفينيا</option>
-                                                                            <option value="جزر سليمان">جزر سليمان</option>
-                                                                            <option value="الصومال">الصومال</option>
-                                                                            <option value="جنوب أفريقيا">جنوب أفريقيا</option>
-                                                                            <option value="جنوب السودان">جنوب السودان</option>
-                                                                            <option value="إسبانيا">إسبانيا</option>
-                                                                            <option value="سريلانكا">سريلانكا</option>
-                                                                            <option value="السودان">السودان</option>
-                                                                            <option value="سورينام">سورينام</option>
-                                                                            <option value="السويد">السويد</option>
-                                                                            <option value="سويسرا">سويسرا</option>
-                                                                            <option value="سوريا">سوريا</option>
-                                                                            <option value="تايوان">تايوان</option>
-                                                                            <option value="طاجيكستان">طاجيكستان</option>
-                                                                            <option value="تنزانيا">تنزانيا</option>
-                                                                            <option value="تايلاند">تايلاند</option>
-                                                                            <option value="تيمور الشرقية">تيمور الشرقية</option>
-                                                                            <option value="توغو">توغو</option>
-                                                                            <option value="تونغا">تونغا</option>
-                                                                            <option value="ترينيداد وتوباغو">ترينيداد وتوباغو</option>
-                                                                            <option value="تونس">تونس</option>
-                                                                            <option value="تركيا">تركيا</option>
-                                                                            <option value="تركمانستان">تركمانستان</option>
-                                                                            <option value="توفالو">توفالو</option>
-                                                                            <option value="أوغندا">أوغندا</option>
-                                                                            <option value="أوكرانيا">أوكرانيا</option>
-                                                                            <option value="الإمارات العربية المتحدة">الإمارات العربية المتحدة</option>
-                                                                            <option value="المملكة المتحدة">المملكة المتحدة</option>
-                                                                            <option value="الولايات المتحدة الأمريكية">الولايات المتحدة الأمريكية</option>
-                                                                            <option value="أوروغواي">أوروغواي</option>
-                                                                            <option value="أوزبكستان">أوزبكستان</option>
-                                                                            <option value="فانواتو">فانواتو</option>
-                                                                            <option value="الفاتيكان">الفاتيكان</option>
-                                                                            <option value="فنزويلا">فنزويلا</option>
-                                                                            <option value="فيتنام">فيتنام</option>
-                                                                            <option value="اليمن">اليمن</option>
-                                                                            <option value="زامبيا">زامبيا</option>
-                                                                            <option value="زيمبابوي">زيمبابوي</option>
-                                                                        </select>
-                                                                    </div>
+                                                       <div>
+                                                           <div class="container-8ka">
+                                                               <div class="ff-t-r5r">
+                                                                   <div class="ff-el-qhz">
+                                                                       <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                           <label for="ff_3_full_name">{{ __('app.full_name') }}</label>
+                                                                       </div>
+                                                                       <div class="content-mar">
+                                                                           <input type="text" name="full_name" id="ff_3_full_name" class="form-control-27x" placeholder="{{ __('app.full_name_placeholder') }}">
+                                                                       </div>
+                                                                   </div>
+                                                               </div>
+                                                               <div class="ff-t-r5r">
+                                                                   <div class="ff-el-qhz">
+                                                                       <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                           <label for="ff_3_nationality">{{ __('app.nationality') }}</label>
+                                                                       </div>
+                                                                       <select name="nationality" id="ff_3_nationality" class="form-control-27x">
+                                                                           <option value="">{{ __('app.select') }}</option>
+                                                                           <option value="أفغانستان">{{ __('app.afghanistan') }}</option>
+                                                                           <option value="ألبانيا">{{ __('app.albania') }}</option>
+                                                                           <option value="الجزائر">{{ __('app.algeria') }}</option>
+                                                                           <option value="أندورا">{{ __('app.andorra') }}</option>
+                                                                           <option value="أنغولا">{{ __('app.angola') }}</option>
+                                                                           <option value="أنتيغوا وباربودا">{{ __('app.antigua_and_barbuda') }}</option>
+                                                                           <option value="الأرجنتين">{{ __('app.argentina') }}</option>
+                                                                           <option value="أرمينيا">{{ __('app.armenia') }}</option>
+                                                                           <option value="أستراليا">{{ __('app.australia') }}</option>
+                                                                           <option value="النمسا">{{ __('app.austria') }}</option>
+                                                                           <option value="أذربيجان">{{ __('app.azerbaijan') }}</option>
+                                                                           <option value="البهاما">{{ __('app.bahamas') }}</option>
+                                                                           <option value="البحرين">{{ __('app.bahrain') }}</option>
+                                                                           <option value="بنغلاديش">{{ __('app.bangladesh') }}</option>
+                                                                           <option value="بربادوس">{{ __('app.barbados') }}</option>
+                                                                           <option value="بيلاروسيا">{{ __('app.belarus') }}</option>
+                                                                           <option value="بلجيكا">{{ __('app.belgium') }}</option>
+                                                                           <option value="بليز">{{ __('app.belize') }}</option>
+                                                                           <option value="بنين">{{ __('app.benin') }}</option>
+                                                                           <option value="بوتان">{{ __('app.bhutan') }}</option>
+                                                                           <option value="بوليفيا">{{ __('app.bolivia') }}</option>
+                                                                           <option value="البوسنة والهرسك">{{ __('app.bosnia_and_herzegovina') }}</option>
+                                                                           <option value="بوتسوانا">{{ __('app.botswana') }}</option>
+                                                                           <option value="البرازيل">{{ __('app.brazil') }}</option>
+                                                                           <option value="بروناي">{{ __('app.brunei') }}</option>
+                                                                           <option value="بلغاريا">{{ __('app.bulgaria') }}</option>
+                                                                           <option value="بوركينا فاسو">{{ __('app.burkina_faso') }}</option>
+                                                                           <option value="بوروندي">{{ __('app.burundi') }}</option>
+                                                                           <option value="كمبوديا">{{ __('app.cambodia') }}</option>
+                                                                           <option value="الكاميرون">{{ __('app.cameroon') }}</option>
+                                                                           <option value="كندا">{{ __('app.canada') }}</option>
+                                                                           <option value="الرأس الأخضر">{{ __('app.cape_verde') }}</option>
+                                                                           <option value="جمهورية أفريقيا الوسطى">{{ __('app.central_african_republic') }}</option>
+                                                                           <option value="تشاد">{{ __('app.chad') }}</option>
+                                                                           <option value="تشيلي">{{ __('app.chile') }}</option>
+                                                                           <option value="الصين">{{ __('app.china') }}</option>
+                                                                           <option value="كولومبيا">{{ __('app.colombia') }}</option>
+                                                                           <option value="جزر القمر">{{ __('app.comoros') }}</option>
+                                                                           <option value="الكونغو">{{ __('app.congo') }}</option>
+                                                                           <option value="جمهورية الكونغو الديمقراطية">{{ __('app.democratic_republic_of_congo') }}</option>
+                                                                           <option value="كوستاريكا">{{ __('app.costa_rica') }}</option>
+                                                                           <option value="ساحل العاج">{{ __('app.cote_d_ivoire') }}</option>
+                                                                           <option value="كرواتيا">{{ __('app.croatia') }}</option>
+                                                                           <option value="كوبا">{{ __('app.cuba') }}</option>
+                                                                           <option value="قبرص">{{ __('app.cyprus') }}</option>
+                                                                           <option value="التشيك">{{ __('app.czech_republic') }}</option>
+                                                                           <option value="الدنمارك">{{ __('app.denmark') }}</option>
+                                                                           <option value="جيبوتي">{{ __('app.djibouti') }}</option>
+                                                                           <option value="دومينيكا">{{ __('app.dominica') }}</option>
+                                                                           <option value="جمهورية الدومينيك">{{ __('app.dominican_republic') }}</option>
+                                                                           <option value="الإكوادور">{{ __('app.ecuador') }}</option>
+                                                                           <option value="مصر">{{ __('app.egypt') }}</option>
+                                                                           <option value="السلفادور">{{ __('app.el_salvador') }}</option>
+                                                                           <option value="غينيا الاستوائية">{{ __('app.equatorial_guinea') }}</option>
+                                                                           <option value="إريتريا">{{ __('app.eritrea') }}</option>
+                                                                           <option value="إستونيا">{{ __('app.estonia') }}</option>
+                                                                           <option value="إسواتيني">{{ __('app.eswatini') }}</option>
+                                                                           <option value="إثيوبيا">{{ __('app.ethiopia') }}</option>
+                                                                           <option value="فيجي">{{ __('app.fiji') }}</option>
+                                                                           <option value="فنلندا">{{ __('app.finland') }}</option>
+                                                                           <option value="فرنسا">{{ __('app.france') }}</option>
+                                                                           <option value="الغابون">{{ __('app.gabon') }}</option>
+                                                                           <option value="غامبيا">{{ __('app.gambia') }}</option>
+                                                                           <option value="جورجيا">{{ __('app.georgia') }}</option>
+                                                                           <option value="ألمانيا">{{ __('app.germany') }}</option>
+                                                                           <option value="غانا">{{ __('app.ghana') }}</option>
+                                                                           <option value="اليونان">{{ __('app.greece') }}</option>
+                                                                           <option value="غرينادا">{{ __('app.grenada') }}</option>
+                                                                           <option value="غواتيمالا">{{ __('app.guatemala') }}</option>
+                                                                           <option value="غينيا">{{ __('app.guinea') }}</option>
+                                                                           <option value="غينيا بيساو">{{ __('app.guinea_bissau') }}</option>
+                                                                           <option value="غويانا">{{ __('app.guyana') }}</option>
+                                                                           <option value="هايتي">{{ __('app.haiti') }}</option>
+                                                                           <option value="هندوراس">{{ __('app.honduras') }}</option>
+                                                                           <option value="المجر">{{ __('app.hungary') }}</option>
+                                                                           <option value="آيسلندا">{{ __('app.iceland') }}</option>
+                                                                           <option value="الهند">{{ __('app.india') }}</option>
+                                                                           <option value="إندونيسيا">{{ __('app.indonesia') }}</option>
+                                                                           <option value="إيران">{{ __('app.iran') }}</option>
+                                                                           <option value="العراق">{{ __('app.iraq') }}</option>
+                                                                           <option value="أيرلندا">{{ __('app.ireland') }}</option>
+                                                                           <option value="إسرائيل">{{ __('app.israel') }}</option>
+                                                                           <option value="إيطاليا">{{ __('app.italy') }}</option>
+                                                                           <option value="جامايكا">{{ __('app.jamaica') }}</option>
+                                                                           <option value="اليابان">{{ __('app.japan') }}</option>
+                                                                           <option value="الأردن">{{ __('app.jordan') }}</option>
+                                                                           <option value="كازاخستان">{{ __('app.kazakhstan') }}</option>
+                                                                           <option value="كينيا">{{ __('app.kenya') }}</option>
+                                                                           <option value="كيريباتي">{{ __('app.kiribati') }}</option>
+                                                                           <option value="كوريا الشمالية">{{ __('app.north_korea') }}</option>
+                                                                           <option value="كوريا الجنوبية">{{ __('app.south_korea') }}</option>
+                                                                           <option value="الكويت">{{ __('app.kuwait') }}</option>
+                                                                           <option value="قيرغيزستان">{{ __('app.kyrgyzstan') }}</option>
+                                                                           <option value="لاوس">{{ __('app.laos') }}</option>
+                                                                           <option value="لاتفيا">{{ __('app.latvia') }}</option>
+                                                                           <option value="لبنان">{{ __('app.lebanon') }}</option>
+                                                                           <option value="ليسوتو">{{ __('app.lesotho') }}</option>
+                                                                           <option value="ليبيريا">{{ __('app.liberia') }}</option>
+                                                                           <option value="ليبيا">{{ __('app.libya') }}</option>
+                                                                           <option value="ليختنشتاين">{{ __('app.liechtenstein') }}</option>
+                                                                           <option value="ليتوانيا">{{ __('app.lithuania') }}</option>
+                                                                           <option value="لوكسمبورغ">{{ __('app.luxembourg') }}</option>
+                                                                           <option value="مدغشقر">{{ __('app.madagascar') }}</option>
+                                                                           <option value="ملاوي">{{ __('app.malawi') }}</option>
+                                                                           <option value="ماليزيا">{{ __('app.malaysia') }}</option>
+                                                                           <option value="المالديف">{{ __('app.maldives') }}</option>
+                                                                           <option value="مالي">{{ __('app.mali') }}</option>
+                                                                           <option value="مالطا">{{ __('app.malta') }}</option>
+                                                                           <option value="جزر مارشال">{{ __('app.marshall_islands') }}</option>
+                                                                           <option value="موريتانيا">{{ __('app.mauritania') }}</option>
+                                                                           <option value="موريشيوس">{{ __('app.mauritius') }}</option>
+                                                                           <option value="المكسيك">{{ __('app.mexico') }}</option>
+                                                                           <option value="ميكرونيسيا">{{ __('app.micronesia') }}</option>
+                                                                           <option value="مولدوفا">{{ __('app.moldova') }}</option>
+                                                                           <option value="موناكو">{{ __('app.monaco') }}</option>
+                                                                           <option value="منغوليا">{{ __('app.mongolia') }}</option>
+                                                                           <option value="الجبل الأسود">{{ __('app.montenegro') }}</option>
+                                                                           <option value="المغرب">{{ __('app.morocco') }}</option>
+                                                                           <option value="موزمبيق">{{ __('app.mozambique') }}</option>
+                                                                           <option value="ميانمار">{{ __('app.myanmar') }}</option>
+                                                                           <option value="ناميبيا">{{ __('app.namibia') }}</option>
+                                                                           <option value="ناورو">{{ __('app.nauru') }}</option>
+                                                                           <option value="نيبال">{{ __('app.nepal') }}</option>
+                                                                           <option value="هولندا">{{ __('app.netherlands') }}</option>
+                                                                           <option value="نيوزيلندا">{{ __('app.new_zealand') }}</option>
+                                                                           <option value="نيكاراغوا">{{ __('app.nicaragua') }}</option>
+                                                                           <option value="النيجر">{{ __('app.niger') }}</option>
+                                                                           <option value="نيجيريا">{{ __('app.nigeria') }}</option>
+                                                                           <option value="مقدونيا الشمالية">{{ __('app.north_macedonia') }}</option>
+                                                                           <option value="النرويج">{{ __('app.norway') }}</option>
+                                                                           <option value="عُمان">{{ __('app.oman') }}</option>
+                                                                           <option value="باكستان">{{ __('app.pakistan') }}</option>
+                                                                           <option value="بالاو">{{ __('app.palau') }}</option>
+                                                                           <option value="فلسطين">{{ __('app.palestine') }}</option>
+                                                                           <option value="بنما">{{ __('app.panama') }}</option>
+                                                                           <option value="بابوا غينيا الجديدة">{{ __('app.papua_new_guinea') }}</option>
+                                                                           <option value="باراغواي">{{ __('app.paraguay') }}</option>
+                                                                           <option value="بيرو">{{ __('app.peru') }}</option>
+                                                                           <option value="الفلبين">{{ __('app.philippines') }}</option>
+                                                                           <option value="بولندا">{{ __('app.poland') }}</option>
+                                                                           <option value="البرتغال">{{ __('app.portugal') }}</option>
+                                                                           <option value="قطر">{{ __('app.qatar') }}</option>
+                                                                           <option value="رومانيا">{{ __('app.romania') }}</option>
+                                                                           <option value="روسيا">{{ __('app.russia') }}</option>
+                                                                           <option value="رواندا">{{ __('app.rwanda') }}</option>
+                                                                           <option value="سانت كيتس ونيفيس">{{ __('app.saint_kitts_and_nevis') }}</option>
+                                                                           <option value="سانت لوسيا">{{ __('app.saint_lucia') }}</option>
+                                                                           <option value="سانت فنسنت والغرينادين">{{ __('app.saint_vincent_and_the_grenadines') }}</option>
+                                                                           <option value="ساموا">{{ __('app.samoa') }}</option>
+                                                                           <option value="سان مارينو">{{ __('app.san_marino') }}</option>
+                                                                           <option value="ساو تومي وبرينسيبي">{{ __('app.sao_tome_and_principe') }}</option>
+                                                                           <option value="السعودية">{{ __('app.saudi_arabia') }}</option>
+                                                                           <option value="السنغال">{{ __('app.senegal') }}</option>
+                                                                           <option value="صربيا">{{ __('app.serbia') }}</option>
+                                                                           <option value="سيشل">{{ __('app.seychelles') }}</option>
+                                                                           <option value="سيراليون">{{ __('app.sierra_leone') }}</option>
+                                                                           <option value="سنغافورة">{{ __('app.singapore') }}</option>
+                                                                           <option value="سلوفاكيا">{{ __('app.slovakia') }}</option>
+                                                                           <option value="سلوفينيا">{{ __('app.slovenia') }}</option>
+                                                                           <option value="جزر سليمان">{{ __('app.solomon_islands') }}</option>
+                                                                           <option value="الصومال">{{ __('app.somalia') }}</option>
+                                                                           <option value="جنوب أفريقيا">{{ __('app.south_africa') }}</option>
+                                                                           <option value="جنوب السودان">{{ __('app.south_sudan') }}</option>
+                                                                           <option value="إسبانيا">{{ __('app.spain') }}</option>
+                                                                           <option value="سريلانكا">{{ __('app.sri_lanka') }}</option>
+                                                                           <option value="السودان">{{ __('app.sudan') }}</option>
+                                                                           <option value="سورينام">{{ __('app.suriname') }}</option>
+                                                                           <option value="السويد">{{ __('app.sweden') }}</option>
+                                                                           <option value="سويسرا">{{ __('app.switzerland') }}</option>
+                                                                           <option value="سوريا">{{ __('app.syria') }}</option>
+                                                                           <option value="تايوان">{{ __('app.taiwan') }}</option>
+                                                                           <option value="طاجيكستان">{{ __('app.tajikistan') }}</option>
+                                                                           <option value="تنزانيا">{{ __('app.tanzania') }}</option>
+                                                                           <option value="تايلاند">{{ __('app.thailand') }}</option>
+                                                                           <option value="تيمور الشرقية">{{ __('app.timor_leste') }}</option>
+                                                                           <option value="توغو">{{ __('app.togo') }}</option>
+                                                                           <option value="تونغا">{{ __('app.tonga') }}</option>
+                                                                           <option value="ترينيداد وتوباغو">{{ __('app.trinidad_and_tobago') }}</option>
+                                                                           <option value="تونس">{{ __('app.tunisia') }}</option>
+                                                                           <option value="تركيا">{{ __('app.turkey') }}</option>
+                                                                           <option value="تركمانستان">{{ __('app.turkmenistan') }}</option>
+                                                                           <option value="توفالو">{{ __('app.tuvalu') }}</option>
+                                                                           <option value="أوغندا">{{ __('app.uganda') }}</option>
+                                                                           <option value="أوكرانيا">{{ __('app.ukraine') }}</option>
+                                                                           <option value="الإمارات العربية المتحدة">{{ __('app.united_arab_emirates') }}</option>
+                                                                           <option value="المملكة المتحدة">{{ __('app.united_kingdom') }}</option>
+                                                                           <option value="الولايات المتحدة الأمريكية">{{ __('app.united_states') }}</option>
+                                                                           <option value="أوروغواي">{{ __('app.uruguay') }}</option>
+                                                                           <option value="أوزبكستان">{{ __('app.uzbekistan') }}</option>
+                                                                           <option value="فانواتو">{{ __('app.vanuatu') }}</option>
+                                                                           <option value="الفاتيكان">{{ __('app.vatican_city') }}</option>
+                                                                           <option value="فنزويلا">{{ __('app.venezuela') }}</option>
+                                                                           <option value="فيتنام">{{ __('app.vietnam') }}</option>
+                                                                           <option value="اليمن">{{ __('app.yemen') }}</option>
+                                                                           <option value="زامبيا">{{ __('app.zambia') }}</option>
+                                                                           <option value="زيمبابوي">{{ __('app.zimbabwe') }}</option>
+                                                                       </select>
+                                                                   </div>
+                                                               </div>
+                                                           </div>
+                                                       </div>
 
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_date_of_birth">تاريخ الميلاد</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <input type="date" name="date_of_birth" id="ff_3_date_of_birth" class="form-control-27x">
-                                                            </div>
-                                                        </div>
-                                                        <div class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_gender">الجنس</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <select name="gender" id="ff_3_gender" class="form-control-27x">
-                                                                    <option value="">اختر...</option>
-                                                                    <option value="male">ذكر</option>
-                                                                    <option value="female">انثي</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_emirate">الإمارة</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <select name="emirate" id="ff_3_emirate" class="form-control-27x">
-                                                                    <option value="">اختر...</option>
-                                                                    <option value="أبو ظبي">أبو ظبي</option>
-                                                                    <option value="دبي">دبي</option>
-                                                                    <option value="الشارقة">الشارقة</option>
-                                                                    <option value="عجمان">عجمان</option>
-                                                                    <option value="الفجيرة">الفجيرة</option>
-                                                                    <option value="راس الخيمة">راس الخيمة</option>
-                                                                    <option value="أم القيوين">أم القيوين</option>
-                                                                    <option value="العين">العين</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_marital_status">الحالة الإجتماعية</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <select name="marital_status" id="ff_3_marital_status" class="form-control-27x">
-                                                                    <option value="">اختر...</option>
-                                                                    <option value="single">أعزب / عزباء</option>
-                                                                    <option value="married">متزوج / متزوجة</option>
-                                                                    <option value="divorced">مطلق / مطلقة</option>
-                                                                    <option value="widowed">أرمل / أرملة</option>
-                                                                    <option value="separated">منفصل / منفصلة</option>
-                                                                    <option value="engaged">مخطوب / مخطوبة</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_national_id">رقم الهوية</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <input type="text" name="national_id" id="ff_3_national_id" class="form-control-27x">
-                                                            </div>
-                                                        </div>
-                                                        <div class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_educational_qualification">المؤهل التعليمي</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <select name="educational_qualification" id="ff_3_educational_qualification" class="form-control-27x">
-                                                                    <option value="">اختر...</option>
-                                                                    <option value="دكتوراه">دكتوراه</option>
-                                                                    <option value="ماجيستير">ماجيستير</option>
-                                                                    <option value="بكالوريوس">بكالوريوس</option>
-                                                                    <option value="دبلوم">دبلوم</option>
-                                                                    <option value="ثانوي">ثانوي</option>
-                                                                    <option value="اعدادي">اعدادي</option>
-                                                                    <option value="ابتدائي">ابتدائي</option>
-                                                                    <option value="غير ذلك">غير ذلك</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="ff-t-r5r style-6eOgw" id="style-6eOgw">
-                                                        <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">متطلبات التسجيل</h3>
+            <div class="ff-el-qhz">
+                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                    <label for="ff_3_date_of_birth">{{ __('app.date_of_birth') }}</label>
+                </div>
+                <div class="content-mar">
+                    <input type="date" name="date_of_birth" id="ff_3_date_of_birth" class="form-control-27x">
+                </div>
+            </div>
+            <div class="ff-el-qhz">
+                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                    <label for="ff_3_gender">{{ __('app.gender') }}</label>
+                </div>
+                <div class="content-mar">
+                    <select name="gender" id="ff_3_gender" class="form-control-27x">
+                        <option value="">{{ __('app.select') }}</option>
+                        <option value="male">{{ __('app.male') }}</option>
+                        <option value="female">{{ __('app.female') }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ff-el-qhz">
+                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                    <label for="ff_3_emirate">{{ __('app.emirate') }}</label>
+                </div>
+                <div class="content-mar">
+                    <select name="emirate" id="ff_3_emirate" class="form-control-27x">
+                        <option value="">{{ __('app.select') }}</option>
+                        <option value="أبو ظبي">{{ __('app.abu_dhabi') }}</option>
+                        <option value="دبي">{{ __('app.dubai') }}</option>
+                        <option value="الشارقة">{{ __('app.sharjah') }}</option>
+                        <option value="عجمان">{{ __('app.ajman') }}</option>
+                        <option value="الفجيرة">{{ __('app.fujairah') }}</option>
+                        <option value="راس الخيمة">{{ __('app.ras_al_khaimah') }}</option>
+                        <option value="أم القيوين">{{ __('app.um_al_quwain') }}</option>
+                        <option value="العين">{{ __('app.al_ain') }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ff-el-qhz">
+                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                    <label for="ff_3_marital_status">{{ __('app.marital_status') }}</label>
+                </div>
+                <div class="content-mar">
+                    <select name="marital_status" id="ff_3_marital_status" class="form-control-27x">
+                        <option value="">{{ __('app.select') }}</option>
+                        <option value="single">{{ __('app.single') }}</option>
+                        <option value="married">{{ __('app.married') }}</option>
+                        <option value="divorced">{{ __('app.divorced') }}</option>
+                        <option value="widowed">{{ __('app.widowed') }}</option>
+                        <option value="separated">{{ __('app.separated') }}</option>
+                        <option value="engaged">{{ __('app.engaged') }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ff-el-qhz">
+                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                    <label for="ff_3_national_id">{{ __('app.national_id') }}</label>
+                </div>
+                <div class="content-mar">
+                    <input type="text" name="national_id" id="ff_3_national_id" class="form-control-27x" placeholder="{{ __('app.national_id_placeholder') }}">
+                </div>
+            </div>
+            <div class="ff-el-qhz">
+                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                    <label for="ff_3_educational_qualification">{{ __('app.educational_qualification') }}</label>
+                </div>
+                <div class="content-mar">
+                    <select name="educational_qualification" id="ff_3_educational_qualification" class="form-control-27x">
+                        <option value="">{{ __('app.select') }}</option>
+                        <option value="دكتوراه">{{ __('app.doctorate') }}</option>
+                        <option value="ماجيستير">{{ __('app.masters') }}</option>
+                        <option value="بكالوريوس">{{ __('app.bachelors') }}</option>
+                        <option value="دبلوم">{{ __('app.diploma') }}</option>
+                        <option value="ثانوي">{{ __('app.secondary') }}</option>
+                        <option value="اعدادي">{{ __('app.preparatory') }}</option>
+                        <option value="ابتدائي">{{ __('app.primary') }}</option>
+                        <option value="غير ذلك">{{ __('app.other') }}</option>
+                    </select>
+                </div>
+            </div>
 
-                                                        <div class="ff-el-qhz form-drm">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_passport_photo">صورة جواز السفر</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <label class="ff_-pjz">
-                                                                    <span class="btn-xwt btn-5mm">اختر الملف</span>
-                                                                    <input type="file" name="passport_photo" id="ff_3_passport_photo" class="form-control-27x ff-screen-reader-i5l">
-                                                                </label>
-                                                                <div class="style-RizyE" id="style-RizyE"></div>
-                                                                <img id="preview_passport_photo" src="#" alt="معاينة صورة جواز السفر" style="display: none; max-width: 200px; margin-top: 10px;">
-                                                            </div>
-                                                        </div>
+                                                    </div>
+<div class="ff-t-r5r style-6eOgw" id="style-6eOgw">
+    <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">{{ __('app.registration_requirements') }}</h3>
 
-                                                        <div class="ff-el-qhz form-drm">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_national_id_photo">صورة الهوية الشخصية</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <label class="ff_-pjz">
-                                                                    <span class="btn-xwt btn-5mm">اختر الملف</span>
-                                                                    <input type="file" name="national_id_photo" id="ff_3_national_id_photo" class="form-control-27x ff-screen-reader-i5l">
-                                                                </label>
-                                                                <div class="style-c1RkX" id="style-c1RkX"></div>
-                                                                <img id="preview_national_id_photo" src="#" alt="معاينة صورة الهوية الشخصية" style="display: none; max-width: 200px; margin-top: 10px;">
-                                                            </div>
-                                                        </div>
+    <div class="ff-el-qhz form-drm">
+        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+            <label for="ff_3_passport_photo">{{ __('app.passport_photo') }}</label>
+        </div>
+        <div class="content-mar">
+            <label class="ff_-pjz">
+                <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
+                <input type="file" name="passport_photo" id="ff_3_passport_photo" class="form-control-27x ff-screen-reader-i5l">
+            </label>
+            <div class="style-RizyE" id="style-RizyE"></div>
+            <img id="preview_passport_photo" src="#" alt="{{ __('app.passport_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
+        </div>
+    </div>
 
-                                                        <div class="ff-el-qhz form-drm">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_personal_photo">صورة شخصية</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <label class="ff_-pjz">
-                                                                    <span class="btn-xwt btn-5mm">اختر الملف</span>
-                                                                    <input type="file" name="personal_photo" id="ff_3_personal_photo" class="form-control-27x ff-screen-reader-i5l">
-                                                                </label>
-                                                                <div class="style-eGJft" id="style-eGJft"></div>
-                                                                <img id="preview_personal_photo" src="#" alt="معاينة صورة شخصية" style="display: none; max-width: 200px; margin-top: 10px;">
-                                                            </div>
-                                                        </div>
+    <div class="ff-el-qhz form-drm">
+        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+            <label for="ff_3_national_id_photo">{{ __('app.national_id_photo') }}</label>
+        </div>
+        <div class="content-mar">
+            <label class="ff_-pjz">
+                <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
+                <input type="file" name="national_id_photo" id="ff_3_national_id_photo" class="form-control-27x ff-screen-reader-i5l">
+            </label>
+            <div class="style-c1RkX" id="style-c1RkX"></div>
+            <img id="preview_national_id_photo" src="#" alt="{{ __('app.national_id_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
+        </div>
+    </div>
 
-                                                        <div class="ff-el-qhz form-drm">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_educational_qualification_photo">صورة من المؤهل العلمي</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <label class="ff_-pjz">
-                                                                    <span class="btn-xwt btn-5mm">اختر الملف</span>
-                                                                    <input type="file" name="educational_qualification_photo" id="ff_3_educational_qualification_photo" class="form-control-27x ff-screen-reader-i5l">
-                                                                </label>
-                                                                <div class="style-zUUYm" id="style-zUUYm"></div>
-                                                                <img id="preview_educational_qualification_photo" src="#" alt="معاينة المؤهل العلمي" style="display: none; max-width: 200px; margin-top: 10px;">
-                                                            </div>
-                                                        </div>
+    <div class="ff-el-qhz form-drm">
+        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+            <label for="ff_3_personal_photo">{{ __('app.personal_photo') }}</label>
+        </div>
+        <div class="content-mar">
+            <label class="ff_-pjz">
+                <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
+                <input type="file" name="personal_photo" id="ff_3_personal_photo" class="form-control-27x ff-screen-reader-i5l">
+            </label>
+            <div class="style-eGJft" id="style-eGJft"></div>
+            <img id="preview_personal_photo" src="#" alt="{{ __('app.personal_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
+        </div>
+    </div>
 
-                                                        <div class="ff-el-qhz form-drm">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_retirement_card_photo">صورة بطاقة التقاعد (إثبات التقاعد)</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <label class="ff_-pjz">
-                                                                    <span class="btn-xwt btn-5mm">اختر الملف</span>
-                                                                    <input type="file" name="retirement_card_photo" id="ff_3_retirement_card_photo" class="form-control-27x ff-screen-reader-i5l">
-                                                                </label>
-                                                                <div class="style-zUUYm" id="style-zUUYm"></div>
-                                                                <img id="preview_retirement_card_photo" src="#" alt="معاينة بطاقة التقاعد" style="display: none; max-width: 200px; margin-top: 10px;">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+    <div class="ff-el-qhz form-drm">
+        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+            <label for="ff_3_educational_qualification_photo">{{ __('app.educational_qualification_photo') }}</label>
+        </div>
+        <div class="content-mar">
+            <label class="ff_-pjz">
+                <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
+                <input type="file" name="educational_qualification_photo" id="ff_3_educational_qualification_photo" class="form-control-27x ff-screen-reader-i5l">
+            </label>
+            <div class="style-zUUYm" id="style-zUUYm"></div>
+            <img id="preview_educational_qualification_photo" src="#" alt="{{ __('app.educational_qualification_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
+        </div>
+    </div>
 
-                                                <div>
-                                                    <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">بيانات التواصل</h3>
-                                                    <div style="display: flex; align-items: center; gap: 20px;">
-                                                        <div style="width: 50%;" class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_mobile_phone">الهاتف المتحرك</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <input type="text" name="mobile_phone" id="ff_3_mobile_phone" class="form-control-27x">
-                                                            </div>
-                                                        </div>
-                                                        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label id="phone-home" for="ff_3_home_phone">هاتف المنزل</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <input type="text" name="home_phone" id="ff_3_home_phone" class="form-control-27x">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div style="display: flex; align-items: center; gap: 20px;">
-                                                        <div style="width: 50%;" class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_email">البريد الإلكتروني</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <input type="email" name="email" id="ff_3_email" class="form-control-27x">
-                                                            </div>
-                                                        </div>
-                                                        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label id="phone-home" for="ff_3_po_box">صندوق البريد</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <input type="text" name="po_box" id="ff_3_po_box" class="form-control-27x">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">بيانات التقاعد</h3>
-                                                    <div style="display: flex; align-items: center; gap: 20px;">
-                                                        <div style="width: 50%;" class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_retirement_date">تاريخ التقاعد</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <input type="date" name="retirement_date" id="ff_3_retirement_date" class="form-control-27x">
-                                                            </div>
-                                                        </div>
-                                                        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
-                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                <label for="ff_3_contract_type">نوع التعاقد</label>
-                                                            </div>
-                                                            <div class="content-mar">
-                                                                <select name="contract_type" id="ff_3_contract_type" class="form-control-27x">
-                                                                    <option value="">اختر...</option>
-                                                                    <option value="نظامي">نظامي</option>
-                                                                    <option value="مبكر">مبكر</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="ff-el-qhz" id="early_reason_container" style="display: none;">
-                                                        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                            <label for="early_reason">سبب التعاقد المبكر</label>
-                                                        </div>
-                                                        <div class="content-mar">
-                                                            <input type="text" name="early_reason" id="early_reason" class="form-control-27x">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">البيانات المهنية السابقة</h3>
-                                                <div class="table-container">
-                                                    <table class="professional-table" id="professionalTable">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>السنة</th>
-                                                                <th>المسمى الوظيفي</th>
-                                                                <th>جهة العمل</th>
-                                                                <th>سنوات الخبرة</th>
-                                                                <th class="actions-cell">إجراءات</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="professionalTableBody">
-                                                            <tr>
-                                                                <td><input type="text" name="professional_experience[0][year]" placeholder="مثال: 2020-2023"></td>
-                                                                <td><input type="text" name="professional_experience[0][job_title]" placeholder="مثال: مطور ويب"></td>
-                                                                <td><input type="text" name="professional_experience[0][employer]" placeholder="مثال: شركة التقنية"></td>
-                                                                <td><input type="text" name="professional_experience[0][years_of_experience]" placeholder="مثال: 3 سنوات"></td>
-                                                                <td class="actions-cell">
-                                                                    <button type="button" class="delete-btn" onclick="deleteProfessionalRow(this)">حذف</button>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <button type="button" class="add-row-btn" onclick="addNewProfessionalRow()">+ إضافة بيانات مهنية جديدة</button>
-                                                <div class="container">
-                                                    <h3 id="style-HrvSv2" class="style-HrvSv" style="margin-top: 30px;">الخبرات السابقة</h3>
-                                                    <div class="table-container">
-                                                        <table class="experience-table" id="experienceTable">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>السنة</th>
-                                                                    <th>المسمى الوظيفي</th>
-                                                                    <th>جهة العمل</th>
-                                                                    <th>سنوات الخبرة</th>
-                                                                    <th class="actions-cell">إجراءات</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="experienceTableBody">
-                                                                <tr>
-                                                                    <td><input type="text" name="previous_experience[0][year]" placeholder="مثال: 2018-2021"></td>
-                                                                    <td><input type="text" name="previous_experience[0][job_title]" placeholder="مثال: مدير مشاريع"></td>
-                                                                    <td><input type="text" name="previous_experience[0][employer]" placeholder="مثال: شركة الإنشاءات"></td>
-                                                                    <td><input type="text" name="previous_experience[0][years_of_experience]" placeholder="مثال: 3 سنوات"></td>
-                                                                    <td class="actions-cell">
-                                                                        <button type="button" class="delete-btn" onclick="deleteExperienceRow(this)">حذف</button>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <button type="button" class="add-exp-btn" onclick="addNewExperienceRow()">+ إضافة خبرة جديدة</button>
-                                                </div>
-                                                <div class="ff-el-qhz content-mar">
-                                                    <div class="form-ras ff-el-7d7">
-                                                        <label class="label-iqv label-frw" for="terms-n-condition_726ef60f0da1bb731535cda34122e01f">
-                                                            <span><input type="checkbox" name="terms-n-condition" class="input-nk3" id="ter-6zo" value="on"></span>
-                                                            <div class="ff_-rtr">
-                                                                <p>لقد قرأت ووافقت على الشروط والأحكام وسياسة الخصوصية</p>
-                                                            </div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="ff-el-qhz text-g1j">
-                                                    <button type="submit" class="btn-5mm btn-mo3 btn-lmc" style="background-color: #b28b46 !important; color: white !important;">تقديم الطلب</button>
+    <div class="ff-el-qhz form-drm">
+        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+            <label for="ff_3_retirement_card_photo">{{ __('app.retirement_card_photo') }}</label>
+        </div>
+        <div class="content-mar">
+            <label class="ff_-pjz">
+                <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
+                <input type="file" name="retirement_card_photo" id="ff_3_retirement_card_photo" class="form-control-27x ff-screen-reader-i5l">
+            </label>
+            <div class="style-zUUYm" id="style-zUUYm"></div>
+            <img id="preview_retirement_card_photo" src="#" alt="{{ __('app.retirement_card_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
+        </div>
+    </div>
+</div>
+</div>
 
-                                            </form>
+
+<div>
+    <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">{{ __('app.contact_details') }}</h3>
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <div style="width: 50%;" class="ff-el-qhz">
+            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                <label for="ff_3_mobile_phone">{{ __('app.mobile_phone') }}</label>
+            </div>
+            <div class="content-mar">
+                <input type="text" name="mobile_phone" id="ff_3_mobile_phone" class="form-control-27x" placeholder="{{ __('app.mobile_phone_placeholder') }}">
+            </div>
+        </div>
+        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
+            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                <label id="phone-home" for="ff_3_home_phone">{{ __('app.home_phone') }}</label>
+            </div>
+            <div class="content-mar">
+                <input type="text" name="home_phone" id="ff_3_home_phone" class="form-control-27x" placeholder="{{ __('app.home_phone_placeholder') }}">
+            </div>
+        </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <div style="width: 50%;" class="ff-el-qhz">
+            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                <label for="ff_3_email">{{ __('app.email') }}</label>
+            </div>
+            <div class="content-mar">
+                <input type="email" name="email" id="ff_3_email" class="form-control-27x" placeholder="{{ __('app.email_placeholder') }}">
+            </div>
+        </div>
+        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
+            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                <label id="phone-home" for="ff_3_po_box">{{ __('app.po_box') }}</label>
+            </div>
+            <div class="content-mar">
+                <input type="text" name="po_box" id="ff_3_po_box" class="form-control-27x" placeholder="{{ __('app.po_box_placeholder') }}">
+            </div>
+        </div>
+    </div>
+    <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">{{ __('app.retirement_details') }}</h3>
+    <div style="display: flex; align-items: center; gap: 20px;">
+        <div style="width: 50%;" class="ff-el-qhz">
+            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                <label for="ff_3_retirement_date">{{ __('app.retirement_date') }}</label>
+            </div>
+            <div class="content-mar">
+                <input type="date" name="retirement_date" id="ff_3_retirement_date" class="form-control-27x">
+            </div>
+        </div>
+        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
+            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                <label for="ff_3_contract_type">{{ __('app.contract_type') }}</label>
+            </div>
+            <div class="content-mar">
+                <select name="contract_type" id="ff_3_contract_type" class="form-control-27x">
+                    <option value="">{{ __('app.select') }}</option>
+                    <option value="نظامي">{{ __('app.regular') }}</option>
+                    <option value="مبكر">{{ __('app.early') }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="ff-el-qhz" id="early_reason_container" style="display: none;">
+        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+            <label for="early_reason">{{ __('app.early_reason') }}</label>
+        </div>
+        <div class="content-mar">
+            <input type="text" name="early_reason" id="early_reason" class="form-control-27x" placeholder="{{ __('app.early_reason_placeholder') }}">
+        </div>
+    </div>
+</div>
+<h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">{{ __('app.previous_professional_details') }}</h3>
+<div class="table-container">
+    <table class="professional-table" id="professionalTable">
+        <thead>
+            <tr>
+                <th>{{ __('app.year') }}</th>
+                <th>{{ __('app.job_title') }}</th>
+                <th>{{ __('app.employer') }}</th>
+                <th>{{ __('app.years_of_experience') }}</th>
+                <th class="actions-cell">{{ __('app.actions') }}</th>
+            </tr>
+        </thead>
+        <tbody id="professionalTableBody">
+            <tr>
+                <td><input type="text" name="professional_experience[0][year]" placeholder="{{ __('app.example_year_range') }}"></td>
+                <td><input type="text" name="professional_experience[0][job_title]" placeholder="{{ __('app.example_job_title') }}"></td>
+                <td><input type="text" name="professional_experience[0][employer]" placeholder="{{ __('app.example_employer') }}"></td>
+                <td><input type="text" name="professional_experience[0][years_of_experience]" placeholder="{{ __('app.example_years_exp') }}"></td>
+                <td class="actions-cell">
+                    <button type="button" class="delete-btn" onclick="deleteProfessionalRow(this)">{{ __('app.delete') }}</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<button type="button" class="add-row-btn" onclick="addNewProfessionalRow()">{{ __('app.add_professional_data') }}</button>
+<div class="container">
+    <h3 id="style-HrvSv2" class="style-HrvSv" style="margin-top: 30px;">{{ __('app.previous_experiences') }}</h3>
+    <div class="table-container">
+        <table class="experience-table" id="experienceTable">
+            <thead>
+                <tr>
+                    <th>{{ __('app.year') }}</th>
+                    <th>{{ __('app.job_title') }}</th>
+                    <th>{{ __('app.employer') }}</th>
+                    <th>{{ __('app.years_of_experience') }}</th>
+                    <th class="actions-cell">{{ __('app.actions') }}</th>
+                </tr>
+            </thead>
+            <tbody id="experienceTableBody">
+                <tr>
+                    <td><input type="text" name="previous_experience[0][year]" placeholder="{{ __('app.example_year_range') }}"></td>
+                    <td><input type="text" name="previous_experience[0][job_title]" placeholder="{{ __('app.example_project_manager') }}"></td>
+                    <td><input type="text" name="previous_experience[0][employer]" placeholder="{{ __('app.example_construction_company') }}"></td>
+                    <td><input type="text" name="previous_experience[0][years_of_experience]" placeholder="{{ __('app.example_years_exp') }}"></td>
+                    <td class="actions-cell">
+                        <button type="button" class="delete-btn" onclick="deleteExperienceRow(this)">{{ __('app.delete') }}</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <button type="button" class="add-exp-btn" onclick="addNewExperienceRow()">{{ __('app.add_experience') }}</button>
+</div>
+<div class="ff-el-qhz content-mar">
+    <div class="form-ras ff-el-7d7">
+        <label class="label-iqv label-frw" for="terms-n-condition_726ef60f0da1bb731535cda34122e01f">
+            <span><input type="checkbox" name="terms-n-condition" class="input-nk3" id="ter-6zo" value="on"></span>
+            <div class="ff_-rtr">
+                <p>{{ __('app.agree_terms_and_privacy') }}</p>
+            </div>
+        </label>
+    </div>
+</div>
+<div class="ff-el-qhz text-g1j">
+    <button type="submit" class="btn-5mm btn-mo3 btn-lmc" style="background-color: #b28b46 !important; color: white !important;">{{ __('app.submit_application') }}</button>
+</div>
+</form>
+
 
                                             <script>
                                                 let professionalRowCount = 1;
@@ -2494,10 +2512,7 @@
             // كود جداول البيانات المهنية والخبرات
             let professionalRowCount = 1;
             let experienceRowCount = 1;
-
-            // الدوال الخاصة بالجداول هنا (addNewProfessionalRow, deleteProfessionalRow, addNewExperienceRow, deleteExperienceRow)
-            // تأكد أنها معرفة بشكل عام أو داخل `DOMContentLoaded` ليتم الوصول إليها من `onclick`
-
+                
             window.addNewProfessionalRow = function() { // اجعلها متاحة عالميا
                 professionalRowCount++;
                 const tableBody = document.getElementById('professionalTableBody');

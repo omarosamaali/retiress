@@ -17,10 +17,14 @@ use App\Models\Membership;
 use App\Http\Controllers\GuestProfileController;
 use App\Http\Controllers\MemberApplicationsController;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\ChatController;
-// test
+
+Route::get('/lang/{locale}', [LocalizationController::class, 'setLang'])
+    ->name('set.locale');
+
 Route::get('/members/councils_members_list/{id}', function ($id) {
-    $council = Council::find($id);
+$council = Council::find($id);
     $members = Member::where([
         'status' => 1,
         'council_id' => $id, 

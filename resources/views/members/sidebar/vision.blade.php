@@ -44,98 +44,95 @@
 
 <body>
     <x-guest-header></x-guest-header>
-    <div id="in-cont">
-        <div class="inn-title" style="padding-top: 150px">
-            <h2><span><a href="{{ url('/') }}">الرئيسية</a> &raquo;</span>
-                الرؤية والرسالة والأهداف </h2>
-        </div>
-        <div id="iconsblocks">
-            <ul id="alliconsandtext">
-                <li class="icon-right">
-                    <span style="margin-top:-5px;">رؤيتنا</span>
-                    <div class="icon-holder">
-                        @if($vision)
-                        <img src="{{ asset('storage/' . $vision->main_image) }}" alt="{{ $vision->title_ar }}">
-                        @endif
-                    </div>
-                </li>
-
-                <li class="text-left">
-                    <div class="text-holder">
-                        @if($vision)
-                        <h3 class="main-titles">{{ $vision->title_ar }}</h3>
-                        <p class="info vision container-info">
-                            <span class="box"></span>
-                            <span class="info vision">{{ $vision->description_ar }}</span>
-                        </p>
-                        @endif
-                    </div>
-                </li>
-{{-- 
-                <li class="-mt-9 icon-left">
-                    <span>رسالتنا</span>
-                    <div class="icon-holder">
-                        @if($goals)
-                        <img src="{{ asset('storage/' . $goals->main_image) }}" alt="{{ $goals->title_ar }}">
-                        @endif
-                    </div>
-                </li>
-
-                <li class="-mt-9 text-right">
-                    <div class="text-holder">
-                        @if($goals)
-                        <h3 class="main-titles">{{ $goals->title_ar }}</h3>
-                        <p class="info vision container-info">
-                            <span class="box"></span>
-                            <span class="info vision">{{ $goals->description_ar }}</span>
-                        </p>
-                        @endif
-                    </div>
-                </li>
- --}}
-                <li class="-mt-9 icon-left">
-                    <span>أهدافنا</span>
-                    <div class="icon-holder">
-                        @if($company_message)
-                        <img src="{{ asset('storage/' . $company_message->main_image) }}" class="goalsimg">
-                        @endif
-                    </div>
-                </li>
-
-                <li class="-mt-9 text-right">
-                    <div class="text-holder">
-                        @if($company_message)
-                        <h3 class="main-titles">{{ $company_message->title_ar }}</h3>
-                        <ul class="info goals">
-                            <li>{{ $company_message->description_ar }}</li>
-                        </ul>
-                        @endif
-                    </div>
-                </li>
-
-                {{-- <li class="-mt-9 icon-left">
-                    <span>رسالتنا</span>
-                    <div class="icon-holder">
-                        @if($values)
-                        <img src="{{ asset('storage/' . $values->main_image) }}" alt="{{ $values->title_ar }}">
-                        @endif
-                    </div>
-                </li>
-
-                <li class="-mt-9 text-right">
-                    <div class="text-holder">
-                        @if($values)
-                        <h3 class="main-titles">{{ $values->title_ar }}</h3>
-                        <ul class="info message">
-                            <li>{{ $values->description_ar }}</li>
-                        </ul>
-                        @endif
-                    </div>
-                </li> --}}
-            </ul>
-        </div>
-
+<div id="in-cont">
+    <div class="inn-title" style="padding-top: 150px">
+        <h2>
+            <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
+            {{ __('app.vision_mission_goals_title') }}
+        </h2>
     </div>
+    <div id="iconsblocks">
+        <ul id="alliconsandtext">
+            <li class="icon-right">
+                <span style="margin-top:-5px;">{{ __('app.our_vision') }}</span>
+                <div class="icon-holder">
+                    @if($vision)
+                    <img src="{{ asset('storage/' . $vision->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($vision->title_ar ?? __('app.our_vision')) : ($vision->title_en ?? __('app.our_vision')) }}">
+                    @else
+                    {{-- Optional: Add a placeholder image or text if no vision image --}}
+                    <p>{{ __('app.no_vision_available') }}</p>
+                    @endif
+                </div>
+            </li>
+
+            <li class="text-left">
+                <div class="text-holder">
+                    @if($vision)
+                    <h3 class="main-titles">{{ app()->getLocale() == 'ar' ? $vision->title_ar : $vision->title_en }}</h3>
+                    <p class="info vision container-info" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                        <span class="box"></span>
+                        <span class="info vision">{{ app()->getLocale() == 'ar' ? $vision->description_ar : $vision->description_en }}</span>
+                    </p>
+                    @else
+                    <p>{{ __('app.no_vision_available') }}</p>
+                    @endif
+                </div>
+            </li>
+
+            <li class="-mt-9 icon-left">
+                <span>{{ __('app.our_goals') }}</span>
+                <div class="icon-holder">
+                    @if($company_message) {{-- Assuming $company_message holds goals --}}
+                    <img src="{{ asset('storage/' . $company_message->main_image) }}" class="goalsimg" alt="{{ app()->getLocale() == 'ar' ? ($company_message->title_ar ?? __('app.our_goals')) : ($company_message->title_en ?? __('app.our_goals')) }}">
+                    @else
+                    {{-- Optional: Add a placeholder image or text if no goals image --}}
+                    <p>{{ __('app.no_goals_available') }}</p>
+                    @endif
+                </div>
+            </li>
+
+            <li class="-mt-9 text-right">
+                <div class="text-holder">
+                    @if($company_message) {{-- Assuming $company_message holds goals --}}
+                    <h3 class="main-titles">{{ app()->getLocale() == 'ar' ? $company_message->title_ar : $company_message->title_en }}</h3>
+                    <ul class="info goals" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                        <li>{{ app()->getLocale() == 'ar' ? $company_message->description_ar : $company_message->description_en }}</li>
+                    </ul>
+                    @else
+                    <p>{{ __('app.no_goals_available') }}</p>
+                    @endif
+                </div>
+            </li>
+
+            {{-- Uncomment and translate this section if you want to include "Our Mission" --}}
+            {{--
+            <li class="-mt-9 icon-left">
+                <span>{{ __('app.our_message') }}</span>
+            <div class="icon-holder">
+                @if($values) // Assuming $values holds mission details
+                <img src="{{ asset('storage/' . $values->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($values->title_ar ?? __('app.our_message')) : ($values->title_en ?? __('app.our_message')) }}">
+                @else
+                <p>{{ __('app.no_message_available') }}</p>
+                @endif
+            </div>
+            </li>
+
+            <li class="-mt-9 text-right">
+                <div class="text-holder">
+                    @if($values) // Assuming $values holds mission details
+                    <h3 class="main-titles">{{ app()->getLocale() == 'ar' ? $values->title_ar : $values->title_en }}</h3>
+                    <ul class="info message" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                        <li>{{ app()->getLocale() == 'ar' ? $values->description_ar : $values->description_en }}</li>
+                    </ul>
+                    @else
+                    <p>{{ __('app.no_message_available') }}</p>
+                    @endif
+                </div>
+            </li>
+            --}}
+        </ul>
+    </div>
+</div>
 
     </div>
     <x-footer-section></x-footer-section>

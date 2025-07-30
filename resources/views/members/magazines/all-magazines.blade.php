@@ -5,7 +5,7 @@
     <link rel="icon" type="image/png" href="images/fav.png" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width; initial-scale=1;" />
-    <title>مجلة نبض المتقاعد</title>
+    <title>{{ __('app.magazine_page_title') }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/other-devices.css') }}" />
@@ -19,7 +19,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/amazingslider-2.css') }}">
     <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
-
     <style>
         body:not(.layout-admin) section {
             background: white !important;
@@ -5119,34 +5118,47 @@
 
 <body>
     <x-guest-header></x-guest-header>
-    <div id="in-cont">
-        <div class="inn-title" style="padding-top: 150px">
-            <h2><span><a href="{{ url('/') }}">الرئيسية</a> &raquo;</span>مجلة نبض المتقاعد</h2>
-        </div>
-
-        <section class="py-hp3">
-            <div class="container-rni">
-                @foreach($magazines as $magazine)
-                <div class="col-oaq col-2yx mt-am8 my-eeo">
-                    <div class="d-log flex-mb4 item-zsg content-85f text-if3 bg-ptb shadow-h9k shadow-3d-7n5 transition-all-ease-qd6 transition-hover-36d rou-xnf container-8q9 h-5rt overlay-xkz overlay-1yx">
-                        <div class="position-f8s text-tfh w-d98 z-index-leq m-kot item-lgy">
-                            <a href="{{ url('magazines/show/'.$magazine->id) }}" class="btn-fca bg-ptb shadow-as8 btn-a7p rounded-8o3 m-3p5">
-                                <i class="fa fa-eye"></i>
-                            </a>
-                        </div>
-                        <figure class="m-d29 text-tfh rou-xnf overflow-g44">
-                            <img class="img-5ia" src="{{ asset('storage/' . $magazine->main_image) }}" alt="{{ $magazine->name }}') }}">
-                            <span style="font-size: 15px;">تاريخ النشر : {{ $magazine->created_at->format('d/m/Y') }}</span>
-                        </figure>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </section>
-
-        <x-footer-section></x-footer-section>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
-        <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+<div id="in-cont">
+    <div class="inn-title" style="padding-top: 150px">
+        <h2>
+            <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
+            {{ __('app.magazine_page_title') }}
+        </h2>
     </div>
+
+    <section class="py-hp3">
+        <div class="container-rni">
+            @forelse($magazines as $magazine)
+            {{-- Apply dir to the individual magazine item if text inside needs direction --}}
+            <div class="col-oaq col-2yx mt-am8 my-eeo" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                <div class="d-log flex-mb4 item-zsg content-85f text-if3 bg-ptb shadow-h9k shadow-3d-7n5 transition-all-ease-qd6 transition-hover-36d rou-xnf container-8q9 h-5rt overlay-xkz overlay-1yx">
+                    <div class="position-f8s text-tfh w-d98 z-index-leq m-kot item-lgy">
+                        <a href="{{ url('magazines/show/'.$magazine->id) }}" class="btn-fca bg-ptb shadow-as8 btn-a7p rounded-8o3 m-3p5">
+                            <i class="fa fa-eye"></i> {{-- Icon for 'View' --}}
+                            {{-- Consider adding text here for better UX, especially on larger screens --}}
+                            {{-- Example: {{ __('app.view_magazine') }} --}}
+                        </a>
+                    </div>
+                    <figure class="m-d29 text-tfh rou-xnf overflow-g44">
+                        <img class="img-5ia" src="{{ asset('storage/' . $magazine->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($magazine->name_ar ?? __('app.magazine_image_alt_fallback')) : ($magazine->name_en ?? __('app.magazine_image_alt_fallback')) }}">
+                        <span style="font-size: 15px;">{{ __('app.publication_date_short') }} : {{ \Carbon\Carbon::parse($magazine->created_at)->translatedFormat('d/m/Y') }}</span>
+                    </figure>
+                    {{-- You might want to add the magazine title here too, if it exists in your DB --}}
+                    {{-- <h3 class="magazine-title">{{ app()->getLocale() == 'ar' ? $magazine->name_ar : $magazine->name_en }}</h3> --}}
+                </div>
+            </div>
+            @empty
+            <div class="text-center w-100">
+                <p>{{ __('app.no_magazines_available') }}</p>
+            </div>
+            @endforelse
+        </div>
+    </section>
+
+    <x-footer-section></x-footer-section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+    <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+</div>
+
 </body>
 </html>
