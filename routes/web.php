@@ -25,7 +25,7 @@ use App\Http\Controllers\TransactionController;
 use App\Models\Transaction;
 
 Route::get('/member/records', [TransactionController::class, 'record'])->name('members.record');
-// Test
+
 Route::middleware(['auth'])->name('members.')->group(function () {
     Route::get('/my-transactions', [TransactionController::class, 'record'])->name('record');
     Route::post('/subscribe/{service}', [TransactionController::class, 'subscribe'])->name('subscribe');
