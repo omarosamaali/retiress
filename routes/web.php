@@ -65,17 +65,17 @@ Route::get('/members/committee-members/{id}', function ($id) {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/members/recordEvents', function () {
-        return view('members.sidebar.recordEvents');
-    })->name('members.recordEvents');
-    Route::get('/members/record', function(){
-        $transactions = Transaction::with('service')
-        ->where('user_id', Auth::id())
-        ->get();
-        $memberships = MemberApplication::where('user_id', Auth::id())->get();
+    // Route::get('/members/recordEvents', function () {
+    //     return view('members.sidebar.recordEvents');
+    // })->name('members.recordEvents');
+    // Route::get('/members/record', function(){
+    //     $transactions = Transaction::with('service')
+    //     ->where('user_id', Auth::id())
+    //     ->get();
+    //     $memberships = MemberApplication::where('user_id', Auth::id())->get();
 
-        return view('members.sidebar.record', compact('transactions', 'memberships'));
-    })->name('members.record');
+    //     return view('members.sidebar.record', compact('transactions', 'memberships'));
+    //  })->name('members.record');
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
     Route::put('/members/profile', [GuestProfileController::class, 'update'])->name('members.profile.update');
