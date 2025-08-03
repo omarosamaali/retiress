@@ -368,9 +368,9 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="dropdown-item" href="{{ route('admin.languages.index') }}">
+                        <a class="dropdown-item" href="{{ route('admin.settings.index') }}">
                             <i class="fas fa-globe"></i>
-                            اللغات
+                            اعدادات التواصل
                         </a>
                     </li>
                     <li>

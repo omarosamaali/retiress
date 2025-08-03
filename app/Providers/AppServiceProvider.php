@@ -5,7 +5,8 @@ namespace App\Providers;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Broadcast;
-
+use Illuminate\Support\Facades\View;
+use App\Models\Settings;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -21,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        View::composer('*', function ($view) {
+            $settings = Settings::getActiveContactInfo();
+            $view->with('settings', $settings);
+        });
+        
         Paginator::useTailwind();
 
         Broadcast::routes();

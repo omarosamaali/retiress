@@ -100,10 +100,10 @@
 
                     <div class="app">
                         <span>{{ __('app.download_app') }}</span><br />
-                        <a href="#" class="container-btns-sidebar">Android
+                        <a href="{{ $settings?->android_url }}" class="container-btns-sidebar">Android
                             <img style="height: 27px;" src="{{ asset('assets/images/app.png') }}" alt="">
                         </a>
-                        <a href="#" class="container-btns-sidebar">IOS
+                        <a href="{{ $settings?->ios_url }}" class="container-btns-sidebar">IOS
                             <img style="height: 27px;" src="{{ asset('assets/images/app.png') }}" alt="">
                         </a>
                     </div>

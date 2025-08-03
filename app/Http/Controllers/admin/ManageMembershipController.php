@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth; // Don't forget this!
 use Illuminate\Support\Facades\Storage; // Don't forget this for file operations!
 use Illuminate\Validation\Rule; // Needed for unique validation on update
-
+use Illuminate\Support\Str;
 
 class ManageMembershipController extends Controller
 {
@@ -66,21 +66,6 @@ class ManageMembershipController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(no $no)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -248,14 +233,5 @@ class ManageMembershipController extends Controller
         } while (MemberApplication::where('membership_number', $number)->exists());
 
         return $number;
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(no $no)
-    {
-        //
     }
 }

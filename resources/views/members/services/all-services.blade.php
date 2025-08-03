@@ -5134,7 +5134,9 @@
                              <a href="{{ route('services.show', $service->id) }}" class="block-osq text-b1x">
                                  <figure class="m-38w text-m1o overflow-khm">
                                      {{-- The image source is static (pe.png). If services have their own images, you should use $service->main_image or similar. --}}
-                                     <img style="width: 222px;" class="service-img" src="{{ asset('assets/images/pe.png') }}" alt="{{ app()->getLocale() == 'ar' ? ($service->name_ar ?? __('app.service_image_alt_fallback')) : ($service->name_en ?? __('app.service_image_alt_fallback')) }}">
+                                     <img style="width: 222px;" class="service-img" 
+                                     src="{{ asset('assets/images/pe.png') }}"
+                                      alt="{{ app()->getLocale() == 'ar' ? ($service->name_ar ?? __('app.service_image_alt_fallback')) : ($service->name_en ?? __('app.service_image_alt_fallback')) }}">
                                  </figure>
                              </a>
                          </div>

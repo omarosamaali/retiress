@@ -21,8 +21,30 @@ use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\MagazineController;
 use App\Http\Controllers\Admin\CommitteeController;
 use App\Http\Controllers\Admin\ManageMembershipController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\TransactionController;
 
+use App\Http\Controllers\DashboardController;
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::post('/transactions/{transaction}/activate', [TransactionController::class, 'activate'])->name('transactions.activate');
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index'); // افتراضًا عندك كنترولر منفصل للأدمن
+    Route::post('transactions/{transaction}/approve', [TransactionController::class, 'approve'])->name('transactions.approve');
+    Route::post('transactions/{transaction}/confirm-payment', [TransactionController::class, 'confirmPayment'])->name('transactions.confirm_payment');
+    Route::post('transactions/{transaction}/reject', [TransactionController::class, 'reject'])->name('transactions.reject');
+    Route::post('transactions/{transaction}/deactivate', [TransactionController::class, 'deactivate'])->name('transactions.deactivate');
+});
+
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::get('/settings/create', [SettingsController::class, 'create'])->name('settings.create');
+    Route::post('/settings/store', [SettingsController::class, 'store'])->name('settings.store');
+    Route::put('/settings/{id}/toggle-status', [SettingsController::class, 'toggleStatus'])
+    ->name('settings.toggle-status');
+    Route::delete('/settings/{id}', [SettingsController::class, 'destroy'])->name('settings.destroy');
+});
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::get('/messages', [MessageController::class, 'adminIndex'])->name('messages.index');
     Route::get('/messages/{id}', [MessageController::class, 'adminShow'])->name('messages.show');
     Route::put('/messages/{id}', [MessageController::class, 'adminUpdate'])->name('messages.update');
@@ -33,13 +55,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard'); 
-    })->name('dashboard');
-    Route::resource('users', UserController::class);
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');    Route::resource('users', UserController::class);
     Route::resource('membership', MembershipController::class);
     Route::resource('manageMembership', ManageMembershipController::class);
-    Route::resource('languages', LanguageController::class);
     Route::resource('packages', PackageController::class);
     Route::resource('plans', PlanController::class);
     Route::resource('event', EventController::class);

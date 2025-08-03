@@ -2405,10 +2405,12 @@
         a {
             outline: none !important;
         }
-.table-row {
-/* ... */
-border-bottom: 1px solid #e5e7eb !important; /* border-b border-gray-200 */
-}
+
+        .table-row {
+            /* ... */
+            border-bottom: 1px solid #e5e7eb !important;
+            /* border-b border-gray-200 */
+        }
 
         .btn:not(:disabled):not(.disabled) {
             cursor: pointer;
@@ -5175,140 +5177,200 @@ border-bottom: 1px solid #e5e7eb !important; /* border-b border-gray-200 */
     <style>
         /* General Table Styling */
         .table-container {
-        position: relative;
-        overflow-x: auto;
-        max-width: 1200px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-        margin-top: 64px; /* Equivalent to mt-16 (64px) */
+            position: relative;
+            overflow-x: auto;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            margin-top: 64px;
+            /* Equivalent to mt-16 (64px) */
         }
 
         .data-table {
-        width: 100%;
-        font-size: 0.875rem; /* text-sm */
-        text-align: left;
-        color: #6b7280; /* text-gray-500 */
-        /* rtl:text-right - هذا يتطلب قاعدة CSS إضافية للاتجاه من اليمين لليسار */
-        direction: ltr; /* Default for non-RTL */
+            width: 100%;
+            font-size: 0.875rem;
+            /* text-sm */
+            text-align: left;
+            color: #6b7280;
+            /* text-gray-500 */
+            /* rtl:text-right - هذا يتطلب قاعدة CSS إضافية للاتجاه من اليمين لليسار */
+            direction: ltr;
+            /* Default for non-RTL */
         }
 
         /* For RTL support, you might add: */
         .data-table.rtl {
-        text-align: right;
-        direction: rtl;
+            text-align: right;
+            direction: rtl;
         }
 
 
         /* Table Header (thead) */
         .table-header {
-        font-size: 0.75rem; /* text-xs */
-        color: #f3f4f6; /* text-gray-100 */
-        text-transform: uppercase;
-        background-color: #b68a35; /* bg-[#b68a35] */
+            font-size: 0.75rem;
+            /* text-xs */
+            color: #f3f4f6;
+            /* text-gray-100 */
+            text-transform: uppercase;
+            background-color: #b68a35;
+            /* bg-[#b68a35] */
         }
 
         /* Table Header Cells (th) */
         .table-header th {
-        padding: 12px 24px; /* px-6 py-3 (1rem = 16px, so 6*4=24px, 3*4=12px) */
+            padding: 12px 24px;
+            /* px-6 py-3 (1rem = 16px, so 6*4=24px, 3*4=12px) */
         }
 
         /* Table Body Rows (tr) */
         .table-row {
-        background-color: #ffffff; /* bg-white */
-        border-bottom: 1px solid #e5e7eb; /* border-b border-gray-200 */
+            background-color: #ffffff;
+            /* bg-white */
+            border-bottom: 1px solid #e5e7eb;
+            /* border-b border-gray-200 */
         }
 
         /* Table Body Cells (td) */
         .table-row td {
-        padding: 16px 24px; /* px-6 py-4 (4*4=16px) */
+            padding: 16px 24px;
+            /* px-6 py-4 (4*4=16px) */
         }
 
         /* Table Row Header (th in tbody) */
         .table-row th {
-        padding: 16px 24px; /* px-6 py-4 */
-        font-weight: 500; /* font-medium */
-        color: #1f2937; /* text-gray-900 */
-        white-space: nowrap; /* whitespace-nowrap */
+            padding: 16px 24px;
+            /* px-6 py-4 */
+            font-weight: 500;
+            /* font-medium */
+            color: #1f2937;
+            /* text-gray-900 */
+            white-space: nowrap;
+            /* whitespace-nowrap */
         }
 
         /* Button Styles */
         .btn {
-        font-weight: 500; /* font-medium */
-        border-radius: 0.5rem; /* rounded-lg (8px) */
-        font-size: 1.25rem; /* text-xl */
-        padding: 10px 20px; /* px-5 py-2.5 (2.5*4=10px, 5*4=20px) */
-        margin-right: 8px; /* me-2 (2*4=8px) */
-        margin-bottom: 8px; /* mb-2 (2*4=8px) */
-        border: none;
-        outline: none; /* focus:outline-none */
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Basic transition for hover/focus */
+            font-weight: 500;
+            /* font-medium */
+            border-radius: 0.5rem;
+            /* rounded-lg (8px) */
+            font-size: 1.25rem;
+            /* text-xl */
+            padding: 10px 20px;
+            /* px-5 py-2.5 (2.5*4=10px, 5*4=20px) */
+            margin-right: 8px;
+            /* me-2 (2*4=8px) */
+            margin-bottom: 8px;
+            /* mb-2 (2*4=8px) */
+            border: none;
+            outline: none;
+            /* focus:outline-none */
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            /* Basic transition for hover/focus */
         }
 
         /* Specific Button Colors */
         .btn-gray {
-        color: #ffffff; /* text-white */
-        background-color: #1f2937; /* bg-gray-800 */
+            color: #ffffff;
+            /* text-white */
+            background-color: #1f2937;
+            /* bg-gray-800 */
         }
+
         .btn-gray:hover {
-        background-color: #111827; /* hover:bg-gray-900 */
+            background-color: #111827;
+            /* hover:bg-gray-900 */
         }
+
         .btn-gray:focus {
-        box-shadow: 0 0 0 4px #d1d5db; /* focus:ring-4 focus:ring-gray-300 */
+            box-shadow: 0 0 0 4px #d1d5db;
+            /* focus:ring-4 focus:ring-gray-300 */
         }
+
         /* Dark mode specific styles for gray button (requires dark mode setup) */
         .dark .btn-gray {
-        background-color: #1f2937; /* dark:bg-gray-800 */
+            background-color: #1f2937;
+            /* dark:bg-gray-800 */
         }
+
         .dark .btn-gray:hover {
-        background-color: #374151; /* dark:hover:bg-gray-700 */
+            background-color: #374151;
+            /* dark:hover:bg-gray-700 */
         }
+
         .dark .btn-gray:focus {
-        box-shadow: 0 0 0 4px #4b5563; /* dark:focus:ring-gray-700 */
-        border-color: #374151; /* dark:border-gray-700 */
+            box-shadow: 0 0 0 4px #4b5563;
+            /* dark:focus:ring-gray-700 */
+            border-color: #374151;
+            /* dark:border-gray-700 */
         }
 
         .btn-green {
-        color: #ffffff; /* text-white */
-        background-color: #047857; /* bg-green-700 */
+            color: #ffffff;
+            /* text-white */
+            background-color: #047857;
+            /* bg-green-700 */
         }
+
         .btn-green:hover {
-        background-color: #059669; /* hover:bg-green-800 */
+            background-color: #059669;
+            /* hover:bg-green-800 */
         }
+
         .btn-green:focus {
-        box-shadow: 0 0 0 4px #a7f3d0; /* focus:ring-4 focus:ring-green-300 */
+            box-shadow: 0 0 0 4px #a7f3d0;
+            /* focus:ring-4 focus:ring-green-300 */
         }
+
         /* Dark mode specific styles for green button */
         .dark .btn-green {
-        background-color: #059669; /* dark:bg-green-600 */
+            background-color: #059669;
+            /* dark:bg-green-600 */
         }
+
         .dark .btn-green:hover {
-        background-color: #047857; /* dark:hover:bg-green-700 */
+            background-color: #047857;
+            /* dark:hover:bg-green-700 */
         }
+
         .dark .btn-green:focus {
-        box-shadow: 0 0 0 4px #065f46; /* dark:focus:ring-green-800 */
+            box-shadow: 0 0 0 4px #065f46;
+            /* dark:focus:ring-green-800 */
         }
 
         .btn-blue {
-        color: #ffffff; /* text-white */
-        background-color: #1d4ed8; /* bg-blue-700 */
+            color: #ffffff;
+            /* text-white */
+            background-color: #1d4ed8;
+            /* bg-blue-700 */
         }
+
         .btn-blue:hover {
-        background-color: #2563eb; /* hover:bg-blue-800 */
+            background-color: #2563eb;
+            /* hover:bg-blue-800 */
         }
+
         .btn-blue:focus {
-        box-shadow: 0 0 0 4px #bfdbfe; /* focus:ring-4 focus:ring-blue-300 */
+            box-shadow: 0 0 0 4px #bfdbfe;
+            /* focus:ring-4 focus:ring-blue-300 */
         }
+
         /* Dark mode specific styles for blue button */
         .dark .btn-blue {
-        background-color: #2563eb; /* dark:bg-blue-600 */
+            background-color: #2563eb;
+            /* dark:bg-blue-600 */
         }
+
         .dark .btn-blue:hover {
-        background-color: #1d4ed8; /* dark:hover:bg-blue-700 */
+            background-color: #1d4ed8;
+            /* dark:hover:bg-blue-700 */
         }
+
         .dark .btn-blue:focus {
-        box-shadow: 0 0 0 4px #1e40af; /* dark:focus:ring-blue-800 */
+            box-shadow: 0 0 0 4px #1e40af;
+            /* dark:focus:ring-blue-800 */
         }
 
         * {
@@ -5527,6 +5589,46 @@ border-bottom: 1px solid #e5e7eb !important; /* border-b border-gray-200 */
         }
 
     </style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .transaction {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .transaction h3 {
+            margin: 0 0 10px;
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+    </style>
 
 </head>
 
@@ -5538,107 +5640,176 @@ border-bottom: 1px solid #e5e7eb !important; /* border-b border-gray-200 */
                 سجل المعاملات </h2>
         </div>
         <div class="profile-container">
-
             <div class="profile-header">
-                <h1 class="profile-title">سجل المعاملات</h1>
+                <h1 class="profile-title">{{ __('app.transaction_record') }}</h1>
             </div>
-          <div class="table-container">
-              <table class="data-table rtl">
-                  <thead class="table-header">
-                      <tr>
-                          <th scope="col">
-                              #
-                          </th>
-                          <th scope="col">
-                              التاريخ والوقت
-                          </th>
-                          <th scope="col">
-                              العنوان
-                          </th>
-                          <th scope="col">
-                              النوع
-                          </th>
-                          <th scope="col">
-                              الحالة
-                          </th>
-                          <th scope="col">
-                              الاجراء
-                          </th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr class="table-row">
-                          <th scope="row">
-                              1
-                          </th>
-                          <td>
-                              20/11/2022 - 01:00 PM
-                          </td>
-                          <td>
-                              القاهرة
-                          </td>
-                          <td>
-                              فعالية
-                          </td>
-                          <td>
-                              تم الدفع
-                          </td>
-                          <td style="min-width: 142px;">
-                              <button type="button" class="btn btn-gray">عرض</button>
-                              <button type="button" class="btn btn-green">دفع</button>
-                          </td>
-                      </tr>
-                      <tr class="table-row">
-                          <th scope="row">
-                              1
-                          </th>
-                          <td>
-                              20/11/2022 - 01:00 PM
-                          </td>
-                          <td>
-                              القاهرة
-                          </td>
-                          <td>
-                              عضوية
-                          </td>
-                          <td>
-                              بانتظار الدفع
-                          </td>
-                          <td style="min-width: 142px;">
-                              <button type="button" class="btn btn-gray">عرض</button>
-                              <button type="button" class="btn btn-blue">إيصال الدفع</button>
-                          </td>
-                      </tr>
-                      <tr class="table-row">
-                          <th scope="row">
-                              1
-                          </th>
-                          <td>
-                              20/11/2022 - 01:00 PM
-                          </td>
-                          <td>
-                              القاهرة
-                          </td>
-                          <td>
-                              خدمة
-                          </td>
-                          <td>
-                              تم الدفع
-                          </td>
-                          <td style="min-width: 142px;">
-                              <button type="button" class="btn btn-gray">عرض</button>
-                              <button type="button" class="btn btn-green">دفع</button>
-                          </td>
-                      </tr>
-                  </tbody>
-              </table>
+            <div class="table-container">
+                <table class="data-table rtl">
+                    <thead class="table-header">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">{{ __('app.date_time') }}</th>
+                            <th scope="col">{{ __('app.service_name') }}</th>
+                            <th scope="col">{{ __('app.type') }}</th>
+                            <th scope="col">{{ __('app.status') }}</th>
+                            <th scope="col">{{ __('app.action') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($transactions as $index => $transaction)
+                        <tr class="table-row">
+                            <th scope="row">{{ $index + 1 }}</th>
+                            <td>{{ \Carbon\Carbon::parse($transaction->subscribed_at)->translatedFormat('d/m/Y - h:i A') }}</td>
+
+                            {{-- <td>{{ app()->getLocale() == 'ar' ? $transaction->service->name_ar : $transaction->service->name_en }}</td> --}}
+                            <td>
+                                @switch($transaction->type)
+                                @case('service')
+                                @if ($transaction->service)
+                                {{ $transaction->service->name_ar }}
+                                @endif
+                                @break
+                                @case('event')
+                                @if ($transaction->event)
+                                {{ $transaction->event->title_ar }}
+                                @endif
+                                @break
+                                @endswitch
+                            </td>
 
 
+
+                            <td>
+                                @switch($transaction->type)
+                                @case('service')
+                                {{ __('app.service') }}
+                                @break
+                                @case('event')
+                                {{ __('app.event') }}
+                                @break
+                                @case('membership')
+                                {{ __('app.membership') }}
+                                @break
+                                @endswitch
+                            </td>
+                            <td>
+                                @switch($transaction->status)
+                                @case('pending')
+                             {{ __('app.pending_approval') }}
+                                @break
+                                @case('waiting_for_payment')
+                               {{ __('app.waiting_for_payment') }}
+                                @break
+                                @case('waiting_for_activation')
+                               {{ __('app.waiting_for_activation') }}
+                                @break
+                                @case('active')
+                             {{ __('app.active') }}
+                                @break
+                                @case('rejected')
+                               {{ __('app.rejected') }}
+                                @break
+                                @case('expired')
+                                {{ __('app.expired') }}
+                                @break
+                                @case('deactivated')
+                               {{ __('app.deactivated') }}
+                                @break
+
+                                @default
+                                <span class="badge bg-secondary">{{ $transaction->status }}</span>
+                                @endswitch
+                            </td>
+                            <td style="min-width: 142px;">
+                                <a href="{{ route('services.show', $transaction) }}" type="button" class="btn btn-gray">{{ __('app.view') }}</a>
+                                @if($transaction->status == 'waiting_for_payment')
+                                <button type="button" class="btn btn-blue trigger-file-input" data-transaction-id="{{ $transaction->id }}">
+                                    {{ __('app.upload_receipt') }}
+                                </button>
+                                <form id="uploadReceiptForm-{{ $transaction->id }}" action="{{ route('members.upload_receipt', $transaction) }}" method="POST" enctype="multipart/form-data" style="display: none;">
+                                    @csrf
+                                    <input type="file" class="form-control d-none" id="receipt_image_input-{{ $transaction->id }}" name="receipt_image" accept="image/*">
+                                </form>
+                                @elseif($transaction->receipt_image)
+                                <a href="{{ Storage::url($transaction->receipt_image) }}" style="background-color: #007BFF; color: white;" target="_blank" class="btn btn-secondary">
+                                    {{ __('app.view_receipt') }}
+                                </a>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                        @foreach ($memberships as $index => $transaction)
+
+                        <tr class="table-row">
+                            <th scope="row">{{ $index + 1 }}</th>
+                            <td>{{ \Carbon\Carbon::parse($transaction->subscribed_at)->translatedFormat('d/m/Y - h:i A') }}</td>
+                            <td>
+                                {{ $transaction->full_name }}
+                            </td>
+                            <td>
+                                {{ __('app.membership') }}
+                            </td>
+                            <td>
+                                @switch($transaction->status)
+                                @case('0') بإنتظار الدفع @break
+                                @case('1') بإنتظار التفعيل @break
+                                @case('2') بإنتظار الموافقة @break
+                                @case('3') فعال @break
+                                @case('4') منتهي @break
+                                @default حالة غير معروفة @endswitch
+
+                            </td>
+                            <td style="min-width: 142px;">
+                                <a href="{{ route('members.my-membership') }}" type="button" class="btn btn-gray">{{ __('app.view') }}</a>
+
+                                {{-- @if($transaction->status == '0')
+                                <button type="button" class="btn btn-blue trigger-file-input" data-transaction-id="{{ $transaction->id }}">
+                                    {{ __('app.upload_receipt') }}
+                                </button>
+                                <form id="uploadReceiptForm-{{ $transaction->id }}" action="{{ route('members.upload_receipt', $transaction) }}" method="POST" enctype="multipart/form-data" style="display: none;">
+                                    @csrf
+                                    <input type="file" class="form-control d-none" id="receipt_image_input-{{ $transaction->id }}" name="receipt_image" accept="image/*">
+                                </form>
+                                @elseif($transaction->receipt_image)
+                                <a href="{{ Storage::url($transaction->receipt_image) }}" style="background-color: #007BFF; color: white;" target="_blank" class="btn btn-secondary">
+                                    {{ __('app.view_receipt') }}
+                                </a>
+                                @endif --}}
+                            </td>
+                        </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.trigger-file-input').forEach(button => {
+                button.addEventListener('click', function() {
+                    const transactionId = this.dataset.transactionId;
+                    const fileInput = document.getElementById(`receipt_image_input-${transactionId}`);
+                    if (fileInput) {
+                        fileInput.click();
+                    }
+                });
+            });
+            document.querySelectorAll('[id^="receipt_image_input-"]').forEach(fileInput => {
+                fileInput.addEventListener('change', function() {
+                    if (this.files.length > 0) {
+                        const transactionId = this.id.split('-')[1];
+                        const form = document.getElementById(`uploadReceiptForm-${transactionId}`);
+                        if (form) {
+                            form.submit();
+                        }
+                    }
+                });
+            });
+        });
 
+    </script>
 
-    </div>
     <x-footer-section></x-footer-section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>

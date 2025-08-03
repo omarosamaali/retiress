@@ -24,9 +24,7 @@ class MagazineController extends Controller
             'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
             'main_image' => 'nullable|image|max:2048',
-            'pdf' => 'nullable|mimes:pdf',
-            'sub_image' => 'nullable|array',
-            'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'pdf' => 'nullable|url', // تحقق من أن القيمة هي رابط URL صالح
             'status' => 'required|boolean',
         ]);
 
@@ -59,22 +57,15 @@ class MagazineController extends Controller
             $magazinesData['main_image'] = $request->file('main_image')->store('magazines/main', 'public');
         }
 
-        if ($request->hasFile('pdf')) {
-            $magazinesData['pdf'] = $request->file('pdf')->store('magazines/main', 'public');
-        }
-
-        if ($request->sub_image) {
-            $magazinesData['sub_image'] = [];
-            foreach ($request->sub_image as $image) {
-                $magazinesData['sub_image'][] = $image->store('magazines/sub', 'public');
-            }
+        // إضافة الرابط إذا كان موجودًا
+        if ($request->filled('pdf')) {
+            $magazinesData['pdf'] = $request->pdf; // تخزين الرابط مباشرة
         }
 
         Magazine::create($magazinesData);
 
         return redirect()->route('admin.magazines.index')->with('success', 'تمت إضافة الخبر بنجاح!');
     }
-
     public function show(Magazine $magazine)
     {
         $targetLanguages = $this->targetLanguages;
@@ -98,8 +89,6 @@ class MagazineController extends Controller
             'description_ar' => 'required|string',
             'main_image' => 'nullable|image',
             'pdf' => 'nullable|mimes:pdf',
-            'sub_image' => 'nullable|array',
-            'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
         ]);
 
@@ -152,25 +141,6 @@ class MagazineController extends Controller
             }
         }
 
-
-        if ($request->sub_image) {
-            foreach ($magazine->sub_image as $image) {
-                Storage::disk('public')->delete($image);
-            }
-
-            $magazinesData['sub_image'] = [];
-            foreach ($request->sub_image as $image) {
-                $magazinesData['sub_image'][] = $image->store('magazines/sub', 'public');
-            }
-        } elseif ($request->boolean('remove_sub_image')) {
-            if ($magazine->sub_image) {
-                foreach ($magazine->sub_image as $image) {
-                    Storage::disk('public')->delete($image);
-                }
-                $magazinesData['sub_image'] = null;
-            }
-        }
-
         $magazine->update($magazinesData);
 
         return redirect()->route('admin.magazines.index')->with('success', 'تم تحديث الخبر بنجاح!');
@@ -183,10 +153,6 @@ class MagazineController extends Controller
         }
         if ($magazine->pdf) {
             Storage::disk('public')->delete($magazine->pdf);
-        }
-
-        foreach ($magazine->sub_image as $image) {
-            Storage::disk('public')->delete($image);
         }
 
         $magazine->delete();

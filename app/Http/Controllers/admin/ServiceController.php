@@ -7,15 +7,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Stichoza\GoogleTranslate\GoogleTranslate;
+use App\Models\Transaction;
 
 class ServiceController extends Controller
 {
     public function index()
     {
         $services = Service::latest()->paginate(10);
-        return view('admin.services.index', compact('services'));
+        $transactions = Transaction::with('user', 'service')->latest()->paginate(10); // تأكد انك بتحمل المستخدم والخدمة
+        return view('admin.services.index', compact('services', 'transactions'));
     }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -26,9 +27,14 @@ class ServiceController extends Controller
             'service_charter_ar' => 'required|string',
             'disclaimer_ar' => 'required|string',
             'chanel' => 'required|string',
-            'price' => 'nullable|integer',
+            'price' => 'nullable|numeric',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
+            'is_payed' => 'nullable|boolean',
         ]);
+
+        // Handle is_payed properly - checkbox sends '1' when checked, null when unchecked
+        $isPayed = $request->has('is_payed') && $request->is_payed == '1';
 
         $serviceData = [
             'name_ar' => $request->name_ar,
@@ -38,9 +44,14 @@ class ServiceController extends Controller
             'service_charter_ar' => $request->service_charter_ar,
             'disclaimer_ar' => $request->disclaimer_ar,
             'chanel' => $request->chanel,
-            'status' => $request->status,
-            'price' => $request->is_payed === 'on' ? $request->price : null,
+            'status' => (bool)$request->status,
+            'price' => $isPayed ? $request->price : null, // Only save price if service is paid
+            'is_payed' => $isPayed, // This will be true or false
         ];
+
+        if ($request->hasFile('image')) {
+            $serviceData['image'] = $request->file('image')->store('services', 'public');
+        }
 
         $tr = new GoogleTranslate('ar');
 
@@ -51,6 +62,7 @@ class ServiceController extends Controller
             $requiredDocumentsColumn = 'required_documents_' . $code;
             $serviceCharterColumn = 'service_charter_' . $code;
             $disclaimerColumn = 'disclaimer_' . $code;
+
             try {
                 if (in_array($nameColumn, (new Service())->getFillable())) {
                     $serviceData[$nameColumn] = $tr->setTarget($code)->translate($request->input('name_ar'));
@@ -75,8 +87,9 @@ class ServiceController extends Controller
 
         Service::create($serviceData);
 
-        return redirect()->route('admin.services.index')->with('success', 'تمت إضافة الخبر بنجاح!');
+        return redirect()->route('admin.services.index')->with('success', 'تمت إضافة الخدمة بنجاح!');
     }
+
 
     public function show(Service $service)
     {
@@ -104,10 +117,15 @@ class ServiceController extends Controller
             'required_documents_ar' => 'required|string',
             'service_charter_ar' => 'required|string',
             'disclaimer_ar' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'chanel' => 'required|string',
-            'price' => 'nullable|integer',
+            'price' => 'nullable|numeric', // Changed to numeric for consistency
             'status' => 'required|boolean',
+            'is_payed' => 'nullable|boolean', // Added validation for is_payed
         ]);
+
+        // Handle is_payed properly - checkbox sends '1' when checked, null when unchecked
+        $isPayed = $request->has('is_payed') && $request->is_payed == '1';
 
         $serviceData = [
             'name_ar' => $request->name_ar,
@@ -117,9 +135,14 @@ class ServiceController extends Controller
             'service_charter_ar' => $request->service_charter_ar,
             'disclaimer_ar' => $request->disclaimer_ar,
             'chanel' => $request->chanel,
-            'status' => $request->status,
-            'price' => $request->is_payed === 'on' ? $request->price : null,
+            'status' => (bool)$request->status,
+            'price' => $isPayed ? $request->price : null, // Only save price if service is paid
+            'is_payed' => $isPayed, // This will be true or false
         ];
+
+        if ($request->hasFile('image')) {
+            $serviceData['image'] = $request->file('image')->store('services', 'public');
+        }
 
         $tr = new GoogleTranslate('ar');
 
@@ -130,6 +153,7 @@ class ServiceController extends Controller
             $requiredDocumentsColumn = 'required_documents_' . $code;
             $serviceCharterColumn = 'service_charter_' . $code;
             $disclaimerColumn = 'disclaimer_' . $code;
+
             try {
                 if (in_array($nameColumn, (new Service())->getFillable())) {
                     $serviceData[$nameColumn] = $tr->setTarget($code)->translate($request->input('name_ar'));
@@ -154,7 +178,7 @@ class ServiceController extends Controller
 
         $service->update($serviceData);
 
-        return redirect()->route('admin.services.index')->with('success', 'تم تحديث الخبر بنجاح!');
+        return redirect()->route('admin.services.index')->with('success', 'تم تحديث الخدمة بنجاح!');
     }
 
     public function destroy(Service $service)

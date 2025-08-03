@@ -33,13 +33,13 @@ class MemberApplication extends Model
         'home_phone',
         'email',
         'po_box',
-        'membership_number', // Add this line
+        'membership_number',
         'status',
         'retirement_date',
         'contract_type',
         'early_reason',
         'professional_experiences',
-        'previous_experience',// إضافة العمود الجديد هنا
+        'previous_experience',
     ];
 
     /**

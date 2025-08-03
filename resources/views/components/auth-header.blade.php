@@ -37,9 +37,9 @@
                         <a href="{{ route('members.my-membership') }}">عضويتي</a>
                     </li>
 
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('members.recordEvents') }}">البرامج والفاعليات</a>
-                    </li>
+                    </li> --}}
 
                     <li>
                         <a href="{{ route('members.record') }}">سجل المعاملات</a>
@@ -56,10 +56,10 @@
 
                     <div class="app">
                         <span>تحميل التطبيق</span><br />
-                        <a href="#" class="container-btns-sidebar">Android
+                        <a href="{{ $settings?->android_url }}" class="container-btns-sidebar">Android
                             <img style="height: 27px;" src="{{ asset('assets/images/app.png') }}" alt="">
                         </a>
-                        <a href="#" class="container-btns-sidebar" href="index-En.html">IOS
+                        <a href="{{ $settings?->ios_url }}" class="container-btns-sidebar" href="index-En.html">IOS
                             <img style="height: 27px;" src="{{ asset('assets/images/app.png') }}" alt="">
                         </a>
                     </div>

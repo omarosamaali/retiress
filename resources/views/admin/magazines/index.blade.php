@@ -109,19 +109,20 @@
                         <img id="main_image_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: {{ old('main_image') ? 'block' : 'none' }};">
                     </div>
                 </div>
+<div class="col-md-6">
+    <div class="mb-3">
+        <label for="pdf_input" class="form-label">عنوان ملف PDF</label>
+        <input type="url" class="form-control" name="pdf" id="pdf_input" value="{{ old('pdf') }}" placeholder="أدخل رابط PDF صالح (مثل https://example.com/file.pdf)">
+        @error('pdf')
+        <div class="text-white">{{ $message }}</div>
+        @enderror
+        <!-- إزالة معاينة الصورة أو تحويلها إلى عرض الرابط إذا أردت -->
+        <!-- <img id="pdf_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: {{ old('pdf') ? 'block' : 'none' }};"> -->
+    </div>
+</div>
 
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="pdf_input" class="form-label">ملف pdf</label>
-                        <input type="file" class="form-control" name="pdf" id="pdf_input">
-                        @error('pdf')
-                            <div class="text-white">{{ $message }}</div>
-                        @enderror
-                        <img id="pdf_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: {{ old('pdf') ? 'block' : 'none' }};">
-                    </div>
-                </div>
 
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <div class="mb-3">
                         <label for="sub_image_input" class="form-label">الصورة الفرعية</label>
                         <input type="file" class="form-control" name="sub_image[]" id="sub_image_input" accept="image/*">
@@ -131,7 +132,7 @@
                             <div class="text-white">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="col-md-12">
                     <div class="mb-3">

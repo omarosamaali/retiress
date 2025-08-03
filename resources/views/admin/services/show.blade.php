@@ -77,6 +77,16 @@
                     <strong class="text-black">الإسم (عربي):</strong>
                     <span>{{ $service->name_ar }}</span>
                 </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="main_image_input" class="form-label font-bold">الصورة الرئيسية</label>
+                                        @error('image')
+                                        <div class="text-black">{{ $message }}</div>
+                                        @enderror
+                                        <img style="width: 200px;" id="image" src="{{ asset('storage/' . $service->image) }}" alt="معاينة الصورة الجديدة" class="about-preview mt-2">
+                                    </div>
+                                </div>
+
                 <div class="detail-item">
                     <strong class="text-black">الجمهور المستهدف (عربي):</strong>
                     <span>{{ $service->target_audience_ar }}</span>

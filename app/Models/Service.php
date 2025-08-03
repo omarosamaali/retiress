@@ -19,9 +19,11 @@ class Service extends Model
         'service_charter_en',
         'disclaimer_ar',
         'disclaimer_en',
+        'image',
         'chanel',
         'price',
         'status',
+        'is_payed',
     ];
 
     public function getStatusBadgeClassAttribute()

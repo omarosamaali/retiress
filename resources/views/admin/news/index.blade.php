@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'إدارة المجلات')
-@section('page-title', 'إدارة المجلات')
+@section('title', 'إدارة الأخبار')
+@section('page-title', 'إدارة الأخبار')
 
 @push('styles')
     <style>

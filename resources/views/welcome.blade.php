@@ -153,6 +153,7 @@
     <x-events-section :services="$services"></x-events-section>
     <x-latest-section :magazines="$magazines"></x-latest-section>
     <x-footer-section></x-footer-section>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
 </body>

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'تعديل الخبر')
-@section('page-title', 'تعديل الخبر')
+@section('title', 'تعديل الخدمة')
+@section('page-title', 'تعديل الخدمة')
 
 @push('styles')
     <style>
@@ -82,7 +82,7 @@
     <div class="add-section">
         <h5 class="mb-4">
             <i class="fas fa-newspaper ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
-            تعديل الخبر: {{ $service->title_ar }}
+            تعديل الخدمة: {{ $service->title_ar }}
         </h5>
 
         @if ($errors->any())
@@ -108,6 +108,17 @@
                         @error('name_ar')
                             <div class="text-white">{{ $message }}</div>
                         @enderror
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="main_image_input" class="form-label font-bold">الصورة الرئيسية</label>
+                        <input type="file" class="form-control" name="image" id="main_image_input" accept="image/*">
+                        @error('image')
+                        <div class="text-black">{{ $message }}</div>
+                        @enderror
+                        <img style="width: 200px;" id="image" src="{{ asset('storage/' . $service->image) }}" alt="معاينة الصورة الجديدة" 
+                        class="about-preview mt-2">
                     </div>
                 </div>
 
@@ -143,11 +154,21 @@
                         @enderror
                     </div>
                 </div>
+<div class="col-md-6">
+    <div class="mb-3">
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="togglePrice" name="is_payed" value="1" onchange="togglePriceField()" {{ old('is_payed', isset($service) ? $service->is_payed : false) ? 'checked' : '' }}>
+            <label class="form-check-label" for="togglePrice">
+                مدفوع ؟
+            </label>
+        </div>
+        @error('is_payed')
+        <div class="text-white">{{ $message }}</div>
+        @enderror
+    </div>
+</div>
 
-                <div class="mb-3">
-                    <input @checked($service->price) name="is_payed" type="checkbox" id="togglePrice" onchange="togglePriceField()">
-                    <label for="togglePrice">مدفوع ؟</label>
-                </div>
+
 
                 <div class="col-md-6" id="priceField" style="display: none;">
                     <div class="mb-3">
@@ -233,3 +254,117 @@
         togglePriceField()
     </script>
 @endpush
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainImageInput = document.getElementById('main_image_input');
+        const mainImagePreview = document.getElementById('main_image_preview');
+        const currentMainImagePreview = document.getElementById('current_main_image_preview');
+        const removeMainImageCheckbox = document.getElementById('remove_main_image');
+
+        const subImageInput = document.getElementById('sub_image_input');
+        const subImagePreview = document.getElementById('sub_image_preview');
+        const currentSubImagePreview = document.getElementById('current_sub_image_preview');
+        const removeSubImageCheckbox = document.getElementById('remove_sub_image');
+
+        if (mainImageInput) {
+            mainImageInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        mainImagePreview.src = e.target.result;
+                        mainImagePreview.style.display = 'block';
+                        if (currentMainImagePreview) {
+                            currentMainImagePreview.style.display = 'none';
+                        }
+                        if (removeMainImageCheckbox) {
+                            removeMainImageCheckbox.checked = false;
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    mainImagePreview.src = '#';
+                    mainImagePreview.style.display = 'none';
+                    if (currentMainImagePreview && !removeMainImageCheckbox.checked) {
+                        currentMainImagePreview.style.display = 'block';
+                    }
+                }
+            });
+        }
+
+        if (removeMainImageCheckbox) {
+            removeMainImageCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    if (currentMainImagePreview) {
+                        currentMainImagePreview.style.display = 'none';
+                    }
+                    if (mainImagePreview) {
+                        mainImagePreview.src = '#';
+                        mainImagePreview.style.display = 'none';
+                    }
+                    if (mainImageInput) {
+                        mainImageInput.value = '';
+                    }
+                } else {
+                    if (currentMainImagePreview && currentMainImagePreview.src &&
+                        currentMainImagePreview.src !== window.location.href) {
+                        currentMainImagePreview.style.display = 'block';
+                    }
+                }
+            });
+        }
+
+        if (subImageInput) {
+            subImageInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        subImagePreview.src = e.target.result;
+                        subImagePreview.style.display = 'block';
+                        if (currentSubImagePreview) {
+                            currentSubImagePreview.style.display = 'none';
+                        }
+                        if (removeSubImageCheckbox) {
+                            removeSubImageCheckbox.checked = false;
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    subImagePreview.src = '#';
+                    subImagePreview.style.display = 'none';
+                    if (currentSubImagePreview && !removeSubImageCheckbox.checked) {
+                        currentSubImagePreview.style.display = 'block';
+                    }
+                }
+            });
+        }
+
+        if (removeSubImageCheckbox) {
+            removeSubImageCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    if (currentSubImagePreview) {
+                        currentSubImagePreview.style.display = 'none';
+                    }
+                    if (subImagePreview) {
+                        subImagePreview.src = '#';
+                        subImagePreview.style.display = 'none';
+                    }
+                    if (subImageInput) {
+                        subImageInput.value = '';
+                    }
+                } else {
+                    if (currentSubImagePreview && currentSubImagePreview.src &&
+                        currentSubImagePreview.src !== window.location.href) {
+                        currentSubImagePreview.style.display = 'block';
+                    }
+                }
+            });
+        }
+    });
+
+</script>
+@endpush
+

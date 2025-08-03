@@ -21,6 +21,19 @@
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
 
     <style>
+        .download-btn {
+                text-align: center;
+                align-items: center;
+                font-size: 16px;
+                background: #6e4c3e;
+                color: white !important;
+                width: 300px;
+                margin: auto;
+                margin-top: 15px !important;
+                border-radius: 7px;
+                padding: 5px;
+
+        }
         @font-face {
             font-family: 'FontAwesome';
             src: url('https://www.easd.ae/site/assets/fontawesome/fa4/fonts/fontawesome-webfont.eot?v=4.7.0');
@@ -5157,19 +5170,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-5vc col-cvg my-mpv">
-                        {{-- The link on the title here is problematic if this is a detail page.
-                             It currently links back to itself with a query parameter.
-                             Consider if it should be just a <h2> or link to the main magazines list.
-                             For now, I'm making it link to the assumed magazines.show route for consistency. --}}
+{{-- <a href="{{ asset('storage/' . $magazines->pdf) }}" download class="download-btn">تحميل المجلة PDF</a> --}}
+<div class="col-5vc col-cvg my-mpv">
+
                         <a class="text-7zo text-b1x" href="{{ url('magazines/show/'.$magazines->id) }}">
                             <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}</h2>
                         </a>
                         <hr>
                         <div class="my-7z8 fs--oox">
                             <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{ \Carbon\Carbon::parse($magazines->date)->translatedFormat('Y-m-d') }}
-                            {{-- Check if start_time and end_time fields are meant for event-like durations.
-                                 If so, uncomment and translate 'from'/'to' keys. --}}
                             <i class="fa fa-calendar"></i> {{ __('app.from') }}: {{ \Carbon\Carbon::parse($magazines->start_time)->translatedFormat('h:i A') }}
                             {{ __('app.to') }}: {{ \Carbon\Carbon::parse($magazines->end_time)->translatedFormat('h:i A') }}
                         </div>
@@ -5178,32 +5187,6 @@
                         </p>
                         <p>{{ app()->getLocale() == 'ar' ? $magazines->long_description : $magazines->long_description_en }}</p>
                         <hr>
-                        {{-- Tags section, uncomment if needed and ensure translation for tag names --}}
-                        {{--
-                        <div>
-                            @foreach($magazines->tags as $tag)
-                            <a class="tag-qdr" href="javascript:void(0)">
-                                <span class="vrkqv"><i class="cvhcv tag-7vr mx-8rj"></i>{{ app()->getLocale() == 'ar' ? ($tag->name_ar ?? __('app.tag_name_fallback')) : ($tag->name_en ?? __('app.tag_name_fallback')) }}</span>
-                        </a>
-                        @endforeach
-                        <hr>
-                    </div>
-                    --}}
-                    <div class="text-jdt">
-                        @auth
-                        <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
-                            {{ __('app.subscribe_to_service') }}
-                            <a href="#" onclick="alert('{{ __('app.coming_soon') }}')">{{ __('app.click_here') }}</a>
-                        </div>
-                        @endauth
-
-                        @guest
-                        <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
-                            {{ __('app.request_to_join_please') }}
-                            <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }} <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
-                        </div>
-                        @endguest
-                    </div>
                 </div>
             </div>
         </div>

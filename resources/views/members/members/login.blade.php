@@ -729,35 +729,37 @@
                 <div class="row-x6c">
                     <div class="col-83z offset-md-f6v">
                         <div class="accordion-5w4">
-                            <form class="col-k19 sho-ph8" id="loginForm">
-                                @csrf
-                                <h1 class="text-o8q xygoj mb-pfh font-weight-dom">تسجيل الدخول</h1>
-                                <p class="b-r8w">قم بتسجيل الدخول إلى حسابك</p>
-                                <div class="p-72h rou-kih shadow-eoy">
-                                    <div class="label-dav mb-os5">
-                                        <input placeholder="البريد الإلكتروني" id="email" name="email" type="email" class="form-control-k7o fsbsy" required>
-                                        <div class="error-message" id="email-error"></div>
-                                    </div>
-                                    <div class="input-3ob">
-                                        <div class="label-dav input-fja">
-                                            <div class="input-f96">
-                                                <span class="input-fo3"><i class="fa-evk fa-pp5"></i></span>
-                                            </div>
-                                            <input placeholder="كلمة المرور" id="password" name="password" type="password" class="form-control-k7o fsbsy" required>
-                                            <div class="error-message" id="password-error"></div>
-                                        </div>
-                                    </div>
-                                    <div class="text-a3b mb-os5">
-                                        <a href="{{ route('members.forgetpassword') }}" class="fs--n1f">هل نسيت كلمة المرور؟</a>
-                                    </div>
-                                    <button type="submit" class="btn-qhr btn-primary-t6n btn-8b1 block-426">تسجيل الدخول</button>
-                                    <div class="text-oy9 mt--m56 text-a3b font-weight-dom">
-                                        <a href="{{ route('members.register') }}" class="block-kof success-xd5 text-a3b text-kkc">إنشاء حساب جديد</a>
-                                    </div>
-                                </div>
-                            </form>
-                            </div>
+<form class="col-k19 sho-ph8" id="loginForm">
+    @csrf
+    <h1 class="text-o8q xygoj mb-pfh font-weight-dom">{{ __('app.login') }}</h1>
+    <p class="b-r8w">{{ __('app.log_in_to_account') }}</p>
+    <div class="p-72h rou-kih shadow-eoy">
+        <div class="label-dav mb-os5">
+            <input placeholder="{{ __('app.email_placeholder') }}" id="email" name="email" type="email" class="form-control-k7o fsbsy" required>
+            <div class="error-message" id="email-error"></div>
+        </div>
+        <div class="input-3ob">
+            <div class="label-dav input-fja">
+                <div class="input-f96">
+                    <span class="input-fo3"><i class="fa-evk fa-pp5"></i></span>
+                </div>
+                <input placeholder="{{ __('app.password_placeholder') }}" id="password" name="password" type="password"
+                 class="form-control-k7o fsbsy" required>
+                <div class="error-message" id="password-error"></div>
+            </div>
+        </div>
+        <div class="text-a3b mb-os5">
+            <a href="{{ route('members.forgetpassword') }}" class="fs--n1f">{{ __('app.forgetpassword') }}</a>
 
+        </div>
+        <button type="submit" class="btn-qhr btn-primary-t6n btn-8b1 block-426">{{ __('app.login') }}</button>
+        <div class="text-oy9 mt--m56 text-a3b font-weight-dom">
+            <a href="{{ route('members.register') }}" class="block-kof success-xd5 text-a3b text-kkc">{{ __('app.register') }}</a>
+        </div>
+    </div>
+</form>
+
+                        </div>
                     </div>
                 </div>
             </div>

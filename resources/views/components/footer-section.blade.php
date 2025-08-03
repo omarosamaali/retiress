@@ -32,6 +32,14 @@
         color: black !important;
     }
 
+    .footer-icon {
+        left: 3px;
+        top: -1px;
+
+        position: relative;
+        font-size: 26px;
+    }
+
 </style>
 <div class="footer-35d" id="footer-section">
     <div class="container-he4">
@@ -78,21 +86,37 @@
                 <div class="title-opx">
                     <h4>{{ __('app.contact_us_footer') }}</h4>
                 </div>
-                <div class="address">
-                    <ul>
-                        <li>
-                            <i class="fa fa-mobile"></i>&nbsp;
-                            <span style="min-width: 77px !important;">{{ __('app.office_number') }}: </span> +97167044998
-                        </li>
-                        <li>
-                            <i class="fa fa-mobile"></i>&nbsp;
-                            <span style="min-width: 60px !important;">{{ __('app.whatsapp') }}: </span> +97167044998
-                        </li>
-                        <li>
-                            <i class="fa fa-envelope"></i>&nbsp;
-                            <span>{{ __('app.email') }}:</span> emiassor@uaeretired.ae
-                        </li>
-                    </ul>
+                <div>
+                    <div class="text-apb">
+                        <i class="fa-solid fa-house icon-custom"></i> <span class="text-o77"> العنوان : {{ $settings?->address }} </span>
+
+                    </div>
+                    <div class="text-apb">
+                        <i class="fa-solid fa-calendar icon-custom"></i> <span class="text-o77"> رقم المكتب : {{ $settings?->office_number }}
+
+
+                        </span>
+                    </div>
+                    <div class="text-apb">
+                        <i class="fa-solid fa-phone-volume icon-custom"></i> <span class="text-o77"> رقم الواتس : {{ $settings?->whatsapp }}</span>
+
+
+                    </div>
+                    <div class="text-apb">
+                        <i class="fa-solid fa-blender-phone icon-custom"></i> <span class="text-o77">
+                            <a class="stm-qoa" href="mailto:info@uaeca.ae"> البريد الإلكترني : {{ $settings?->email }}</a>
+                        </span>
+                    </div>
+                    <div class="text-apb">
+                        <i class="fa-solid fa-envelope icon-custom"></i> <span class="text-o77"> 
+                        {{ $settings?->work_days }}
+                        </span>
+                    </div>
+                    <div class="text-apb">
+                        <i class="fa-solid fa-envelope icon-custom"></i> <span class="text-o77">
+                        {{ $settings?->holidays }}
+                        </span>
+                    </div>
                 </div>
             </aside>
             <aside class="wid-6bk footer-8vj">
@@ -120,6 +144,30 @@
                             <span class="loading-t8z"><span class="mai-kfs"></span><span class="mai-wtd"></span><span></span></span>
                         </div>
                     </form>
+
+
+                    <ul class="social-set" style="margin-top: 10px;">
+                        <li>
+                            <a class="sociali" href="{{ $settings?->twitter }}" target="_blank" aria-label="Twitter">
+                                <i class="footer-icon fa fa-twitter fa-fw custom-icon" title="Twitter"></i></a></li>
+                        <li><a class="sociali" href="{{ $settings?->instagram }}" target="_blank" aria-label="Instagram">
+                                <i class="footer-icon fa fa-instagram fa-fw custom-icon" title="Instagram"></i></a></li>
+                        <li><a class="sociali" href="{{ $settings?->facebook }}" target="_blank" aria-label="Facebook">
+                                <i style="    left: 0px;
+    top: 1px;" class="footer-icon fa fa-facebook-square fa-fw custom-face" title="Facebook"></i></a></li>
+
+                        <li><a style="
+    top: -5px;
+    position: relative;
+
+" class="sociali" href="{{ $settings?->youtube }}" target="_blank" aria-label="Facebook">
+                                <i style="    left: 0px;
+    top: 1px;" class="footer-icon fa fa-youtube custom-face"></i>
+
+                            </a></li>
+
+                    </ul>
+
                 </div>
             </aside>
         </div>

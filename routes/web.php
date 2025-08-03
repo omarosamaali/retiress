@@ -9,6 +9,7 @@ use App\Models\Service;
 use App\Models\Magazine;
 use App\Models\Member;
 use App\Models\Committee;
+use App\Models\Settings;
 use App\Models\Council;
 use App\Http\Controllers\Auth\RegisterControllerUser;
 use App\Http\Controllers\Auth\LoginControllerUser;
@@ -19,6 +20,24 @@ use App\Http\Controllers\MemberApplicationsController;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\ChatController;
+use App\Models\MemberApplication;
+use App\Http\Controllers\TransactionController;
+use App\Models\Transaction;
+
+Route::get('/member/records', [TransactionController::class, 'record'])->name('members.record');
+
+Route::middleware(['auth'])->name('members.')->group(function () {
+    Route::get('/my-transactions', [TransactionController::class, 'record'])->name('record');
+    Route::post('/subscribe/{service}', [TransactionController::class, 'subscribe'])->name('subscribe');
+    // المسار الجديد لرفع الإيصال
+    Route::post('/transactions/{transaction}/upload-receipt', [TransactionController::class, 'uploadReceipt'])->name('upload_receipt');
+});
+// Event Subscription Route
+Route::post('/events/{event}/subscribe', [TransactionController::class, 'subscribeToEvent'])->name('events.subscribe');
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/services/{service}/subscribe', [TransactionController::class, 'subscribe'])->name('services.subscribe');
+});
 
 Route::get('/lang/{locale}', [LocalizationController::class, 'setLang'])
     ->name('set.locale');
@@ -50,7 +69,12 @@ Route::middleware('auth')->group(function () {
         return view('members.sidebar.recordEvents');
     })->name('members.recordEvents');
     Route::get('/members/record', function(){
-        return view('members.sidebar.record');
+        $transactions = Transaction::with('service')
+        ->where('user_id', Auth::id())
+        ->get();
+        $memberships = MemberApplication::where('user_id', Auth::id())->get();
+
+        return view('members.sidebar.record', compact('transactions', 'memberships'));
     })->name('members.record');
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
@@ -93,7 +117,7 @@ Route::get('/download-document/{documentType}/{memberApplicationId}', function (
             abort(404, 'Invalid document type.');
     }
 
-    if (!$filePath || !Storage::disk('public')->exists($filePath)) { // Assuming 'public' disk
+    if (!$filePath || !Storage::disk('public')->exists($filePath)) {
         abort(404, 'File not found.');
     }
     return Storage::disk('public')->download($filePath, $fileName);
@@ -241,7 +265,8 @@ Route::get('/', function () {
     $events = Event::latest()->get();
     $services = Service::latest()->limit(3)->get();
     $magazines = Magazine::latest()->first();
-    return view('welcome', compact('banner', 'news', 'events', 'services', 'magazines'));
+    $settings = Settings::getActiveContactInfo();
+    return view('welcome', compact('banner', 'news', 'events', 'services', 'magazines', 'settings'));
 })->name('/');
 
 require __DIR__ . '/auth.php';

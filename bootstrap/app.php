@@ -17,9 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         // تسجيل alias للـ middleware
-        $middleware->alias([
-            'localization' => \App\Http\Middleware\Localization::class,
-        ]);
+        // $middleware->alias([
+        //     'localization' => \App\Http\Middleware\Localization::class,
+        // ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

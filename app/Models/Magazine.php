@@ -16,12 +16,10 @@ class Magazine extends Model
         'description_en',
         'main_image',
         'pdf',
-        'sub_image',
         'price',
         'status',
     ];
 
-    protected $casts = ['sub_image' => 'array'];
 
     public function getMainImageUrlAttribute()
     {
@@ -33,14 +31,6 @@ class Magazine extends Model
         return $this->pdf ? Storage::url($this->pdf) : null;
     }
 
-    public function getSubImageUrlAttribute()
-    {
-        $imgs = [];
-        foreach ($this->sub_image as $image) {
-            $imgs[] = Storage::url($image);
-        }
-        return $imgs;
-    }
 
     public function getStatusBadgeClassAttribute()
     {

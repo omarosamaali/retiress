@@ -166,30 +166,6 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <label for="sub_image_input" class="form-label font-bold">الصورة الفرعية</label>
-                        <input type="file" class="form-control" name="sub_image[]" id="sub_image_input" accept="image/*" multiple>
-                        @error('sub_image')
-                            <div class="text-black">{{ $message }}</div>
-                        @enderror
-                        @if ($magazine->sub_image)
-                            <div id="sub_image_preview_container" class="d-flex mt-2">
-                                @foreach ($magazine->sub_image_url as $image)
-                                    <img id="current_sub_image_preview" src="{{ $image }}" alt="الصورة الحالية" class="news-preview mt-2 p-2 current-image-preview">
-                                @endforeach
-                            </div>
-
-                            <div class="form-check mt-2">
-                                <input class="form-check-input" type="checkbox" name="remove_sub_image" id="remove_sub_image">
-                                <label class="form-check-label text-black" for="remove_sub_image">
-                                    حذف الصور الفرعية الحالية
-                                </label>
-                            </div>
-                        @endif
-                        <img id="sub_image_preview" src="#" alt="معاينة الصورة الجديدة" class="news-preview mt-2" style="display: none;">
-                    </div>
-                </div>
 
                 <div class="col-md-12">
                     <div class="mb-3">

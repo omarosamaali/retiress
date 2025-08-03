@@ -8,9 +8,10 @@
             </a>
         </div>
         <div>
-            @foreach ($services as $service) {{-- تم تعديل serivce إلى service لتصحيح إملائي --}}
+            @foreach ($services as $service)
             <div class="service pe">
-                <img class="service-img" src="{{ asset('assets/images/pe.png') }}" alt="{{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}">
+                <img class="service-img" src="{{ asset('storage/' . $service->image) }}"
+                 alt="{{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}">
                 <h4 class="servicetitle">{{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}</h4>
                 <p class="servicedesc">{{ app()->getLocale() == 'ar' ? $service->description_ar : $service->description_en }}</p>
                 <a href="{{ route('services.show', $service) }}" class="servicelink">

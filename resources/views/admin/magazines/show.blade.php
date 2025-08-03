@@ -106,17 +106,7 @@
                         <span>لا توجد صورة</span>
                     @endif
                 </div>
-                <div class="detail-item">
-                    <strong class="text-black">الصور الفرعية:</strong>
-                    <div class="d-flex">
-                        @if ($magazine->sub_image)
-                            @foreach ($magazine->sub_image_url as $img)
-                                <img src="{{ $img }}" alt="{{ $magazine->title_ar }}" class="p-3 m-2 detail-image mt-2">
-                            @endforeach
-                        @else
-                            <span>لا توجد صور</span>
-                        @endif
-                    </div>
+
                 </div>
                 <div>
                     @if ($magazine->pdf)
