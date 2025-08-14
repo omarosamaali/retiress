@@ -256,7 +256,8 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="margin-top: 159px;">
+
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="status" class="form-label font-bold">الحالة</label>
@@ -274,8 +275,9 @@
             </div>
 
             <div class="col-md-6">
+
                 <div class="mb-3">
-                    <label for="membership_number" class="form-label font-bold">رقم العضوية </label>
+                    <label for="membership_number" class="form-label font-bold" >رقم العضوية </label>
                     <input readonly type="text" class="form-control" id="membership_number" name="membership_number" value="{{ old('membership_number', $member->membership_number) }}" required>
                     @error('membership_number')
                     <div class="text-black">{{ $message }}</div>
