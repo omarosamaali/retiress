@@ -156,9 +156,9 @@
                 </td>
                 <td>
                     <div class="action-buttons">
-                        <a href="{{ route('admin.member.show', $member->id) }}" class="btn btn-info btn-sm" title="عرض">
+                        {{-- <a href="{{ route('admin.manageMembership.show', $member->id) }}" class="btn btn-info btn-sm" title="عرض">
                             <i class="fas fa-eye"></i>
-                        </a>
+                        </a> --}}
                         <a href="{{ route('admin.manageMembership.edit', $member->id) }}" class="btn btn-warning btn-sm" title="تعديل">
                             <i class="fas fa-edit"></i>
                         </a>
