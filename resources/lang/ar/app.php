@@ -490,4 +490,12 @@ return [
     'company_message' => 'رسالتنا',
     'our_values' => 'قيمنا',
 
+    'pensions_and_social' => 'جهات صرف المعاشات والتامينات الاجتماعية',
+    'sharjah_social' => 'صندوق الشارقة للضمان الاجتماعي',
+    'dubai_social' => 'صندوق دبي للضمان الاجتماعي',
+    'pensions__social' => 'ادارة المعاشات والتامينات الاجتماعية دبي',
+    'ministry_of_defense' => 'وزارة الدفاع',
+    'ministry_of_interior' => 'وزارة الداخلية',
+    'police_dubai' => 'شرطة دبي',
+
 ];

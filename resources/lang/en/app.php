@@ -490,5 +490,12 @@ return [
     'company_message' => 'Company Message',
     'our_values' => 'Our Values',
 
+    'pensions_and_social' => 'Pensions and social security authorities',
+    'sharjah_social' => 'Sharjah Social Security Fund',
+    'dubai_social' => 'Dubai Social Security Fund',
+    'pensions__social' => 'Pensions and Social Security Administration, Dubai',
+    'ministry_of_defense' => 'Ministry of Defense',
+    'ministry_of_interior' => 'Ministry of Interior',
+    'police_dubai' => 'Dubai Police',
 
 ];

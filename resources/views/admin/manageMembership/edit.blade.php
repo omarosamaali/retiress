@@ -293,11 +293,20 @@
             </div>
      <div class="col-md-6">
          <div class="mb-3">
-             <label for="pension" class="form-label font-bold">تاريخ إنتهاء العضوية</label>
+             <label for="pension" class="form-label font-bold">جهة صرف المعاش التقاعدي</label>
   <select name="pension" id="pension" class="form-control">
-      <option value="" disabled selected>اختر...</option>
-      <option value="0" {{ $member->pension == 'male' ? 'selected' : '' }}>خيار أول</option>
-      <option value="1" {{ $member->pension == 'female' ? 'selected' : '' }}>خيار ثاني</option>
+
+
+                                  <option value="">{{ __('app.select') }}</option>
+                                  <option value="pensions_and_social" {{ $member->pension == 'pensions_and_social' ? 'selected' : '' }}>{{ __('app.pensions_and_social') }}</option>
+                                  <option value="sharjah_social" {{ $member->pension == 'sharjah_social' ? 'selected' : ''  }}>{{ __('app.sharjah_social') }}</option>
+                                  <option value="dubai_social" {{ $member->pension == 'dubai_social' ? 'selected' : '' }}>{{ __('app.dubai_social') }}</option>
+                                  <option value="pensions__social" {{ $member->pension == 'pensions__social' ? 'selected' : '' }}>{{ __('app.pensions__social') }}</option>
+                                  <option value="ministry_of_defense" {{ $member->pension == 'ministry_of_defense' ? 'selected' : '' }}>{{ __('app.ministry_of_defense') }}</option>
+                                  <option value="ministry_of_interior" {{ $member->pension == 'ministry_of_interior' ? 'selected' : '' }}>{{ __('app.ministry_of_interior') }}</option>
+                                  <option value="police_dubai" {{ $member->pension == 'police_dubai' ? 'selected' : '' }}>{{ __('app.police_dubai') }}</option>
+
+
   </select> @error('pension')
 
              <div class="text-black">{{ $message }}</div>

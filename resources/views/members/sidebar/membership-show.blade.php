@@ -2261,8 +2261,13 @@
                     <div class="content-mar">
                         <select required name="pension" id="ff_3_gender" class="form-control-27x">
                             <option value="">{{ __('app.select') }}</option>
-                            <option value="male">{{ __('app.male') }}</option>
-                            <option value="female">{{ __('app.female') }}</option>
+                            <option value="pensions_and_social">{{ __('app.pensions_and_social') }}</option>
+                            <option value="sharjah_social">{{ __('app.sharjah_social') }}</option>
+                            <option value="dubai_social">{{ __('app.dubai_social') }}</option>
+                            <option value="pensions__social">{{ __('app.pensions__social') }}</option>
+                            <option value="ministry_of_defense">{{ __('app.ministry_of_defense') }}</option>
+                            <option value="ministry_of_interior">{{ __('app.ministry_of_interior') }}</option>
+                            <option value="police_dubai">{{ __('app.police_dubai') }}</option>
                         </select>
                     </div>
                 </div>
