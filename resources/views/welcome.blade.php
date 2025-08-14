@@ -41,8 +41,8 @@
 
 <body ng-app="myApp">
     <div id="headerholdert" >
-        <img src="{{ Storage::url($banner->image) }}" alt="Header Background" style="top: 141px; position: relative; width:100%; height:82%; object-fit:cover;">
-
+        <img src="{{ Storage::url($banner->image) }}" alt="Header Background" style="top: 141px; position: relative; 
+            width:100%; height:82%; object-fit:fill;">
     </div>
     <x-guest-header></x-guest-header>
 
