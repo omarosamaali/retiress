@@ -234,4 +234,26 @@ class ManageMembershipController extends Controller
 
         return $number;
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        // ابحث عن العضو المراد حذفه
+        $member = MemberApplication::findOrFail($id);
+
+        // احذف الصورة الشخصية إذا كانت موجودة
+        if ($member->personal_photo_path && Storage::disk('public')->exists($member->personal_photo_path)) {
+            Storage::disk('public')->delete($member->personal_photo_path);
+        }
+
+        // يمكنك إضافة المزيد من المنطق هنا لحذف الملفات الأخرى
+
+        // احذف سجل العضوية من قاعدة البيانات
+        $member->delete();
+
+        // أعد التوجيه برسالة نجاح
+        return redirect()->route('admin.manageMembership.index')->with('success', 'تم حذف طلب العضوية بنجاح.');
+    }
 }

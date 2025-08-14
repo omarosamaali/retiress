@@ -162,10 +162,10 @@
                         <a href="{{ route('admin.manageMembership.edit', $member->id) }}" class="btn btn-warning btn-sm" title="تعديل">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <button class="btn btn-danger btn-sm" title="حذف" onclick="confirmDeleteModal('members', {{ $member->id }})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
+<button class="btn btn-danger btn-sm" title="حذف" onclick="confirmDeleteModal('manageMembership', {{ $member->id }})">
+    <i class="fas fa-trash"></i>
+</button> </div>
+
                 </td>
             </tr>
             @endforeach
@@ -221,16 +221,22 @@
     // تم حذف هذا الجزء من السكربت لتجنب الازدواجية حيث أن هذا الـ view هو لعرض البيانات فقط.
     // إذا كنت تحتاج هذه الوظائف، يجب أن تكون في view الإضافة/التعديل.
 
-    function confirmDeleteModal(type, id) {
-        const deleteForm = document.getElementById('deleteForm');
-        const deleteModalBody = document.getElementById('deleteModalBody');
+function confirmDeleteModal(type, id) {
+const deleteForm = document.getElementById('deleteForm');
+const deleteModalBody = document.getElementById('deleteModalBody');
 
-        deleteForm.action = `/admin/member/${id}`;
-        deleteModalBody.textContent = 'هل أنت متأكد من حذف محتوى صفحة "معلومات العضو ؟';
+// **هنا التعديل: استخدم المسار الصحيح للحذف**
+deleteForm.action = `{{ url('admin/manageMembership') }}/${id}`;
 
-        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        deleteModal.show();
-    }
+// يمكنك استخدام هذه الطريقة أيضًا:
+// deleteForm.action = `/admin/${type}/${id}`;
+// ولكن الطريقة الأولى أفضل لأنها تستخدم وظائف Laravel المساعدة
+
+deleteModalBody.textContent = 'هل أنت متأكد من حذف هذا العضو؟';
+
+const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+deleteModal.show();
+}
 
 </script>
 @endpush
