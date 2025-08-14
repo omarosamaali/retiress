@@ -1881,7 +1881,7 @@
                                                                            <label for="ff_3_full_name">{{ __('app.full_name') }}</label>
                                                                        </div>
                                                                        <div class="content-mar">
-                                                                           <input type="text" name="full_name" id="ff_3_full_name" class="form-control-27x" placeholder="{{ __('app.full_name_placeholder') }}">
+                                                                           <input type="text" name="full_name" required id="ff_3_full_name" class="form-control-27x" placeholder="{{ __('app.full_name_placeholder') }}">
                                                                        </div>
                                                                    </div>
                                                                </div>
@@ -1890,7 +1890,8 @@
                                                                        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
                                                                            <label for="ff_3_nationality">{{ __('app.nationality') }}</label>
                                                                        </div>
-                                                                       <select name="nationality" id="ff_3_nationality" class="form-control-27x">
+                                                                       <select name="nationality" id="ff_3_nationality" class="form-control-27x" required>
+
                                                                            <option value="">{{ __('app.select') }}</option>
                                                                            <option value="أفغانستان">{{ __('app.afghanistan') }}</option>
                                                                            <option value="ألبانيا">{{ __('app.albania') }}</option>
@@ -2096,10 +2097,11 @@
 
             <div class="ff-el-qhz">
                 <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                    <label for="ff_3_date_of_birth">{{ __('app.date_of_birth') }}</label>
+                    <label for="ff_3_date_of_birth" >{{ __('app.date_of_birth') }}</label>
                 </div>
                 <div class="content-mar">
-                    <input type="date" name="date_of_birth" id="ff_3_date_of_birth" class="form-control-27x">
+                    <input type="date" required name="date_of_birth" id="ff_3_date_of_birth" class="form-control-27x">
+
                 </div>
             </div>
             <div class="ff-el-qhz">
@@ -2107,7 +2109,8 @@
                     <label for="ff_3_gender">{{ __('app.gender') }}</label>
                 </div>
                 <div class="content-mar">
-                    <select name="gender" id="ff_3_gender" class="form-control-27x">
+                    <select required name="gender" id="ff_3_gender" class="form-control-27x">
+
                         <option value="">{{ __('app.select') }}</option>
                         <option value="male">{{ __('app.male') }}</option>
                         <option value="female">{{ __('app.female') }}</option>
@@ -2186,7 +2189,7 @@
         <div class="content-mar">
             <label class="ff_-pjz">
                 <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
-                <input type="file" name="passport_photo" id="ff_3_passport_photo" class="form-control-27x ff-screen-reader-i5l">
+                <input type="file" name="passport_photo" id="ff_3_passport_photo" required class="form-control-27x ff-screen-reader-i5l">
             </label>
             <div class="style-RizyE" id="style-RizyE"></div>
             <img id="preview_passport_photo" src="#" alt="{{ __('app.passport_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
@@ -2200,7 +2203,8 @@
         <div class="content-mar">
             <label class="ff_-pjz">
                 <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
-                <input type="file" name="national_id_photo" id="ff_3_national_id_photo" class="form-control-27x ff-screen-reader-i5l">
+                <input type="file" name="national_id_photo" id="ff_3_national_id_photo" required class="form-control-27x ff-screen-reader-i5l">
+
             </label>
             <div class="style-c1RkX" id="style-c1RkX"></div>
             <img id="preview_national_id_photo" src="#" alt="{{ __('app.national_id_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
@@ -2214,7 +2218,8 @@
         <div class="content-mar">
             <label class="ff_-pjz">
                 <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
-                <input type="file" name="personal_photo" id="ff_3_personal_photo" class="form-control-27x ff-screen-reader-i5l">
+                <input type="file" name="personal_photo" id="ff_3_personal_photo" required class="form-control-27x ff-screen-reader-i5l">
+
             </label>
             <div class="style-eGJft" id="style-eGJft"></div>
             <img id="preview_personal_photo" src="#" alt="{{ __('app.personal_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
@@ -2228,7 +2233,7 @@
         <div class="content-mar">
             <label class="ff_-pjz">
                 <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
-                <input type="file" name="educational_qualification_photo" id="ff_3_educational_qualification_photo" class="form-control-27x ff-screen-reader-i5l">
+                <input type="file" name="educational_qualification_photo" required id="ff_3_educational_qualification_photo" class="form-control-27x ff-screen-reader-i5l">
             </label>
             <div class="style-zUUYm" id="style-zUUYm"></div>
             <img id="preview_educational_qualification_photo" src="#" alt="{{ __('app.educational_qualification_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
@@ -2242,12 +2247,27 @@
         <div class="content-mar">
             <label class="ff_-pjz">
                 <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
-                <input type="file" name="retirement_card_photo" id="ff_3_retirement_card_photo" class="form-control-27x ff-screen-reader-i5l">
+                <input type="file" name="retirement_card_photo" required id="ff_3_retirement_card_photo" class="form-control-27x ff-screen-reader-i5l">
             </label>
             <div class="style-zUUYm" id="style-zUUYm"></div>
             <img id="preview_retirement_card_photo" src="#" alt="{{ __('app.retirement_card_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
         </div>
     </div>
+
+                <div class="ff-el-qhz">
+                    <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                        <label for="ff_3_gender">{{ __('app.pension') }}</label>
+                    </div>
+                    <div class="content-mar">
+                        <select required name="pension" id="ff_3_gender" class="form-control-27x">
+                            <option value="">{{ __('app.select') }}</option>
+                            <option value="male">{{ __('app.male') }}</option>
+                            <option value="female">{{ __('app.female') }}</option>
+                        </select>
+                    </div>
+                </div>
+
+
 </div>
 </div>
 

@@ -70,7 +70,7 @@
     @foreach ($aboutUs as $about)
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <h6 class="m-0 font-weight-bold text-dark">{{ __('about_us_keys.' . $about->key) }}</h6>
+                <h6 class="m-0 font-weight-bold text-dark">{{ __('app.' . $about->key) }}</h6>
                 {{-- @if (!$about)
         <a href="{{ route('admin.about-us.create', ['key' => 'about_us']) }}" class="btn btn-success btn-sm">إضافة معلومات عنا</a>
         @endif --}}

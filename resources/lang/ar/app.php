@@ -485,4 +485,9 @@ return [
     'no_receipt_yet' => 'لا يوجد ايصال بعد',
     'event' => 'فاعلية',
     'activate' => 'تفعيل مرة اخري',
+    'pension' => 'جهة صرف المعاش التقاعدي',
+    'admin_message' => 'رسالة رئيس مجلس الادارة',
+    'company_message' => 'رسالتنا',
+    'our_values' => 'قيمنا',
+
 ];

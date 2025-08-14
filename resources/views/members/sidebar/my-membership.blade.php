@@ -7069,6 +7069,14 @@
             margin-bottom: 10px;
         }
 
+        .form-group.required {
+            border: 2px solid #e74c3c;
+        }
+
+        .form-group.optional {
+            border: 2px solid #95a5a6;
+        }
+
     </style>
 
 </head>
@@ -7311,43 +7319,95 @@
             <h2>متطلبات التسجيل</h2>
             <div class="section">
                 <div class="container--inputs">
-                    <div class="form-group" style="width: 30%;">
-                        <label for="passport">صورة جواز السفر</label>
+                    <div class="form-group required" style="width: 30%;">
+                        <label for="passport">صورة جواز السفر <span style="color: red;">*</span></label>
                         <button onclick="downloadDocument('passport', {{ $memberApplication->id }})">تحميل</button>
                     </div>
-                    <div class="form-group" style="width: 30%;">
-                        <label for="id-photo">صورة الهوية الشخصية</label>
+                    <div class="form-group required" style="width: 30%;">
+                        <label for="id-photo">صورة الهوية الشخصية <span style="color: red;">*</span></label>
                         <button onclick="downloadDocument('national_id', {{ $memberApplication->id }})">تحميل</button>
                     </div>
-                    <div class="form-group" style="width: 30%;">
-                        <label for="personal-photo">صورة شخصية</label>
+                    <div class="form-group required" style="width: 30%;">
+                        <label for="personal-photo">صورة شخصية <span style="color: red;">*</span></label>
                         <button onclick="downloadDocument('personal_photo', {{ $memberApplication->id }})">تحميل</button>
                     </div>
                 </div>
                 <div class="container--inputs">
-                    <div class="form-group" style="width: 30%;">
+                    <div class="form-group optional" style="width: 30%;">
                         <label for="qualification">صورة من المؤهل العلمي</label>
                         <button onclick="downloadDocument('educational_qualification', {{ $memberApplication->id }})">تحميل</button>
                     </div>
-                    <div class="form-group" style="width: 30%;">
-                        <label for="retirement-proof">صورة بطاقة التقاعد (إثبات التقاعد)</label>
+                    <div class="form-group required" style="width: 30%;">
+                        <label for="retirement-proof">صورة بطاقة التقاعد (إثبات التقاعد) <span style="color: red;">*</span></label>
                         <button onclick="downloadDocument('retirement_card', {{ $memberApplication->id }})">تحميل</button>
                     </div>
                 </div>
             </div>
-
             <script>
                 function downloadDocument(documentType, memberApplicationId) {
                     const url = `/download-document/${documentType}/${memberApplicationId}`;
                     window.location.href = url;
                 }
 
+                function validateRequiredDocuments() {
+                    const requiredDocuments = ['passport', 'national_id', 'personal_photo', 'retirement_card'];
+                    const errors = [];
+
+                    requiredDocuments.forEach(docType => {
+                        // افترض أن لديك طريقة للتحقق من وجود الملف
+                        if (!checkIfDocumentExists(docType, {
+                                {
+                                    $memberApplication - > id
+                                }
+                            })) {
+                            const labels = {
+                                'passport': 'صورة جواز السفر'
+                                , 'national_id': 'صورة الهوية الشخصية'
+                                , 'personal_photo': 'صورة شخصية'
+                                , 'retirement_card': 'صورة بطاقة التقاعد'
+                            };
+                            errors.push(labels[docType]);
+                        }
+                    });
+
+                    if (errors.length > 0) {
+                        showErrors(errors);
+                        return false;
+                    }
+                    return true;
+                }
+
+                function checkIfDocumentExists(documentType, memberApplicationId) {
+                    // يمكنك استخدام AJAX للتحقق من وجود الملف
+                    // أو التحقق من متغير PHP إذا كان متاحاً
+                    // مثال:
+                    // return {{ isset($memberApplication->documents[$documentType]) ? 'true' : 'false' }};
+                    return false; // مؤقتاً للاختبار
+                }
+
+                function showErrors(errors) {
+                    // إزالة الأخطاء السابقة
+                    document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+                    // إضافة رسائل الخطأ
+                    errors.forEach(error => {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'error-message';
+                        errorDiv.style.cssText = 'color: red; background: #ffe6e6; padding: 10px; margin: 10px 0; border: 1px solid red; border-radius: 5px;';
+                        errorDiv.textContent = `مطلوب رفع: ${error}`;
+                        document.querySelector('.section').insertBefore(errorDiv, document.querySelector('.container--inputs'));
+                    });
+                }
+
+                // استدعاء الـ validation عند تحميل الصفحة أو عند الحاجة
+                document.addEventListener('DOMContentLoaded', function() {
+                    // يمكنك استدعاء validateRequiredDocuments() هنا أو عند الحاجة
+                });
+
             </script>
 
 
         </div>
-
-
         @else
         <div style="font-size: 34px; text-align: center; padding-top: 50px; padding-bottom: 50px;">
             لا يوجد طلب تسجيل عضوية بعد
@@ -7356,15 +7416,12 @@
             يمكنك التسجيل من هنا <a href="{{ route('members.membership') }}">اضافة طلب تسجيل</a>
         </div>
         @endif
-
     </div>
 
     <x-footer-section></x-footer-section>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
-
-
     </div>
 </body>
 

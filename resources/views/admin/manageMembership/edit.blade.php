@@ -4,70 +4,70 @@
 @section('page-title', 'تعديل طلب العضوية')
 
 @push('styles')
-        <style>
-            .experience-card {
-                transition: all 0.3s ease;
-                border: 1px solid #e9ecef !important;
-            }
+<style>
+    .experience-card {
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef !important;
+    }
 
-            .experience-card:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-                border-color: #007bff !important;
-            }
+    .experience-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        border-color: #007bff !important;
+    }
 
-            .experience-number {
-                position: absolute;
-                top: -10px;
-                right: 20px;
-                z-index: 10;
-            }
+    .experience-number {
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        z-index: 10;
+    }
 
-            .experience-number .badge {
-                width: 30px;
-                height: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 0.8rem;
-            }
+    .experience-number .badge {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+    }
 
-            .form-control-plaintext {
-                min-height: 38px;
-                display: flex;
-                align-items: center;
-            }
+    .form-control-plaintext {
+        min-height: 38px;
+        display: flex;
+        align-items: center;
+    }
 
-            .section-header {
-                border-bottom: 2px solid #007bff;
-                padding-bottom: 10px;
-            }
+    .section-header {
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+    }
 
-            .no-data-container {
-                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-                border-radius: 10px;
-                border: 2px dashed #dee2e6;
-            }
+    .no-data-container {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 10px;
+        border: 2px dashed #dee2e6;
+    }
 
-            .total-experience-summary {
-                border-left: 4px solid #007bff;
-            }
+    .total-experience-summary {
+        border-left: 4px solid #007bff;
+    }
 
-            @media (max-width: 768px) {
-                .experience-number {
-                    position: relative;
-                    top: 0;
-                    right: 0;
-                    text-align: center;
-                    margin-bottom: 15px;
-                }
+    @media (max-width: 768px) {
+        .experience-number {
+            position: relative;
+            top: 0;
+            right: 0;
+            text-align: center;
+            margin-bottom: 15px;
+        }
 
-                .experience-card {
-                    padding: 20px 15px !important;
-                }
-            }
+        .experience-card {
+            padding: 20px 15px !important;
+        }
+    }
 
-        </style>
+</style>
 
 <style>
     .images-upload {
@@ -199,11 +199,9 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
-                    
+
                     <label for="front_id" class="form-label font-bold">صورة البطاقة من الأمام</label>
-                    <input type="file" class="form-control" id="front_id" name="front_id" 
-                    value="{{ old('front_id', $member->front_id) }}" accept="image/*" 
-                    onchange="previewImage(this, 'front_preview')">
+                    <input type="file" class="form-control" id="front_id" name="front_id" value="{{ old('front_id', $member->front_id) }}" accept="image/*" onchange="previewImage(this, 'front_preview')">
                     @error('front_id')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -212,8 +210,7 @@
                     <div class="mt-3">
                         <div class="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center" style="min-height: 200px; background-color: #f9f9f9;">
                             @if(isset($member->front_id) && $member->front_id)
-                            <img  id="front_preview" src="{{ asset('storage/' . $member->front_id) }}" alt="صورة البطاقة من الأمام" 
-                            class="img-fluid rounded" style="max-height: 200px; object-fit: contain;">
+                            <img id="front_preview" src="{{ asset('storage/' . $member->front_id) }}" alt="صورة البطاقة من الأمام" class="img-fluid rounded" style="max-height: 200px; object-fit: contain;">
                             @else
                             <div id="front_preview" class="d-flex align-items-center justify-content-center h-100">
                                 <div class="text-muted">
@@ -230,9 +227,7 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="back_id" class="form-label font-bold">صورة البطاقة من الخلف</label>
-                    <input type="file" class="form-control" id="back_id" name="back_id"
-                     value="{{ old('back_id', $member->back_id) }}" accept="image/*" 
-                     onchange="previewImage(this, 'back_preview')">
+                    <input type="file" class="form-control" id="back_id" name="back_id" value="{{ old('back_id', $member->back_id) }}" accept="image/*" onchange="previewImage(this, 'back_preview')">
                     @error('back_id')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -277,7 +272,7 @@
             <div class="col-md-6">
 
                 <div class="mb-3">
-                    <label for="membership_number" class="form-label font-bold" >رقم العضوية </label>
+                    <label for="membership_number" class="form-label font-bold">رقم العضوية </label>
                     <input readonly type="text" class="form-control" id="membership_number" name="membership_number" value="{{ old('membership_number', $member->membership_number) }}" required>
                     @error('membership_number')
                     <div class="text-black">{{ $message }}</div>
@@ -286,21 +281,31 @@
             </div>
         </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="mb-3">
-                            <label for="expiration_date" class="form-label font-bold">تاريخ إنتهاء العضوية</label>
-                            <input type="datetime-local"
-
- class="form-control" id="expiration_date" name="expiration_date" 
-                                value="{{ old('expiration_date', $member->expiration_date) }}" required>
-                             @error('status')
-                            <div class="text-black">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="expiration_date" class="form-label font-bold">تاريخ إنتهاء العضوية</label>
+                    <input type="datetime-local" class="form-control" id="expiration_date" name="expiration_date" value="{{ old('expiration_date', $member->expiration_date) }}" required>
+                    @error('status')
+                    <div class="text-black">{{ $message }}</div>
+                    @enderror
                 </div>
+            </div>
+     <div class="col-md-6">
+         <div class="mb-3">
+             <label for="pension" class="form-label font-bold">تاريخ إنتهاء العضوية</label>
+  <select name="pension" id="pension" class="form-control">
+      <option value="" disabled selected>اختر...</option>
+      <option value="0" {{ $member->pension == 'male' ? 'selected' : '' }}>خيار أول</option>
+      <option value="1" {{ $member->pension == 'female' ? 'selected' : '' }}>خيار ثاني</option>
+  </select> @error('pension')
+
+             <div class="text-black">{{ $message }}</div>
+             @enderror
+         </div>
+     </div>
+
+        </div>
 
         <div class="row">
             <div class="col-md-6">
@@ -316,7 +321,7 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="date_of_birth" class="form-label font-bold">تاريخ الميلاد </label>
-<input readonly type="text" class="form-control" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth', $member->date_of_birth ? $member->date_of_birth->format('Y-m-d') : '') }}" required>
+                    <input readonly type="text" class="form-control" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth', $member->date_of_birth ? $member->date_of_birth->format('Y-m-d') : '') }}" required>
 
                     @error('date_of_birth')
                     <div class="text-black">{{ $message }}</div>
@@ -329,8 +334,7 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="mobile_phone" class="form-label font-bold">الهاتف المحمول</label>
-                    <input readonly type="text" class="form-control" id="mobile_phone" name="mobile_phone" 
-                    value="{{ old('mobile_phone', $member->mobile_phone) }}" required>
+                    <input readonly type="text" class="form-control" id="mobile_phone" name="mobile_phone" value="{{ old('mobile_phone', $member->mobile_phone) }}" required>
                     @error('mobile_phone')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -340,8 +344,7 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="home_phone" class="form-label font-bold">هاتف المنزل </label>
-                    <input readonly type="text" class="form-control" id="home_phone" name="home_phone" 
-                    value="{{ old('home_phone', $member->home_phone) }}" required>
+                    <input readonly type="text" class="form-control" id="home_phone" name="home_phone" value="{{ old('home_phone', $member->home_phone) }}" required>
                     @error('home_phone')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -353,9 +356,9 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="gender" class="form-label font-bold">النوع</label>
-        <input readonly type="text" class="form-control" id="gender_display" value="{{ old('gender', $member->gender == 'female' ? 'انثي' : 'ذكر') }}" required>
+                    <input readonly type="text" class="form-control" id="gender_display" value="{{ old('gender', $member->gender == 'female' ? 'انثي' : 'ذكر') }}" required>
 
-                             <input type="hidden" name="gender" value="{{ $member->gender }}">
+                    <input type="hidden" name="gender" value="{{ $member->gender }}">
 
 
                     @error('gender')
@@ -442,7 +445,7 @@
             </div>
         </div>
 
-        
+
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
@@ -470,14 +473,14 @@
             @endif
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="retirement_date" class="form-label font-bold">تاريخ التقاعد </label>
-<input readonly type="text" class="form-control" id="retirement_date" name="retirement_date" value="{{ old('retirement_date', $member->retirement_date ? $member->retirement_date->format('d/m/Y') : '') }}" required>
-
+                    <label for="retirement_date" class="form-label font-bold">تاريخ التقاعد</label>
+                    <input type="datetime-local" class="form-control" id="retirement_date" name="retirement_date" value="{{ old('retirement_date', $member->retirement_date ? $member->retirement_date->format('Y-m-d\TH:i') : '') }}" required>
                     @error('retirement_date')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
+
 
         </div>
 
@@ -508,22 +511,22 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="marital_status" class="form-label font-bold">الحالة الإجتماعية</label>
-                        <div name="marital status" class="form-control">
-                                @if($member->marital_status == 'single')
-                                <div style="font-size: 15px; background-color: unset;">أعزب / عزباء</div>
-                                @elseif($member->marital_status == 'married')
-                                <div style="font-size: 15px; background-color: unset;">متزوج / متزوجات</div>
-                                @elseif($member->marital_status == 'divorced')
-                                <div style="font-size: 15px; background-color: unset;">مطلق / مطلقه</div>
-                                @elseif($member->marital_status == 'widowed')
-                                <div style="font-size: 15px; background-color: unset;">أرمل / أرملة</div>
-                                @elseif($member->marital_status == 'separated')
-                                <div style="font-size: 15px; background-color: unset;">منفصل / منفصلة</div>
-                                @elseif($member->marital_status == 'engaged')
-                                <div style="font-size: 15px; background-color: unset;">مخطوب / مخطوبة</div>
-                                @endif
-                            <input type="text" hidden name="marital_status" value="{{ $member->marital_status }}" id="">
-                        </div>
+                    <div name="marital status" class="form-control">
+                        @if($member->marital_status == 'single')
+                        <div style="font-size: 15px; background-color: unset;">أعزب / عزباء</div>
+                        @elseif($member->marital_status == 'married')
+                        <div style="font-size: 15px; background-color: unset;">متزوج / متزوجات</div>
+                        @elseif($member->marital_status == 'divorced')
+                        <div style="font-size: 15px; background-color: unset;">مطلق / مطلقه</div>
+                        @elseif($member->marital_status == 'widowed')
+                        <div style="font-size: 15px; background-color: unset;">أرمل / أرملة</div>
+                        @elseif($member->marital_status == 'separated')
+                        <div style="font-size: 15px; background-color: unset;">منفصل / منفصلة</div>
+                        @elseif($member->marital_status == 'engaged')
+                        <div style="font-size: 15px; background-color: unset;">مخطوب / مخطوبة</div>
+                        @endif
+                        <input type="text" hidden name="marital_status" value="{{ $member->marital_status }}" id="">
+                    </div>
 
                     @error('marital_status')
                     <div class="text-black">{{ $message }}</div>

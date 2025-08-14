@@ -485,5 +485,10 @@ return [
     'no_receipt_yet' => 'No receipt yet',
     'event' => 'Event',
     'activate' => 'Activate ',
+    'pension' => 'Pension disbursement authority',
+    'admin_message' => 'Admin Message',
+    'company_message' => 'Company Message',
+    'our_values' => 'Our Values',
+
 
 ];

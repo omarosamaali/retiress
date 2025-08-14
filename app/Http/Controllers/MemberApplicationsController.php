@@ -36,16 +36,15 @@ class MemberApplicationsController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'يجب تسجيل الدخول لإكمال هذه العملية.');
         }
-        
+
         $userId = Auth::id();
 
         $existingApplication = MemberApplication::where('user_id', $userId)->first();
         if ($existingApplication) {
-            // إذا كان هناك طلب موجود، قم بإعادة التوجيه مع رسالة خطأ
             return redirect()->back()->with('error', 'لقد قمت بتقديم طلب بالفعل. لا يمكن تقديم أكثر من طلب واحد.');
         }
 
-        // Validate the input data
+        // Validate the input data, including the new pension field
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'nationality' => 'required|string|max:255',
@@ -62,6 +61,7 @@ class MemberApplicationsController extends Controller
             'retirement_date' => 'nullable|date',
             'contract_type' => 'nullable|string|in:نظامي,مبكر',
             'early_reason' => 'nullable|string|max:500',
+            'pension' => 'nullable|string|max:255', // Added validation for pension
             'passport_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
             'national_id_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
             'personal_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
@@ -107,9 +107,10 @@ class MemberApplicationsController extends Controller
             }
         }
 
-        // Add user_id and membership_number
+        // Add user_id, membership_number, and pension
         $data['user_id'] = $user_id;
         $data['membership_number'] = $this->generateMembershipNumber();
+        $data['pension'] = $request->input('pension'); // Include pension in the data
 
         // Handle professional experiences
         if ($request->has('professional_experience')) {
@@ -147,9 +148,6 @@ class MemberApplicationsController extends Controller
     /**
      * معالجة طلب تجديد العضوية.
      */
-    /**
-     * معالجة طلب تجديد العضوية.
-     */
     public function renew(Request $request)
     {
         if (!Auth::check()) {
@@ -161,6 +159,7 @@ class MemberApplicationsController extends Controller
             'membership_id_kw' => 'required|string|max:255',
             'national_id_kw' => 'required|string|max:255',
             'email_kw' => 'required|email|max:255',
+            'pension' => 'nullable|string|max:255', // Added validation for pension
         ]);
 
         // Find the existing application
@@ -180,6 +179,7 @@ class MemberApplicationsController extends Controller
         $newApplicationData['membership_number'] = $this->generateMembershipNumber();
         $newApplicationData['created_at'] = now();
         $newApplicationData['updated_at'] = now();
+        $newApplicationData['pension'] = $request->input('pension'); // Include pension in the renewal data
 
         // Optionally add renewal-specific fields
         // $newApplicationData['status'] = 'renewed';
@@ -192,18 +192,16 @@ class MemberApplicationsController extends Controller
         ], 200);
     }
 
-    // Assuming you fetch a specific application
-    public function showRequirements() // <--- No parameter expected here
+    /**
+     * Display membership requirements for the authenticated user.
+     */
+    public function showRequirements()
     {
         // Get the member application for the currently authenticated user
         $memberApplication = MemberApplication::where('user_id', Auth::user()->id)->first();
 
         // Check if a membership application was found for the user
- 
-
-        // If you still need a $membership variable from somewhere else, define it here
-        // For example, if 'membership' refers to $memberApplication itself or another related model
-        $membership = $memberApplication; // Or fetch it if it's a different model
+        $membership = $memberApplication; // Assuming membership is the same as memberApplication
 
         return view('members.sidebar.my-membership', compact('memberApplication', 'membership'));
     }

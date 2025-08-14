@@ -20,114 +20,127 @@
     <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
     <style>
-.quoteSwiper {
-position: absolute;
-    top: 73%;
-    left: 75%;
+        .quoteSwiper {
+            position: absolute;
+            top: 73%;
+            left: 75%;
 
-transform: translate(-50%, -50%);
-width: 100%; max-width: 420px;
-height: 220px;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 420px;
+            height: 220px;
 
-padding: 20px;
-background: rgba(255, 255, 255, 0.85); /* Semi-transparent white background */
-border-radius: 10px;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-z-index: 10;
-}
+            padding: 20px;
+            /* background: rgba(255, 255, 255, 0.85); */
+            /* Semi-transparent white background */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
 
-.quote-slide {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 15px;
-text-align: right; /* Right-aligned text for Arabic */
-direction: rtl; /* Ensure RTL for Arabic content */
-}
+        .quote-slide {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            text-align: right;
+            /* Right-aligned text for Arabic */
+            direction: rtl;
+            /* Ensure RTL for Arabic content */
+        }
 
-.quote-text {
-flex: 1;
-padding-left: 15px;
-}
+        .quote-text {
+            flex: 1;
+            padding-left: 15px;
+        }
 
-.quote-text blockquote {
-font-size: 16px; /* Slightly smaller font for better fit */
-line-height: 1.5;
-color: #333;
-margin: 0;
-padding: 10px;
-border-right: 4px solid #704e40; /* Green accent */
-}
+        .quote-text blockquote {
+            font-size: 16px;
+            /* Slightly smaller font for better fit */
+            line-height: 1.5;
+            color: #333;
+            margin: 0;
+            padding: 10px;
+            border-right: 4px solid #704e40;
+            /* Green accent */
+        }
 
-.quote-image img {
-max-width: 80px; /* Smaller image size */
-height: auto;
-object-fit: contain;
-}
+        .quote-image img {
+            max-width: 80px;
+            /* Smaller image size */
+            height: auto;
+            object-fit: contain;
+        }
 
-.swiper-button-prev,
-.swiper-button-next {
-color: #704e40; /* Green color */
-background: rgba(255, 255, 255, 0.9);
-border-radius: 50%;
-width: 35px;
-height: 35px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
+        .swiper-button-prev,
+        .swiper-button-next {
+            color: #704e40;
+            /* Green color */
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.swiper-button-prev:after,
-.swiper-button-next:after {
-font-size: 18px;
-}
+        .swiper-button-prev:after,
+        .swiper-button-next:after {
+            font-size: 18px;
+        }
 
-.swiper-pagination-bullet {
-background: #704e40;
-opacity: 0.5;
-}
+        .swiper-pagination-bullet {
+            background: #704e40;
+            opacity: 0.5;
+        }
 
-.swiper-pagination-bullet-active {
-opacity: 1;
-background: #704e40;
-}
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #704e40;
+        }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-.quoteSwiper {
-max-width: 90%; /* Slightly narrower on mobile */
-padding: 15px;
-}
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .quoteSwiper {
+                max-width: 90%;
+                /* Slightly narrower on mobile */
+                padding: 15px;
+            }
 
-.quote-slide {
-flex-direction: column;
-text-align: center;
-}
+            .quote-slide {
+                flex-direction: column;
+                text-align: center;
+            }
 
-.quote-text {
-padding-left: 0;
-margin-bottom: 15px;
-}
+            .quote-text {
+                padding-left: 0;
+                margin-bottom: 15px;
+            }
 
-.quote-text blockquote {
-font-size: 14px; /* Smaller font on mobile */
-}
+            .quote-text blockquote {
+                font-size: 14px;
+                /* Smaller font on mobile */
+            }
 
-.quote-image img {
-max-width: 60px; /* Smaller image on mobile */
-}
+            .quote-image img {
+                max-width: 60px;
+                /* Smaller image on mobile */
+            }
 
-.swiper-button-prev,
-.swiper-button-next {
-width: 30px;
-height: 30px;
-}
+            .swiper-button-prev,
+            .swiper-button-next {
+                width: 30px;
+                height: 30px;
+            }
 
-.swiper-button-prev:after,
-.swiper-button-next:after {
-font-size: 16px;
-}
-} /* تأثير السحاب الخفيف */
+            .swiper-button-prev:after,
+            .swiper-button-next:after {
+                font-size: 16px;
+            }
+        }
+
+        /* تأثير السحاب الخفيف */
 
         .floating-clouds {
             position: fixed;
@@ -313,6 +326,10 @@ font-size: 16px;
             }
         }
 
+        .swiper-slide {
+            background: #cfa046c7 !important;
+        }
+
     </style>
 </head>
 
@@ -324,33 +341,32 @@ font-size: 16px;
         <div class="cloud cloud3"></div>
         <div class="cloud cloud4"></div>
         <div class="cloud cloud5"></div>
-        <!-- سحابات إضافية للاستمرارية -->
         <div class="cloud cloud1" style="animation-delay: -40s;"></div>
         <div class="cloud cloud2" style="animation-delay: -45s;"></div>
         <div class="cloud cloud3" style="animation-delay: -50s;"></div>
     </div>
 
-<div id="headerholdert" style="position: relative; width: 100%; height: 82vh; overflow: hidden;     margin-top: 145px;">
-    <img src="{{ Storage::url($banner->image) }}" alt="Header Background" style="width: 100%; height: 100%; object-fit: fill;">
-    <div class="swiper quoteSwiper">
-        <div class="swiper-wrapper">
-            @foreach (\App\Models\Slider::where('is_active', true)->get() as $slider)
-            <div class="swiper-slide">
-                <div class="quote-slide">
-                    <div class="quote-text">
-                        <blockquote>
-                            {{ $slider->quote_ar }}
-                        </blockquote>
+    <div id="headerholdert" style="position: relative; width: 100%; height: 82vh; overflow: hidden;     margin-top: 145px;">
+        <img src="{{ Storage::url($banner->image) }}" alt="Header Background" style="width: 100%; height: 100%; object-fit: fill;">
+        <div class="swiper quoteSwiper">
+            <div class="swiper-wrapper">
+                @foreach (\App\Models\Slider::where('is_active', true)->get() as $slider)
+                <div class="swiper-slide">
+                    <div class="quote-slide">
+                        <div class="quote-text">
+                            <blockquote style="color: white;">
+                                {{ $slider->quote_ar }}
+                            </blockquote>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-pagination"></div>
         </div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-pagination"></div>
     </div>
-</div>
 
 
     <x-guest-header></x-guest-header>

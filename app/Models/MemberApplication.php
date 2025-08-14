@@ -40,6 +40,7 @@ class MemberApplication extends Model
         'early_reason',
         'professional_experiences',
         'previous_experience',
+        'pension',
     ];
 
     /**
