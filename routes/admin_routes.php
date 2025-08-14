@@ -23,8 +23,17 @@ use App\Http\Controllers\Admin\CommitteeController;
 use App\Http\Controllers\Admin\ManageMembershipController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\TransactionController;
-
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SliderController;
+
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('/sliders', [SliderController::class, 'index'])->name('sliders.index');
+    Route::get('/sliders/create', [SliderController::class, 'create'])->name('sliders.create');
+    Route::post('/sliders', [SliderController::class, 'store'])->name('sliders.store');
+    Route::get('/sliders/{slider}/edit', [SliderController::class, 'edit'])->name('sliders.edit');
+    Route::put('/sliders/{slider}', [SliderController::class, 'update'])->name('sliders.update');
+    Route::delete('/sliders/{slider}', [SliderController::class, 'destroy'])->name('sliders.destroy');
+});
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     Route::post('/transactions/{transaction}/activate', [TransactionController::class, 'activate'])->name('transactions.activate');

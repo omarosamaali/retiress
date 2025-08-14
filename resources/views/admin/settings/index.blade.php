@@ -255,157 +255,154 @@
 </div>
 @endif
 
-    <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-cogs"></i> إدارة بيانات التواصل</h1>
-            <p>تحكم في جميع معلومات التواصل الخاصة بموقعك</p>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-cogs"></i> إدارة بيانات التواصل</h1>
+        <p>تحكم في جميع معلومات التواصل الخاصة بموقعك</p>
+    </div>
 
-        <div class="alert">
-            <div class="alert-icon">ℹ</div>
-            <div class="alert-content">
-                <strong>ملحوظة:</strong> من هنا يمكنك إدارة جميع بيانات التواصل الخاصة بالموقع مثل أرقام الهاتف ولينكات السوشيال ميديا
+    <div class="alert">
+        <div class="alert-icon">ℹ</div>
+        <div class="alert-content">
+            <strong>ملحوظة:</strong> من هنا يمكنك إدارة جميع بيانات التواصل الخاصة بالموقع مثل أرقام الهاتف ولينكات السوشيال ميديا
+        </div>
+    </div>
+
+    <div class="form-container">
+        <form id="contactForm" method="post" action="{{ route('settings.store') }}">
+            @csrf
+            <!-- معلومات الاتصال الأساسية -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-info-circle"></i>
+                    معلومات الاتصال الأساسية
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-home"></i> العنوان
+                    </label>
+                    <input value="{{ $settings?->address }}" type="text" class="form-input" name="address" id="address" placeholder="أدخل العنوان">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calendar"></i> رقم المكتب
+                    </label>
+                    <input value="{{ $settings?->office_number }}" type="text" class="form-input" id="officeNumber" name="office_number" placeholder="أدخل رقم المكتب">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-phone-volume"></i> رقم الواتس
+                    </label>
+                    <input value="{{ $settings?->whatsapp }}" type="text" class="form-input" id="whatsapp" name="whatsapp" placeholder="أدخل رقم الواتس آب">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-envelope"></i> البريد الإلكتروني
+                    </label>
+                    <input value="{{ $settings?->email }}" type="email" class="form-input" id="email" name="email" placeholder="أدخل البريد الإلكتروني">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-clock"></i> أيام العمل
+                    </label>
+                    <textarea class="form-input form-textarea" id="workDays" name="work_days" placeholder="مثال: من الأحد إلى الخميس من الساعة 8 إلى 3 ظهراً">{{ $settings?->work_days }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calendar-times"></i> أيام العطل الرسمية
+                    </label>
+                    <textarea class="form-input form-textarea" id="holidays" name="holidays" placeholder="مثال: الجمعة والسبت والأحد">{{ $settings?->holidays }}</textarea>
+                </div>
             </div>
-        </div>
 
-        <div class="form-container">
-            <form id="contactForm" method="post" action="{{ route('settings.store') }}">
-                @csrf
-                <!-- معلومات الاتصال الأساسية -->
-                <div class="form-section">
-                    <div class="section-title">
-                        <i class="fas fa-info-circle"></i>
-                        معلومات الاتصال الأساسية
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-home"></i> العنوان
-                        </label>
-                        <input value="{{ $settings?->address }}" type="text" class="form-input" name="address" id="address" placeholder="أدخل العنوان">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-calendar"></i> رقم المكتب
-                        </label>
-                        <input value="{{ $settings?->office_number }}" type="text" class="form-input" id="officeNumber" name="office_number" placeholder="أدخل رقم المكتب">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-phone-volume"></i> رقم الواتس
-                        </label>
-                        <input value="{{ $settings?->whatsapp }}" type="text" class="form-input" id="whatsapp" name="whatsapp" placeholder="أدخل رقم الواتس آب">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-envelope"></i> البريد الإلكتروني
-                        </label>
-                        <input value="{{ $settings?->email }}" type="email" class="form-input" id="email" name="email" placeholder="أدخل البريد الإلكتروني">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-clock"></i> أيام العمل
-                        </label>
-                        <textarea class="form-input form-textarea" id="workDays" name="work_days" 
-                        placeholder="مثال: من الأحد إلى الخميس من الساعة 8 إلى 3 ظهراً">{{ $settings?->work_days }}</textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">
-                            <i class="fas fa-calendar-times"></i> أيام العطل الرسمية
-                        </label>
-                        <textarea class="form-input form-textarea" id="holidays" name="holidays" placeholder="مثال: الجمعة والسبت والأحد">{{ $settings?->holidays }}</textarea>
-                    </div>
+            <!-- روابط وسائل التواصل الاجتماعي -->
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-share-alt"></i>
+                    روابط وسائل التواصل الاجتماعي
                 </div>
 
-                <!-- روابط وسائل التواصل الاجتماعي -->
-                <div class="form-section">
-                    <div class="section-title">
-                        <i class="fas fa-share-alt"></i>
-                        روابط وسائل التواصل الاجتماعي
+                <div class="social-section">
+                    <div class="social-item">
+                        <label class="social-label">
+                            <i class="fab fa-facebook" style="color: #1877f2;"></i>
+                            فيسبوك
+                        </label>
+                        <input value="{{ $settings?->facebook_url }}" name="facebook_url" type="url" class="form-input" id="facebook" placeholder="https://www.facebook.com/...">
                     </div>
 
-                    <div class="social-section">
-                        <div class="social-item">
-                            <label class="social-label">
-                                <i class="fab fa-facebook" style="color: #1877f2;"></i>
-                                فيسبوك
-                            </label>
-                            <input value="{{ $settings?->facebook_url }}" name="facebook_url" type="url" class="form-input" id="facebook" placeholder="https://www.facebook.com/...">
-                        </div>
-
-                        <div class="social-item">
-                            <label class="social-label">
-                                <i class="fab fa-instagram" style="color: #e4405f;"></i>
-                                إنستجرام
-                            </label>
-                            <input value="{{ $settings?->instagram_url }}" type="url" name="instagram_url" class="form-input" id="instagram" placeholder="https://www.instagram.com/...">
-                        </div>
-
-                        <div class="social-item">
-                            <label class="social-label">
-                                <i class="fab fa-twitter" style="color: #1da1f2;"></i>
-                                تويتر
-                            </label>
-                            <input value="{{ $settings?->tiktok_url }}" type="url" name="tiktok_url" class="form-input" id="twitter" placeholder="https://twitter.com/...">
-                        </div>
-
-                        <div class="social-item">
-                            <label class="social-label">
-                                <i class="fab fa-youtube" style="color: #ff0000;"></i>
-                                يوتيوب
-                            </label>
-                            <input value="{{ $settings?->youtube_url }}" type="url" name="youtube_url" class="form-input" id="youtube" placeholder="https://www.youtube.com/...">
-                        </div>
-
-                                                <div class="social-item">
-                                                    <label class="social-label">
-                                                        <i class="fab fa-apple" style="color: #1877f2;"></i>
-                                                        IOS
-                                                    </label>
-                                                    <input value="{{ $settings?->ios_url }}" name="ios_url" type="url" class="form-input"
-                                                    id="ios_url" placeholder="https://www.ios.com/...">
-                                                </div>
-
-                                                <div class="social-item">
-                                                    <label class="social-label">
-                                                        <i class="fab fa-android" style="color: #e4405f;"></i>
-                                                        Android
-                                                    </label>
-                                                    <input value="{{ $settings?->android_url }}" type="url" name="android_url" 
-                                                    class="form-input" id="instagram" placeholder="https://www.android.com/...">
-                                                </div>
-
+                    <div class="social-item">
+                        <label class="social-label">
+                            <i class="fab fa-instagram" style="color: #e4405f;"></i>
+                            إنستجرام
+                        </label>
+                        <input value="{{ $settings?->instagram_url }}" type="url" name="instagram_url" class="form-input" id="instagram" placeholder="https://www.instagram.com/...">
                     </div>
+
+                    <div class="social-item">
+                        <label class="social-label">
+                            <i class="fab fa-twitter" style="color: #1da1f2;"></i>
+                            تويتر
+                        </label>
+                        <input value="{{ $settings?->tiktok_url }}" type="url" name="tiktok_url" class="form-input" id="twitter" placeholder="https://twitter.com/...">
+                    </div>
+
+                    <div class="social-item">
+                        <label class="social-label">
+                            <i class="fab fa-youtube" style="color: #ff0000;"></i>
+                            يوتيوب
+                        </label>
+                        <input value="{{ $settings?->youtube_url }}" type="url" name="youtube_url" class="form-input" id="youtube" placeholder="https://www.youtube.com/...">
+                    </div>
+
+                    <div class="social-item">
+                        <label class="social-label">
+                            <i class="fab fa-apple" style="color: #1877f2;"></i>
+                            IOS
+                        </label>
+                        <input value="{{ $settings?->ios_url }}" name="ios_url" type="url" class="form-input" id="ios_url" placeholder="https://www.ios.com/...">
+                    </div>
+
+                    <div class="social-item">
+                        <label class="social-label">
+                            <i class="fab fa-android" style="color: #e4405f;"></i>
+                            Android
+                        </label>
+                        <input value="{{ $settings?->android_url }}" type="url" name="android_url" class="form-input" id="instagram" placeholder="https://www.android.com/...">
+                    </div>
+
                 </div>
+            </div>
 
-                <div class="form-actions">
-                    <button type="submit" class="btn">
-                        <i class="fas fa-save"></i> حفظ البيانات
-                    </button>
-                    {{-- <button type="button" class="btn btn-secondary" onclick="generatePreview()">
+            <div class="form-actions">
+                <button type="submit" class="btn">
+                    <i class="fas fa-save"></i> حفظ البيانات
+                </button>
+                {{-- <button type="button" class="btn btn-secondary" onclick="generatePreview()">
                         <i class="fas fa-eye"></i> معاينة النتيجة
                     </button> --}}
-                    <button type="button" class="btn btn-secondary" onclick="resetForm()">
-                        <i class="fas fa-undo"></i> إعادة تعيين
-                    </button>
-                </div>
-            </form>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                    <i class="fas fa-undo"></i> إعادة تعيين
+                </button>
+            </div>
+        </form>
 
-            <div class="preview-section" id="previewSection" style="display: none;">
-                <div class="preview-title">
-                    <i class="fas fa-eye"></i> معاينة النتيجة
-                </div>
-                <div class="preview-content" id="previewContent">
-                    <!-- سيتم عرض النتيجة هنا -->
-                </div>
+        <div class="preview-section" id="previewSection" style="display: none;">
+            <div class="preview-title">
+                <i class="fas fa-eye"></i> معاينة النتيجة
+            </div>
+            <div class="preview-content" id="previewContent">
+                <!-- سيتم عرض النتيجة هنا -->
             </div>
         </div>
     </div>
+</div>
 
 
 

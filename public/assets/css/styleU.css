@@ -96,7 +96,7 @@ a:hover, button:hover {
     /* <-- Changed path */
     background-size: cover;
     position: relative;
-    top: 135px !important;
+    top: 0px;
     background-repeat: no-repeat;
     height: 100vh;
 }

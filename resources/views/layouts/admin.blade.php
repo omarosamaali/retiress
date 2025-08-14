@@ -386,15 +386,16 @@
                         </a>
                     </li>
                     <li>
-                        {{-- 9. الأخبار --}}
-                        {{-- <a class="dropdown-item" href="{{ route('admin.news.index') }}">
-                        <i class="fas fa-newspaper"></i> الأخبار
-                        </a> --}}
+                        {{-- 4. الخطط --}}
+                        <a class="dropdown-item" href="{{ route('sliders.index') }}">
+                            <i class="fas fa-sliders-h"></i> إدارة السلايدر
+                        </a>
                     </li>
+
                     {{-- <li>
                         <a class="dropdown-item" href="{{ route('admin.about-us.index') }}">
-                            <i class="fas fa-info-circle"></i> معلومات عنا
-                        </a>
+                    <i class="fas fa-info-circle"></i> معلومات عنا
+                    </a>
                     </li> --}}
                     <li>
                         {{-- 11. الأسئلة الشائعة --}}
