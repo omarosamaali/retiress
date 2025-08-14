@@ -97,7 +97,7 @@
                         <td>{{ $about->title_ar ?? 'لا يوجد عنوان' }}</td>
                         <td>
                             @if ($about->main_image_url)
-                            <img src="{{ asset('storage/' . $about->main_image_url) }}" alt="{{ $about->title_ar }}" class="about-img">
+                            <img src="{{ asset( $about->main_image_url) }}" alt="{{ $about->title_ar }}" class="about-img">
                             @else
                             لا توجد صورة
                             @endif
