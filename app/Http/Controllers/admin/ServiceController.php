@@ -14,7 +14,7 @@ class ServiceController extends Controller
     public function index()
     {
         $services = Service::latest()->paginate(10);
-        $transactions = Transaction::with('user', 'service')->latest()->paginate(10); // تأكد انك بتحمل المستخدم والخدمة
+        $transactions = Transaction::with('user', 'service')->where('type', 'service')->latest()->paginate(10);
         return view('admin.services.index', compact('services', 'transactions'));
     }
     public function store(Request $request)

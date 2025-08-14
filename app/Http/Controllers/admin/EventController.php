@@ -9,13 +9,17 @@ use Illuminate\Support\Facades\Storage;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use App\Models\Transaction;
+
 
 class EventController extends Controller
 {
     public function index()
     {
         $events = Event::latest()->paginate(10);
-        return view('admin.events.index', compact('events'));
+        $transactions = Transaction::with('user', 'event')->where('type', 'event')->latest()->paginate(10);
+
+        return view('admin.events.index', compact('events', 'transactions'));
     }
 
     public function store(Request $request)

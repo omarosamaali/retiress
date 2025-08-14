@@ -259,35 +259,47 @@
                 </td>
 
 
-     <td style="min-width: 200px;">
-         @if($transaction->status == 'pending')
-         <form action="{{ route('admin.transactions.approve', $transaction) }}" method="POST">
-             @csrf
-             <button type="submit" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#approveModal-{{ $transaction->id }}">{{ __('app.approve') }}</button>
-         </form>
-         @elseif($transaction->status == 'waiting_for_payment')
-         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $transaction->id }}">{{ __('app.reject') }}</button>
-         @elseif($transaction->status == 'waiting_for_activation')
-         <form action="{{ route('admin.transactions.activate', $transaction) }}" method="POST" style="display:inline;">
-             @csrf
-             <button type="submit" class="btn btn-success btn-sm">{{ __('app.activate') }}</button>
-         </form>
-         @elseif($transaction->status == 'active')
-         <form action="{{ route('admin.transactions.deactivate', $transaction) }}" method="POST" style="display:inline;">
-             @csrf
-             <button type="submit" class="btn btn-warning btn-sm">{{ __('app.deactivate') }}</button>
-         </form>
-         @elseif($transaction->status == 'deactivated')
-         <form action="{{ route('admin.transactions.activate', $transaction) }}" method="POST" style="display:inline;" id="activateForm-{{ $transaction->id }}">
-             @csrf
-             <button type="button" onclick="activeAgain('{{ $transaction->id }}')" class="btn btn-success btn-sm">{{ __('app.activate') }}</button>
-         </form>
-         @elseif($transaction->status == 'rejected')
-         <button type="button" class="btn btn-dark btn-sm" disabled>{{ __('app.rejected') }}</button>
-         @elseif($transaction->status == 'expired')
-         <button type="button" class="btn btn-dark btn-sm" disabled>{{ __('app.expired') }}</button>
-         @endif
-     </td>
+                <td style="min-width: 200px;">
+                    @if($transaction->status == 'pending')
+                    <form action="{{ route('admin.transactions.approve', $transaction) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#approveModal-{{ $transaction->id }}">{{ __('app.approve') }}</button>
+                    </form>
+                    @elseif($transaction->status == 'waiting_for_payment')
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $transaction->id }}">{{ __('app.reject') }}</button>
+                    @elseif($transaction->status == 'waiting_for_activation')
+                    <form action="{{ route('admin.transactions.activate', $transaction) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-success btn-sm">{{ __('app.activate') }}</button>
+                    </form>
+                    @elseif($transaction->status == 'active')
+                    <form action="{{ route('admin.transactions.deactivate', $transaction) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-warning btn-sm">{{ __('app.deactivate') }}</button>
+                    </form>
+                    @elseif($transaction->status == 'deactivated')
+                    <form action="{{ route('admin.transactions.activate', $transaction) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('هل أنت متأكد من إعادة تفعيل هذه المعاملة؟')">
+                            {{ __('app.activate') }}
+                        </button>
+                    </form>
+
+                    @elseif($transaction->status == 'rejected')
+                    <button type="button" class="btn btn-dark btn-sm" disabled>{{ __('app.rejected') }}</button>
+                    @elseif($transaction->status == 'expired')
+                    <button type="button" class="btn btn-dark btn-sm" disabled>{{ __('app.expired') }}</button>
+                    @endif
+                </td>
+
+                <script>
+                    function activeAgain(transactionId) {
+                        if (confirm('هل أنت متأكد من إعادة تفعيل هذه المعاملة؟')) {
+                            document.getElementById('activateForm-' + transactionId).submit();
+                        }
+                    }
+
+                </script>
 
 
             </tr>
