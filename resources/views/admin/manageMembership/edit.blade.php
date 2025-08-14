@@ -152,7 +152,7 @@
 </style>
 @endpush
 
-@section('content')
+@section(section: 'content')
 <div class="add-section">
     <h5 class="mb-4">
         <i class="fas fa-info-circle ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
@@ -314,7 +314,8 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="date_of_birth" class="form-label font-bold">تاريخ الميلاد </label>
-                    <input readonly type="text" class="form-control" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth', $member->date_of_birth->format('Y-m-d')) }}" required>
+<input readonly type="text" class="form-control" id="date_of_birth" name="date_of_birth" value="{{ old('date_of_birth', $member->date_of_birth ? $member->date_of_birth->format('Y-m-d') : '') }}" required>
+
                     @error('date_of_birth')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -468,7 +469,8 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="retirement_date" class="form-label font-bold">تاريخ التقاعد </label>
-                    <input readonly type="text" class="form-control" id="retirement_date" name="retirement_date" value="{{ old('retirement_date', $member->retirement_date->format('d/m/Y')) }}" required>
+<input readonly type="text" class="form-control" id="retirement_date" name="retirement_date" value="{{ old('retirement_date', $member->retirement_date ? $member->retirement_date->format('d/m/Y') : '') }}" required>
+
                     @error('retirement_date')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -744,7 +746,6 @@
 </div>
 @endsection
 
-@push('scripts')
 <script>
     function previewImage(input, previewId) {
         const preview = document.getElementById(previewId);
@@ -871,4 +872,3 @@
     });
 
 </script>
-@endpush
