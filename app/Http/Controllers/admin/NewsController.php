@@ -32,6 +32,7 @@ class NewsController extends Controller
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
+            'sub_image' => [], // Initialize as empty array
         ];
 
         $tr = new GoogleTranslate('ar');
@@ -57,9 +58,9 @@ class NewsController extends Controller
             $newsData['main_image'] = $request->file('main_image')->store('news/main', 'public');
         }
 
-        if ($request->sub_image) {
+        if ($request->hasFile('sub_image')) {
             $newsData['sub_image'] = [];
-            foreach ($request->sub_image as $image) {
+            foreach ($request->file('sub_image') as $image) {
                 $newsData['sub_image'][] = $image->store('news/sub', 'public');
             }
         }
@@ -80,15 +81,10 @@ class NewsController extends Controller
         $targetLanguages = $this->targetLanguages;
         return view('admin.news.edit', compact('news', 'targetLanguages'));
     }
-
     public function update(Request $request, News $news)
     {
         $request->validate([
-            'title_ar' => [
-                'required',
-                'string',
-                'max:255',
-            ],
+            'title_ar' => ['required', 'string', 'max:255'],
             'description_ar' => 'required|string',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_image' => 'nullable|array',
@@ -100,6 +96,7 @@ class NewsController extends Controller
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
+            'sub_image' => $news->sub_image ?? [], // Preserve existing or initialize as empty array
         ];
 
         $tr = new GoogleTranslate('ar');
@@ -133,16 +130,15 @@ class NewsController extends Controller
             }
         }
 
-        if ($request->sub_image) {
-            // تأكد من وجود الصور الفرعية قبل حذفها
+        if ($request->hasFile('sub_image')) {
+            // Delete existing sub-images if they exist and are an array
             if ($news->sub_image && is_array($news->sub_image)) {
                 foreach ($news->sub_image as $image) {
                     Storage::disk('public')->delete($image);
                 }
             }
-
             $newsData['sub_image'] = [];
-            foreach ($request->sub_image as $image) {
+            foreach ($request->file('sub_image') as $image) {
                 $newsData['sub_image'][] = $image->store('news/sub', 'public');
             }
         } elseif ($request->boolean('remove_sub_image')) {
@@ -150,8 +146,8 @@ class NewsController extends Controller
                 foreach ($news->sub_image as $image) {
                     Storage::disk('public')->delete($image);
                 }
-                $newsData['sub_image'] = null;
             }
+            $newsData['sub_image'] = [];
         }
 
         $news->update($newsData);
@@ -161,13 +157,13 @@ class NewsController extends Controller
 
     public function destroy(News $news)
     {
-        // حذف الصورة الرئيسية إذا كانت موجودة
+        // Delete the main image if it exists
         if ($news->main_image) {
             Storage::disk('public')->delete($news->main_image);
         }
 
-        // حذف الصور الفرعية إذا كانت موجودة ومن نوع array
-        if ($news->sub_image && is_array($news->sub_image)) {
+        // Delete sub-images if they exist and are an array
+        if (!is_null($news->sub_image) && is_array($news->sub_image)) {
             foreach ($news->sub_image as $image) {
                 Storage::disk('public')->delete($image);
             }
@@ -176,5 +172,4 @@ class NewsController extends Controller
         $news->delete();
 
         return redirect()->route('admin.news.index')->with('success', 'تم حذف الخبر بنجاح!');
-    }
-}
+    }}

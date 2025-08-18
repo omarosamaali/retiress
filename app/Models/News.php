@@ -20,18 +20,23 @@ class News extends Model
         'status',
     ];
 
-    protected $casts = ['sub_image' => 'array'];
+    protected $casts = [
+        'sub_image' => 'array',
+    ];
+
+    protected $attributes = [
+        'sub_image' => '[]', // Default to empty array
+    ];
 
     public function getMainImageUrlAttribute()
     {
         return $this->main_image ? Storage::url($this->main_image) : null;
-        
     }
 
     public function getSubImageUrlAttribute()
     {
         $imgs = [];
-        foreach ($this->sub_image as $image) {
+        foreach ($this->sub_image ?? [] as $image) { // Ensure sub_image is an array
             $imgs[] = Storage::url($image);
         }
         return $imgs;
