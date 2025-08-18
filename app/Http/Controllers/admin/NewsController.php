@@ -53,14 +53,20 @@ class NewsController extends Controller
             }
         }
 
+        // ✅ رفع الصورة الرئيسية داخل public/uploads/news/main
         if ($request->hasFile('main_image')) {
-            $newsData['main_image'] = $request->file('main_image')->store('news/main', 'public');
+            $filename = time() . '_' . uniqid() . '.' . $request->main_image->getClientOriginalExtension();
+            $request->file('main_image')->move(public_path('uploads/news/main'), $filename);
+            $newsData['main_image'] = 'uploads/news/main/' . $filename;
         }
 
+        // ✅ رفع الصور الفرعية داخل public/uploads/news/sub
         if ($request->sub_image) {
             $newsData['sub_image'] = [];
             foreach ($request->sub_image as $image) {
-                $newsData['sub_image'][] = $image->store('news/sub', 'public');
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/news/sub'), $filename);
+                $newsData['sub_image'][] = 'uploads/news/sub/' . $filename;
             }
         }
 
@@ -69,26 +75,10 @@ class NewsController extends Controller
         return redirect()->route('admin.news.index')->with('success', 'تمت إضافة الخبر بنجاح!');
     }
 
-    public function show(News $news)
-    {
-        $targetLanguages = $this->targetLanguages;
-        return view('admin.news.show', compact('news', 'targetLanguages'));
-    }
-
-    public function edit(News $news)
-    {
-        $targetLanguages = $this->targetLanguages;
-        return view('admin.news.edit', compact('news', 'targetLanguages'));
-    }
-
     public function update(Request $request, News $news)
     {
         $request->validate([
-            'title_ar' => [
-                'required',
-                'string',
-                'max:255',
-            ],
+            'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_image' => 'nullable|array',
@@ -121,41 +111,66 @@ class NewsController extends Controller
             }
         }
 
+        // ✅ تحديث الصورة الرئيسية
         if ($request->hasFile('main_image')) {
-            if ($news->main_image) {
-                Storage::disk('public')->delete($news->main_image);
+            if ($news->main_image && file_exists(public_path($news->main_image))) {
+                unlink(public_path($news->main_image));
             }
-            $newsData['main_image'] = $request->file('main_image')->store('news/main', 'public');
+
+            $filename = time() . '_' . uniqid() . '.' . $request->main_image->getClientOriginalExtension();
+            $request->file('main_image')->move(public_path('uploads/news/main'), $filename);
+            $newsData['main_image'] = 'uploads/news/main/' . $filename;
         } elseif ($request->boolean('remove_main_image')) {
-            if ($news->main_image) {
-                Storage::disk('public')->delete($news->main_image);
-                $newsData['main_image'] = null;
+            if ($news->main_image && file_exists(public_path($news->main_image))) {
+                unlink(public_path($news->main_image));
             }
+            $newsData['main_image'] = null;
         }
 
-
+        // ✅ تحديث الصور الفرعية
         if ($request->sub_image) {
-            foreach ($news->sub_image as $image) {
-                Storage::disk('public')->delete($image);
+            if ($news->sub_image) {
+                foreach ($news->sub_image as $image) {
+                    if (file_exists(public_path($image))) {
+                        unlink(public_path($image));
+                    }
+                }
             }
 
             $newsData['sub_image'] = [];
             foreach ($request->sub_image as $image) {
-                $newsData['sub_image'][] = $image->store('news/sub', 'public');
+                $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/news/sub'), $filename);
+                $newsData['sub_image'][] = 'uploads/news/sub/' . $filename;
             }
         } elseif ($request->boolean('remove_sub_image')) {
             if ($news->sub_image) {
                 foreach ($news->sub_image as $image) {
-                    Storage::disk('public')->delete($image);
+                    if (file_exists(public_path($image))) {
+                        unlink(public_path($image));
+                    }
                 }
-                $newsData['sub_image'] = null;
             }
+            $newsData['sub_image'] = null;
         }
 
         $news->update($newsData);
 
         return redirect()->route('admin.news.index')->with('success', 'تم تحديث الخبر بنجاح!');
     }
+
+    public function show(News $news)
+    {
+        $targetLanguages = $this->targetLanguages;
+        return view('admin.news.show', compact('news', 'targetLanguages'));
+    }
+
+    public function edit(News $news)
+    {
+        $targetLanguages = $this->targetLanguages;
+        return view('admin.news.edit', compact('news', 'targetLanguages'));
+    }
+
 
     public function destroy(News $news)
     {

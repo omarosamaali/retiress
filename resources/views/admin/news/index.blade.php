@@ -174,7 +174,9 @@
                         <td>{{ $item->title_ar }}</td>
                         <td>
                             @if ($item->main_image)
-                                <img src="{{ Storage::url($item->main_image) }}" alt="{{ $item->title_ar }}" class="news-img">
+                                 <img src="{{ asset('storage/' . $item->main_image) }}" alt="{{ $item->title_ar }}"
+
+class="news-img">
 
                             @else
                                 لا توجد صورة
