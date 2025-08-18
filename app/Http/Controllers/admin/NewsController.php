@@ -162,7 +162,7 @@ class NewsController extends Controller
             Storage::disk('public')->delete($news->main_image);
         }
 
-        // Delete sub-images if they exist and are an array
+        // Delete sub-images only if sub_image is an array and not null
         if (!is_null($news->sub_image) && is_array($news->sub_image)) {
             foreach ($news->sub_image as $image) {
                 Storage::disk('public')->delete($image);
@@ -172,4 +172,7 @@ class NewsController extends Controller
         $news->delete();
 
         return redirect()->route('admin.news.index')->with('success', 'تم حذف الخبر بنجاح!');
-    }}
+    }
+
+
+}
