@@ -133,10 +133,12 @@ class NewsController extends Controller
             }
         }
 
-
         if ($request->sub_image) {
-            foreach ($news->sub_image as $image) {
-                Storage::disk('public')->delete($image);
+            // تأكد من وجود الصور الفرعية قبل حذفها
+            if ($news->sub_image && is_array($news->sub_image)) {
+                foreach ($news->sub_image as $image) {
+                    Storage::disk('public')->delete($image);
+                }
             }
 
             $newsData['sub_image'] = [];
@@ -144,7 +146,7 @@ class NewsController extends Controller
                 $newsData['sub_image'][] = $image->store('news/sub', 'public');
             }
         } elseif ($request->boolean('remove_sub_image')) {
-            if ($news->sub_image) {
+            if ($news->sub_image && is_array($news->sub_image)) {
                 foreach ($news->sub_image as $image) {
                     Storage::disk('public')->delete($image);
                 }
@@ -159,12 +161,16 @@ class NewsController extends Controller
 
     public function destroy(News $news)
     {
+        // حذف الصورة الرئيسية إذا كانت موجودة
         if ($news->main_image) {
             Storage::disk('public')->delete($news->main_image);
         }
 
-        foreach ($news->sub_image as $image) {
-            Storage::disk('public')->delete($image);
+        // حذف الصور الفرعية إذا كانت موجودة ومن نوع array
+        if ($news->sub_image && is_array($news->sub_image)) {
+            foreach ($news->sub_image as $image) {
+                Storage::disk('public')->delete($image);
+            }
         }
 
         $news->delete();

@@ -18,123 +18,321 @@
     <script src="{{ asset('assets/js/amazingslider.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/amazingslider-2.css') }}">
     <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom.css') }}">
 
     <style>
-        .container-info {
-            margin-right: 5px;
+        .vision-mission-container {
+            background: linear-gradient(135deg, #2c5530 0%, #1a4d2e 100%);
+            padding: 80px 0;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .page-title {
+            color: #fff;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .breadcrumb {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+
+        .breadcrumb a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #ffd700;
+        }
+
+        .vision-mission-grid {
+            display: grid;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .vision-card {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            align-items: center;
+            min-height: 350px;
+        }
+
+        .mission-card {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            align-items: center;
+            min-height: 350px;
+        }
+
+        .goals-card {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            align-items: center;
+            min-height: 350px;
+        }
+
+        .card-content {
+            padding: 40px;
+        }
+
+        .card-image {
+            height: 350px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .section-card:hover .card-image img {
+            transform: scale(1.1);
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #2c5530, #1a4d2e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin: 0;
+        }
+
+        .icon-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
             display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 5px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #667eea;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .box {
-            height: 7px;
-            width: 7px;
-            background-color: white;
-            border-radius: 0px;
+        .goals-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
-        .-mt-9 {
-            margin-top: -9px;
+        .goals-list li {
+            position: relative;
+            padding: 12px 0 12px 30px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #555;
         }
+
+        .goals-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 12px;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .no-data-message {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .no-data-message i {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 20px;
+        }
+
+        .no-data-message p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.2rem;
+            }
+
+            .vision-card,
+            .goals-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .card-image {
+                height: 250px;
+            }
+
+            .card-content {
+                padding: 30px 20px;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .section-description,
+            .goals-list li {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .vision-mission-container {
+                padding: 40px 0;
+            }
+
+            .content-wrapper {
+                padding: 0 15px;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+
+            .card-content {
+                padding: 25px 15px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
     </style>
 </head>
 
 <body>
     <x-guest-header></x-guest-header>
-<div id="in-cont">
-    <div class="inn-title" style="padding-top: 150px">
-        <h2>
-            <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
-            {{ __('app.vision_mission_goals_title') }}
-        </h2>
-    </div>
-    <div id="iconsblocks">
-        <ul id="alliconsandtext">
-            <li class="icon-right">
-                <span style="margin-top:-5px;">{{ __('app.our_vision') }}</span>
-                <div class="icon-holder">
-                    @if($vision)
-                    <img src="{{ asset('storage/' . $vision->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($vision->title_ar ?? __('app.our_vision')) : ($vision->title_en ?? __('app.our_vision')) }}">
-                    @else
-                    {{-- Optional: Add a placeholder image or text if no vision image --}}
-                    <p>{{ __('app.no_vision_available') }}</p>
-                    @endif
-                </div>
-            </li>
 
-            <li class="text-left">
-                <div class="text-holder">
-                    @if($vision)
-                    <h3 class="main-titles">{{ app()->getLocale() == 'ar' ? $vision->title_ar : $vision->title_en }}</h3>
-                    <p class="info vision container-info" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-                        <span class="box"></span>
-                        <span class="info vision">{{ app()->getLocale() == 'ar' ? $vision->description_ar : $vision->description_en }}</span>
-                    </p>
-                    @else
-                    <p>{{ __('app.no_vision_available') }}</p>
-                    @endif
-                </div>
-            </li>
+    <div class="vision-mission-container">
+        <div class="content-wrapper">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">{{ __('app.vision_mission_goals_title') }}</h1>
+                <p class="breadcrumb">
+                    <a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a>
+                    <i class="fas fa-chevron-left mx-2"></i>
+                    {{ __('app.vision_mission_goals_title') }}
+                </p>
+            </div>
 
-            <li class="-mt-9 icon-left">
-                <span>{{ __('app.our_goals') }}</span>
-                <div class="icon-holder">
-                    @if($company_message) {{-- Assuming $company_message holds goals --}}
-                    <img src="{{ asset('storage/' . $company_message->main_image) }}" class="goalsimg" alt="{{ app()->getLocale() == 'ar' ? ($company_message->title_ar ?? __('app.our_goals')) : ($company_message->title_en ?? __('app.our_goals')) }}">
-                    @else
-                    {{-- Optional: Add a placeholder image or text if no goals image --}}
-                    <p>{{ __('app.no_goals_available') }}</p>
-                    @endif
+            <div class="vision-mission-grid">
+                <!-- Vision Section -->
+                @if($vision)
+                <div class="section-card vision-card">
+                    <div class="card-content">
+                        <h2 class="section-title">{{ app()->getLocale() == 'ar' ? $vision->title_ar : $vision->title_en }}</h2>
+                        <p class="section-description" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                            {{ app()->getLocale() == 'ar' ? $vision->description_ar : $vision->description_en }}
+                        </p>
+                    </div>
+                    <div class="card-image">
+                        <img src="{{ asset('storage/' . $vision->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($vision->title_ar ?? __('app.our_vision')) : ($vision->title_en ?? __('app.our_vision')) }}">
+                        <div class="icon-overlay">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
                 </div>
-            </li>
-
-            <li class="-mt-9 text-right">
-                <div class="text-holder">
-                    @if($company_message) {{-- Assuming $company_message holds goals --}}
-                    <h3 class="main-titles">{{ app()->getLocale() == 'ar' ? $company_message->title_ar : $company_message->title_en }}</h3>
-                    <ul class="info goals" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-                        <li>{{ app()->getLocale() == 'ar' ? $company_message->description_ar : $company_message->description_en }}</li>
-                    </ul>
-                    @else
-                    <p>{{ __('app.no_goals_available') }}</p>
-                    @endif
-                </div>
-            </li>
-
-            {{-- Uncomment and translate this section if you want to include "Our Mission" --}}
-            {{--
-            <li class="-mt-9 icon-left">
-                <span>{{ __('app.our_message') }}</span>
-            <div class="icon-holder">
-                @if($values) // Assuming $values holds mission details
-                <img src="{{ asset('storage/' . $values->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($values->title_ar ?? __('app.our_message')) : ($values->title_en ?? __('app.our_message')) }}">
                 @else
-                <p>{{ __('app.no_message_available') }}</p>
+                <div class="no-data-message">
+                    <i class="fas fa-eye-slash"></i>
+                    <p>{{ __('app.no_vision_available') }}</p>
+                </div>
+                @endif
+
+
+
+                <!-- Goals Section -->
+                @if($company_message)
+                <div class="section-card goals-card">
+                    <div class="card-content">
+                        <h2 class="section-title">{{ app()->getLocale() == 'ar' ? $company_message->title_ar : $company_message->title_en }}</h2>
+                        <div dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                            @php
+                            $description = app()->getLocale() == 'ar' ? $company_message->description_ar : $company_message->description_en;
+                            $goals = explode("\n", $description);
+                            @endphp
+                            <ul class="goals-list">
+                                @foreach($goals as $goal)
+                                @if(trim($goal))
+                                <li>{{ trim($goal) }}</li>
+                                @endif
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-image">
+                        <img src="{{ asset('storage/' . $company_message->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($company_message->title_ar ?? __('app.our_goals')) : ($company_message->title_en ?? __('app.our_goals')) }}">
+                        <div class="icon-overlay">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                    </div>
+                </div>
+                @else
+                <div class="no-data-message">
+                    <i class="fas fa-trophy"></i>
+                    <p>{{ __('app.no_goals_available') }}</p>
+                </div>
                 @endif
             </div>
-            </li>
-
-            <li class="-mt-9 text-right">
-                <div class="text-holder">
-                    @if($values) // Assuming $values holds mission details
-                    <h3 class="main-titles">{{ app()->getLocale() == 'ar' ? $values->title_ar : $values->title_en }}</h3>
-                    <ul class="info message" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-                        <li>{{ app()->getLocale() == 'ar' ? $values->description_ar : $values->description_en }}</li>
-                    </ul>
-                    @else
-                    <p>{{ __('app.no_message_available') }}</p>
-                    @endif
-                </div>
-            </li>
-            --}}
-        </ul>
+        </div>
     </div>
-</div>
 
-    </div>
     <x-footer-section></x-footer-section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>

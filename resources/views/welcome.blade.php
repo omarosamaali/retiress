@@ -20,127 +20,6 @@
     <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
     <style>
-        .quoteSwiper {
-            position: absolute;
-            top: 73%;
-            left: 75%;
-
-            transform: translate(-50%, -50%);
-            width: 100%;
-            max-width: 420px;
-            height: 220px;
-
-            padding: 20px;
-            /* background: rgba(255, 255, 255, 0.85); */
-            /* Semi-transparent white background */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 10;
-        }
-
-        .quote-slide {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            text-align: right;
-            /* Right-aligned text for Arabic */
-            direction: rtl;
-            /* Ensure RTL for Arabic content */
-        }
-
-        .quote-text {
-            flex: 1;
-            padding-left: 15px;
-        }
-
-        .quote-text blockquote {
-            font-size: 16px;
-            /* Slightly smaller font for better fit */
-            line-height: 1.5;
-            color: #333;
-            margin: 0;
-            padding: 10px;
-            border-right: 4px solid #704e40;
-            /* Green accent */
-        }
-
-        .quote-image img {
-            max-width: 80px;
-            /* Smaller image size */
-            height: auto;
-            object-fit: contain;
-        }
-
-        .swiper-button-prev,
-        .swiper-button-next {
-            color: #704e40;
-            /* Green color */
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .swiper-button-prev:after,
-        .swiper-button-next:after {
-            font-size: 18px;
-        }
-
-        .swiper-pagination-bullet {
-            background: #704e40;
-            opacity: 0.5;
-        }
-
-        .swiper-pagination-bullet-active {
-            opacity: 1;
-            background: #704e40;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .quoteSwiper {
-                max-width: 90%;
-                /* Slightly narrower on mobile */
-                padding: 15px;
-            }
-
-            .quote-slide {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .quote-text {
-                padding-left: 0;
-                margin-bottom: 15px;
-            }
-
-            .quote-text blockquote {
-                font-size: 14px;
-                /* Smaller font on mobile */
-            }
-
-            .quote-image img {
-                max-width: 60px;
-                /* Smaller image on mobile */
-            }
-
-            .swiper-button-prev,
-            .swiper-button-next {
-                width: 30px;
-                height: 30px;
-            }
-
-            .swiper-button-prev:after,
-            .swiper-button-next:after {
-                font-size: 16px;
-            }
-        }
-
-        /* تأثير السحاب الخفيف */
 
         .floating-clouds {
             position: fixed;
@@ -348,25 +227,285 @@
 
     <div id="headerholdert" style="position: relative; width: 100%; height: 82vh; overflow: hidden;     margin-top: 145px;">
         <img src="{{ Storage::url($banner->image) }}" alt="Header Background" style="width: 100%; height: 100%; object-fit: fill;">
-        <div class="swiper quoteSwiper">
-            <div class="swiper-wrapper">
-                @foreach (\App\Models\Slider::where('is_active', true)->get() as $slider)
-                <div class="swiper-slide">
-                    <div class="quote-slide">
-                        <div class="quote-text">
-                            <blockquote style="color: white;">
-                                {{ $slider->quote_ar }}
-                            </blockquote>
-                        </div>
-                    </div>
+<div class="swiper quoteSwiper">
+    <div class="swiper-wrapper">
+        @foreach (\App\Models\Slider::where('is_active', true)->get() as $slider)
+        <div class="swiper-slide">
+            <div class="quote-slide">
+                <div class="quote-icon">
+                    <i class="fas fa-quote-right"></i>
                 </div>
-                @endforeach
+                <div class="quote-text">
+                    <blockquote>
+                        {{ $slider->quote_ar }}
+                    </blockquote>
+                </div>
+                <div class="quote-decoration"></div>
             </div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-pagination"></div>
         </div>
+        @endforeach
     </div>
+    {{-- <div class="swiper-button-prev">
+        <i class="fas fa-chevron-right"></i>
+    </div>
+    <div class="swiper-button-next">
+        <i class="fas fa-chevron-left"></i>
+    </div> --}}
+    <div class="swiper-pagination"></div>
+</div>
+
+<style>
+    .quoteSwiper {
+        position: absolute;
+        top: 73%;
+        left: 75%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        max-width: 480px;
+        height: auto;
+        min-height: 250px;
+        padding: 0;
+        border-radius: 20px;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        z-index: 10;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        background: linear-gradient(135deg,
+                rgba(112, 78, 64, 0.95) 0%,
+                rgba(139, 69, 19, 0.9) 50%,
+                rgba(160, 82, 45, 0.85) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .quote-slide {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 35px 30px;
+        text-align: center;
+        direction: rtl;
+        min-height: 250px;
+        overflow: hidden;
+    }
+
+    .quote-slide::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+        background-size: 30px 30px;
+        animation: float 20s linear infinite;
+        opacity: 0.3;
+    }
+
+    @keyframes float {
+        0% {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+
+        100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+
+    .quote-icon {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        font-size: 2.5rem;
+        color: rgba(255, 255, 255, 0.2);
+        z-index: 1;
+    }
+
+    .quote-text {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+    }
+
+    .quote-text blockquote {
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 1.7;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        position: relative;
+        font-family: 'Cairo', 'Arial', sans-serif;
+        letter-spacing: 0.5px;
+    }
+
+    .quote-decoration {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+        border-radius: 2px;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: transparent !important;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        width: 45px !important;
+        height: 45px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .swiper-button-prev:hover,
+    .swiper-button-next:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: scale(1.1);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .swiper-button-prev i,
+    .swiper-button-next i {
+        color: #fff;
+        font-size: 16px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .swiper-button-prev:after,
+    .swiper-button-next:after {
+        display: none;
+    }
+
+    .swiper-pagination {
+        bottom: 15px !important;
+    }
+
+    .swiper-pagination-bullet {
+        background: rgba(255, 255, 255, 0.4) !important;
+        opacity: 1 !important;
+        width: 10px !important;
+        height: 10px !important;
+        border-radius: 50% !important;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #fff !important;
+        transform: scale(1.3);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .quoteSwiper {
+            max-width: 90%;
+            min-height: 200px;
+            left: 50%;
+            top: 70%;
+        }
+
+        .quote-slide {
+            padding: 25px 20px;
+            min-height: 200px;
+        }
+
+        .quote-icon {
+            font-size: 2rem;
+            top: 15px;
+            right: 20px;
+        }
+
+        .quote-text blockquote {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            width: 38px !important;
+            height: 38px !important;
+        }
+
+        .swiper-button-prev i,
+        .swiper-button-next i {
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .quoteSwiper {
+            max-width: 95%;
+            min-height: 180px;
+            top: 68%;
+        }
+
+        .quote-slide {
+            padding: 20px 15px;
+            min-height: 180px;
+        }
+
+        .quote-text blockquote {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .quote-icon {
+            font-size: 1.8rem;
+            top: 12px;
+            right: 15px;
+        }
+
+        .swiper-button-prev,
+        .swiper-button-next {
+            width: 35px !important;
+            height: 35px !important;
+        }
+
+        .swiper-pagination-bullet {
+            width: 8px !important;
+            height: 8px !important;
+        }
+    }
+
+    /* تأثير السحاب المتحرك */
+    .quote-slide::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% {
+            left: -100%;
+        }
+
+        100% {
+            left: 100%;
+        }
+    }
+
+</style>
+</div>
+
 
 
     <x-guest-header></x-guest-header>
