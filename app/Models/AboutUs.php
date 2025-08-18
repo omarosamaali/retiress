@@ -20,10 +20,10 @@ class AboutUs extends Model
         'status',
     ];
 
-    public function getMainImageUrlAttribute()
-    {
-        return $this->main_image ? Storage::url($this->main_image) : null;
-    }
+    // public function getMainImageUrlAttribute()
+    // {
+    //     return $this->main_image ? Storage::url($this->main_image) : null;
+    // }
 
     public function getSubImageUrlAttribute()
     {

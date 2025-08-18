@@ -384,7 +384,8 @@
         <a href="{{ url('/news/show/' . $singleNews->id) }}" style="border-radius: 13px !important;" class="list-2nx">
             <span class="image-dvm">
                 {{-- هنا بنستخدم الـ title الخاص باللغة الحالية --}}
-                <img width="688" height="1024" src="{{ asset('storage/' . $singleNews->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? $singleNews->title_ar : $singleNews->title_en }}">
+                <img width="688" height="1024" src="{{ Storage::url($singleNews->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? $singleNews->title_ar : $singleNews->title_en }}">
+
             </span>
             <span class="list-o16 hqqhi">
                 <span class="list-m72">{{ \Carbon\Carbon::parse($singleNews->created_at)->day }}</span>

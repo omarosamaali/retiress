@@ -101,7 +101,8 @@
                 <div class="detail-item">
                     <strong class="text-black">الصورة الرئيسية:</strong>
                     @if ($aboutUs->main_image)
-                        <img src="{{ $aboutUs->main_image_url }}" alt="{{ $aboutUs->title_ar }}"
+                        <img src="{{ asset('storage/' .  $aboutUs->main_image) }}" alt="{{ $aboutUs->title_ar }}"
+
                             class="p-3 detail-image mt-2">
                     @else
                         <span>لا توجد صورة</span>
