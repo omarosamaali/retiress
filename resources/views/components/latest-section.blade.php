@@ -33,7 +33,7 @@
                         </p>
                         <p style="color: gray; font-size: 12px; margin-bottom: 0px;">{{ __('app.date') }} : {{ \Carbon\Carbon::parse($magazines->event_date)->translatedFormat('d F Y') }}</p>
                     </div>
-                        
+
                 </div>
                 @else
                 <p>لا يوجد مجلات لعرضها حالياً.</p>
@@ -47,3 +47,35 @@
         </div>
     </div>
 </section>
+@props(['magazines']) <style>
+    @media (max-width: 500px) {
+        .all-version {
+            flex-direction: column;
+        }
+
+        .container-sls {
+            width: 100% !important;
+        }
+    }
+
+</style>
+
+@auth
+<a href="{{ route('chat') }}">
+    <section style="background: rgb(182, 138, 53) !important; margin-top: 0px !important; padding: 18px 0 !important;">
+        <div style="text-align: center; justify-content: center;">
+            <h1 style="color: white; margin-top: 25px;">تواصل مع القيادات</h1>
+            <p class="text-jli">للشكاوي والاقتراحات وتقييم الخدمات</p>
+        </div>
+    </section>
+</a>
+@else
+<a href="{{ route('members.login') }}">
+    <section style="background: rgb(182, 138, 53) !important; margin-top: 0px !important; padding: 18px 0 !important;">
+        <div style="text-align: center; justify-content: center;">
+            <h1 style="color: white; margin-top: 25px;">تواصل مع القيادات</h1>
+            <p class="text-jli">للشكاوي والاقتراحات وتقييم الخدمات</p>
+        </div>
+    </section>
+</a>
+@endauth

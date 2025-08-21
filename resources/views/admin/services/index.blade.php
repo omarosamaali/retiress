@@ -85,8 +85,8 @@
                 <th>تاريخ الإضافة</th>
                 <th>الصورة</th>
                 <th>الإسم (عربي)</th>
-                <th>مدفوع</th>
-                <th>السعر</th>
+                <th>الجمهور المستهدف</th>
+                <th>هل مجاني</th>
                 <th>الحالة</th>
                 <th>الإجراءات</th>
             </tr>
@@ -104,13 +104,8 @@
                     @endif
                 </td>
                 <td>{{ $item->name_ar }}</td>
-                @if ($item->price)
-                <td class="text-success">مدفوع</td>
-                <td class="text-success">{{ $item->price }}</td>
-                @else
-                <td class="text-primary">مجاني</td>
-                <td class="text-primary">0</td>
-                @endif
+                <td>{{ $item->target_audience_ar }}</td>
+                <td>{{ $item->is_payed ? 'مجاني' : 'مدفوع' }}</td>
                 <td>
                     <span class="badge {{ $item->status_badge_class }}">
                         {{ $item->status_text }}

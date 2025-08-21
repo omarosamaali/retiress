@@ -21,6 +21,7 @@ class ServiceController extends Controller
     {
         $request->validate([
             'name_ar' => 'required|string',
+            'membership_required' => 'nullable|boolean',
             'description_ar' => 'required|string',
             'target_audience_ar' => 'required|string',
             'required_documents_ar' => 'required|string',
@@ -33,11 +34,11 @@ class ServiceController extends Controller
             'is_payed' => 'nullable|boolean',
         ]);
 
-        // Handle is_payed properly - checkbox sends '1' when checked, null when unchecked
         $isPayed = $request->has('is_payed') && $request->is_payed == '1';
 
         $serviceData = [
             'name_ar' => $request->name_ar,
+            'membership_required' => $request->has('membership_required'),
             'description_ar' => $request->description_ar,
             'target_audience_ar' => $request->target_audience_ar,
             'required_documents_ar' => $request->required_documents_ar,
@@ -45,8 +46,8 @@ class ServiceController extends Controller
             'disclaimer_ar' => $request->disclaimer_ar,
             'chanel' => $request->chanel,
             'status' => (bool)$request->status,
-            'price' => $isPayed ? $request->price : null, // Only save price if service is paid
-            'is_payed' => $isPayed, // This will be true or false
+            'price' => $isPayed ? $request->price : null,
+            'is_payed' => $isPayed,
         ];
 
         if ($request->hasFile('image')) {
@@ -112,6 +113,7 @@ class ServiceController extends Controller
     {
         $request->validate([
             'name_ar' => 'required|string',
+            'membership_required' => 'nullable|boolean',
             'description_ar' => 'required|string',
             'target_audience_ar' => 'required|string',
             'required_documents_ar' => 'required|string',
@@ -119,16 +121,16 @@ class ServiceController extends Controller
             'disclaimer_ar' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'chanel' => 'required|string',
-            'price' => 'nullable|numeric', // Changed to numeric for consistency
+            'price' => 'nullable|numeric',
             'status' => 'required|boolean',
-            'is_payed' => 'nullable|boolean', // Added validation for is_payed
+            'is_payed' => 'nullable|boolean',
         ]);
 
-        // Handle is_payed properly - checkbox sends '1' when checked, null when unchecked
         $isPayed = $request->has('is_payed') && $request->is_payed == '1';
 
         $serviceData = [
             'name_ar' => $request->name_ar,
+            'membership_required' => $request->has('membership_required'),
             'description_ar' => $request->description_ar,
             'target_audience_ar' => $request->target_audience_ar,
             'required_documents_ar' => $request->required_documents_ar,
@@ -136,8 +138,8 @@ class ServiceController extends Controller
             'disclaimer_ar' => $request->disclaimer_ar,
             'chanel' => $request->chanel,
             'status' => (bool)$request->status,
-            'price' => $isPayed ? $request->price : null, // Only save price if service is paid
-            'is_payed' => $isPayed, // This will be true or false
+            'price' => $isPayed ? $request->price : null,
+            'is_payed' => $isPayed,
         ];
 
         if ($request->hasFile('image')) {

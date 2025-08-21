@@ -110,6 +110,24 @@
                         @enderror
                     </div>
                 </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="membership_required" class="form-label font-bold">هل العضوية مطلوبة؟</label>
+                        <div class="form-check">
+                            {{-- هذا الحقل المخفي يضمن إرسال قيمة 0 إذا لم يتم تحديد مربع الاختيار --}}
+                            <input type="hidden" name="membership_required" value="0">
+                            <input class="form-check-input" type="checkbox" name="membership_required" id="membership_required" value="1" {{ old('membership_required', $service->membership_required) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="membership_required">
+                                نعم
+                            </label>
+                        </div>
+                        @error('membership_required')
+                        <div class="text-black">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="main_image_input" class="form-label font-bold">الصورة الرئيسية</label>

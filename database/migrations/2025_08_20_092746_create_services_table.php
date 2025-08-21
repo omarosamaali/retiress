@@ -16,12 +16,14 @@ return new class extends Migration
 
             $table->string('name_ar');
             $table->string('name_en')->nullable();
+            $table->boolean('membership_required')->default(0);
             $table->string('description_ar');
             $table->string('description_en')->nullable();
             $table->string('target_audience_ar')->nullable();
             $table->string('target_audience_en')->nullable();
             $table->string('required_documents_ar')->nullable();
             $table->string('required_documents_en')->nullable();
+            $table->string('image')->nullable();
             $table->string('service_charter_ar')->nullable();
             $table->string('service_charter_en')->nullable();
             $table->string('disclaimer_ar')->nullable();
@@ -29,7 +31,7 @@ return new class extends Migration
             $table->string('chanel')->nullable();
             $table->integer('price')->nullable();
             $table->boolean('status')->default(1);
-
+            $table->boolean('is_payed')->default(false);
             $table->timestamps();
         });
     }

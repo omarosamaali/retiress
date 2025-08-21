@@ -111,6 +111,20 @@
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
+                    <label for="membership_required" class="form-label font-bold">العضوية</label>
+                    <input type="checkbox" class="form-check-input" name="membership_required" id="membership_required" value="1" 
+                    {{ old('membership_required') ? 'checked' : '' }}>
+                    <br />
+                    <span style="font-size: 12px; color: rgb(65, 64, 64);">بالنقر عليها سوف تكون العضوية مطلوبة للإشتراك في هذه الخدمة</span>
+                    @error('membership_required')
+                    <div class="text-black">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="mb-3">
                     <label for="main_image_input" class="form-label font-bold">الصورة الرئيسية</label>
                     <input type="file" class="form-control" name="image" id="main_image_input" accept="image/*">
                     @error('image')
