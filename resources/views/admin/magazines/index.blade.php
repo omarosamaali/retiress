@@ -204,20 +204,21 @@
         </thead>
         <tbody>
             @forelse($magazines ?? [] as $item)
+            @if(is_object($item))
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->created_at->format('d/m/Y') }}</td>
                 <td>{{ $item->title_ar }}</td>
                 <td>
-                    @if ($item->main_image)
+                    @if (property_exists($item, 'main_image') && $item->main_image)
                     <img src="{{ $item->main_image_url }}" alt="{{ $item->title_ar }}" class="news-img">
                     @else
                     لا توجد صورة
                     @endif
                 </td>
                 <td>
-                    <span class="badge {{ $item->status_badge_class }}">
-                        {{ $item->status_text }}
+                    <span class="badge {{ property_exists($item, 'status_badge_class') ? $item->status_badge_class : '' }}">
+                        {{ property_exists($item, 'status_text') ? $item->status_text : '' }}
                     </span>
                 </td>
                 <td>
@@ -234,6 +235,7 @@
                     </div>
                 </td>
             </tr>
+            @endif
             @empty
             <tr>
                 <td colspan="6" class="text-center py-4">
@@ -244,6 +246,7 @@
             @endforelse
         </tbody>
     </table>
+
 </div>
 
 @if (isset($magazines) && $magazines->hasPages())
