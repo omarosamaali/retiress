@@ -121,7 +121,7 @@
                         <select class="form-select" name="role" id="role" required>
                             <option value="مدير" {{ old('role', $user->role) == 'مدير' ? 'selected' : '' }}>مدير</option>
                             <option value="موظف استقبال" {{ old('role', $user->role) == 'موظف استقبال' ? 'selected' : '' }}>موظف استقبال</option>
-                            <option value="أمين سر" {{ old('role', $user->role) == 'أمين سر' ? 'selected' : '' }}>أمين سر</option>
+                            <option value="أمين الصندوق" {{ old('role', $user->role) == 'أمين الصندوق' ? 'selected' : '' }}>أمين الصندوق</option>
                             <option value="عضو" {{ old('role', $user->role) == 'عضو' ? 'selected' : '' }}>عضو</option>
                             <option value="مدخل بيانات" {{ old('role', $user->role) == 'مدخل بيانات' ? 'selected' : '' }}>مدخل بيانات</option>
                         </select>

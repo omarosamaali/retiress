@@ -23,9 +23,11 @@ use App\Http\Controllers\ChatController;
 use App\Models\MemberApplication;
 use App\Http\Controllers\TransactionController;
 use App\Models\Transaction;
+use App\Models\Faq;
 
-Route::get('faq', function () { 
-    return view('faq');
+Route::get('faq', function () {
+    $faqs = Faq::all();
+    return view('faq',  compact('faqs'));
 })->name('faq');
 
 Route::get('/member/records', [TransactionController::class, 'record'])->name('members.record');

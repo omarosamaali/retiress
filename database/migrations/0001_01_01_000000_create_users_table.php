@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name_ar')->nullable();
             $table->string('name_en')->nullable();
             $table->string('email')->unique();
-            $table->enum('role', ['مدير', 'موظف استقبال', 'أمين سر', 'عضو', 'مدخل بيانات'])->default('مدخل بيانات');
+            $table->enum('role', ['مدير', 'موظف استقبال', 'أمين الصندوق', 'عضو', 'مدخل بيانات'])->default('مدخل بيانات');
             $table->timestamp('email_verified_at')->nullable();
             $table->boolean('is_contract_signed')->default(false);
             $table->string('otp_code')->nullable();

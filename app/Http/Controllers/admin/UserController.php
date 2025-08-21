@@ -143,7 +143,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255', // name_en
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => 'nullable|string|min:8',
-            'role' => 'required|in:مدير,موظف استقبال,أمين سر,عضو,مدخل بيانات',
+            'role' => 'required|in:مدير,موظف استقبال,أمين الصندوق,عضو,مدخل بيانات',
             'status' => 'required|in:فعال,غير فعال,بانتظار التفعيل,بإنتظار إستكمال البيانات',
         ];
 

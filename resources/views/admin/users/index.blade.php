@@ -101,7 +101,7 @@
                             <option value="">اختر الصلاحية</option>
                             <option value="مدير" {{ old('role') == 'مدير' ? 'selected' : '' }}>مدير</option>
                             <option value="موظف استقبال" {{ old('role') == 'موظف استقبال' ? 'selected' : '' }}>موظف استقبال</option>
-                            <option value="أمين سر" {{ old('role') == 'أمين سر' ? 'selected' : '' }}>أمين سر</option>
+                            <option value="أمين الصندوق" {{ old('role') == 'أمين الصندوق' ? 'selected' : '' }}>أمين الصندوق</option>
                             <option value="عضو" {{ old('role') == 'عضو' ? 'selected' : '' }}>عضو</option>
                             <option value="مدخل بيانات" {{ old('role') == 'مدخل بيانات' ? 'selected' : '' }}>مدخل بيانات</option>
                         </select>
@@ -172,9 +172,9 @@
             class="btn {{ request()->get('role') == 'عضو' ? 'btn-primary' : 'btn-outline-primary' }}">
             عضو
         </a>
-        <a href="{{ route('admin.users.index', ['role' => 'أمين سر']) }}"
-            class="btn {{ request()->get('role') == 'أمين سر' ? 'btn-primary' : 'btn-outline-primary' }}">
-            أمين سر
+        <a href="{{ route('admin.users.index', ['role' => 'أمين الصندوق']) }}"
+            class="btn {{ request()->get('role') == 'أمين الصندوق' ? 'btn-primary' : 'btn-outline-primary' }}">
+            أمين الصندوق
         </a>
     </div>
 

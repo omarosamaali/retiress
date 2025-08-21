@@ -19,6 +19,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/amazingslider-2.css') }}">
     <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
+    <link rel="icon" href="http://127.0.0.1:8000/assets/img/Group.png" type="image/x-icon">
+
     <style>
         .floating-clouds {
             position: fixed;

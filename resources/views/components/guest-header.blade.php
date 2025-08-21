@@ -35,6 +35,10 @@
                             <li>
                                 <a href="{{ route('members.about') }}">{{ __('app.about_us') }}</a>
                             </li>
+                              <li>
+                                  <a href="{{ route('faq') }}">{{ __('app.faq') }}</a>
+                              </li>
+
                             <li>
                                 <a href="{{ route('members.leader') }}">{{ __('app.leader_message') }}</a>
                             </li>

@@ -1,561 +1,634 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html dir="rtl" lang="ar">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الأسئلة الشائعة - جمعية الإمارات للمتقاعدين</title>
+    <link rel="icon" type="image/png" href="images/fav.png" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width; initial-scale=1;" />
+    <title>الأسئلة الشائعة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/other-devices.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styleU.css') }}" />
+    <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
+    <script src="{{ asset('assets/js/amazingcarousel.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/amazingslider-1.css') }}">
+    <script src="{{ asset('assets/js/initcarousel-1.js') }}"></script>
+    <script src="{{ asset('assets/js/amazingslider.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/amazingslider-2.css') }}">
+    <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
+    <link rel="icon" href="http://127.0.0.1:8000/assets/img/Group.png" type="image/x-icon">
+
     <style>
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: 'Cairo', Arial, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+            min-height: 100vh;
+            direction: rtl;
+        }
+
+        .floating-clouds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .cloud {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(230, 230, 255, 0.2), rgba(255, 255, 255, 0.1));
+            border-radius: 50px;
+            opacity: 0.8;
+            animation: float-cloud linear infinite;
+            will-change: transform;
+            filter: blur(1px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .cloud:before {
+            content: '';
+            position: absolute;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(240, 240, 255, 0.3), rgba(255, 255, 255, 0.2));
+            border-radius: 60px;
+            filter: blur(2px);
+        }
+
+        .cloud:after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(250, 250, 255, 0.1), rgba(255, 255, 255, 0.3));
+            border-radius: 40px;
+            filter: blur(1.5px);
+        }
+
+        .cloud1 {
+            width: 120px;
+            height: 60px;
+            top: 10%;
+            animation-duration: 25s;
+            animation-delay: 0s;
+        }
+
+        .cloud1:before {
+            width: 80px;
+            height: 80px;
+            top: -40px;
+            left: 20px;
+        }
+
+        .cloud1:after {
+            width: 100px;
+            height: 60px;
+            top: -25px;
+            left: 50px;
+        }
+
+        .cloud2 {
+            width: 90px;
+            height: 45px;
+            top: 25%;
+            animation-duration: 30s;
+            animation-delay: -8s;
+        }
+
+        .cloud2:before {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            left: 15px;
+        }
+
+        .cloud2:after {
+            width: 75px;
+            height: 45px;
+            top: -15px;
+            left: 35px;
+        }
+
+        .cloud3 {
+            width: 150px;
+            height: 75px;
+            top: 45%;
+            animation-duration: 35s;
+            animation-delay: -15s;
+        }
+
+        .cloud3:before {
+            width: 100px;
+            height: 100px;
+            top: -50px;
+            left: 25px;
+        }
+
+        .cloud3:after {
+            width: 125px;
+            height: 75px;
+            top: -30px;
+            left: 60px;
+        }
+
+        .cloud4 {
+            width: 110px;
+            height: 55px;
+            top: 65%;
+            animation-duration: 28s;
+            animation-delay: -22s;
+        }
+
+        .cloud4:before {
+            width: 70px;
+            height: 70px;
+            top: -35px;
+            left: 18px;
+        }
+
+        .cloud4:after {
+            width: 90px;
+            height: 55px;
+            top: -20px;
+            left: 45px;
+        }
+
+        .cloud5 {
+            width: 130px;
+            height: 65px;
+            top: 80%;
+            animation-duration: 32s;
+            animation-delay: -30s;
+        }
+
+        .cloud5:before {
+            width: 85px;
+            height: 85px;
+            top: -42px;
+            left: 22px;
+        }
+
+        .cloud5:after {
+            width: 105px;
+            height: 65px;
+            top: -25px;
+            left: 55px;
+        }
+
+        @keyframes float-cloud {
+            0% {
+                transform: translateX(-200px) translateY(0px);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateX(calc(100vw + 200px)) translateY(-10px);
+                opacity: 0;
+            }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            position: relative;
+            z-index: 2;
         }
 
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .faq-section {
             padding: 60px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #fff;
             text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .faq-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .faq-question {
+            padding: 25px 30px;
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
             color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        header::before {
+        .faq-question::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="rgba(255,255,255,.1)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><rect width="11" height="11" fill="url(%23a)" rx="2" ry="2" transform="translate(0 0)"/><rect width="11" height="11" fill="url(%23a)" rx="2" ry="2" transform="translate(20 10)"/><rect width="11" height="11" fill="url(%23a)" rx="2" ry="2" transform="translate(40 0)"/><rect width="11" height="11" fill="url(%23a)" rx="2" ry="2" transform="translate(60 10)"/><rect width="11" height="11" fill="url(%23a)" rx="2" ry="2" transform="translate(80 0)"/></svg>');
-            animation: float 20s linear infinite;
-            opacity: 0.1;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        @keyframes float {
-            0% {
-                transform: translateX(-100px);
-            }
-
-            100% {
-                transform: translateX(100px);
-            }
+        .faq-question:hover::before {
+            opacity: 1;
         }
 
-        h1 {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
-
-        .faq-container {
-            padding: 80px 0;
-        }
-
-        .search-box {
-            background: white;
-            border-radius: 50px;
-            padding: 15px 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 50px;
-            display: flex;
-            align-items: center;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .search-box input {
-            border: none;
-            outline: none;
-            flex: 1;
-            padding: 10px 15px;
-            font-size: 16px;
-            font-family: 'Cairo', Arial, sans-serif;
-        }
-
-        .search-box i {
-            color: #667eea;
-            font-size: 20px;
-            margin-left: 15px;
-        }
-
-        .faq-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .faq-category {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .faq-category:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
-
-        .category-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
-            text-align: center;
-            position: relative;
-        }
-
-        .category-header h2 {
+        .faq-question .icon {
             font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 10px;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
-        .category-header i {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            opacity: 0.9;
-        }
-
-        .faq-item {
-            border-bottom: 1px solid #f0f0f0;
-            transition: background-color 0.3s ease;
-        }
-
-        .faq-item:last-child {
-            border-bottom: none;
-        }
-
-        .faq-question {
-            padding: 20px 25px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #333;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .faq-question:hover {
-            background-color: #f8f9ff;
-            color: #667eea;
-        }
-
-        .faq-question .toggle-icon {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            transition: transform 0.3s ease;
-        }
-
-        .faq-answer {
-            padding: 0 25px;
-            max-height: 0;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            background: #f8f9ff;
-        }
-
-        .faq-answer.active {
-            padding: 20px 25px;
-            max-height: 200px;
-        }
-
-        .faq-answer p {
-            color: #666;
-            line-height: 1.8;
-            font-size: 1rem;
-        }
-
-        .faq-item.active .toggle-icon {
+        .faq-item.active .faq-question .icon {
             transform: rotate(180deg);
         }
 
-        .contact-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 0;
-            text-align: center;
-            margin-top: 60px;
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.98);
         }
 
-        .contact-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+        .faq-item.active .faq-answer {
+            max-height: 500px;
         }
 
-        .contact-section p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-
-        .contact-btn {
-            display: inline-flex;
-            align-items: center;
-            background: white;
-            color: #667eea;
-            padding: 15px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
+        .faq-answer-content {
+            padding: 30px;
+            color: #444;
             font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            line-height: 1.8;
+            border-top: 3px solid #FFD700;
+            position: relative;
         }
 
-        .contact-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        .faq-answer-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            /* background: linear-gradient(90deg, #667eea, #764ba2); */
         }
 
-        .contact-btn i {
-            margin-left: 10px;
-            font-size: 1.2rem;
+        .no-faqs {
+            text-align: center;
+            padding: 60px 30px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            color: #666;
+            font-size: 1.3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-faqs i {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: block;
         }
 
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
+            .floating-clouds {
+                width: 100vw;
+                height: 100vh;
             }
 
-            .faq-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
+            .cloud1,
+            .cloud2,
+            .cloud3,
+            .cloud4,
+            .cloud5 {
+                transform: scale(0.7);
             }
 
-            .search-box {
-                margin: 0 20px 30px;
-            }
-
-            .contact-section h2 {
-                font-size: 2rem;
+            .section-title {
+                font-size: 2.2rem;
             }
 
             .faq-question {
-                padding: 15px 20px;
+                padding: 20px;
+                font-size: 1.1rem;
+            }
+
+            .faq-answer-content {
+                padding: 25px 20px;
                 font-size: 1rem;
             }
 
-            .faq-answer.active {
-                padding: 15px 20px;
+            .container {
+                padding: 0 15px;
             }
         }
 
-        .no-results {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .faq-question {
+                padding: 15px;
+                font-size: 1rem;
+            }
+
+            .faq-answer-content {
+                padding: 20px 15px;
+                font-size: 0.95rem;
+            }
         }
 
-        .no-results i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            opacity: 0.5;
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
         }
 
-        .no-results h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .faq-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .faq-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .faq-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .faq-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .faq-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .faq-item:nth-child(n+6) {
+            animation-delay: 0.6s;
+        }
+
+        .swiper-slide {
+            background: #cfa046c7 !important;
         }
 
     </style>
 </head>
-<body>
-    <header>
-        <div class="container">
-            <h1><i class="fas fa-question-circle"></i> الأسئلة الشائعة</h1>
-            <p class="subtitle">جمعية الإمارات للمتقاعدين - نجيب على جميع استفساراتكم</p>
-        </div>
-    </header>
 
-    <div class="faq-container">
-        <div class="container">
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="ابحث في الأسئلة الشائعة..." onkeyup="searchFAQ()">
-            </div>
+<body ng-app="myApp">
+    <x-guest-header></x-guest-header>
 
-            <div class="faq-grid" id="faqGrid">
-                <!-- العضوية والتسجيل -->
-                <div class="faq-category" data-category="membership">
-                    <div class="category-header">
-                        <i class="fas fa-user-plus"></i>
-                        <h2>العضوية والتسجيل</h2>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>كيف يمكنني التسجيل في الجمعية؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>يمكنك التسجيل في الجمعية من خلال ملء استمارة العضوية وتقديم المستندات المطلوبة مثل إثبات التقاعد وصورة من الهوية الإماراتية. يمكنك زيارة مقر الجمعية أو التقديم إلكترونياً من خلال موقعنا الرسمي.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>ما هي شروط العضوية في الجمعية؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>يجب أن يكون المتقدم مواطن إماراتي متقاعد، وأن يكون حاصلاً على معاش تقاعدي من إحدى الجهات الحكومية في دولة الإمارات العربية المتحدة، مع تقديم المستندات اللازمة للإثبات.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>هل هناك رسوم عضوية؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>نعم، هناك رسوم عضوية سنوية رمزية تُستخدم لتغطية تكاليف الأنشطة والخدمات المقدمة للأعضاء. يمكنك الاستفسار عن قيمة الرسوم من خلال الاتصال بنا.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- الخدمات والمزايا -->
-                <div class="faq-category" data-category="services">
-                    <div class="category-header">
-                        <i class="fas fa-hands-helping"></i>
-                        <h2>الخدمات والمزايا</h2>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>ما هي الخدمات التي تقدمها الجمعية؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>نقدم خدمات متنوعة تشمل الرعاية الصحية، والأنشطة الثقافية والاجتماعية، والرحلات الترفيهية، والاستشارات القانونية، وورش العمل التدريبية، بالإضافة إلى الخدمات المالية والتأمينية.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>هل يمكنني الاستفادة من الخدمات الصحية؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>نعم، نوفر برامج رعاية صحية شاملة تشمل الفحوصات الدورية، والاستشارات الطبية، والعلاج الطبيعي، وبرامج الصحة النفسية، بالإضافة إلى خصومات على الخدمات الطبية في المراكز المتعاقدة معنا.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>كيف يمكنني حجز موعد للاستشارة؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>يمكنك حجز موعد للاستشارة من خلال الاتصال بالجمعية أو عبر الموقع الإلكتروني أو التطبيق الذكي. كما يمكنك زيارة مقر الجمعية مباشرة خلال ساعات العمل الرسمية.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- الأنشطة والفعاليات -->
-                <div class="faq-category" data-category="activities">
-                    <div class="category-header">
-                        <i class="fas fa-calendar-alt"></i>
-                        <h2>الأنشطة والفعاليات</h2>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>ما أنواع الأنشطة التي تنظمها الجمعية؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>ننظم أنشطة متنوعة تشمل الرحلات السياحية، والفعاليات الثقافية، وورش العمل التدريبية، والمحاضرات التوعوية، والأنشطة الرياضية، والمناسبات الاجتماعية، والمعارض والمؤتمرات.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>كيف يمكنني التسجيل في الأنشطة؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>يمكنك التسجيل في الأنشطة من خلال الموقع الإلكتروني للجمعية، أو التطبيق الذكي، أو الاتصال المباشر بالجمعية، أو زيارة مقر الجمعية. سنقوم بإرسال تأكيد التسجيل وتفاصيل النشاط عبر البريد الإلكتروني أو الرسائل النصية.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>هل الأنشطة مجانية للأعضاء؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>معظم الأنشطة مجانية للأعضاء، وبعض الأنشطة الخاصة قد تتطلب رسوم رمزية لتغطية التكاليف. نحرص على إتاحة الأنشطة لجميع الأعضاء بأسعار مدعومة.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- التواصل والدعم -->
-                <div class="faq-category" data-category="contact">
-                    <div class="category-header">
-                        <i class="fas fa-headset"></i>
-                        <h2>التواصل والدعم</h2>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>ما هي أوقات عمل الجمعية؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>نعمل من الأحد إلى الخميس من الساعة 8:00 صباحاً حتى 4:00 عصراً. يمكنك التواصل معنا عبر الهاتف أو البريد الإلكتروني في أي وقت، وسنرد على استفساراتك في أقرب وقت ممكن.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>كيف يمكنني تقديم شكوى أو اقتراح؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>يمكنك تقديم الشكاوى والاقتراحات من خلال نموذج التواصل على موقعنا، أو عبر البريد الإلكتروني، أو الاتصال المباشر، أو زيارة مقر الجمعية. نحرص على الرد على جميع الشكاوى والاقتراحات خلال 48 ساعة.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-question" onclick="toggleFAQ(this)">
-                            <span>هل يمكنني تحديث بياناتي الشخصية؟</span>
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                        </div>
-                        <div class="faq-answer">
-                            <p>نعم، يمكنك تحديث بياناتك الشخصية من خلال تسجيل الدخول إلى حسابك على الموقع الإلكتروني، أو التواصل مع قسم العضوية، أو زيارة مقر الجمعية مع إحضار المستندات المطلوبة للتحديث.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="no-results" id="noResults" style="display: none;">
-                <i class="fas fa-search"></i>
-                <h3>لم نعثر على أي نتائج</h3>
-                <p>جرب استخدام كلمات مختلفة أو تصفح الأقسام أعلاه</p>
-            </div>
-        </div>
+    <div class="floating-clouds">
+        <div class="cloud cloud1"></div>
+        <div class="cloud cloud2"></div>
+        <div class="cloud cloud3"></div>
+        <div class="cloud cloud4"></div>
+        <div class="cloud cloud5"></div>
     </div>
 
-    <div class="contact-section">
+    <section style="background: unset !important;" class="faq-section py-5">
         <div class="container">
-            <h2>لم تجد إجابة لسؤالك؟</h2>
-            <p>فريق خدمة العملاء متاح لمساعدتك في أي استفسار</p>
-            <a href="#" class="contact-btn">
-                <i class="fas fa-phone"></i>
-                تواصل معنا
-            </a>
+            <div class="faq-container">
+                <div id="faq-list">
+                    @if($faqs->isEmpty())
+                    <div class="no-faqs">
+                        <i class="fas fa-question-circle"></i>
+                        لا توجد أسئلة شائعة حاليًا.
+                    </div>
+                    @else
+                    @foreach($faqs as $index => $faq)
+                    <div class="faq-item loading" style="animation-delay: {{ ($index * 0.1) + 0.1 }}s;">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <span>{{ $faq->question_ar }}</span>
+                            <i class="fas fa-chevron-down icon"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">
+                                {{ $faq->answer_ar }}
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    @endif
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <x-footer-section></x-footer-section>
 
     <script>
-        function toggleFAQ(element) {
-            const faqItem = element.parentNode;
-            const answer = faqItem.querySelector('.faq-answer');
+        // Toggle FAQ function
+        function toggleFaq(element) {
+            const faqItem = element.closest('.faq-item');
             const isActive = faqItem.classList.contains('active');
 
-            // Close all other FAQ items
+            // Close all other FAQ items with smooth animation
             document.querySelectorAll('.faq-item.active').forEach(item => {
                 if (item !== faqItem) {
                     item.classList.remove('active');
-                    item.querySelector('.faq-answer').classList.remove('active');
                 }
             });
 
-            // Toggle current item
+            // Toggle current FAQ item
             if (isActive) {
                 faqItem.classList.remove('active');
-                answer.classList.remove('active');
             } else {
                 faqItem.classList.add('active');
-                answer.classList.add('active');
             }
         }
 
-        function searchFAQ() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const categories = document.querySelectorAll('.faq-category');
-            const noResults = document.getElementById('noResults');
-            let hasResults = false;
+        // Add smooth animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('loaded');
+                }, index * 100);
+            });
 
-            categories.forEach(category => {
-                let categoryHasResults = false;
-                const questions = category.querySelectorAll('.faq-item');
+            // Add keyboard accessibility
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.setAttribute('tabindex', '0');
+                question.setAttribute('role', 'button');
+                question.setAttribute('aria-expanded', 'false');
 
-                questions.forEach(question => {
-                    const questionText = question.querySelector('.faq-question span').textContent.toLowerCase();
-                    const answerText = question.querySelector('.faq-answer p').textContent.toLowerCase();
-
-                    if (questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
-                        question.style.display = 'block';
-                        categoryHasResults = true;
-                        hasResults = true;
-                    } else {
-                        question.style.display = 'none';
+                question.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleFaq(this);
+                        // Update aria-expanded
+                        const isExpanded = this.closest('.faq-item').classList.contains('active');
+                        this.setAttribute('aria-expanded', isExpanded);
                     }
                 });
 
-                if (categoryHasResults || searchTerm === '') {
-                    category.style.display = 'block';
-                } else {
-                    category.style.display = 'none';
+                // Update aria-expanded on click
+                question.addEventListener('click', function() {
+                    setTimeout(() => {
+                        const isExpanded = this.closest('.faq-item').classList.contains('active');
+                        this.setAttribute('aria-expanded', isExpanded);
+                    }, 100);
+                });
+            });
+
+            // Add search functionality (optional enhancement)
+            createSearchBox();
+        });
+
+        // Optional: Add search functionality
+        function createSearchBox() {
+            const faqContainer = document.querySelector('.faq-container');
+            const searchHTML = `
+                <div class="search-box" style="margin-bottom: 2rem; text-align: center;">
+                    <input type="text" id="faq-search" placeholder="ابحث في الأسئلة..." 
+                                style="padding: 12px 20px; font-size: 1rem; border: none; border-radius: 25px; 
+                                        width: 100%; max-width: 400px; background: rgba(255,255,255,0.9);
+                                        backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                </div>
+            `;
+
+            faqContainer.insertAdjacentHTML('afterbegin', searchHTML);
+
+            // Search functionality
+            document.getElementById('faq-search').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                const faqItems = document.querySelectorAll('.faq-item');
+
+                faqItems.forEach(item => {
+                    const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+
+                    if (question.includes(searchTerm) || answer.includes(searchTerm) || searchTerm === '') {
+                        item.style.display = 'block';
+                        item.style.animation = 'fadeInUp 0.3s ease forwards';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // Show "no results" message if needed
+                const visibleItems = document.querySelectorAll('.faq-item[style*="block"]').length;
+                let noResultsMsg = document.querySelector('.no-results');
+
+                if (visibleItems === 0 && searchTerm !== '') {
+                    if (!noResultsMsg) {
+                        noResultsMsg = document.createElement('div');
+                        noResultsMsg.className = 'no-results';
+                        noResultsMsg.innerHTML = `
+                            <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.8); font-size: 1.1rem;">
+                                <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.6;"></i>
+                                <p>لم يتم العثور على نتائج لـ "<strong>${e.target.value}</strong>"</p>
+                                <p style="font-size: 0.9rem; margin-top: 10px;">جرب كلمات مفتاحية مختلفة</p>
+                            </div>
+                        `;
+                        faqContainer.appendChild(noResultsMsg);
+                    }
+                } else if (noResultsMsg) {
+                    noResultsMsg.remove();
                 }
             });
-
-            if (hasResults || searchTerm === '') {
-                noResults.style.display = 'none';
-            } else {
-                noResults.style.display = 'block';
-            }
         }
 
-        // Add keyboard navigation
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && e.target.id === 'searchInput') {
-                searchFAQ();
-            }
+        // Add smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Add loading effect for better UX
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
         });
 
-        // Add smooth scrolling for better UX
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', function() {
-                setTimeout(() => {
-                    if (this.parentNode.classList.contains('active')) {
-                        this.scrollIntoView({
-                            behavior: 'smooth'
-                            , block: 'center'
-                        });
-                    }
-                }, 300);
-            });
-        });
+        // Optional: Auto-expand first FAQ on large screens
+        if (window.innerWidth > 768) {
+            setTimeout(() => {
+                const firstFaq = document.querySelector('.faq-item .faq-question');
+                if (firstFaq) {
+                    // Uncomment next line if you want first FAQ to be open by default
+                    // toggleFaq(firstFaq);
+                }
+            }, 1000);
+        }
 
     </script>
 </body>
+
 </html>

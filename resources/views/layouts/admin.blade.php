@@ -308,6 +308,8 @@
                             <i class="fas fa-info-circle"></i> من نحن
                         </a>
                     </li>
+                               
+
                     <li>
                         <a class="dropdown-item" href="{{ route('admin.member.index') }}">
                             <i class="fas fa-users"></i> الأعضاء
