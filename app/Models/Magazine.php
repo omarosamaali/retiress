@@ -16,10 +16,9 @@ class Magazine extends Model
         'description_en',
         'main_image',
         'pdf',
-        'price',
+        'sub_image',
         'status',
     ];
-
 
     public function getMainImageUrlAttribute()
     {

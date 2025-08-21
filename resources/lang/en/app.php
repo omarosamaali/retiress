@@ -498,6 +498,8 @@ return [
     'police_dubai' => 'Dubai Police',
     'achievements' => 'Achievements',
     'latest_magazine_issue' => 'These assertions confirm that knowledge does not age, but rather the quality of the laboratory does over time.',
+    'gallery' => 'Gallery',
+    'published_date' => 'Published Date',
 
 
 ];

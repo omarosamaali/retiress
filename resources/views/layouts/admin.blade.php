@@ -351,7 +351,7 @@
                             <i class="fas fa-newspaper"></i> أخبار الجمعية
                         </a>
                         <a class="dropdown-item" href="{{ route('admin.magazines.index') }}">
-                            <i class="fas fa-newspaper"></i> المجلة
+                            <i class="fas fa-newspaper"></i> إنجازات الخبرات
                         </a>
                     </li>
                 </ul>

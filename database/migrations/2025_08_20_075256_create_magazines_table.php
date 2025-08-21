@@ -19,7 +19,6 @@ return new class extends Migration
             $table->text('description_ar');
             $table->text('description_en')->nullable();
             $table->string('main_image')->nullable();
-            $table->string('pdf')->nullable();
             $table->json('sub_image')->nullable();
             $table->boolean('status')->default(1);
 

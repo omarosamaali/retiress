@@ -22,18 +22,19 @@
 
     <style>
         .download-btn {
-                text-align: center;
-                align-items: center;
-                font-size: 16px;
-                background: #6e4c3e;
-                color: white !important;
-                width: 300px;
-                margin: auto;
-                margin-top: 15px !important;
-                border-radius: 7px;
-                padding: 5px;
+            text-align: center;
+            align-items: center;
+            font-size: 16px;
+            background: #6e4c3e;
+            color: white !important;
+            width: 300px;
+            margin: auto;
+            margin-top: 15px !important;
+            border-radius: 7px;
+            padding: 5px;
 
         }
+
         @font-face {
             font-family: 'FontAwesome';
             src: url('https://www.easd.ae/site/assets/fontawesome/fa4/fonts/fontawesome-webfont.eot?v=4.7.0');
@@ -5148,60 +5149,155 @@
 
 <body>
     <x-guest-header></x-guest-header>
-<div id="in-cont">
-    <div class="inn-title" style="padding-top: 150px">
-        <h2>
-            <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
-            {{ __('app.magazine_details_page_title') }}
-        </h2>
-    </div>
+    <div id="in-cont">
+        <div class="inn-title" style="padding-top: 150px">
+            <h2>
+                <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
+                {{ __('app.magazine_details_page_title') }}
+            </h2>
+        </div>
 
-    <section class="py-hp3">
-        <div class="container-rni">
-            @if($magazines) {{-- Assuming $magazines is a single magazine object here --}}
-            <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-                <div style="flex-direction: column;" class="row-cwp py-hp3">
-                    <div class="col-igy col-cvg" style="margin: auto;">
-                        <div class="bg-xf5 shadow-primary-sxe position-1lp">
-                            <div class="block-osq text-b1x">
-                                <figure class="m-38w text-m1o overflow-khm">
-                                    <img class="img-odq rou-m3b" src="{{ asset('storage/' . $magazines->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($magazines->title_ar ?? __('app.magazine_image_alt_fallback')) : ($magazines->title_en ?? __('app.magazine_image_alt_fallback')) }}">
-                                </figure>
-                            </div>
+<section class="py-hp3">
+    <div class="container-rni">
+        @if($magazines)
+        <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+            <div style="flex-direction: column;" class="row-cwp py-hp3">
+                <div class="col-igy col-cvg" style="margin: auto;">
+                    <div class="bg-xf5 shadow-primary-sxe position-1lp">
+                        <div class="block-osq text-b1x">
+                            <figure class="m-38w text-m1o overflow-khm">
+                                @if($magazines->main_image)
+                                <img class="img-odq rou-m3b" src="{{ asset('storage/' . $magazines->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($magazines->title_ar ?? __('app.magazine_image_alt_fallback')) : ($magazines->title_en ?? __('app.magazine_image_alt_fallback')) }}">
+                                @else
+                                <img class="img-odq rou-m3b" src="{{ asset('images/default-magazine.jpg') }}" alt="{{ __('app.default_magazine_image') }}">
+                                @endif
+                            </figure>
                         </div>
                     </div>
-{{-- <a href="{{ asset('storage/' . $magazines->pdf) }}" download class="download-btn">تحميل المجلة PDF</a> --}}
-<div class="col-5vc col-cvg my-mpv">
+                </div>
 
-                        <a class="text-7zo text-b1x" href="{{ url('magazines/show/'.$magazines->id) }}">
-                            <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}</h2>
-                        </a>
-                        <hr>
-                        <div class="my-7z8 fs--oox">
-                            <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{ \Carbon\Carbon::parse($magazines->date)->translatedFormat('Y-m-d') }}
-                            <i class="fa fa-calendar"></i> {{ __('app.from') }}: {{ \Carbon\Carbon::parse($magazines->start_time)->translatedFormat('h:i A') }}
-                            {{ __('app.to') }}: {{ \Carbon\Carbon::parse($magazines->end_time)->translatedFormat('h:i A') }}
+                <div class="col-5vc col-cvg my-mpv">
+                    <a class="text-7zo text-b1x" href="{{ url('magazines/show/'.$magazines->id) }}">
+                        <h2 class="qvtmx font-weight-s3h text-7zo">
+                            {{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}
+                        </h2>
+                    </a>
+                    <hr>
+
+                    <div class="my-7z8 fs--oox">
+                        <i class="fa fa-calendar"></i> {{ __('app.published_date') }}:
+                        {{ $magazines->created_at ? $magazines->created_at->translatedFormat('d M Y') : 'غير محدد' }}
+
+                        <br>
+                        <i class="fa fa-user"></i> {{ __('app.status') }}:
+                        <span class="badge {{ $magazines->status ? 'bg-success' : 'bg-secondary' }}">
+                            {{ $magazines->status ? __('app.active') : __('app.inactive') }}
+                        </span>
+                    </div>
+
+                    <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
+                        <span class="text-7zo block-osq">
+                            {{ app()->getLocale() == 'ar' ? $magazines->description_ar : $magazines->description_en }}
+                        </span>
+                    </p>
+
+                    {{-- عرض الصور الفرعية إذا كانت موجودة --}}
+                    @if($magazines->sub_image)
+                    @php
+                    $subImages = json_decode($magazines->sub_image, true);
+                    @endphp
+                    @if(is_array($subImages) && count($subImages) > 0)
+                    <div class="sub-images-gallery mt-3">
+                        <h5>{{ __('app.gallery') }}</h5>
+                        <div class="row">
+                            @foreach($subImages as $subImage)
+                            <div class="col-md-3 col-sm-4 col-6 mb-3">
+                                <img src="{{ asset('storage/' . $subImage) }}" class="img-fluid rounded shadow-sm" alt="{{ __('app.gallery_image') }}" style="height: 150px; object-fit: cover; width: 100%; cursor: pointer;" onclick="openImageModal(this.src)">
+                            </div>
+                            @endforeach
                         </div>
-                        <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                            <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ? $magazines->description_ar : $magazines->description_en }} </span>
-                        </p>
-                        <p>{{ app()->getLocale() == 'ar' ? $magazines->long_description : $magazines->long_description_en }}</p>
-                        <hr>
+                    </div>
+                    @endif
+                    @endif
+                    <hr>
                 </div>
             </div>
         </div>
+
         @else
         <div class="text-center w-100">
-            <p>{{ __('app.magazine_not_found') }}</p>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                <p class="mb-0">{{ __('app.magazine_not_found') }}</p>
+            </div>
         </div>
         @endif
-</div>
+    </div>
 </section>
 
-<x-footer-section></x-footer-section>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
-<script src="{{ asset('assets/js/scriptU.js') }}"></script>
-</div>
+<style>
+    .sub-images-gallery img:hover {
+        transform: scale(1.05);
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        border: 1px solid #007bff;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: white;
+        border: 1px solid #28a745;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+        text-decoration: none;
+    }
+
+    .badge {
+        padding: 4px 8px;
+        border-radius: 3px;
+        font-size: 0.8em;
+    }
+
+    .bg-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .bg-secondary {
+        background-color: #6c757d;
+        color: white;
+    }
+
+</style>
+
+<script>
+    function openImageModal(imageSrc) {
+        document.getElementById('modalImage').src = imageSrc;
+        var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+        imageModal.show();
+    }
+
+</script>
+
+
+        <x-footer-section></x-footer-section>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+        <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+    </div>
 </body>
 
 

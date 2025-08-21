@@ -17,7 +17,7 @@ return [
     'programs_events' => 'البرامج والفعاليات',
     'media_center' => 'المركز الإعلامي',
     'association_news' => 'أخبار الجمعية',
-    'retiree_pulse_magazine' => 'مجلة نبض المتقاعد',
+    'retiree_pulse_magazine' => 'الإنجاز نبض المتقاعد',
     'services' => 'الخدمات',
     'esaad_card' => 'بطاقة إسعاد',
     'zakat_fund' => 'صندوق الزكاة',
@@ -43,7 +43,7 @@ return [
     'issue_date' => 'تاريخ الإصدار',
     'no_magazines_available' => 'لا توجد مجلات متاحة حالياً.',
     'quick_links' => 'روابط سريعة',
-    'magazine_pulse' => 'مجلة نبض',
+    'magazine_pulse' => 'الإنجاز نبض',
     'who_we_are' => 'من نحن',
     'board_members_footer' => 'أعضاء مجلس الإدارة', // تم تغيير المفتاح لتجنب التكرار مع "board_members" السابق
     'services_footer' => 'الخدمات', // تم تغيير المفتاح لتجنب التكرار مع "services" السابق
@@ -110,10 +110,10 @@ return [
     'no_sub_images_available' => 'لا توجد صور فرعية إضافية لهذا الخبر.',
     'news_not_found' => 'عذراً، لم يتم العثور على هذا الخبر.',
     'sub_image_alt_fallback' => 'صورة فرعية للخبر',
-    'magazine_page_title' => 'مجلة نبض المتقاعد',
-    'view_magazine' => 'عرض المجلة',
+    'magazine_page_title' => 'الإنجاز نبض المتقاعد',
+    'view_magazine' => 'عرض الالإنجاز',
     'publication_date_short' => 'تاريخ النشر', // Shortened key for 'تاريخ النشر'
-    'magazine_image_alt_fallback' => 'صورة مجلة',
+    'magazine_image_alt_fallback' => 'صورة الإنجاز',
     'magazine_details_page_title' => 'تفاصيل الإصدار',
     'magazine_not_found' => 'عذراً، لم يتم العثور على هذا الإصدار.',
     'from' => 'من', // If start/end time are actually 'from'/'to'
@@ -498,5 +498,7 @@ return [
     'police_dubai' => 'شرطة دبي',
     'achievements' => 'انجازات الخبرات',
     'latest_magazine_issue' => 'هذه الإنجازات تؤكد أن المعرفة لا تتقادم، بل تزداد قيمة بمرور الزمن.',
+    'gallery' => 'المعرض',
+    'published_date' => 'تاريخ النشر',
 
 ];

@@ -5133,24 +5133,17 @@
         <section class="py-hp3">
             <div class="container-rni">
                 @forelse($magazines as $magazine)
-                {{-- Apply dir to the individual magazine item if text inside needs direction --}}
                 <div class="col-oaq col-2yx mt-am8 my-eeo" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
                     <div class="d-log flex-mb4 item-zsg content-85f text-if3 bg-ptb shadow-h9k shadow-3d-7n5 transition-all-ease-qd6 transition-hover-36d rou-xnf container-8q9 h-5rt overlay-xkz overlay-1yx">
                         <div class="position-f8s text-tfh w-d98 z-index-leq m-kot item-lgy">
                             <a href="{{ url('magazines/show/'.$magazine->id) }}" class="btn-fca bg-ptb shadow-as8 btn-a7p rounded-8o3 m-3p5">
-                                <i style="font-size:15px !important;" class="fa fa-eye"></i> {{-- Icon for 'View' --}}
-                            </a>
-                            <a href="{{ $magazine->pdf }}" target="_blank" class="btn-fca bg-ptb shadow-as8 btn-a7p rounded-8o3 m-3p5">
-
-                                    <i class="fa fa-link" style="font-size:15px !important;"></i>
+                                <i style="font-size:15px !important;" class="fa fa-eye"></i>
                             </a>
                         </div>
                         <figure class="m-d29 text-tfh rou-xnf overflow-g44">
                             <img class="img-5ia" src="{{ asset('storage/' . $magazine->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($magazine->name_ar ?? __('app.magazine_image_alt_fallback')) : ($magazine->name_en ?? __('app.magazine_image_alt_fallback')) }}">
                             <span style="font-size: 15px;">{{ __('app.publication_date_short') }} : {{ \Carbon\Carbon::parse($magazine->created_at)->translatedFormat('d/m/Y') }}</span>
                         </figure>
-                        {{-- You might want to add the magazine title here too, if it exists in your DB --}}
-                        {{-- <h3 class="magazine-title">{{ app()->getLocale() == 'ar' ? $magazine->name_ar : $magazine->name_en }}</h3> --}}
                     </div>
                 </div>
                 @empty
@@ -5160,7 +5153,6 @@
                 @endforelse
             </div>
         </section>
-
         <x-footer-section></x-footer-section>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
         <script src="{{ asset('assets/js/scriptU.js') }}"></script>

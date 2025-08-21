@@ -268,7 +268,19 @@ Route::get('/', function () {
     $news = News::latest()->limit(3)->get();
     $events = Event::latest()->get();
     $services = Service::latest()->limit(3)->get();
-    $magazines = Magazine::latest()->get();
+    // $magazines = Magazine::latest()->get();
+    $magazinesCount = Magazine::count();
+    $magazines = null;
+
+    if ($magazinesCount > 0) {
+        $dayOfMonth = now()->day;
+        // The modulo operator (%) will cycle through the magazines
+        // based on the day of the month.
+        $offset = ($dayOfMonth - 1) % $magazinesCount;
+        $magazines = Magazine::latest()->offset($offset)->first();
+    }
+
+
     $settings = Settings::getActiveContactInfo();
     return view('welcome', compact('banner', 'news', 'events', 'services', 'magazines', 'settings'));
 })->name('/');

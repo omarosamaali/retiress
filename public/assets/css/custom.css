@@ -3065,7 +3065,7 @@ p {
 
 .slide-title {
     position: absolute;
-    bottom: 0;
+    bottom: -10px;
     left: 0;
     right: 0;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
