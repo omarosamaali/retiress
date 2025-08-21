@@ -38,7 +38,6 @@ return [
     'our_services' => 'خدماتنا',
     'more' => 'المزيد', // لزر "المزيد"
     'service_details' => 'تفاصيل الخدمة', // هذا لو أردت زر رابط الخدمة أن يكون نص وليس أيقونة
-    'latest_magazine_issue' => 'أخر إصدار مجلة نبض المتقاعد',
     'all_issues' => 'جميع الإصدارات',
     'no_description_available' => 'لا يوجد وصف متاح.',
     'issue_date' => 'تاريخ الإصدار',
@@ -497,5 +496,7 @@ return [
     'ministry_of_defense' => 'وزارة الدفاع',
     'ministry_of_interior' => 'وزارة الداخلية',
     'police_dubai' => 'شرطة دبي',
+    'achievements' => 'انجازات الخبرات',
+    'latest_magazine_issue' => 'هذه الإنجازات تؤكد أن المعرفة لا تتقادم، بل تزداد قيمة بمرور الزمن.',
 
 ];

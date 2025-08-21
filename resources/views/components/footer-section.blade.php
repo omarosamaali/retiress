@@ -98,13 +98,13 @@
                         </span>
                     </div>
                     <div class="text-apb">
-                        <i class="fa-solid fa-phone-volume icon-custom"></i> <span class="text-o77"> رقم الواتس : {{ $settings?->whatsapp }}</span>
+                        <i class="fa-solid fa-phone-volume icon-custom"></i> <span class="text-o77"> رقم الواتساب : {{ $settings?->whatsapp }}</span>
 
 
                     </div>
                     <div class="text-apb">
                         <i class="fa-solid fa-blender-phone icon-custom"></i> <span class="text-o77">
-                            <a class="stm-qoa" href="mailto:info@uaeca.ae"> البريد الإلكترني : {{ $settings?->email }}</a>
+                            <a class="stm-qoa" href="mailto:info@uaeca.ae"> البريد الإلكتروني : {{ $settings?->email }}</a>
                         </span>
                     </div>
                     <div class="text-apb">

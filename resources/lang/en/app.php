@@ -38,7 +38,6 @@ return [
     'our_services' => 'Our Services',
     'more' => 'More', // لزر "More"
     'service_details' => 'Service Details', // This if you want the service link button to be text instead of an icon
-    'latest_magazine_issue' => 'Latest Retiree Pulse Magazine Issue',
     'all_issues' => 'All Issues',
     'no_description_available' => 'No description available.',
     'issue_date' => 'Issue Date',
@@ -497,5 +496,8 @@ return [
     'ministry_of_defense' => 'Ministry of Defense',
     'ministry_of_interior' => 'Ministry of Interior',
     'police_dubai' => 'Dubai Police',
+    'achievements' => 'Achievements',
+    'latest_magazine_issue' => 'These assertions confirm that knowledge does not age, but rather the quality of the laboratory does over time.',
+
 
 ];

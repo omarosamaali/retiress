@@ -24,6 +24,10 @@ use App\Models\MemberApplication;
 use App\Http\Controllers\TransactionController;
 use App\Models\Transaction;
 
+Route::get('faq', function () { 
+    return view('faq');
+})->name('faq');
+
 Route::get('/member/records', [TransactionController::class, 'record'])->name('members.record');
 
 Route::middleware(['auth'])->name('members.')->group(function () {
@@ -264,7 +268,7 @@ Route::get('/', function () {
     $news = News::latest()->limit(3)->get();
     $events = Event::latest()->get();
     $services = Service::latest()->limit(3)->get();
-    $magazines = Magazine::latest()->first();
+    $magazines = Magazine::latest()->get();
     $settings = Settings::getActiveContactInfo();
     return view('welcome', compact('banner', 'news', 'events', 'services', 'magazines', 'settings'));
 })->name('/');

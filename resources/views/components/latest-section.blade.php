@@ -10,47 +10,44 @@
     }
 
 </style>
-<div class="container-9l2 container-s5k vc_-9ok" id="latest-section">
-    <div class="row-gtg">
-        <div class="container-i1t">
-            <div class="row-1yt">
-                <div class="container-sls col-rrx">
-                    <div class="column-wcn"> @if ($magazines) <div class="row-gtg vc_-ppz">
-                            <div class="container-sls col-zbp 1" style="        width: 30%;">
-                                <div class="column-wcn">
-                                    <div>
-                                        <div class="image-ksy content-zgb vc_-lpq">
-                                            <figure class="vc_-ao4">
-                                                <div class="wrapper-j81"> {{-- استخدام عنوان المجلة بناءً على اللغة الحالية --}} <img style="width: 230px; height: 300px;" src="{{ asset('storage/' . $magazines->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($magazines->title_ar ?? __('app.latest_magazine_issue')) : ($magazines->title_en ?? __('app.latest_magazine_issue')) }}"> </div>
-                                            </figure>
-                                        </div>
-                                    </div>
+
+
+<section style="background: #704e40; margin-top: 100px;">
+    <div class="container-e3z">
+        <div class="row-sy7">
+            <div class="col-w5q">
+                <h1 class="font-weight-5zk text-jli" style="margin-top: 25px;">{{ __('app.achievements') }}</h1>
+
+                <p class="text-jli">{{ __('app.latest_magazine_issue') }}</p>
+            </div>
+            <div class="col-bpd">
+                <div class="swiper eventsSwiper">
+                    <div class="swiper-wrapper">
+                        @foreach ($magazines as $event)
+                        <div class="swiper-slide">
+                            <div class="slide-content">
+                                <img src="{{ asset('storage/' . $event->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}" class="slide-image">
+                                <div class="slide-title">
+                                    {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
                                 </div>
+                                <p style="padding-top: 20px; padding-right: 20px; margin-bottom: 15px;">{{ __('app.date') }} : {{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}</p>
                             </div>
-                            <div class="container-sls col-zbp 2" style="        width:70%; ">
-                                <div class="column-wcn">
-                                    <div>
-                                        <div class="column-dx4 content-zgb header-f37">
-                                            <div class="all-version" style="display: flex; align-items: center; justify-content: space-between;">
-                                                <h1 id="style-Ksnz9" class="style-Ksnz9"> {{ __('app.latest_magazine_issue') }} </h1> <a href="{{ route('magazines.all-magazines') }}">{{ __('app.all_issues') }}</a>
-                                            </div>
-                                        </div>
-                                        <div class="column-dx4 content-zgb">
-                                            <div>
-                                                <p dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}" id="style-DRlzk" class="style-DRlzk"> {{-- استخدام وصف المجلة بناءً على اللغة الحالية --}} {{ app()->getLocale() == 'ar' ? ($magazines->description_ar ?? __('app.no_description_available')) : ($magazines->description_en ?? __('app.no_description_available')) }} </p>
-                                            </div>
-                                        </div>
-                                        <div class="column-dx4 content-zgb"> {{-- ترجمة "تاريخ الإصدار" واستخدام translatedFormat للوقت --}}
-                                            <p dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">{{ __('app.issue_date') }}: {{ \Carbon\Carbon::parse($magazines->created_at)->translatedFormat('d F Y') }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> @else {{-- ترجمة نص "لا توجد مجلات متاحة حالياً." --}}
-                        <p>{{ __('app.no_magazines_available') }}</p> @endif
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="swiper-button-prev">
+                        <i class="fas fa-chevron-right"></i>
                     </div>
                 </div>
+                <a href="{{ route('magazines.all-magazines') }}" class="btn-dwo block-qlo" style="display: block; text-align: center;margin-top: 30px;">
+                    <i class="fas fa-eye"></i>
+                    <span>{{ __('app.view_more') }}</span>
+                </a>
             </div>
         </div>
     </div>
-</div>
+</section>
