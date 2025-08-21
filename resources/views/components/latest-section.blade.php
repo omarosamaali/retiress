@@ -36,7 +36,7 @@
 
                 </div>
                 @else
-                <p>لا يوجد مجلات لعرضها حالياً.</p>
+                <p>لا يوجد الإنجازات لعرضها حالياً.</p>
                 @endif
 
                 <a href="{{ route('magazines.all-magazines') }}" class="btn-dwo block-qlo" style="display: block; text-align: center;margin-top: 30px;">

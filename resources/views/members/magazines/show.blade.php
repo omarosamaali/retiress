@@ -21,6 +21,17 @@
     <link rel="icon" href="http://127.0.0.1:8000/assets/img/Group.png" type="image/x-icon">
 
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
+    <style>
+        .member-image {
+            width: 141px;
+            height: 171px;
+            margin-bottom: 6px;
+            border: 1px solid black;
+            padding: 2px;
+
+        }
+
+    </style>
 </head>
 
 <body>
@@ -42,37 +53,28 @@
                         </div>
                         <div class="col-md-6 magazine-info">
                             <h2 class="magazine-title">
-                                <a href="{{ url('magazines/show/'.$magazines->id) }}">
+                                <a style="color: #800000;" href="{{ url('magazines/show/'.$magazines->id) }}">
                                     {{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}
                                 </a>
                             </h2>
                             <div class="member-details">
-                                <h4>اسم العضو: {{ $magazines->member->full_name }}</h4>
-                                <h4>الإمارة: {{ $magazines->member->emirate }}</h4>
+                                <h4>بيانات العضو</h4>
+                                <img src="{{ asset('storage/' . $magazines->member->personal_photo_path) }}" class="member-image" alt="">
+                                <h4> {{ $magazines->member->full_name }}</h4>
+                                <h4 style="font-weight: normal; font-size: 15px;"> {{ $magazines->member->emirate }}</h4>
                                 @php
                                 $previousExperiences = $magazines->member->previous_experience;
                                 $firstExperience = $previousExperiences[0] ?? null;
                                 @endphp
                                 @if ($firstExperience)
-                                <p>
-                                    <strong>آخر مكان التقاعد:</strong> {{ $firstExperience['employer'] }}<br>
-                                    <strong>المسمى الوظيفي:</strong> {{ $firstExperience['job_title'] }}
+                                <p style="font-weight: bold;">
+                                    <strong> </strong> {{ $firstExperience['employer'] }}<br>
+                                    <strong></strong> {{ $firstExperience['job_title'] }}
                                 </p>
                                 @endif
                             </div>
                             <hr>
-                            <div class="meta-info">
-                                <div style="margin-bottom: 20px">
 
-                                    <i class="fa fa-calendar"></i> تاريخ النشر:
-                                    {{ $magazines->created_at ? $magazines->created_at->translatedFormat('d M Y') : 'غير محدد' }}
-                                </div>
-                                    {{-- <br> --}}
-                                <i class="fa fa-user"></i> الحالة:
-                                <span class="badge {{ $magazines->status ? 'badge-success' : 'badge-secondary' }}">
-                                    {{ $magazines->status == 1 ? 'نشط' : 'غير نشط' }}
-                                </span>
-                            </div>
                             <p class="magazine-description">
                                 {{ app()->getLocale() == 'ar' ? $magazines->description_ar : $magazines->description_en }}
                             </p>

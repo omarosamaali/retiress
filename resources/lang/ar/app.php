@@ -41,7 +41,7 @@ return [
     'all_issues' => 'جميع الإصدارات',
     'no_description_available' => 'لا يوجد وصف متاح.',
     'issue_date' => 'تاريخ الإصدار',
-    'no_magazines_available' => 'لا توجد مجلات متاحة حالياً.',
+    'no_magazines_available' => 'لا توجد الإنجازات متاحة حالياً.',
     'quick_links' => 'روابط سريعة',
     'magazine_pulse' => 'الإنجاز نبض',
     'who_we_are' => 'من نحن',
