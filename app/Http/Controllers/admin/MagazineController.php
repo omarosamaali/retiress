@@ -9,10 +9,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class MagazineController extends Controller
 {
+    protected $targetLanguages = ['en' => 'English'];
+
     public function index()
     {
         $member_applications = MemberApplication::all();
@@ -24,57 +26,67 @@ class MagazineController extends Controller
     {
         $request->validate([
             'title_ar' => 'required|string|max:255',
-            'description_ar' => 'required|string',
+            'member_id' => 'required|integer|exists:member_applications,id',
             'main_image' => 'nullable|image|max:2048',
             'sub_images' => 'nullable|array|max:10',
-            'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|boolean',
+            'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'description_ar' => 'required|string',
+            'status' => 'required|boolean', // إضافة حقل الحالة
         ]);
 
-        $magazinesData = [
-            'title_ar' => $request->title_ar,
-            'description_ar' => $request->description_ar,
-            'status' => $request->status,
-        ];
+        try {
+            DB::beginTransaction();
 
-        $tr = new GoogleTranslate('ar');
+            $magazineData = [
+                'title_ar' => $request->title_ar,
+                'description_ar' => $request->description_ar,
+                'member_id' => $request->member_id,
+                'status' => $request->status, // استخدام القيمة من الطلب
+            ];
 
-        foreach ($this->targetLanguages as $code => $name) {
-            $titleColumn = 'title_' . $code;
-            $descColumn = 'description_' . $code;
-            try {
-                if (in_array($titleColumn, (new Magazine())->getFillable())) {
-                    $magazinesData[$titleColumn] = $tr->setTarget($code)->translate($request->input('title_ar'));
-                    $magazinesData[$descColumn] = $tr->setTarget($code)->translate($request->input('description_ar'));
-                } else {
-                    Log::warning("Columns {$titleColumn} or {$descColumn} not found in Magazine model fillable. Skipping translation.");
+            $tr = new GoogleTranslate('ar');
+            $magazineModel = new Magazine();
+
+            foreach ($this->targetLanguages as $code => $name) {
+                $titleColumn = 'title_' . $code;
+                $descColumn = 'description_' . $code;
+
+                try {
+                    if (in_array($titleColumn, $magazineModel->getFillable())) {
+                        $magazineData[$titleColumn] = $tr->setTarget($code)->translate($request->input('title_ar'));
+                    }
+                    if (in_array($descColumn, $magazineModel->getFillable())) {
+                        $magazineData[$descColumn] = $tr->setTarget($code)->translate($request->input('description_ar'));
+                    }
+                } catch (\Exception $e) {
+                    Log::error("Translation failed for {$code}: " . $e->getMessage());
+                    $magazineData[$titleColumn] = null;
+                    $magazineData[$descColumn] = null;
                 }
-            } catch (\Exception $e) {
-                $magazinesData[$titleColumn] = null;
-                $magazinesData[$descColumn] = null;
-                Log::error("Translation failed for {$code} (Magazine Store): " . $e->getMessage());
             }
-        }
 
-        // رفع الصورة الرئيسية
-        if ($request->hasFile('main_image')) {
-            $magazinesData['main_image'] = $request->file('main_image')->store('magazines/main', 'public');
-        }
-
-        // رفع الصور الفرعية
-        if ($request->hasFile('sub_images')) {
-            $subImages = [];
-            foreach ($request->file('sub_images') as $subImage) {
-                $subImagePath = $subImage->store('magazines/sub', 'public');
-                $subImages[] = $subImagePath;
+            if ($request->hasFile('main_image')) {
+                $magazineData['main_image'] = $request->file('main_image')->store('magazines/main', 'public');
             }
-            $magazinesData['sub_image'] = json_encode($subImages);
+
+            if ($request->hasFile('sub_images')) {
+                $subImagesPaths = [];
+                foreach ($request->file('sub_images') as $subImage) {
+                    $subImagesPaths[] = $subImage->store('magazines/sub', 'public');
+                }
+                $magazineData['sub_image'] = json_encode($subImagesPaths);
+            }
+
+            Magazine::create($magazineData);
+
+            DB::commit();
+            return redirect()->route('admin.magazines.index')->with('success', 'تمت إضافة المجلة بنجاح!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', $th->getMessage());
         }
-
-        Magazine::create($magazinesData);
-
-        return redirect()->route('admin.magazines.index')->with('success', 'تمت إضافة الالإنجاز بنجاح!');
     }
+
     public function show(Magazine $magazine)
     {
         $targetLanguages = $this->targetLanguages;
@@ -84,92 +96,97 @@ class MagazineController extends Controller
     public function edit(Magazine $magazine)
     {
         $targetLanguages = $this->targetLanguages;
-        return view('admin.magazines.edit', compact('magazine', 'targetLanguages'));
+        $member_applications = MemberApplication::all();
+        return view('admin.magazines.edit', compact('magazine', 'targetLanguages', 'member_applications'));
     }
 
     public function update(Request $request, Magazine $magazine)
     {
         $request->validate([
             'title_ar' => 'required|string|max:255',
-            'description_ar' => 'required|string',
+            'member_id' => 'required|integer|exists:member_applications,id',
             'main_image' => 'nullable|image|max:2048',
             'sub_images' => 'nullable|array|max:10',
-            'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|boolean',
+            'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'description_ar' => 'required|string',
+            'status' => 'required|boolean', // إضافة حقل الحالة
         ]);
 
-        $magazinesData = [
-            'title_ar' => $request->title_ar,
-            'description_ar' => $request->description_ar,
-            'status' => $request->status,
-        ];
+        try {
+            DB::beginTransaction();
 
-        $tr = new GoogleTranslate('ar');
+            $magazineData = [
+                'title_ar' => $request->title_ar,
+                'description_ar' => $request->description_ar,
+                'member_id' => $request->member_id,
+                'status' => $request->status, // استخدام القيمة من الطلب
+            ];
 
-        foreach ($this->targetLanguages as $code => $name) {
-            $titleColumn = 'title_' . $code;
-            $descColumn = 'description_' . $code;
-            try {
-                if (in_array($titleColumn, (new Magazine())->getFillable())) {
-                    $magazinesData[$titleColumn] = $tr->setTarget($code)->translate($request->input('title_ar'));
-                    $magazinesData[$descColumn] = $tr->setTarget($code)->translate($request->input('description_ar'));
-                } else {
-                    Log::warning("Columns {$titleColumn} or {$descColumn} not found in Magazine model fillable. Skipping translation.");
+            $tr = new GoogleTranslate('ar');
+            $magazineModel = new Magazine();
+
+            foreach ($this->targetLanguages as $code => $name) {
+                $titleColumn = 'title_' . $code;
+                $descColumn = 'description_' . $code;
+
+                try {
+                    if (in_array($titleColumn, $magazineModel->getFillable())) {
+                        $magazineData[$titleColumn] = $tr->setTarget($code)->translate($request->input('title_ar'));
+                    }
+                    if (in_array($descColumn, $magazineModel->getFillable())) {
+                        $magazineData[$descColumn] = $tr->setTarget($code)->translate($request->input('description_ar'));
+                    }
+                } catch (\Exception $e) {
+                    Log::error("Translation failed for {$code}: " . $e->getMessage());
+                    $magazineData[$titleColumn] = null;
+                    $magazineData[$descColumn] = null;
                 }
-            } catch (\Exception $e) {
-                $magazinesData[$titleColumn] = null;
-                $magazinesData[$descColumn] = null;
-                Log::error("Translation failed for {$code} (Magazine Update): " . $e->getMessage());
             }
-        }
 
-        // تحديث الصورة الرئيسية
-        if ($request->hasFile('main_image')) {
-            if ($magazine->main_image) {
-                Storage::disk('public')->delete($magazine->main_image);
+            if ($request->hasFile('main_image')) {
+                if ($magazine->main_image) {
+                    Storage::disk('public')->delete($magazine->main_image);
+                }
+                $magazineData['main_image'] = $request->file('main_image')->store('magazines/main', 'public');
+            } elseif ($request->boolean('remove_main_image')) {
+                if ($magazine->main_image) {
+                    Storage::disk('public')->delete($magazine->main_image);
+                    $magazineData['main_image'] = null;
+                }
             }
-            $magazinesData['main_image'] = $request->file('main_image')->store('magazines/main', 'public');
-        } elseif ($request->boolean('remove_main_image')) {
-            if ($magazine->main_image) {
-                Storage::disk('public')->delete($magazine->main_image);
-                $magazinesData['main_image'] = null;
-            }
-        }
 
-        // تحديث الصور الفرعية
-        if ($request->hasFile('sub_images')) {
-            // حذف الصور الفرعية القديمة
-            if ($magazine->sub_image) {
-                $oldSubImages = json_decode($magazine->sub_image, true);
-                if (is_array($oldSubImages)) {
-                    foreach ($oldSubImages as $oldImage) {
-                        Storage::disk('public')->delete($oldImage);
+            if ($request->hasFile('sub_images')) {
+                if ($magazine->sub_image) {
+                    $oldSubImages = json_decode($magazine->sub_image, true);
+                    if (is_array($oldSubImages)) {
+                        foreach ($oldSubImages as $oldImage) {
+                            Storage::disk('public')->delete($oldImage);
+                        }
                     }
                 }
+                $subImages = [];
+                foreach ($request->file('sub_images') as $subImage) {
+                    $subImages[] = $subImage->store('magazines/sub', 'public');
+                }
+                $magazineData['sub_image'] = json_encode($subImages);
             }
 
-            // رفع الصور الجديدة
-            $subImages = [];
-            foreach ($request->file('sub_images') as $subImage) {
-                $subImagePath = $subImage->store('magazines/sub', 'public');
-                $subImages[] = $subImagePath;
-            }
-            $magazinesData['sub_image'] = json_encode($subImages);
+            $magazine->update($magazineData);
+
+            DB::commit();
+            return redirect()->route('admin.magazines.index')->with('success', 'تم تحديث المجلة بنجاح!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', $th->getMessage());
         }
-
-        $magazine->update($magazinesData);
-
-        return redirect()->route('admin.magazines.index')->with('success', 'تم تحديث الالإنجاز بنجاح!');
     }
 
     public function destroy(Magazine $magazine)
     {
-        // حذف الصورة الرئيسية
         if ($magazine->main_image) {
             Storage::disk('public')->delete($magazine->main_image);
         }
 
-        // حذف الصور الفرعية
         if ($magazine->sub_image) {
             $subImages = json_decode($magazine->sub_image, true);
             if (is_array($subImages)) {
@@ -181,6 +198,6 @@ class MagazineController extends Controller
 
         $magazine->delete();
 
-        return redirect()->route('admin.magazines.index')->with('success', 'تم حذف الالإنجاز بنجاح!');
+        return redirect()->route('admin.magazines.index')->with('success', 'تم حذف المجلة بنجاح!');
     }
 }

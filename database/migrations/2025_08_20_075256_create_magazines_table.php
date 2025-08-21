@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('magazines', function (Blueprint $table) {
@@ -18,6 +15,11 @@ return new class extends Migration
             $table->string('title_en')->nullable();
             $table->text('description_ar');
             $table->text('description_en')->nullable();
+
+            // إضافة المفتاح الأجنبي member_id
+            $table->unsignedBigInteger('member_id');
+            $table->foreign('member_id')->references('id')->on('member_applications')->onDelete('cascade');
+
             $table->string('main_image')->nullable();
             $table->json('sub_image')->nullable();
             $table->boolean('status')->default(1);
@@ -26,9 +28,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('magazines');

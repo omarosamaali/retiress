@@ -2361,10 +2361,10 @@
         </thead>
         <tbody id="professionalTableBody">
             <tr>
-                <td><input type="text" name="professional_experience[0][year]" placeholder="{{ __('app.example_year_range') }}"></td>
-                <td><input type="text" name="professional_experience[0][job_title]" placeholder="{{ __('app.example_job_title') }}"></td>
-                <td><input type="text" name="professional_experience[0][employer]" placeholder="{{ __('app.example_employer') }}"></td>
-                <td><input type="text" name="professional_experience[0][years_of_experience]" placeholder="{{ __('app.example_years_exp') }}"></td>
+                <td><input type="text" required  name="professional_experience[0][year]" placeholder="{{ __('app.example_year_range') }}"></td>
+                <td><input type="text" required  name="professional_experience[0][job_title]" placeholder="{{ __('app.example_job_title') }}"></td>
+                <td><input type="text" required  name="professional_experience[0][employer]" placeholder="{{ __('app.example_employer') }}"></td>
+                <td><input type="text" required  name="professional_experience[0][years_of_experience]" placeholder="{{ __('app.example_years_exp') }}"></td>
                 <td class="actions-cell">
                     <button type="button" class="delete-btn" onclick="deleteProfessionalRow(this)">{{ __('app.delete') }}</button>
                 </td>
@@ -2388,10 +2388,10 @@
             </thead>
             <tbody id="experienceTableBody">
                 <tr>
-                    <td><input type="text" name="previous_experience[0][year]" placeholder="{{ __('app.example_year_range') }}"></td>
-                    <td><input type="text" name="previous_experience[0][job_title]" placeholder="{{ __('app.example_project_manager') }}"></td>
-                    <td><input type="text" name="previous_experience[0][employer]" placeholder="{{ __('app.example_construction_company') }}"></td>
-                    <td><input type="text" name="previous_experience[0][years_of_experience]" placeholder="{{ __('app.example_years_exp') }}"></td>
+                    <td><input type="text" required name="previous_experience[0][year]" placeholder="{{ __('app.example_year_range') }}"></td>
+                    <td><input type="text" required name="previous_experience[0][job_title]" placeholder="{{ __('app.example_project_manager') }}"></td>
+                    <td><input type="text" required name="previous_experience[0][employer]" placeholder="{{ __('app.example_construction_company') }}"></td>
+                    <td><input type="text" required name="previous_experience[0][years_of_experience]" placeholder="{{ __('app.example_years_exp') }}"></td>
                     <td class="actions-cell">
                         <button type="button" class="delete-btn" onclick="deleteExperienceRow(this)">{{ __('app.delete') }}</button>
                     </td>

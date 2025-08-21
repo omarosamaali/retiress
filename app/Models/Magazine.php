@@ -14,11 +14,20 @@ class Magazine extends Model
         'title_en',
         'description_ar',
         'description_en',
+        'member_id', // إضافة member_id هنا
         'main_image',
-        'pdf',
         'sub_image',
         'status',
     ];
+
+    /**
+     * تعريف العلاقة مع موديل MemberApplication
+     */
+    public function member()
+    {
+        return $this->belongsTo(MemberApplication::class, 'member_id');
+    }
+
 
     public function getMainImageUrlAttribute()
     {

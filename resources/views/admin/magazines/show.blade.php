@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'تفاصيل الإنجاز')
-@section('page-title', 'تفاصيل الإنجاز')
+@section('title', 'تفاصيل المجلة')
+@section('page-title', 'تفاصيل المجلة')
 
 @push('styles')
 <style>
@@ -123,13 +123,18 @@
 <div class="detail-section">
     <h5 class="mb-4">
         <i class="fas fa-book ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
-        تفاصيل الإنجاز: {{ $magazine->title_ar }}
+        تفاصيل المجلة: {{ $magazine->title_ar }}
     </h5>
 
     <div class="row">
         <div class="col-md-6">
+            {{-- عرض اسم العضو مباشرةً --}}
             <div class="detail-item">
-                <strong class="text-black">عنوان الإنجاز (عربي):</strong>
+                <strong class="text-black">إسم العضو:</strong>
+                <span>{{ $magazine->member ? $magazine->member->full_name : 'غير متوفر' }}</span>
+            </div>
+            <div class="detail-item">
+                <strong class="text-black">عنوان المجلة (عربي):</strong>
                 <span>{{ $magazine->title_ar }}</span>
             </div>
             <div class="detail-item">
@@ -146,8 +151,8 @@
             </div>
             <div class="detail-item">
                 <strong class="text-black">الحالة:</strong>
-                <span class="badge text-white {{ $magazine->status_badge_class ?? ($magazine->status == 1 ? 'bg-success' : 'bg-danger') }}">
-                    {{ $magazine->status_text ?? ($magazine->status == 1 ? 'فعال' : 'غير فعال') }}
+                <span class="badge text-white {{ $magazine->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                    {{ $magazine->status == 1 ? 'فعال' : 'غير فعال' }}
                 </span>
             </div>
         </div>
@@ -212,16 +217,15 @@
     <div class="btn-section">
         <a href="{{ route('admin.magazines.index') }}" class="back-btn">
             <i class="fas fa-arrow-right ms-1"></i>
-            العودة لقائمة الإنجازات
+            العودة لقائمة المجلات
         </a>
         <a href="{{ route('admin.magazines.edit', $magazine->id) }}" class="edit-btn">
             <i class="fas fa-edit ms-1"></i>
-            تعديل الإنجاز
+            تعديل المجلة
         </a>
     </div>
 </div>
 
-<!-- Image Modal -->
 <div id="imageModal" class="image-modal">
     <span class="close">&times;</span>
     <img class="modal-content" id="modalImage">

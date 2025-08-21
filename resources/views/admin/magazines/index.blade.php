@@ -92,77 +92,89 @@
     </div>
     @endif
 
-<form action="{{ route('admin.magazines.store') }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for="title_ar" class="form-label">عنوان الإنجاز (بالعربية)</label>
-                <input type="text" class="form-control" id="title_ar" name="title_ar" value="{{ old('title_ar') }}" required>
-                @error('title_ar')
-                <div class="text-white">{{ $message }}</div>
-                @enderror
+    <form action="{{ route('admin.magazines.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="title_ar" class="form-label">عنوان الإنجاز (بالعربية)</label>
+                    <input type="text" class="form-control" id="title_ar" name="title_ar" value="{{ old('title_ar') }}" required>
+                    @error('title_ar')
+                    <div class="text-white">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for="status" class="form-label">حالة النشر</label>
-                <select name="status" id="status" class="form-select" required>
-                    <option value="">اختر الحالة</option>
-                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>نشط</option>
-                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>غير نشط</option>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="member_id" class="form-label">إسم العضو</label>
+                    <select name="member_id" id="member_id" class="form-select" required>
+                        <option value="">اختر العضو</option>
+                        @foreach ($member_applications as $member_application)
+                        <option value="{{ $member_application->id }}">{{ $member_application->full_name }}</option>
+                        @endforeach
+                    </select>
+                    @error('member_id')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="main_image_input" class="form-label">الصورة الرئيسية</label>
+                    <input type="file" class="form-control" name="main_image" id="main_image_input" accept="image/*">
+                    @error('main_image')
+                    <div class="text-white">{{ $message }}</div>
+                    @enderror
+                    <img id="main_image_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: {{ old('main_image') ? 'block' : 'none' }};">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="sub_images_input" class="form-label">الصور الفرعية</label>
+                    <input type="file" class="form-control" name="sub_images[]" id="sub_images_input" accept="image/*" multiple>
+                    @error('sub_images')
+                    <div class="text-white">{{ $message }}</div>
+                    @enderror
+                    @error('sub_images.*')
+                    <div class="text-white">{{ $message }}</div>
+                    @enderror
+                    <small class="text-muted">يمكنك اختيار أكثر من صورة</small>
+                    <div id="sub_images_preview" class="mt-2"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="mb-3">
+                    <label for="description_ar" class="form-label">الموضوع (بالعربية)</label>
+                    <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar') }}</textarea>
+                    @error('description_ar')
+                    <div class="text-white">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <label for="status">الحالة</label>
+                <select name="status" id="status" class="form-control">
+                    <option value="1">نشط</option>
+                    <option value="0">غير نشط</option>
                 </select>
-                @error('status')
-                <div class="text-white">{{ $message }}</div>
-                @enderror
             </div>
+
         </div>
 
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for="main_image_input" class="form-label">الصورة الرئيسية</label>
-                <input type="file" class="form-control" name="main_image" id="main_image_input" accept="image/*">
-                @error('main_image')
-                <div class="text-white">{{ $message }}</div>
-                @enderror
-                <img id="main_image_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: none;">
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for="sub_images_input" class="form-label">الصور الفرعية</label>
-                <input type="file" class="form-control" name="sub_images[]" id="sub_images_input" accept="image/*" multiple>
-                @error('sub_images')
-                <div class="text-white">{{ $message }}</div>
-                @enderror
-                @error('sub_images.*')
-                <div class="text-white">{{ $message }}</div>
-                @enderror
-                <small class="text-muted">يمكنك اختيار أكثر من صورة</small>
-                <div id="sub_images_preview" class="mt-2"></div>
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="mb-3">
-                <label for="description_ar" class="form-label">وصف الإنجاز (بالعربية)</label>
-                <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar') }}</textarea>
-                @error('description_ar')
-                <div class="text-white">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-light mt-3">
-        <i class="fas fa-plus ms-1"></i>
-        إضافة الإنجاز
-    </button>
-</form>
-
+        <button type="submit" class="btn btn-light mt-3">
+            <i class="fas fa-plus ms-1"></i>
+            إضافة الإنجاز
+        </button>
+    </form>
 </div>
+
 
 @if (session('success'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -262,7 +274,6 @@
     </div>
 </div>
 @endsection
-
 @push('scripts')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
