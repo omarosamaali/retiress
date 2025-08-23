@@ -5549,7 +5549,7 @@
                 </ul>
 
                 <section class="social" style="padding: 0px !important; background-color: #a07e6600 !important;">
-                    <span>{{ __('app.follow_us') }}: </span>
+                    <span style="color: white; margin-bottom: 5px;">{{ __('app.follow_us') }}: </span>
                     <ul class="social-set">
                         <li><a class="sociali" href="#" target="_blank" aria-label="Twitter">
                                 <i class="fa fa-twitter fa-fw custom-icon" style="color: #b5dc86 !important;" title="{{ __('app.twitter') }}"></i></a></li>
