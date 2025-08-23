@@ -21,6 +21,7 @@ class ServiceController extends Controller
     {
         $request->validate([
             'name_ar' => 'required|string',
+            
             'membership_required' => 'nullable|boolean',
             'description_ar' => 'required|string',
             'target_audience_ar' => 'required|string',
@@ -38,7 +39,7 @@ class ServiceController extends Controller
 
         $serviceData = [
             'name_ar' => $request->name_ar,
-            'membership_required' => $request->has('membership_required'),
+            'membership_required' => (bool) $request->input('membership_required'),
             'description_ar' => $request->description_ar,
             'target_audience_ar' => $request->target_audience_ar,
             'required_documents_ar' => $request->required_documents_ar,
@@ -113,7 +114,7 @@ class ServiceController extends Controller
     {
         $request->validate([
             'name_ar' => 'required|string',
-            'membership_required' => 'nullable|boolean',
+            'membership_required' => 'nullable|boolean', // تأكد من وجود هذا التحقق
             'description_ar' => 'required|string',
             'target_audience_ar' => 'required|string',
             'required_documents_ar' => 'required|string',
@@ -130,7 +131,7 @@ class ServiceController extends Controller
 
         $serviceData = [
             'name_ar' => $request->name_ar,
-            'membership_required' => $request->has('membership_required'),
+            'membership_required' => (bool) $request->input('membership_required'),
             'description_ar' => $request->description_ar,
             'target_audience_ar' => $request->target_audience_ar,
             'required_documents_ar' => $request->required_documents_ar,

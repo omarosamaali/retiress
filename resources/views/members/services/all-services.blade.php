@@ -5116,90 +5116,89 @@
 </head>
 <body>
     <x-guest-header></x-guest-header>
- <div id="in-cont">
-     <div class="inn-title" style="padding-top: 150px">
-         <h2>
-             <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
-             {{ __('app.services_page_title') }} {{-- Changed to services title --}}
-         </h2>
-     </div>
+    <div id="in-cont">
+        <div class="inn-title" style="padding-top: 150px">
+            <h2>
+                <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
+                {{ __('app.services_page_title') }} {{-- Changed to services title --}}
+            </h2>
+        </div>
 
-     <section class="py-hp3">
-         <div class="container-rni">
-             @forelse($services as $service)
-             <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-                 <div class="row-cwp py-hp3">
-                     <div class="col-igy col-cvg">
-                         <div class="bg-xf5 shadow-primary-sxe position-1lp">
-                             <a href="{{ route('services.show', $service->id) }}" class="block-osq text-b1x">
-                                 <figure class="m-38w text-m1o overflow-khm">
-                                     {{-- The image source is static (pe.png). If services have their own images, you should use $service->main_image or similar. --}}
-                                     <img style="width: 222px;" class="service-img" 
-                                     src="{{ asset('assets/images/pe.png') }}"
-                                      alt="{{ app()->getLocale() == 'ar' ? ($service->name_ar ?? __('app.service_image_alt_fallback')) : ($service->name_en ?? __('app.service_image_alt_fallback')) }}">
-                                 </figure>
-                             </a>
-                         </div>
-                     </div>
-                     <div class="col-5vc col-cvg my-mpv">
-                         {{-- The href here is hardcoded with '?do=v&id='. It's better to use a named route like 'services.show'. --}}
-                         <a class="text-7zo text-b1x" href="{{ route('services.show', $service->id) }}">
-                             <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}</h2>
-                         </a>
-                         <hr>
-                         <div class="my-7z8 fs--oox">
-                             <div style="display: inline-block; margin-right: 15px;">
-                                 <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{ \Carbon\Carbon::parse($service->date)->translatedFormat('Y-m-d') }}
-                             </div>
-                             <div style="display: inline-block;">
-                                 <i class="fa-vxc fa-p16 mx-8rj"></i> {{ __('app.price') }}: {{ number_format($service->price, 2) }} {{ __('app.aed') }}
-                             </div>
-                         </div>
+        <section class="py-hp3">
+            <div class="container-rni">
+                @forelse($services as $service)
+                <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                    <div class="row-cwp py-hp3">
+                        <div class="col-igy col-cvg">
+                            <div class="bg-xf5 shadow-primary-sxe position-1lp">
+                                <a href="{{ route('services.show', $service->id) }}" class="block-osq text-b1x">
+                                    <figure class="m-38w text-m1o overflow-khm">
+                                        <img style="width: 222px;" class="service-img" 
+                                            src="{{ asset('storage/' . $service->image) }}" 
+                                            alt="{{ app()->getLocale() == 'ar' ? ($service->name_ar ?? __('app.service_image_alt_fallback')) : ($service->name_en ?? __('app.service_image_alt_fallback')) }}">
+                                    </figure>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-5vc col-cvg my-mpv">
+                            {{-- The href here is hardcoded with '?do=v&id='. It's better to use a named route like 'services.show'. --}}
+                            <a class="text-7zo text-b1x" href="{{ route('services.show', $service->id) }}">
+                                <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}</h2>
+                            </a>
+                            <hr>
+                            <div class="my-7z8 fs--oox">
+                                <div style="display: inline-block; margin-right: 15px;">
+                                    <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{ \Carbon\Carbon::parse($service->date)->translatedFormat('Y-m-d') }}
+                                </div>
+                                <div style="display: inline-block;">
+                                    <i class="fa-vxc fa-p16 mx-8rj"></i> {{ __('app.price') }}: {{ number_format($service->price, 2) }} {{ __('app.aed') }}
+                                </div>
+                            </div>
 
-                         <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                             <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ? $service->description_ar : $service->description_en }} </span>
-                         </p>
-                         <div>
-                             {{-- This link is hardcoded to /events-show.html. It should link to the service details page. --}}
-                             <a href="{{ route('services.show', $service->id) }}" class="btn-o2b btn-link-6oj mb-xpg mr-i7e btn-dex">
-                                 <i class="fa-solid fa-list-ul"></i> {{ __('app.read_more') }}
-                             </a>
-                         </div>
-                         <p></p>
-                         <hr>
-                         <div>
-                             <hr>
-                         </div>
-                         <div class="text-jdt">
-                             @auth
-                             <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
-                                 {{ __('app.subscribe_to_service') }}
-                                 <a href="#" onclick="alert('{{ __('app.coming_soon') }}')">{{ __('app.click_here') }}</a>
-                             </div>
-                             @endauth
+                            <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
+                                <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ? $service->description_ar : $service->description_en }} </span>
+                            </p>
+                            <div>
+                                {{-- This link is hardcoded to /events-show.html. It should link to the service details page. --}}
+                                <a href="{{ route('services.show', $service->id) }}" class="btn-o2b btn-link-6oj mb-xpg mr-i7e btn-dex">
+                                    <i class="fa-solid fa-list-ul"></i> {{ __('app.read_more') }}
+                                </a>
+                            </div>
+                            <p></p>
+                            <hr>
+                            <div>
+                                <hr>
+                            </div>
+                            <div class="text-jdt">
+                                @auth
+                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                    {{ __('app.subscribe_to_service') }}
+                                    <a href="#" onclick="alert('{{ __('app.coming_soon') }}')">{{ __('app.click_here') }}</a>
+                                </div>
+                                @endauth
 
-                             @guest
-                             <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
-                                 {{ __('app.request_to_join_please') }}
-                                 <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }} <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
-                             </div>
-                             @endguest
-                         </div>
-                     </div>
-                 </div>
-             </div>
-             @empty
-             <div class="text-center w-100">
-                 <p>{{ __('app.no_services_available') }}</p>
-             </div>
-             @endforelse
-         </div>
-     </section>
+                                @guest
+                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                    {{ __('app.request_to_join_please') }}
+                                    <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }} <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
+                                </div>
+                                @endguest
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="text-center w-100">
+                    <p>{{ __('app.no_services_available') }}</p>
+                </div>
+                @endforelse
+            </div>
+        </section>
 
-     <x-footer-section></x-footer-section>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
-     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
- </div>
+        <x-footer-section></x-footer-section>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+        <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+    </div>
 
 </body>
 </html>

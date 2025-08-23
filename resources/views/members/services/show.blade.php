@@ -5164,6 +5164,9 @@
                             <a class="text-7zo text-b1x" href="{{ route('services.show', $services->id) }}">
                                 <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $services->name_ar : $services->name_en }}</h2>
                             </a>
+                            <p style="text-align: center;">{{ __('app.membership_required') }} 
+                                {{ $services->membership_required == '1' ? __('app.required') : __('app.not_required') }} 
+                                {{ __('app.for_this_service') }}</p>
                             <hr>
                             <div class="my-7z8 fs--oox">
                                 <div style="display: inline-block; margin-right: 15px;">

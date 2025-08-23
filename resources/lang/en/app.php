@@ -501,6 +501,9 @@ return [
     'gallery' => 'Gallery',
     'published_date' => 'Published Date',
     'faq' => 'FAQ',
-
+    'membership_required' => 'Membership Required',
+    'required' => 'Required',
+    'not_required' => 'Not Required',
+    'for_this_service' => 'For this service',
 
 ];

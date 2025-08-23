@@ -501,4 +501,9 @@ return [
     'gallery' => 'المعرض',
     'published_date' => 'تاريخ النشر',
     'faq' => 'الاسئلة الشائعة',
+    'membership_required' => 'العضوية ',
+    'required' => 'مطلوبة',
+    'not_required' => 'غير مطلوبة',
+    'for_this_service' => 'لهذه الخدمة',
+
 ];

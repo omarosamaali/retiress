@@ -5519,137 +5519,83 @@
 <body>
     <x-guest-header></x-guest-header>
 
-<div id="in-cont">
-    <div class="inn-title" style="padding-top: 150px">
-        <h2><span><a href="{{ url('/') }}">{{ __('app.home') }}</a> &raquo;</span>{{ __('app.contact_us') }}</h2>
-    </div>
+    <div id="in-cont">
+        <div class="inn-title" style="padding-top: 150px">
+            <h2><span><a href="{{ url('/') }}">{{ __('app.home') }}</a> &raquo;</span>{{ __('app.contact_us') }}</h2>
+        </div>
 
-    <div class="page" style="outline-width: 1px; outline-offset: -8px; outline-color: #a07e66; outline-style: solid;">
-        <div class="address">
-            <ul>
-                <li>
-                    <i class="fa fa-mobile" style="color: #b5dc86 !important;"></i>&nbsp;
-                    <span style="color: #b5dc86 !important;">{{ __('app.office_number') }}: </span> +97167044998
-                </li>
-                <li>
-                    <i class="fa fa-mobile" style="color: #b5dc86 !important;"></i>&nbsp;
-                    <span style="color: #b5dc86 !important;">{{ __('app.whatsapp') }}: </span> +97167044998
-                </li>
-                <li>
-                    <i class="fa fa-envelope" style="color: #b5dc86 !important;"></i>&nbsp;
-                    <span style="color: #b5dc86 !important;">{{ __('app.email') }}:</span> emiassor@uaeretired.ae
-                </li>
-                <li>
-                    {{ __('app.working_days') }}:
-                    {{ __('app.working_days_hours') }}
-                </li>
-                <li>
-                    {{ __('app.holidays') }}:
-                    {{ __('app.holidays_days') }}
-                </li>
-            </ul>
+        <div class="page" style="outline-width: 1px; outline-offset: -8px; outline-color: #a07e66; outline-style: solid;">
+            <div class="address">
+                <ul>
+                    <li>
+                        <i class="fa fa-mobile" style="color: #b5dc86 !important;"></i>&nbsp;
+                        <span style="color: #b5dc86 !important;">{{ __('app.office_number') }}: </span> {{ $settings->office_number }}
 
-            <section class="social" style="padding: 0px !important; background-color: #a07e6600 !important;">
-                <span>{{ __('app.follow_us') }}: </span>
-                <ul class="social-set">
-                    <li><a class="sociali" href="#" target="_blank" aria-label="Twitter">
-                            <i class="fa fa-twitter fa-fw custom-icon" style="color: #b5dc86 !important;" title="{{ __('app.twitter') }}"></i></a></li>
-                    <li><a class="sociali" href="https://www.instagram.com/uaeretired/" target="_blank" aria-label="Instagram">
-                            <i class="fa fa-instagram fa-fw custom-icon" style="color: #b5dc86 !important;" title="{{ __('app.instagram') }}"></i></a></li>
-                    <li><a class="sociali" href="https://www.facebook.com/uaeretired/" target="_blank" aria-label="Facebook">
-                            <i style="color: #b5dc86 !important;" class="fa fa-facebook-square fa-fw custom-face" title="{{ __('app.facebook') }}"></i></a></li>
-                    <li><a class="sociali" href="https://www.youtube.com/@%D8%AC%D9%85%D8%B9%D9%8A%D8%A9%D8%A7%D9%84%D8%A7%D9%85%D8%A7%D8%B1%D8%A7%D8%AA%D9%84%D9%84%D9%85%D8%AA%D9%82%D8%A7%D8%B9%D8%AF%D9%8A%D9%86" target="_blank" aria-label="YouTube">
-                            <i style="color: #b5dc86 !important;" class="fa-brands fa-youtube custom-face" title="{{ __('app.youtube') }}"></i></a></li>
+                    </li>
+                    <li>
+                        <i class="fa fa-mobile" style="color: #b5dc86 !important;"></i>&nbsp;
+                        <span style="color: #b5dc86 !important;">{{ __('app.whatsapp') }}: </span> {{ $settings->whatsapp }}
+                    </li>
+                    <li>
+                        <i class="fa fa-envelope" style="color: #b5dc86 !important;"></i>&nbsp;
+                        <span style="color: #b5dc86 !important;">{{ __('app.email') }}:</span> {{ $settings->email }}
+
+                    </li>
+                    <li>
+                        {{ $settings->work_days }} </li>
+                    <li>
+                        {{ $settings->holidays }} </li>
+                    </li>
                 </ul>
-            </section>
-        </div>
-        <div class="map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.121212577762!2d55.4941762!3d25.266507599999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef5f5903878399d%3A0xad17d68c8bc7fa42!2z2KzZhdi52YrYqSDYp9mE2KXZhdin2LHYp9iqINmE2YTZhdiq2YLYp9i52K_ZitmG!5e0!3m2!1sar!2seg!4v1753090508435!5m2!1sar!2seg" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+                <section class="social" style="padding: 0px !important; background-color: #a07e6600 !important;">
+                    <span>{{ __('app.follow_us') }}: </span>
+                    <ul class="social-set">
+                        <li><a class="sociali" href="#" target="_blank" aria-label="Twitter">
+                                <i class="fa fa-twitter fa-fw custom-icon" style="color: #b5dc86 !important;" title="{{ __('app.twitter') }}"></i></a></li>
+                        <li><a class="sociali" href="https://www.instagram.com/uaeretired/" target="_blank" aria-label="Instagram">
+                                <i class="fa fa-instagram fa-fw custom-icon" style="color: #b5dc86 !important;" title="{{ __('app.instagram') }}"></i></a></li>
+                        <li><a class="sociali" href="https://www.facebook.com/uaeretired/" target="_blank" aria-label="Facebook">
+                                <i style="color: #b5dc86 !important;" class="fa fa-facebook-square fa-fw custom-face" title="{{ __('app.facebook') }}"></i></a></li>
+                        <li><a class="sociali" href="https://www.youtube.com/@%D8%AC%D9%85%D8%B9%D9%8A%D8%A9%D8%A7%D9%84%D8%A7%D9%85%D8%A7%D8%B1%D8%A7%D8%AA%D9%84%D9%84%D9%85%D8%AA%D9%82%D8%A7%D8%B9%D8%AF%D9%8A%D9%86" target="_blank" aria-label="YouTube">
+                                <i style="color: #b5dc86 !important;" class="fa-brands fa-youtube custom-face" title="{{ __('app.youtube') }}"></i></a></li>
+                    </ul>
+                </section>
+            </div>
+            <div class="map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.121212577762!2d55.4941762!3d25.266507599999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef5f5903878399d%3A0xad17d68c8bc7fa42!2z2KzZhdi52YrYqSDYp9mE2KXZhdin2LHYp9iqINmE2YTZhdiq2YLYp9i52K_ZitmG!5e0!3m2!1sar!2seg!4v1753090508435!5m2!1sar!2seg" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
         </div>
     </div>
-</div>
 
-        <!-- نفس الـ JavaScript الموجود عندك بالضبط -->
-        <script>
-            let currentUserId = null;
+    <!-- نفس الـ JavaScript الموجود عندك بالضبط -->
+    <script>
+        let currentUserId = null;
 
-            // تحميل الرسائل عند اختيار مستخدم
-            document.querySelectorAll('#users li').forEach(user => {
-                user.addEventListener('click', function() {
-                    // إضافة active class للتصميم
-                    document.querySelectorAll('#users li').forEach(u => u.classList.remove('active'));
-                    this.classList.add('active');
+        // تحميل الرسائل عند اختيار مستخدم
+        document.querySelectorAll('#users li').forEach(user => {
+            user.addEventListener('click', function() {
+                // إضافة active class للتصميم
+                document.querySelectorAll('#users li').forEach(u => u.classList.remove('active'));
+                this.classList.add('active');
 
-                    currentUserId = this.getAttribute('data-user-id');
-                    document.getElementById('to_user_id').value = currentUserId;
-                    loadMessages(currentUserId);
-                });
+                currentUserId = this.getAttribute('data-user-id');
+                document.getElementById('to_user_id').value = currentUserId;
+                loadMessages(currentUserId);
             });
+        });
 
-            function loadMessages(userId) {
-                fetch(`/messages/${userId}`)
-                    .then(response => response.json())
-                    .then(messages => {
-                        let messagesDiv = document.getElementById('messages');
-                        messagesDiv.innerHTML = '';
-                        messages.forEach(message => {
-                            let p = document.createElement('p');
-
-                            // تحديد إذا كانت الرسالة مرسلة من المستخدم الحالي أم لا
-                            const isCurrentUser = message.from_user_id == {
-                                {
-                                    Auth::id() ? ? 'null'
-                                }
-                            };
-
-                            if (isCurrentUser) {
-                                p.className = 'sent';
-                                p.textContent = message.message; // عرض الرسالة فقط للمرسل
-                            } else {
-                                p.className = 'received';
-                                p.textContent = `${message.sender.name}: ${message.message}`; // عرض اسم المرسل + الرسالة
-                            }
-
-                            messagesDiv.appendChild(p);
-                        });
-                        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-                    });
-            }
-
-            // إرسال رسالة
-            document.getElementById('send-message').addEventListener('submit', function(e) {
-                e.preventDefault();
-                let toUserId = document.getElementById('to_user_id').value;
-                let messageInput = document.getElementById('message-input');
-                let message = messageInput.value;
-
-                if (!toUserId || !message) return;
-
-                fetch('/send-message', {
-                        method: 'POST'
-                        , headers: {
-                            'Content-Type': 'application/json'
-                            , 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                        , body: JSON.stringify({
-                            to_user_id: toUserId
-                            , message: message
-                        })
-                    }).then(response => response.json())
-                    .then(data => {
-                        messageInput.value = '';
-                        loadMessages(toUserId);
-                    });
-            });
-
-            // استقبال الرسائل في الوقت الفعلي
-            window.Echo.private(`chat.{{ Auth::id() }}`)
-                .listen('MessageSent', (e) => {
-                    if (currentUserId == e.message.from_user_id || currentUserId == e.message.to_user_id) {
+        function loadMessages(userId) {
+            fetch(`/messages/${userId}`)
+                .then(response => response.json())
+                .then(messages => {
+                    let messagesDiv = document.getElementById('messages');
+                    messagesDiv.innerHTML = '';
+                    messages.forEach(message => {
                         let p = document.createElement('p');
 
                         // تحديد إذا كانت الرسالة مرسلة من المستخدم الحالي أم لا
-                        const isCurrentUser = e.message.from_user_id == {
+                        const isCurrentUser = message.from_user_id == {
                             {
                                 Auth::id() ? ? 'null'
                             }
@@ -5657,24 +5603,77 @@
 
                         if (isCurrentUser) {
                             p.className = 'sent';
-                            p.textContent = e.message.message;
+                            p.textContent = message.message; // عرض الرسالة فقط للمرسل
                         } else {
                             p.className = 'received';
-                            p.textContent = `${e.user.name}: ${e.message.message}`;
+                            p.textContent = `${message.sender.name}: ${message.message}`; // عرض اسم المرسل + الرسالة
                         }
 
-                        document.getElementById('messages').appendChild(p);
-                        document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-                    }
+                        messagesDiv.appendChild(p);
+                    });
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
                 });
+        }
 
-        </script>
+        // إرسال رسالة
+        document.getElementById('send-message').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let toUserId = document.getElementById('to_user_id').value;
+            let messageInput = document.getElementById('message-input');
+            let message = messageInput.value;
+
+            if (!toUserId || !message) return;
+
+            fetch('/send-message', {
+                    method: 'POST'
+                    , headers: {
+                        'Content-Type': 'application/json'
+                        , 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                    , body: JSON.stringify({
+                        to_user_id: toUserId
+                        , message: message
+                    })
+                }).then(response => response.json())
+                .then(data => {
+                    messageInput.value = '';
+                    loadMessages(toUserId);
+                });
+        });
+
+        // استقبال الرسائل في الوقت الفعلي
+        window.Echo.private(`chat.{{ Auth::id() }}`)
+            .listen('MessageSent', (e) => {
+                if (currentUserId == e.message.from_user_id || currentUserId == e.message.to_user_id) {
+                    let p = document.createElement('p');
+
+                    // تحديد إذا كانت الرسالة مرسلة من المستخدم الحالي أم لا
+                    const isCurrentUser = e.message.from_user_id == {
+                        {
+                            Auth::id() ? ? 'null'
+                        }
+                    };
+
+                    if (isCurrentUser) {
+                        p.className = 'sent';
+                        p.textContent = e.message.message;
+                    } else {
+                        p.className = 'received';
+                        p.textContent = `${e.user.name}: ${e.message.message}`;
+                    }
+
+                    document.getElementById('messages').appendChild(p);
+                    document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+                }
+            });
+
+    </script>
 
 
-        <x-footer-section></x-footer-section>
+    <x-footer-section></x-footer-section>
 
 
-        <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+    <script src="{{ asset('assets/js/scriptU.js') }}"></script>
 </body>
 
 </html>
