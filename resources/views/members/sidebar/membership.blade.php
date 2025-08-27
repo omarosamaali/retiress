@@ -220,42 +220,42 @@
             </ul>
 
         </div>
+    </div>
+    <x-footer-section></x-footer-section>
 
-        <x-footer-section></x-footer-section>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
-        <script src="{{ asset('assets/js/jquery.js') }}"></script>
-        <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
-        <script src="{{ asset('assets/js/amazingcarousel.js') }}"></script>
-        <script src="{{ asset('assets/js/initcarousel-1.js') }}"></script>
-        <script src="{{ asset('assets/js/amazingslider.js') }}"></script>
-        <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
-        <script src="{{ asset('assets/js/scriptU.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const regLink = document.getElementById('reg');
-                regLink.addEventListener('click', function(e) {
-                    @guest
-                    e.preventDefault();
-                    Swal.fire({
-                        title: 'غير مسجل الدخول'
-                        , text: 'يرجى تسجيل الدخول للوصول إلى هذه الصفحة'
-                        , icon: 'warning'
-                        , confirmButtonText: 'تسجيل الدخول'
-                        , showCancelButton: true
-                        , cancelButtonText: 'إلغاء'
-                        , confirmButtonColor: '#b28b46'
-                        , cancelButtonColor: '#dc3545'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "{{ route('members.login') }}";
-                        }
-                    });
-                    @endguest
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
+    <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
+    <script src="{{ asset('assets/js/amazingcarousel.js') }}"></script>
+    <script src="{{ asset('assets/js/initcarousel-1.js') }}"></script>
+    <script src="{{ asset('assets/js/amazingslider.js') }}"></script>
+    <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
+    <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const regLink = document.getElementById('reg');
+            regLink.addEventListener('click', function(e) {
+                @guest
+                e.preventDefault();
+                Swal.fire({
+                    title: 'غير مسجل الدخول'
+                    , text: 'يرجى تسجيل الدخول للوصول إلى هذه الصفحة'
+                    , icon: 'warning'
+                    , confirmButtonText: 'تسجيل الدخول'
+                    , showCancelButton: true
+                    , cancelButtonText: 'إلغاء'
+                    , confirmButtonColor: '#b28b46'
+                    , cancelButtonColor: '#dc3545'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('members.login') }}";
+                    }
                 });
+                @endguest
             });
+        });
 
-        </script>
+    </script>
 </body>
 </html>
