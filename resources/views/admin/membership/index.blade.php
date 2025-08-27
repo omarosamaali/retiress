@@ -83,13 +83,13 @@
                         <td>
                             @php
                             $sectionTypes = [
-                            'membership_description' => 'وصف العضوية',
-                            'privileges' => 'امتيازات العضوية',
-                            'target_audience' => 'الجمهور المستهدف',
-                            'required_documents' => 'الوثائق المطلوبة',
-                            'subscription_months' => 'عدد أشهر الاشتراك',
-                            'value' => 'القيمة',
-                            'discount' => 'خصومات استهلاكية',
+                            'membership_description' => 'أنواع العضوية ',
+                            'privileges' => 'شروط العضوية ',
+                            'target_audience' => 'امتيازات العضوية ',
+                            'required_documents' => '1- خدمات الجمعية ',
+                            'subscription_months' => '2- امتيازات السفر والسياحة ',
+                            'value' => '3- تسهيلات الكليات والجامعات ',
+                            'discount' => '4- خصومات استهلاكية ',
                             'docs' => 'الوثائق المطلوبة',
                             ];
                             @endphp
