@@ -162,6 +162,7 @@ Route::get('/members/membership-show', function () {
 
 Route::get('/members/membership', function () {
     $sections = Membership::all();
+    
     return view('members.sidebar.membership', compact('sections')); 
 })->name('members.membership');
 

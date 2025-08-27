@@ -506,4 +506,63 @@ return [
     'not_required' => 'Not Required',
     'for_this_service' => 'For this service',
 
+    // Membership Types
+    'membership_types' => 'Membership Types',
+    'basic_membership' => 'Basic Membership',
+    'beneficiary_membership' => 'Beneficiary Membership',
+    'honorary_membership' => 'Honorary Membership',
+
+    // Membership Conditions
+    'membership_conditions' => 'Membership Conditions',
+    'uae_citizen' => 'Must be a citizen of the United Arab Emirates',
+    'retired_status' => 'Must be retired from work, whether from military or civilian service',
+    'minimum_age' => 'Member must not be less than (21) years old at the time of applying for membership',
+    'good_reputation' => 'Member must have good conduct and reputation, and must not have been previously sentenced to a freedom-restricting penalty in a felony or misdemeanor involving honor or trust, unless their reputation has been restored',
+    'legal_capacity' => 'Member must have legal capacity',
+    'no_previous_dismissal' => 'Must not have been previously dismissed or suspended from activity in another club or association',
+    'notable_achievements' => 'Member must have notable achievements and contributions in developing the association\'s field of work, for honorary membership',
+
+    // Membership Benefits
+    'membership_benefits' => 'Membership Benefits',
+    'benefits_description' => 'Members of the UAE Retirees Association enjoy a wide range of privileges, discounts, and facilities in addition to receiving a membership card',
+
+    // Association Services
+    'association_services' => 'Association Services',
+    'free_participation' => 'Free participation in events, activities, and recreational trips within the country',
+    'training_programs' => 'Training courses, programs, and awareness workshops',
+    'social_meetings' => 'Social meetings and sessions',
+    'consultations_support' => 'Consultations and support (Zakat Fund)',
+
+    // Travel and Tourism Benefits
+    'travel_tourism_benefits' => 'Travel and Tourism Benefits',
+    'hajouzati_discounts' => 'Hajouzati Travel and Tourism Company discounts',
+    'air_arabia_discounts' => 'Air Arabia discounts',
+    'emirates_airlines_discounts' => 'Emirates Airlines discounts',
+    'rihlati_discounts' => '"Rihlati" discounts from Dnata Travel',
+    'concorde_hotel_discounts' => 'Concorde Hotel Fujairah discounts',
+
+    // University Facilities
+    'university_facilities' => 'University and College Facilities',
+    'alhofq_college_benefits' => 'Al Hofq University College benefits',
+    'city_university_ajman_benefits' => 'City University of Ajman benefits',
+    'fujairah_university_benefits' => 'University of Fujairah benefits',
+
+    // Consumer Discounts
+    'consumer_discounts' => 'Consumer Discounts',
+    'esaad_card_discounts' => 'Esaad discount card',
+    'injazat_service_centers' => '"Injazat" service centers facilities',
+    'du_telecom_discounts' => 'Du Telecommunications Company discounts',
+    'sharjah_ladies_club_discounts' => 'Sharjah Ladies Club discounts',
+
+    // Required Documents
+    'required_documents' => 'Required Documents',
+    'valid_passport_copy' => 'Copy of valid passport',
+    'emirates_id_copy' => 'Copy of Emirates ID card',
+    'retirement_certificate_copy' => 'Copy of retirement certificate issued by official authorities',
+    'membership_fee' => 'Payment of membership fee 150 AED',
+
+    // Membership Descriptions
+    'basic_membership_description' => 'These are the founding members and all those who join the association and meet the membership requirements. They enjoy full rights and duties prescribed for membership, including the right to participate in general assembly meetings, vote on its decisions, and the right to nominate and elect for membership in the board of directors',
+    'beneficiary_membership_description' => 'These are members who meet the membership requirements and join the association for the purpose of benefiting from the services, programs, and activities provided by the association within the scope of its objectives without acquiring any administrative membership rights or obligations within the association, especially the right to participate in general assembly meetings, vote on its decisions, and the right to nominate and elect for membership in the board of directors',
+    'honorary_membership_description' => 'This is a member who is granted honorary membership by the association in recognition of their distinguished contribution, social or professional status, or their continuous support for the association\'s work, whether material or moral support, without acquiring any administrative membership rights or obligations within the association, especially the right to participate in general assembly meetings and vote on its decisions',
 ];

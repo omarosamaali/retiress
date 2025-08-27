@@ -89,7 +89,8 @@
                             'required_documents' => 'الوثائق المطلوبة',
                             'subscription_months' => 'عدد أشهر الاشتراك',
                             'value' => 'القيمة',
-
+                            'discount' => 'خصومات استهلاكية',
+                            'docs' => 'الوثائق المطلوبة',
                             ];
                             @endphp
                             {{ $sectionTypes[$section->section] ?? $section->section }}

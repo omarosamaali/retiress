@@ -94,12 +94,14 @@
                     <label for="section" class="form-label font-bold">نوع القسم</label>
                     <select class="form-select" name="section" id="section" required>
                         <option value="" disabled>اختر نوع القسم</option>
-                        <option value="membership_description" {{ old('section', $membership->section) == 'membership_description' ? 'selected' : '' }}>وصف العضوية</option>
-                        <option value="privileges" {{ old('section', $membership->section) == 'privileges' ? 'selected' : '' }}>امتيازات العضوية</option>
-                        <option value="target_audience" {{ old('section', $membership->section) == 'target_audience' ? 'selected' : '' }}>الجمهور المستهدف</option>
-                        <option value="required_documents" {{ old('section', $membership->section) == 'required_documents' ? 'selected' : '' }}>الوثائق المطلوبة</option>
-                        <option value="subscription_months" {{ old('section', $membership->section) == 'subscription_months' ? 'selected' : '' }}>عدد أشهر الاشتراك</option>
-                        <option value="value" {{ old('section', $membership->section) == 'value' ? 'selected' : '' }}>القيمة</option>
+                        <option value="membership_description" {{ old('section', $membership->section) == 'membership_description' ? 'selected' : '' }}>أنواع العضوية</option>
+                        <option value="privileges" {{ old('section', $membership->section) == 'privileges' ? 'selected' : '' }}>شروط العضوية</option>
+                        <option value="target_audience" {{ old('section', $membership->section) == 'target_audience' ? 'selected' : '' }}>امتيازات العضوية</option>
+                        <option value="required_documents" {{ old('section', $membership->section) == 'required_documents' ? 'selected' : '' }}>خدمات الجمعية</option>
+                        <option value="subscription_months" {{ old('section', $membership->section) == 'subscription_months' ? 'selected' : '' }}>امتيازات السفر والسياحة</option>
+                        <option value="value" {{ old('section', $membership->section) == 'value' ? 'selected' : '' }}>تسهيلات الكليات والجامعات</option>
+                        <option value="discount" {{ old('section', $membership->section) == 'discount' ? 'selected' : '' }}>خصومات استهلاكية</option>
+                        <option value="docs" {{ old('section', $membership->section) == 'docs' ? 'selected' : '' }}>الوثائق المطلوبة</option>
                     </select>
                     @error('section')
                     <div class="error-message">{{ $message }}</div>

@@ -225,7 +225,7 @@
     </div>
 
     <div id="headerholdert" style="position: relative; width: 100%; height: 82vh; overflow: hidden;     margin-top: 145px;">
-        <img src="{{ Storage::url($banner->image) }}" alt="Header Background" style="width: 100%; height: 100%; object-fit: fill;">
+        <img src="{{ Storage::url($banner?->image) }}" alt="Header Background" style="width: 100%; height: 100%; object-fit: fill;">
         <div class="swiper quoteSwiper">
             <div class="swiper-wrapper">
                 @foreach (\App\Models\Slider::where('is_active', true)->get() as $slider)
