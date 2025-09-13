@@ -553,6 +553,7 @@ return [
     'injazat_service_centers' => '"Injazat" service centers facilities',
     'du_telecom_discounts' => 'Du Telecommunications Company discounts',
     'sharjah_ladies_club_discounts' => 'Sharjah Ladies Club discounts',
+    'membership_required_to_subscribe' => 'Membership Required to Subscribe',
 
     // Required Documents
     'required_documents' => 'Required Documents',

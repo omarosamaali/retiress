@@ -420,6 +420,11 @@
                 المراسلات
             </a>
 
+            <a class="nav-link" href="{{ route('admin.contact-messages') }}">
+                <i class="fas fa-message"></i>
+                الرسائل
+            </a>
+
             <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="fas fa-sign-out-alt"></i>
                 تسجيل الخروج

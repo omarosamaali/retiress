@@ -24,6 +24,20 @@ use App\Models\MemberApplication;
 use App\Http\Controllers\TransactionController;
 use App\Models\Transaction;
 use App\Models\Faq;
+use App\Http\Controllers\ContactMessageController;
+
+Route::get('contact-us', [ContactMessageController::class, 'index'])->name('contact-us');
+Route::post('contact-us', [ContactMessageController::class, 'store'])->name('contact-us.store');
+
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+    Route::get('contact-messages', [ContactMessageController::class, 'admin'])->name('contact-messages');
+    Route::get('contact-messages/{contactMessage}', [ContactMessageController::class, 'show'])->name('contact-messages.show');
+    Route::delete('contact-messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
+    Route::patch('contact-messages/{contactMessage}/toggle-read', [ContactMessageController::class, 'toggleRead'])->name('contact-messages.toggle-read');
+    Route::get('contact-messages-filter', [ContactMessageController::class, 'filter'])->name('contact-messages.filter');
+    Route::get('contact-stats', [ContactMessageController::class, 'stats'])->name('contact-stats');
+});
+
 
 Route::get('faq', function () {
     $faqs = Faq::all();
@@ -82,6 +96,7 @@ Route::middleware('auth')->group(function () {
 
         return view('members.sidebar.record', compact('transactions', 'memberships'));
      })->name('members.record');
+
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
     Route::put('/members/profile', [GuestProfileController::class, 'update'])->name('members.profile.update');
@@ -242,7 +257,7 @@ Route::get('/news/show/{id}', function ($id) {
 })->name('news.show');
 
 Route::get('/news/all-news', function () {
-    $news = News::all();
+    $news = News::latest()->get();
     return view('members.news.all-news', compact('news'));
 })->name('news.all-news');
 Route::get('/dashboard', function () {

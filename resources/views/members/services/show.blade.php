@@ -5132,7 +5132,6 @@
         .column-9kr div {
             font-size: 15px;
         }
-
     </style>
 </head>
 
@@ -5155,45 +5154,67 @@
                             <div class="bg-xf5 shadow-primary-sxe position-1lp">
                                 <div class="block-osq text-b1x">
                                     <figure class="m-38w text-m1o overflow-khm">
-                                        <img style="width: 222px;" class="service-img" src="{{ asset('storage/' . $services->image) }}" alt="{{ app()->getLocale() == 'ar' ? ($services->name_ar ?? __('app.service_image_alt_fallback')) : ($services->name_en ?? __('app.service_image_alt_fallback')) }}">
+                                        <img style="width: 222px;" class="service-img"
+                                            src="{{ asset('storage/' . $services->image) }}"
+                                            alt="{{ app()->getLocale() == 'ar' ? ($services->name_ar ?? __('app.service_image_alt_fallback')) : ($services->name_en ?? __('app.service_image_alt_fallback')) }}">
                                     </figure>
                                 </div>
                             </div>
                         </div>
                         <div class="col-5vc col-cvg my-mpv">
                             <a class="text-7zo text-b1x" href="{{ route('services.show', $services->id) }}">
-                                <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $services->name_ar : $services->name_en }}</h2>
+                                <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ?
+                                    $services->name_ar : $services->name_en }}</h2>
                             </a>
-                            <p style="text-align: center;">{{ __('app.membership_required') }} 
-                                {{ $services->membership_required == '1' ? __('app.required') : __('app.not_required') }} 
+                            <p style="text-align: center;">{{ __('app.membership_required') }}
+                                {{ $services->membership_required == '1' ? __('app.required') : __('app.not_required')
+                                }}
                                 {{ __('app.for_this_service') }}</p>
                             <hr>
                             <div class="my-7z8 fs--oox">
                                 <div style="display: inline-block; margin-right: 15px;">
-                                    <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{ \Carbon\Carbon::parse($services->date)->translatedFormat('Y-m-d') }}
+                                    <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{
+                                    \Carbon\Carbon::parse($services->date)->translatedFormat('Y-m-d') }}
                                 </div>
                                 <div style="display: inline-block; margin-right: 15px;">
-                                    <i class="fa fa-money-bill-alt"></i> {{ __('app.price') }}: {{ number_format($services->price, 2) }} {{ __('app.aed') }}
+                                    <i class="fa fa-money-bill-alt"></i> {{ __('app.price') }}: {{
+                                    number_format($services->price, 2) }} {{ __('app.aed') }}
                                 </div>
                             </div>
                             <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                                <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ? $services->description_ar : $services->description_en }} </span>
+                                <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ?
+                                    $services->description_ar : $services->description_en }} </span>
                             </p>
-                            <p>{{ app()->getLocale() == 'ar' ? $services->long_description : $services->long_description_en }}</p>
+                            <p>{{ app()->getLocale() == 'ar' ? $services->long_description :
+                                $services->long_description_en }}</p>
                             <hr>
                             <div class="text-jdt">
                                 @auth
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h"
+                                    style="margin-bottom: 0px !important;">
                                     {{ __('app.subscribe_to_service') }}
-                                    <form action="{{ route('services.subscribe', $services->id) }}" method="POST" style="display: inline;">
+                                    {{-- تحقق من وجود عضوية نشطة إذا كانت مطلوبة --}}
+                                    @if ($services->membership_required && !Auth::user()->hasActiveMembership())
+                                    <div class="alert alert-warning">
+                                        {{ __('app.membership_required_to_subscribe') }}
+                                    </div>
+                                    @else
+                                    {{-- عرض فورم الاشتراك --}}
+                                    <form action="{{ route('services.subscribe', $services->id) }}" method="POST"
+                                        style="display: inline;">
                                         @csrf
                                         <input type="text" name="type" value="service" style="display: none;">
-                                        <button id="subscribe-form" type="submit" class="text-7zo">{{ __('app.click_here') }}</button>
+                                        <button id="subscribe-form" type="submit" class="text-7zo">
+                                            {{ __('app.click_here') }}
+                                        </button>
                                     </form>
+                                    @endif
                                 </div>
                                 @endauth
+                                {{-- كود الضيوف (Guest) خارج الشرط الرئيسي @auth --}}
                                 @guest
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h"
+                                    style="margin-bottom: 0px !important;">
                                     {{ __('app.request_to_join_please') }}
                                     <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }}
                                     <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>

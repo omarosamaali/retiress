@@ -1783,7 +1783,6 @@
         #phone-home:after {
             content: "";
         }
-
     </style>
 
 </head>
@@ -1792,38 +1791,46 @@
     <div id="renewalModal" class="">
         <div class="modal-content">
             <span class="close">&times;</span>
-<h3 class="modal-title" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-    {{ __('app.membership_renewal_form_title') }}
-</h3>
+            <h3 class="modal-title" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                {{ __('app.membership_renewal_form_title') }}
+            </h3>
 
-   <form id="renewalForm" method="POST" action="{{ route('members.renewal') }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-       @csrf
-       <div class="country-grid">
-           <div class="country-section">
-               <div class="form-group">
-                   <label for="membership_id_kw">
-                       {{ __('app.membership_id') }} <span class="required">{{ __('app.required_field_indicator') }}</span>
-                   </label>
-                   <input type="text" id="membership_id_kw" name="membership_id_kw" placeholder="{{ __('app.enter_membership_id') }}">
-               </div>
-               <div class="form-group">
-                   <label for="national_id_kw">
-                       {{ __('app.national_id') }} <span class="required">{{ __('app.required_field_indicator') }}</span>
-                   </label>
-                   <input type="text" id="national_id_kw" name="national_id_kw" placeholder="{{ __('app.enter_national_id') }}">
-               </div>
-               <div class="form-group">
-                   <label for="email_kw">
-                       {{ __('app.email') }} <span class="required">{{ __('app.required_field_indicator') }}</span>
-                   </label>
-                   <input type="email" id="email_kw" name="email_kw" placeholder="{{ __('app.email_placeholder') }}">
-               </div>
-           </div>
-       </div>
-       <button onclick="renewMembership()" type="submit" class="submit-btn" style="color: white !important; background-color: #b68a35 !important;">
-           {{ __('app.confirm_renewal') }}
-       </button>
-   </form>
+            <form id="renewalForm" method="POST" action="{{ route('members.renewal') }}"
+                dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                @csrf
+                <div class="country-grid">
+                    <div class="country-section">
+                        <div class="form-group">
+                            <label for="membership_id_kw">
+                                {{ __('app.membership_id') }} <span class="required">{{
+                                    __('app.required_field_indicator') }}</span>
+                            </label>
+                            <input type="text" id="membership_id_kw" name="membership_id_kw"
+                                placeholder="{{ __('app.enter_membership_id') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="national_id_kw">
+                                {{ __('app.national_id') }} <span class="required">{{ __('app.required_field_indicator')
+                                    }}</span>
+                            </label>
+                            <input type="text" id="national_id_kw" name="national_id_kw"
+                                placeholder="{{ __('app.enter_national_id') }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="email_kw">
+                                {{ __('app.email') }} <span class="required">{{ __('app.required_field_indicator')
+                                    }}</span>
+                            </label>
+                            <input type="email" id="email_kw" name="email_kw"
+                                placeholder="{{ __('app.email_placeholder') }}">
+                        </div>
+                    </div>
+                </div>
+                <button onclick="renewMembership()" type="submit" class="submit-btn"
+                    style="color: white !important; background-color: #b68a35 !important;">
+                    {{ __('app.confirm_renewal') }}
+                </button>
+            </form>
 
 
         </div>
@@ -1850,18 +1857,21 @@
                                             </div>
                                             @endif
 
-                                            <h2 id="style-HrvSv" class="style-HrvSv">{{ __('app.membership_renewal_form_title') }}</h2>
+                                            <h2 id="style-HrvSv" class="style-HrvSv">{{
+                                                __('app.membership_renewal_form_title') }}</h2>
 
-<div class="radio-group" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-    <label class="radio-label" for="new1">
-        <span>{{ __('app.new') }}</span>
-        <input id="new1" name="membership_type" type="radio" value="new">
-    </label>
-    <label class="radio-label" for="renewal">
-        <span>{{ __('app.renewal') }}</span>
-        <input id="renewal" name="membership_type" type="radio" value="renewal">
-    </label>
-</div>
+                                            <div class="radio-group"
+                                                dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                                                <label class="radio-label" for="new1">
+                                                    <span>{{ __('app.new') }}</span>
+                                                    <input id="new1" name="membership_type" type="radio" value="new">
+                                                </label>
+                                                <label class="radio-label" for="renewal">
+                                                    <span>{{ __('app.renewal') }}</span>
+                                                    <input id="renewal" name="membership_type" type="radio"
+                                                        value="renewal">
+                                                </label>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -1869,552 +1879,906 @@
                                 <div id="newMembershipContent" class="column-3li content-y8i" style="display: none;">
                                     <div>
                                         <div class="form-6cc">
-                                            <form class="form-7fx form-mke" action="{{ route('members.application.store') }}" method="POST" enctype="multipart/form-data">
-                                                @csrf 
+                                            <form class="form-7fx form-mke"
+                                                action="{{ route('members.application.store') }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
                                                 <div class="container-8ka container-gx5 column-p79">
                                                     <div class="ff-t-r5r style-Djnqr" id="style-Djnqr">
-                                                       <div>
-                                                           <div class="container-8ka">
-                                                               <div class="ff-t-r5r">
-                                                                   <div class="ff-el-qhz">
-                                                                       <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                           <label for="ff_3_full_name">{{ __('app.full_name') }}</label>
-                                                                       </div>
-                                                                       <div class="content-mar">
-                                                                           <input type="text" name="full_name" required id="ff_3_full_name" class="form-control-27x" placeholder="{{ __('app.full_name_placeholder') }}">
-                                                                       </div>
-                                                                   </div>
-                                                               </div>
-                                                               <div class="ff-t-r5r">
-                                                                   <div class="ff-el-qhz">
-                                                                       <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                                                                           <label for="ff_3_nationality">{{ __('app.nationality') }}</label>
-                                                                       </div>
-                                                                       <select name="nationality" id="ff_3_nationality" class="form-control-27x" required>
+                                                        <div>
+                                                            <div class="container-8ka">
+                                                                <div class="ff-t-r5r">
+                                                                    <div class="ff-el-qhz">
+                                                                        <div
+                                                                            class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                            <label for="ff_3_full_name">{{
+                                                                                __('app.full_name') }}</label>
+                                                                        </div>
+                                                                        <div class="content-mar">
+                                                                            <input type="text" name="full_name" required
+                                                                                id="ff_3_full_name"
+                                                                                class="form-control-27x"
+                                                                                placeholder="{{ __('app.full_name_placeholder') }}">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="ff-t-r5r">
+                                                                    <div class="ff-el-qhz">
+                                                                        <div
+                                                                            class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                            <label for="ff_3_nationality">{{
+                                                                                __('app.nationality') }}</label>
+                                                                        </div>
+                                                                        <select name="nationality" id="ff_3_nationality"
+                                                                            class="form-control-27x" required>
 
-                                                                           <option value="">{{ __('app.select') }}</option>
-                                                                           <option value="أفغانستان">{{ __('app.afghanistan') }}</option>
-                                                                           <option value="ألبانيا">{{ __('app.albania') }}</option>
-                                                                           <option value="الجزائر">{{ __('app.algeria') }}</option>
-                                                                           <option value="أندورا">{{ __('app.andorra') }}</option>
-                                                                           <option value="أنغولا">{{ __('app.angola') }}</option>
-                                                                           <option value="أنتيغوا وباربودا">{{ __('app.antigua_and_barbuda') }}</option>
-                                                                           <option value="الأرجنتين">{{ __('app.argentina') }}</option>
-                                                                           <option value="أرمينيا">{{ __('app.armenia') }}</option>
-                                                                           <option value="أستراليا">{{ __('app.australia') }}</option>
-                                                                           <option value="النمسا">{{ __('app.austria') }}</option>
-                                                                           <option value="أذربيجان">{{ __('app.azerbaijan') }}</option>
-                                                                           <option value="البهاما">{{ __('app.bahamas') }}</option>
-                                                                           <option value="البحرين">{{ __('app.bahrain') }}</option>
-                                                                           <option value="بنغلاديش">{{ __('app.bangladesh') }}</option>
-                                                                           <option value="بربادوس">{{ __('app.barbados') }}</option>
-                                                                           <option value="بيلاروسيا">{{ __('app.belarus') }}</option>
-                                                                           <option value="بلجيكا">{{ __('app.belgium') }}</option>
-                                                                           <option value="بليز">{{ __('app.belize') }}</option>
-                                                                           <option value="بنين">{{ __('app.benin') }}</option>
-                                                                           <option value="بوتان">{{ __('app.bhutan') }}</option>
-                                                                           <option value="بوليفيا">{{ __('app.bolivia') }}</option>
-                                                                           <option value="البوسنة والهرسك">{{ __('app.bosnia_and_herzegovina') }}</option>
-                                                                           <option value="بوتسوانا">{{ __('app.botswana') }}</option>
-                                                                           <option value="البرازيل">{{ __('app.brazil') }}</option>
-                                                                           <option value="بروناي">{{ __('app.brunei') }}</option>
-                                                                           <option value="بلغاريا">{{ __('app.bulgaria') }}</option>
-                                                                           <option value="بوركينا فاسو">{{ __('app.burkina_faso') }}</option>
-                                                                           <option value="بوروندي">{{ __('app.burundi') }}</option>
-                                                                           <option value="كمبوديا">{{ __('app.cambodia') }}</option>
-                                                                           <option value="الكاميرون">{{ __('app.cameroon') }}</option>
-                                                                           <option value="كندا">{{ __('app.canada') }}</option>
-                                                                           <option value="الرأس الأخضر">{{ __('app.cape_verde') }}</option>
-                                                                           <option value="جمهورية أفريقيا الوسطى">{{ __('app.central_african_republic') }}</option>
-                                                                           <option value="تشاد">{{ __('app.chad') }}</option>
-                                                                           <option value="تشيلي">{{ __('app.chile') }}</option>
-                                                                           <option value="الصين">{{ __('app.china') }}</option>
-                                                                           <option value="كولومبيا">{{ __('app.colombia') }}</option>
-                                                                           <option value="جزر القمر">{{ __('app.comoros') }}</option>
-                                                                           <option value="الكونغو">{{ __('app.congo') }}</option>
-                                                                           <option value="جمهورية الكونغو الديمقراطية">{{ __('app.democratic_republic_of_congo') }}</option>
-                                                                           <option value="كوستاريكا">{{ __('app.costa_rica') }}</option>
-                                                                           <option value="ساحل العاج">{{ __('app.cote_d_ivoire') }}</option>
-                                                                           <option value="كرواتيا">{{ __('app.croatia') }}</option>
-                                                                           <option value="كوبا">{{ __('app.cuba') }}</option>
-                                                                           <option value="قبرص">{{ __('app.cyprus') }}</option>
-                                                                           <option value="التشيك">{{ __('app.czech_republic') }}</option>
-                                                                           <option value="الدنمارك">{{ __('app.denmark') }}</option>
-                                                                           <option value="جيبوتي">{{ __('app.djibouti') }}</option>
-                                                                           <option value="دومينيكا">{{ __('app.dominica') }}</option>
-                                                                           <option value="جمهورية الدومينيك">{{ __('app.dominican_republic') }}</option>
-                                                                           <option value="الإكوادور">{{ __('app.ecuador') }}</option>
-                                                                           <option value="مصر">{{ __('app.egypt') }}</option>
-                                                                           <option value="السلفادور">{{ __('app.el_salvador') }}</option>
-                                                                           <option value="غينيا الاستوائية">{{ __('app.equatorial_guinea') }}</option>
-                                                                           <option value="إريتريا">{{ __('app.eritrea') }}</option>
-                                                                           <option value="إستونيا">{{ __('app.estonia') }}</option>
-                                                                           <option value="إسواتيني">{{ __('app.eswatini') }}</option>
-                                                                           <option value="إثيوبيا">{{ __('app.ethiopia') }}</option>
-                                                                           <option value="فيجي">{{ __('app.fiji') }}</option>
-                                                                           <option value="فنلندا">{{ __('app.finland') }}</option>
-                                                                           <option value="فرنسا">{{ __('app.france') }}</option>
-                                                                           <option value="الغابون">{{ __('app.gabon') }}</option>
-                                                                           <option value="غامبيا">{{ __('app.gambia') }}</option>
-                                                                           <option value="جورجيا">{{ __('app.georgia') }}</option>
-                                                                           <option value="ألمانيا">{{ __('app.germany') }}</option>
-                                                                           <option value="غانا">{{ __('app.ghana') }}</option>
-                                                                           <option value="اليونان">{{ __('app.greece') }}</option>
-                                                                           <option value="غرينادا">{{ __('app.grenada') }}</option>
-                                                                           <option value="غواتيمالا">{{ __('app.guatemala') }}</option>
-                                                                           <option value="غينيا">{{ __('app.guinea') }}</option>
-                                                                           <option value="غينيا بيساو">{{ __('app.guinea_bissau') }}</option>
-                                                                           <option value="غويانا">{{ __('app.guyana') }}</option>
-                                                                           <option value="هايتي">{{ __('app.haiti') }}</option>
-                                                                           <option value="هندوراس">{{ __('app.honduras') }}</option>
-                                                                           <option value="المجر">{{ __('app.hungary') }}</option>
-                                                                           <option value="آيسلندا">{{ __('app.iceland') }}</option>
-                                                                           <option value="الهند">{{ __('app.india') }}</option>
-                                                                           <option value="إندونيسيا">{{ __('app.indonesia') }}</option>
-                                                                           <option value="إيران">{{ __('app.iran') }}</option>
-                                                                           <option value="العراق">{{ __('app.iraq') }}</option>
-                                                                           <option value="أيرلندا">{{ __('app.ireland') }}</option>
-                                                                           <option value="إسرائيل">{{ __('app.israel') }}</option>
-                                                                           <option value="إيطاليا">{{ __('app.italy') }}</option>
-                                                                           <option value="جامايكا">{{ __('app.jamaica') }}</option>
-                                                                           <option value="اليابان">{{ __('app.japan') }}</option>
-                                                                           <option value="الأردن">{{ __('app.jordan') }}</option>
-                                                                           <option value="كازاخستان">{{ __('app.kazakhstan') }}</option>
-                                                                           <option value="كينيا">{{ __('app.kenya') }}</option>
-                                                                           <option value="كيريباتي">{{ __('app.kiribati') }}</option>
-                                                                           <option value="كوريا الشمالية">{{ __('app.north_korea') }}</option>
-                                                                           <option value="كوريا الجنوبية">{{ __('app.south_korea') }}</option>
-                                                                           <option value="الكويت">{{ __('app.kuwait') }}</option>
-                                                                           <option value="قيرغيزستان">{{ __('app.kyrgyzstan') }}</option>
-                                                                           <option value="لاوس">{{ __('app.laos') }}</option>
-                                                                           <option value="لاتفيا">{{ __('app.latvia') }}</option>
-                                                                           <option value="لبنان">{{ __('app.lebanon') }}</option>
-                                                                           <option value="ليسوتو">{{ __('app.lesotho') }}</option>
-                                                                           <option value="ليبيريا">{{ __('app.liberia') }}</option>
-                                                                           <option value="ليبيا">{{ __('app.libya') }}</option>
-                                                                           <option value="ليختنشتاين">{{ __('app.liechtenstein') }}</option>
-                                                                           <option value="ليتوانيا">{{ __('app.lithuania') }}</option>
-                                                                           <option value="لوكسمبورغ">{{ __('app.luxembourg') }}</option>
-                                                                           <option value="مدغشقر">{{ __('app.madagascar') }}</option>
-                                                                           <option value="ملاوي">{{ __('app.malawi') }}</option>
-                                                                           <option value="ماليزيا">{{ __('app.malaysia') }}</option>
-                                                                           <option value="المالديف">{{ __('app.maldives') }}</option>
-                                                                           <option value="مالي">{{ __('app.mali') }}</option>
-                                                                           <option value="مالطا">{{ __('app.malta') }}</option>
-                                                                           <option value="جزر مارشال">{{ __('app.marshall_islands') }}</option>
-                                                                           <option value="موريتانيا">{{ __('app.mauritania') }}</option>
-                                                                           <option value="موريشيوس">{{ __('app.mauritius') }}</option>
-                                                                           <option value="المكسيك">{{ __('app.mexico') }}</option>
-                                                                           <option value="ميكرونيسيا">{{ __('app.micronesia') }}</option>
-                                                                           <option value="مولدوفا">{{ __('app.moldova') }}</option>
-                                                                           <option value="موناكو">{{ __('app.monaco') }}</option>
-                                                                           <option value="منغوليا">{{ __('app.mongolia') }}</option>
-                                                                           <option value="الجبل الأسود">{{ __('app.montenegro') }}</option>
-                                                                           <option value="المغرب">{{ __('app.morocco') }}</option>
-                                                                           <option value="موزمبيق">{{ __('app.mozambique') }}</option>
-                                                                           <option value="ميانمار">{{ __('app.myanmar') }}</option>
-                                                                           <option value="ناميبيا">{{ __('app.namibia') }}</option>
-                                                                           <option value="ناورو">{{ __('app.nauru') }}</option>
-                                                                           <option value="نيبال">{{ __('app.nepal') }}</option>
-                                                                           <option value="هولندا">{{ __('app.netherlands') }}</option>
-                                                                           <option value="نيوزيلندا">{{ __('app.new_zealand') }}</option>
-                                                                           <option value="نيكاراغوا">{{ __('app.nicaragua') }}</option>
-                                                                           <option value="النيجر">{{ __('app.niger') }}</option>
-                                                                           <option value="نيجيريا">{{ __('app.nigeria') }}</option>
-                                                                           <option value="مقدونيا الشمالية">{{ __('app.north_macedonia') }}</option>
-                                                                           <option value="النرويج">{{ __('app.norway') }}</option>
-                                                                           <option value="عُمان">{{ __('app.oman') }}</option>
-                                                                           <option value="باكستان">{{ __('app.pakistan') }}</option>
-                                                                           <option value="بالاو">{{ __('app.palau') }}</option>
-                                                                           <option value="فلسطين">{{ __('app.palestine') }}</option>
-                                                                           <option value="بنما">{{ __('app.panama') }}</option>
-                                                                           <option value="بابوا غينيا الجديدة">{{ __('app.papua_new_guinea') }}</option>
-                                                                           <option value="باراغواي">{{ __('app.paraguay') }}</option>
-                                                                           <option value="بيرو">{{ __('app.peru') }}</option>
-                                                                           <option value="الفلبين">{{ __('app.philippines') }}</option>
-                                                                           <option value="بولندا">{{ __('app.poland') }}</option>
-                                                                           <option value="البرتغال">{{ __('app.portugal') }}</option>
-                                                                           <option value="قطر">{{ __('app.qatar') }}</option>
-                                                                           <option value="رومانيا">{{ __('app.romania') }}</option>
-                                                                           <option value="روسيا">{{ __('app.russia') }}</option>
-                                                                           <option value="رواندا">{{ __('app.rwanda') }}</option>
-                                                                           <option value="سانت كيتس ونيفيس">{{ __('app.saint_kitts_and_nevis') }}</option>
-                                                                           <option value="سانت لوسيا">{{ __('app.saint_lucia') }}</option>
-                                                                           <option value="سانت فنسنت والغرينادين">{{ __('app.saint_vincent_and_the_grenadines') }}</option>
-                                                                           <option value="ساموا">{{ __('app.samoa') }}</option>
-                                                                           <option value="سان مارينو">{{ __('app.san_marino') }}</option>
-                                                                           <option value="ساو تومي وبرينسيبي">{{ __('app.sao_tome_and_principe') }}</option>
-                                                                           <option value="السعودية">{{ __('app.saudi_arabia') }}</option>
-                                                                           <option value="السنغال">{{ __('app.senegal') }}</option>
-                                                                           <option value="صربيا">{{ __('app.serbia') }}</option>
-                                                                           <option value="سيشل">{{ __('app.seychelles') }}</option>
-                                                                           <option value="سيراليون">{{ __('app.sierra_leone') }}</option>
-                                                                           <option value="سنغافورة">{{ __('app.singapore') }}</option>
-                                                                           <option value="سلوفاكيا">{{ __('app.slovakia') }}</option>
-                                                                           <option value="سلوفينيا">{{ __('app.slovenia') }}</option>
-                                                                           <option value="جزر سليمان">{{ __('app.solomon_islands') }}</option>
-                                                                           <option value="الصومال">{{ __('app.somalia') }}</option>
-                                                                           <option value="جنوب أفريقيا">{{ __('app.south_africa') }}</option>
-                                                                           <option value="جنوب السودان">{{ __('app.south_sudan') }}</option>
-                                                                           <option value="إسبانيا">{{ __('app.spain') }}</option>
-                                                                           <option value="سريلانكا">{{ __('app.sri_lanka') }}</option>
-                                                                           <option value="السودان">{{ __('app.sudan') }}</option>
-                                                                           <option value="سورينام">{{ __('app.suriname') }}</option>
-                                                                           <option value="السويد">{{ __('app.sweden') }}</option>
-                                                                           <option value="سويسرا">{{ __('app.switzerland') }}</option>
-                                                                           <option value="سوريا">{{ __('app.syria') }}</option>
-                                                                           <option value="تايوان">{{ __('app.taiwan') }}</option>
-                                                                           <option value="طاجيكستان">{{ __('app.tajikistan') }}</option>
-                                                                           <option value="تنزانيا">{{ __('app.tanzania') }}</option>
-                                                                           <option value="تايلاند">{{ __('app.thailand') }}</option>
-                                                                           <option value="تيمور الشرقية">{{ __('app.timor_leste') }}</option>
-                                                                           <option value="توغو">{{ __('app.togo') }}</option>
-                                                                           <option value="تونغا">{{ __('app.tonga') }}</option>
-                                                                           <option value="ترينيداد وتوباغو">{{ __('app.trinidad_and_tobago') }}</option>
-                                                                           <option value="تونس">{{ __('app.tunisia') }}</option>
-                                                                           <option value="تركيا">{{ __('app.turkey') }}</option>
-                                                                           <option value="تركمانستان">{{ __('app.turkmenistan') }}</option>
-                                                                           <option value="توفالو">{{ __('app.tuvalu') }}</option>
-                                                                           <option value="أوغندا">{{ __('app.uganda') }}</option>
-                                                                           <option value="أوكرانيا">{{ __('app.ukraine') }}</option>
-                                                                           <option value="الإمارات العربية المتحدة">{{ __('app.united_arab_emirates') }}</option>
-                                                                           <option value="المملكة المتحدة">{{ __('app.united_kingdom') }}</option>
-                                                                           <option value="الولايات المتحدة الأمريكية">{{ __('app.united_states') }}</option>
-                                                                           <option value="أوروغواي">{{ __('app.uruguay') }}</option>
-                                                                           <option value="أوزبكستان">{{ __('app.uzbekistan') }}</option>
-                                                                           <option value="فانواتو">{{ __('app.vanuatu') }}</option>
-                                                                           <option value="الفاتيكان">{{ __('app.vatican_city') }}</option>
-                                                                           <option value="فنزويلا">{{ __('app.venezuela') }}</option>
-                                                                           <option value="فيتنام">{{ __('app.vietnam') }}</option>
-                                                                           <option value="اليمن">{{ __('app.yemen') }}</option>
-                                                                           <option value="زامبيا">{{ __('app.zambia') }}</option>
-                                                                           <option value="زيمبابوي">{{ __('app.zimbabwe') }}</option>
-                                                                       </select>
-                                                                   </div>
-                                                               </div>
-                                                           </div>
-                                                       </div>
+                                                                            <option value="">{{ __('app.select') }}
+                                                                            </option>
+                                                                            <option value="أفغانستان">{{
+                                                                                __('app.afghanistan') }}</option>
+                                                                            <option value="ألبانيا">{{ __('app.albania')
+                                                                                }}</option>
+                                                                            <option value="الجزائر">{{ __('app.algeria')
+                                                                                }}</option>
+                                                                            <option value="أندورا">{{ __('app.andorra')
+                                                                                }}</option>
+                                                                            <option value="أنغولا">{{ __('app.angola')
+                                                                                }}</option>
+                                                                            <option value="أنتيغوا وباربودا">{{
+                                                                                __('app.antigua_and_barbuda') }}
+                                                                            </option>
+                                                                            <option value="الأرجنتين">{{
+                                                                                __('app.argentina') }}</option>
+                                                                            <option value="أرمينيا">{{ __('app.armenia')
+                                                                                }}</option>
+                                                                            <option value="أستراليا">{{
+                                                                                __('app.australia') }}</option>
+                                                                            <option value="النمسا">{{ __('app.austria')
+                                                                                }}</option>
+                                                                            <option value="أذربيجان">{{
+                                                                                __('app.azerbaijan') }}</option>
+                                                                            <option value="البهاما">{{ __('app.bahamas')
+                                                                                }}</option>
+                                                                            <option value="البحرين">{{ __('app.bahrain')
+                                                                                }}</option>
+                                                                            <option value="بنغلاديش">{{
+                                                                                __('app.bangladesh') }}</option>
+                                                                            <option value="بربادوس">{{
+                                                                                __('app.barbados') }}</option>
+                                                                            <option value="بيلاروسيا">{{
+                                                                                __('app.belarus') }}</option>
+                                                                            <option value="بلجيكا">{{ __('app.belgium')
+                                                                                }}</option>
+                                                                            <option value="بليز">{{ __('app.belize') }}
+                                                                            </option>
+                                                                            <option value="بنين">{{ __('app.benin') }}
+                                                                            </option>
+                                                                            <option value="بوتان">{{ __('app.bhutan') }}
+                                                                            </option>
+                                                                            <option value="بوليفيا">{{ __('app.bolivia')
+                                                                                }}</option>
+                                                                            <option value="البوسنة والهرسك">{{
+                                                                                __('app.bosnia_and_herzegovina') }}
+                                                                            </option>
+                                                                            <option value="بوتسوانا">{{
+                                                                                __('app.botswana') }}</option>
+                                                                            <option value="البرازيل">{{ __('app.brazil')
+                                                                                }}</option>
+                                                                            <option value="بروناي">{{ __('app.brunei')
+                                                                                }}</option>
+                                                                            <option value="بلغاريا">{{
+                                                                                __('app.bulgaria') }}</option>
+                                                                            <option value="بوركينا فاسو">{{
+                                                                                __('app.burkina_faso') }}</option>
+                                                                            <option value="بوروندي">{{ __('app.burundi')
+                                                                                }}</option>
+                                                                            <option value="كمبوديا">{{
+                                                                                __('app.cambodia') }}</option>
+                                                                            <option value="الكاميرون">{{
+                                                                                __('app.cameroon') }}</option>
+                                                                            <option value="كندا">{{ __('app.canada') }}
+                                                                            </option>
+                                                                            <option value="الرأس الأخضر">{{
+                                                                                __('app.cape_verde') }}</option>
+                                                                            <option value="جمهورية أفريقيا الوسطى">{{
+                                                                                __('app.central_african_republic') }}
+                                                                            </option>
+                                                                            <option value="تشاد">{{ __('app.chad') }}
+                                                                            </option>
+                                                                            <option value="تشيلي">{{ __('app.chile') }}
+                                                                            </option>
+                                                                            <option value="الصين">{{ __('app.china') }}
+                                                                            </option>
+                                                                            <option value="كولومبيا">{{
+                                                                                __('app.colombia') }}</option>
+                                                                            <option value="جزر القمر">{{
+                                                                                __('app.comoros') }}</option>
+                                                                            <option value="الكونغو">{{ __('app.congo')
+                                                                                }}</option>
+                                                                            <option value="جمهورية الكونغو الديمقراطية">
+                                                                                {{
+                                                                                __('app.democratic_republic_of_congo')
+                                                                                }}</option>
+                                                                            <option value="كوستاريكا">{{
+                                                                                __('app.costa_rica') }}</option>
+                                                                            <option value="ساحل العاج">{{
+                                                                                __('app.cote_d_ivoire') }}</option>
+                                                                            <option value="كرواتيا">{{ __('app.croatia')
+                                                                                }}</option>
+                                                                            <option value="كوبا">{{ __('app.cuba') }}
+                                                                            </option>
+                                                                            <option value="قبرص">{{ __('app.cyprus') }}
+                                                                            </option>
+                                                                            <option value="التشيك">{{
+                                                                                __('app.czech_republic') }}</option>
+                                                                            <option value="الدنمارك">{{
+                                                                                __('app.denmark') }}</option>
+                                                                            <option value="جيبوتي">{{ __('app.djibouti')
+                                                                                }}</option>
+                                                                            <option value="دومينيكا">{{
+                                                                                __('app.dominica') }}</option>
+                                                                            <option value="جمهورية الدومينيك">{{
+                                                                                __('app.dominican_republic') }}</option>
+                                                                            <option value="الإكوادور">{{
+                                                                                __('app.ecuador') }}</option>
+                                                                            <option value="مصر">{{ __('app.egypt') }}
+                                                                            </option>
+                                                                            <option value="السلفادور">{{
+                                                                                __('app.el_salvador') }}</option>
+                                                                            <option value="غينيا الاستوائية">{{
+                                                                                __('app.equatorial_guinea') }}</option>
+                                                                            <option value="إريتريا">{{ __('app.eritrea')
+                                                                                }}</option>
+                                                                            <option value="إستونيا">{{ __('app.estonia')
+                                                                                }}</option>
+                                                                            <option value="إسواتيني">{{
+                                                                                __('app.eswatini') }}</option>
+                                                                            <option value="إثيوبيا">{{
+                                                                                __('app.ethiopia') }}</option>
+                                                                            <option value="فيجي">{{ __('app.fiji') }}
+                                                                            </option>
+                                                                            <option value="فنلندا">{{ __('app.finland')
+                                                                                }}</option>
+                                                                            <option value="فرنسا">{{ __('app.france') }}
+                                                                            </option>
+                                                                            <option value="الغابون">{{ __('app.gabon')
+                                                                                }}</option>
+                                                                            <option value="غامبيا">{{ __('app.gambia')
+                                                                                }}</option>
+                                                                            <option value="جورجيا">{{ __('app.georgia')
+                                                                                }}</option>
+                                                                            <option value="ألمانيا">{{ __('app.germany')
+                                                                                }}</option>
+                                                                            <option value="غانا">{{ __('app.ghana') }}
+                                                                            </option>
+                                                                            <option value="اليونان">{{ __('app.greece')
+                                                                                }}</option>
+                                                                            <option value="غرينادا">{{ __('app.grenada')
+                                                                                }}</option>
+                                                                            <option value="غواتيمالا">{{
+                                                                                __('app.guatemala') }}</option>
+                                                                            <option value="غينيا">{{ __('app.guinea') }}
+                                                                            </option>
+                                                                            <option value="غينيا بيساو">{{
+                                                                                __('app.guinea_bissau') }}</option>
+                                                                            <option value="غويانا">{{ __('app.guyana')
+                                                                                }}</option>
+                                                                            <option value="هايتي">{{ __('app.haiti') }}
+                                                                            </option>
+                                                                            <option value="هندوراس">{{
+                                                                                __('app.honduras') }}</option>
+                                                                            <option value="المجر">{{ __('app.hungary')
+                                                                                }}</option>
+                                                                            <option value="آيسلندا">{{ __('app.iceland')
+                                                                                }}</option>
+                                                                            <option value="الهند">{{ __('app.india') }}
+                                                                            </option>
+                                                                            <option value="إندونيسيا">{{
+                                                                                __('app.indonesia') }}</option>
+                                                                            <option value="إيران">{{ __('app.iran') }}
+                                                                            </option>
+                                                                            <option value="العراق">{{ __('app.iraq') }}
+                                                                            </option>
+                                                                            <option value="أيرلندا">{{ __('app.ireland')
+                                                                                }}</option>
+                                                                            <option value="إسرائيل">{{ __('app.israel')
+                                                                                }}</option>
+                                                                            <option value="إيطاليا">{{ __('app.italy')
+                                                                                }}</option>
+                                                                            <option value="جامايكا">{{ __('app.jamaica')
+                                                                                }}</option>
+                                                                            <option value="اليابان">{{ __('app.japan')
+                                                                                }}</option>
+                                                                            <option value="الأردن">{{ __('app.jordan')
+                                                                                }}</option>
+                                                                            <option value="كازاخستان">{{
+                                                                                __('app.kazakhstan') }}</option>
+                                                                            <option value="كينيا">{{ __('app.kenya') }}
+                                                                            </option>
+                                                                            <option value="كيريباتي">{{
+                                                                                __('app.kiribati') }}</option>
+                                                                            <option value="كوريا الشمالية">{{
+                                                                                __('app.north_korea') }}</option>
+                                                                            <option value="كوريا الجنوبية">{{
+                                                                                __('app.south_korea') }}</option>
+                                                                            <option value="الكويت">{{ __('app.kuwait')
+                                                                                }}</option>
+                                                                            <option value="قيرغيزستان">{{
+                                                                                __('app.kyrgyzstan') }}</option>
+                                                                            <option value="لاوس">{{ __('app.laos') }}
+                                                                            </option>
+                                                                            <option value="لاتفيا">{{ __('app.latvia')
+                                                                                }}</option>
+                                                                            <option value="لبنان">{{ __('app.lebanon')
+                                                                                }}</option>
+                                                                            <option value="ليسوتو">{{ __('app.lesotho')
+                                                                                }}</option>
+                                                                            <option value="ليبيريا">{{ __('app.liberia')
+                                                                                }}</option>
+                                                                            <option value="ليبيا">{{ __('app.libya') }}
+                                                                            </option>
+                                                                            <option value="ليختنشتاين">{{
+                                                                                __('app.liechtenstein') }}</option>
+                                                                            <option value="ليتوانيا">{{
+                                                                                __('app.lithuania') }}</option>
+                                                                            <option value="لوكسمبورغ">{{
+                                                                                __('app.luxembourg') }}</option>
+                                                                            <option value="مدغشقر">{{
+                                                                                __('app.madagascar') }}</option>
+                                                                            <option value="ملاوي">{{ __('app.malawi') }}
+                                                                            </option>
+                                                                            <option value="ماليزيا">{{
+                                                                                __('app.malaysia') }}</option>
+                                                                            <option value="المالديف">{{
+                                                                                __('app.maldives') }}</option>
+                                                                            <option value="مالي">{{ __('app.mali') }}
+                                                                            </option>
+                                                                            <option value="مالطا">{{ __('app.malta') }}
+                                                                            </option>
+                                                                            <option value="جزر مارشال">{{
+                                                                                __('app.marshall_islands') }}</option>
+                                                                            <option value="موريتانيا">{{
+                                                                                __('app.mauritania') }}</option>
+                                                                            <option value="موريشيوس">{{
+                                                                                __('app.mauritius') }}</option>
+                                                                            <option value="المكسيك">{{ __('app.mexico')
+                                                                                }}</option>
+                                                                            <option value="ميكرونيسيا">{{
+                                                                                __('app.micronesia') }}</option>
+                                                                            <option value="مولدوفا">{{ __('app.moldova')
+                                                                                }}</option>
+                                                                            <option value="موناكو">{{ __('app.monaco')
+                                                                                }}</option>
+                                                                            <option value="منغوليا">{{
+                                                                                __('app.mongolia') }}</option>
+                                                                            <option value="الجبل الأسود">{{
+                                                                                __('app.montenegro') }}</option>
+                                                                            <option value="المغرب">{{ __('app.morocco')
+                                                                                }}</option>
+                                                                            <option value="موزمبيق">{{
+                                                                                __('app.mozambique') }}</option>
+                                                                            <option value="ميانمار">{{ __('app.myanmar')
+                                                                                }}</option>
+                                                                            <option value="ناميبيا">{{ __('app.namibia')
+                                                                                }}</option>
+                                                                            <option value="ناورو">{{ __('app.nauru') }}
+                                                                            </option>
+                                                                            <option value="نيبال">{{ __('app.nepal') }}
+                                                                            </option>
+                                                                            <option value="هولندا">{{
+                                                                                __('app.netherlands') }}</option>
+                                                                            <option value="نيوزيلندا">{{
+                                                                                __('app.new_zealand') }}</option>
+                                                                            <option value="نيكاراغوا">{{
+                                                                                __('app.nicaragua') }}</option>
+                                                                            <option value="النيجر">{{ __('app.niger') }}
+                                                                            </option>
+                                                                            <option value="نيجيريا">{{ __('app.nigeria')
+                                                                                }}</option>
+                                                                            <option value="مقدونيا الشمالية">{{
+                                                                                __('app.north_macedonia') }}</option>
+                                                                            <option value="النرويج">{{ __('app.norway')
+                                                                                }}</option>
+                                                                            <option value="عُمان">{{ __('app.oman') }}
+                                                                            </option>
+                                                                            <option value="باكستان">{{
+                                                                                __('app.pakistan') }}</option>
+                                                                            <option value="بالاو">{{ __('app.palau') }}
+                                                                            </option>
+                                                                            <option value="فلسطين">{{
+                                                                                __('app.palestine') }}</option>
+                                                                            <option value="بنما">{{ __('app.panama') }}
+                                                                            </option>
+                                                                            <option value="بابوا غينيا الجديدة">{{
+                                                                                __('app.papua_new_guinea') }}</option>
+                                                                            <option value="باراغواي">{{
+                                                                                __('app.paraguay') }}</option>
+                                                                            <option value="بيرو">{{ __('app.peru') }}
+                                                                            </option>
+                                                                            <option value="الفلبين">{{
+                                                                                __('app.philippines') }}</option>
+                                                                            <option value="بولندا">{{ __('app.poland')
+                                                                                }}</option>
+                                                                            <option value="البرتغال">{{
+                                                                                __('app.portugal') }}</option>
+                                                                            <option value="قطر">{{ __('app.qatar') }}
+                                                                            </option>
+                                                                            <option value="رومانيا">{{ __('app.romania')
+                                                                                }}</option>
+                                                                            <option value="روسيا">{{ __('app.russia') }}
+                                                                            </option>
+                                                                            <option value="رواندا">{{ __('app.rwanda')
+                                                                                }}</option>
+                                                                            <option value="سانت كيتس ونيفيس">{{
+                                                                                __('app.saint_kitts_and_nevis') }}
+                                                                            </option>
+                                                                            <option value="سانت لوسيا">{{
+                                                                                __('app.saint_lucia') }}</option>
+                                                                            <option value="سانت فنسنت والغرينادين">{{
+                                                                                __('app.saint_vincent_and_the_grenadines')
+                                                                                }}</option>
+                                                                            <option value="ساموا">{{ __('app.samoa') }}
+                                                                            </option>
+                                                                            <option value="سان مارينو">{{
+                                                                                __('app.san_marino') }}</option>
+                                                                            <option value="ساو تومي وبرينسيبي">{{
+                                                                                __('app.sao_tome_and_principe') }}
+                                                                            </option>
+                                                                            <option value="السعودية">{{
+                                                                                __('app.saudi_arabia') }}</option>
+                                                                            <option value="السنغال">{{ __('app.senegal')
+                                                                                }}</option>
+                                                                            <option value="صربيا">{{ __('app.serbia') }}
+                                                                            </option>
+                                                                            <option value="سيشل">{{ __('app.seychelles')
+                                                                                }}</option>
+                                                                            <option value="سيراليون">{{
+                                                                                __('app.sierra_leone') }}</option>
+                                                                            <option value="سنغافورة">{{
+                                                                                __('app.singapore') }}</option>
+                                                                            <option value="سلوفاكيا">{{
+                                                                                __('app.slovakia') }}</option>
+                                                                            <option value="سلوفينيا">{{
+                                                                                __('app.slovenia') }}</option>
+                                                                            <option value="جزر سليمان">{{
+                                                                                __('app.solomon_islands') }}</option>
+                                                                            <option value="الصومال">{{ __('app.somalia')
+                                                                                }}</option>
+                                                                            <option value="جنوب أفريقيا">{{
+                                                                                __('app.south_africa') }}</option>
+                                                                            <option value="جنوب السودان">{{
+                                                                                __('app.south_sudan') }}</option>
+                                                                            <option value="إسبانيا">{{ __('app.spain')
+                                                                                }}</option>
+                                                                            <option value="سريلانكا">{{
+                                                                                __('app.sri_lanka') }}</option>
+                                                                            <option value="السودان">{{ __('app.sudan')
+                                                                                }}</option>
+                                                                            <option value="سورينام">{{
+                                                                                __('app.suriname') }}</option>
+                                                                            <option value="السويد">{{ __('app.sweden')
+                                                                                }}</option>
+                                                                            <option value="سويسرا">{{
+                                                                                __('app.switzerland') }}</option>
+                                                                            <option value="سوريا">{{ __('app.syria') }}
+                                                                            </option>
+                                                                            <option value="تايوان">{{ __('app.taiwan')
+                                                                                }}</option>
+                                                                            <option value="طاجيكستان">{{
+                                                                                __('app.tajikistan') }}</option>
+                                                                            <option value="تنزانيا">{{
+                                                                                __('app.tanzania') }}</option>
+                                                                            <option value="تايلاند">{{
+                                                                                __('app.thailand') }}</option>
+                                                                            <option value="تيمور الشرقية">{{
+                                                                                __('app.timor_leste') }}</option>
+                                                                            <option value="توغو">{{ __('app.togo') }}
+                                                                            </option>
+                                                                            <option value="تونغا">{{ __('app.tonga') }}
+                                                                            </option>
+                                                                            <option value="ترينيداد وتوباغو">{{
+                                                                                __('app.trinidad_and_tobago') }}
+                                                                            </option>
+                                                                            <option value="تونس">{{ __('app.tunisia') }}
+                                                                            </option>
+                                                                            <option value="تركيا">{{ __('app.turkey') }}
+                                                                            </option>
+                                                                            <option value="تركمانستان">{{
+                                                                                __('app.turkmenistan') }}</option>
+                                                                            <option value="توفالو">{{ __('app.tuvalu')
+                                                                                }}</option>
+                                                                            <option value="أوغندا">{{ __('app.uganda')
+                                                                                }}</option>
+                                                                            <option value="أوكرانيا">{{
+                                                                                __('app.ukraine') }}</option>
+                                                                            <option value="الإمارات العربية المتحدة">{{
+                                                                                __('app.united_arab_emirates') }}
+                                                                            </option>
+                                                                            <option value="المملكة المتحدة">{{
+                                                                                __('app.united_kingdom') }}</option>
+                                                                            <option value="الولايات المتحدة الأمريكية">
+                                                                                {{ __('app.united_states') }}</option>
+                                                                            <option value="أوروغواي">{{
+                                                                                __('app.uruguay') }}</option>
+                                                                            <option value="أوزبكستان">{{
+                                                                                __('app.uzbekistan') }}</option>
+                                                                            <option value="فانواتو">{{ __('app.vanuatu')
+                                                                                }}</option>
+                                                                            <option value="الفاتيكان">{{
+                                                                                __('app.vatican_city') }}</option>
+                                                                            <option value="فنزويلا">{{
+                                                                                __('app.venezuela') }}</option>
+                                                                            <option value="فيتنام">{{ __('app.vietnam')
+                                                                                }}</option>
+                                                                            <option value="اليمن">{{ __('app.yemen') }}
+                                                                            </option>
+                                                                            <option value="زامبيا">{{ __('app.zambia')
+                                                                                }}</option>
+                                                                            <option value="زيمبابوي">{{
+                                                                                __('app.zimbabwe') }}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
 
-            <div class="ff-el-qhz">
-                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                    <label for="ff_3_date_of_birth" >{{ __('app.date_of_birth') }}</label>
-                </div>
-                <div class="content-mar">
-                    <input type="date" required name="date_of_birth" id="ff_3_date_of_birth" class="form-control-27x">
+                                                        <div class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_date_of_birth">{{
+                                                                    __('app.date_of_birth') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <input type="date" required name="date_of_birth"
+                                                                    id="ff_3_date_of_birth" class="form-control-27x">
 
-                </div>
-            </div>
-            <div class="ff-el-qhz">
-                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                    <label for="ff_3_gender">{{ __('app.gender') }}</label>
-                </div>
-                <div class="content-mar">
-                    <select required name="gender" id="ff_3_gender" class="form-control-27x">
+                                                            </div>
+                                                        </div>
+                                                        <div class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_gender">{{ __('app.gender') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <select required name="gender" id="ff_3_gender"
+                                                                    class="form-control-27x">
 
-                        <option value="">{{ __('app.select') }}</option>
-                        <option value="male">{{ __('app.male') }}</option>
-                        <option value="female">{{ __('app.female') }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="ff-el-qhz">
-                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                    <label for="ff_3_emirate">{{ __('app.emirate') }}</label>
-                </div>
-                <div class="content-mar">
-                    <select name="emirate" id="ff_3_emirate" class="form-control-27x">
-                        <option value="">{{ __('app.select') }}</option>
-                        <option value="أبو ظبي">{{ __('app.abu_dhabi') }}</option>
-                        <option value="دبي">{{ __('app.dubai') }}</option>
-                        <option value="الشارقة">{{ __('app.sharjah') }}</option>
-                        <option value="عجمان">{{ __('app.ajman') }}</option>
-                        <option value="الفجيرة">{{ __('app.fujairah') }}</option>
-                        <option value="راس الخيمة">{{ __('app.ras_al_khaimah') }}</option>
-                        <option value="أم القيوين">{{ __('app.um_al_quwain') }}</option>
-                        <option value="العين">{{ __('app.al_ain') }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="ff-el-qhz">
-                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                    <label for="ff_3_marital_status">{{ __('app.marital_status') }}</label>
-                </div>
-                <div class="content-mar">
-                    <select name="marital_status" id="ff_3_marital_status" class="form-control-27x">
-                        <option value="">{{ __('app.select') }}</option>
-                        <option value="single">{{ __('app.single') }}</option>
-                        <option value="married">{{ __('app.married') }}</option>
-                        <option value="divorced">{{ __('app.divorced') }}</option>
-                        <option value="widowed">{{ __('app.widowed') }}</option>
-                        <option value="separated">{{ __('app.separated') }}</option>
-                        <option value="engaged">{{ __('app.engaged') }}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="ff-el-qhz">
-                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                    <label for="ff_3_national_id">{{ __('app.national_id') }}</label>
-                </div>
-                <div class="content-mar">
-                    <input type="text" name="national_id" id="ff_3_national_id" class="form-control-27x" placeholder="{{ __('app.national_id_placeholder') }}">
-                </div>
-            </div>
-            <div class="ff-el-qhz">
-                <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                    <label for="ff_3_educational_qualification">{{ __('app.educational_qualification') }}</label>
-                </div>
-                <div class="content-mar">
-                    <select name="educational_qualification" id="ff_3_educational_qualification" class="form-control-27x">
-                        <option value="">{{ __('app.select') }}</option>
-                        <option value="دكتوراه">{{ __('app.doctorate') }}</option>
-                        <option value="ماجيستير">{{ __('app.masters') }}</option>
-                        <option value="بكالوريوس">{{ __('app.bachelors') }}</option>
-                        <option value="دبلوم">{{ __('app.diploma') }}</option>
-                        <option value="ثانوي">{{ __('app.secondary') }}</option>
-                        <option value="اعدادي">{{ __('app.preparatory') }}</option>
-                        <option value="ابتدائي">{{ __('app.primary') }}</option>
-                        <option value="غير ذلك">{{ __('app.other') }}</option>
-                    </select>
-                </div>
-            </div>
+                                                                    <option value="">{{ __('app.select') }}</option>
+                                                                    <option value="male">{{ __('app.male') }}</option>
+                                                                    <option value="female">{{ __('app.female') }}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_emirate">{{ __('app.emirate')
+                                                                    }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <select name="emirate" id="ff_3_emirate"
+                                                                    class="form-control-27x">
+                                                                    <option value="">{{ __('app.select') }}</option>
+                                                                    <option value="أبو ظبي">{{ __('app.abu_dhabi') }}
+                                                                    </option>
+                                                                    <option value="دبي">{{ __('app.dubai') }}</option>
+                                                                    <option value="الشارقة">{{ __('app.sharjah') }}
+                                                                    </option>
+                                                                    <option value="عجمان">{{ __('app.ajman') }}</option>
+                                                                    <option value="الفجيرة">{{ __('app.fujairah') }}
+                                                                    </option>
+                                                                    <option value="راس الخيمة">{{
+                                                                        __('app.ras_al_khaimah') }}</option>
+                                                                    <option value="أم القيوين">{{ __('app.um_al_quwain')
+                                                                        }}</option>
+                                                                    <option value="العين">{{ __('app.al_ain') }}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_marital_status">{{
+                                                                    __('app.marital_status') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <select name="marital_status" id="ff_3_marital_status"
+                                                                    class="form-control-27x">
+                                                                    <option value="">{{ __('app.select') }}</option>
+                                                                    <option value="single">{{ __('app.single') }}
+                                                                    </option>
+                                                                    <option value="married">{{ __('app.married') }}
+                                                                    </option>
+                                                                    <option value="divorced">{{ __('app.divorced') }}
+                                                                    </option>
+                                                                    <option value="widowed">{{ __('app.widowed') }}
+                                                                    </option>
+                                                                    <option value="separated">{{ __('app.separated') }}
+                                                                    </option>
+                                                                    <option value="engaged">{{ __('app.engaged') }}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_national_id">{{ __('app.national_id')
+                                                                    }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <input type="text" name="national_id"
+                                                                    id="ff_3_national_id" class="form-control-27x"
+                                                                    placeholder="{{ __('app.national_id_placeholder') }}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_educational_qualification">{{
+                                                                    __('app.educational_qualification') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <select name="educational_qualification"
+                                                                    id="ff_3_educational_qualification"
+                                                                    class="form-control-27x">
+                                                                    <option value="">{{ __('app.select') }}</option>
+                                                                    <option value="دكتوراه">{{ __('app.doctorate') }}
+                                                                    </option>
+                                                                    <option value="ماجيستير">{{ __('app.masters') }}
+                                                                    </option>
+                                                                    <option value="بكالوريوس">{{ __('app.bachelors') }}
+                                                                    </option>
+                                                                    <option value="دبلوم">{{ __('app.diploma') }}
+                                                                    </option>
+                                                                    <option value="ثانوي">{{ __('app.secondary') }}
+                                                                    </option>
+                                                                    <option value="اعدادي">{{ __('app.preparatory') }}
+                                                                    </option>
+                                                                    <option value="ابتدائي">{{ __('app.primary') }}
+                                                                    </option>
+                                                                    <option value="غير ذلك">{{ __('app.other') }}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
 
                                                     </div>
-<div class="ff-t-r5r style-6eOgw" id="style-6eOgw">
-    <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">{{ __('app.registration_requirements') }}</h3>
+                                                    <div class="ff-t-r5r style-6eOgw" id="style-6eOgw">
+                                                        <h3 id="style-HrvSv" class="style-HrvSv"
+                                                            style="margin-top: 30px;">{{
+                                                            __('app.registration_requirements') }}</h3>
 
-    <div class="ff-el-qhz form-drm">
-        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-            <label for="ff_3_passport_photo">{{ __('app.passport_photo') }}</label>
-        </div>
-        <div class="content-mar">
-            <label class="ff_-pjz">
-                <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
-                <input type="file" name="passport_photo" id="ff_3_passport_photo" required class="form-control-27x ff-screen-reader-i5l">
-            </label>
-            <div class="style-RizyE" id="style-RizyE"></div>
-            <img id="preview_passport_photo" src="#" alt="{{ __('app.passport_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
-        </div>
-    </div>
+                                                        <div class="ff-el-qhz form-drm">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_passport_photo">{{
+                                                                    __('app.passport_photo') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <label class="ff_-pjz">
+                                                                    <span class="btn-xwt btn-5mm">{{
+                                                                        __('app.choose_file') }}</span>
+                                                                    <input type="file" name="passport_photo"
+                                                                        id="ff_3_passport_photo" required
+                                                                        class="form-control-27x ff-screen-reader-i5l">
+                                                                </label>
+                                                                <div class="style-RizyE" id="style-RizyE"></div>
+                                                                <img id="preview_passport_photo" src="#"
+                                                                    alt="{{ __('app.passport_photo_preview') }}"
+                                                                    style="display: none; max-width: 200px; margin-top: 10px;">
+                                                            </div>
+                                                        </div>
 
-    <div class="ff-el-qhz form-drm">
-        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-            <label for="ff_3_national_id_photo">{{ __('app.national_id_photo') }}</label>
-        </div>
-        <div class="content-mar">
-            <label class="ff_-pjz">
-                <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
-                <input type="file" name="national_id_photo" id="ff_3_national_id_photo" required class="form-control-27x ff-screen-reader-i5l">
+                                                        <div class="ff-el-qhz form-drm">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_national_id_photo">{{
+                                                                    __('app.national_id_photo') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <label class="ff_-pjz">
+                                                                    <span class="btn-xwt btn-5mm">{{
+                                                                        __('app.choose_file') }}</span>
+                                                                    <input type="file" name="national_id_photo"
+                                                                        id="ff_3_national_id_photo" required
+                                                                        class="form-control-27x ff-screen-reader-i5l">
 
-            </label>
-            <div class="style-c1RkX" id="style-c1RkX"></div>
-            <img id="preview_national_id_photo" src="#" alt="{{ __('app.national_id_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
-        </div>
-    </div>
+                                                                </label>
+                                                                <div class="style-c1RkX" id="style-c1RkX"></div>
+                                                                <img id="preview_national_id_photo" src="#"
+                                                                    alt="{{ __('app.national_id_photo_preview') }}"
+                                                                    style="display: none; max-width: 200px; margin-top: 10px;">
+                                                            </div>
+                                                        </div>
 
-    <div class="ff-el-qhz form-drm">
-        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-            <label for="ff_3_personal_photo">{{ __('app.personal_photo') }}</label>
-        </div>
-        <div class="content-mar">
-            <label class="ff_-pjz">
-                <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
-                <input type="file" name="personal_photo" id="ff_3_personal_photo" required class="form-control-27x ff-screen-reader-i5l">
+                                                        <div class="ff-el-qhz form-drm">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_personal_photo">{{
+                                                                    __('app.personal_photo') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <label class="ff_-pjz">
+                                                                    <span class="btn-xwt btn-5mm">{{
+                                                                        __('app.choose_file') }}</span>
+                                                                    <input type="file" name="personal_photo"
+                                                                        id="ff_3_personal_photo" required
+                                                                        class="form-control-27x ff-screen-reader-i5l">
 
-            </label>
-            <div class="style-eGJft" id="style-eGJft"></div>
-            <img id="preview_personal_photo" src="#" alt="{{ __('app.personal_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
-        </div>
-    </div>
+                                                                </label>
+                                                                <div class="style-eGJft" id="style-eGJft"></div>
+                                                                <img id="preview_personal_photo" src="#"
+                                                                    alt="{{ __('app.personal_photo_preview') }}"
+                                                                    style="display: none; max-width: 200px; margin-top: 10px;">
+                                                            </div>
+                                                        </div>
 
-    <div class="ff-el-qhz form-drm">
-        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-            <label for="ff_3_educational_qualification_photo">{{ __('app.educational_qualification_photo') }}</label>
-        </div>
-        <div class="content-mar">
-            <label class="ff_-pjz">
-                <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
-                <input type="file" name="educational_qualification_photo" required id="ff_3_educational_qualification_photo" class="form-control-27x ff-screen-reader-i5l">
-            </label>
-            <div class="style-zUUYm" id="style-zUUYm"></div>
-            <img id="preview_educational_qualification_photo" src="#" alt="{{ __('app.educational_qualification_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
-        </div>
-    </div>
+                                                        <div class="ff-el-qhz form-drm">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_educational_qualification_photo">{{
+                                                                    __('app.educational_qualification_photo') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <label class="ff_-pjz">
+                                                                    <span class="btn-xwt btn-5mm">{{
+                                                                        __('app.choose_file') }}</span>
+                                                                    <input type="file"
+                                                                        name="educational_qualification_photo" required
+                                                                        id="ff_3_educational_qualification_photo"
+                                                                        class="form-control-27x ff-screen-reader-i5l">
+                                                                </label>
+                                                                <div class="style-zUUYm" id="style-zUUYm"></div>
+                                                                <img id="preview_educational_qualification_photo"
+                                                                    src="#"
+                                                                    alt="{{ __('app.educational_qualification_photo_preview') }}"
+                                                                    style="display: none; max-width: 200px; margin-top: 10px;">
+                                                            </div>
+                                                        </div>
 
-    <div class="ff-el-qhz form-drm">
-        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-            <label for="ff_3_retirement_card_photo">{{ __('app.retirement_card_photo') }}</label>
-        </div>
-        <div class="content-mar">
-            <label class="ff_-pjz">
-                <span class="btn-xwt btn-5mm">{{ __('app.choose_file') }}</span>
-                <input type="file" name="retirement_card_photo" required id="ff_3_retirement_card_photo" class="form-control-27x ff-screen-reader-i5l">
-            </label>
-            <div class="style-zUUYm" id="style-zUUYm"></div>
-            <img id="preview_retirement_card_photo" src="#" alt="{{ __('app.retirement_card_photo_preview') }}" style="display: none; max-width: 200px; margin-top: 10px;">
-        </div>
-    </div>
+                                                        <div class="ff-el-qhz form-drm">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_retirement_card_photo">{{
+                                                                    __('app.retirement_card_photo') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <label class="ff_-pjz">
+                                                                    <span class="btn-xwt btn-5mm">{{
+                                                                        __('app.choose_file') }}</span>
+                                                                    <input type="file" name="retirement_card_photo"
+                                                                        required id="ff_3_retirement_card_photo"
+                                                                        class="form-control-27x ff-screen-reader-i5l">
+                                                                </label>
+                                                                <div class="style-zUUYm" id="style-zUUYm"></div>
+                                                                <img id="preview_retirement_card_photo" src="#"
+                                                                    alt="{{ __('app.retirement_card_photo_preview') }}"
+                                                                    style="display: none; max-width: 200px; margin-top: 10px;">
+                                                            </div>
+                                                        </div>
 
-                <div class="ff-el-qhz">
-                    <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                        <label for="ff_3_gender">{{ __('app.pension') }}</label>
-                    </div>
-                    <div class="content-mar">
-                        <select required name="pension" id="ff_3_gender" class="form-control-27x">
-                            <option value="">{{ __('app.select') }}</option>
-                            <option value="pensions_and_social">{{ __('app.pensions_and_social') }}</option>
-                            <option value="sharjah_social">{{ __('app.sharjah_social') }}</option>
-                            <option value="dubai_social">{{ __('app.dubai_social') }}</option>
-                            <option value="pensions__social">{{ __('app.pensions__social') }}</option>
-                            <option value="ministry_of_defense">{{ __('app.ministry_of_defense') }}</option>
-                            <option value="ministry_of_interior">{{ __('app.ministry_of_interior') }}</option>
-                            <option value="police_dubai">{{ __('app.police_dubai') }}</option>
-                        </select>
-                    </div>
-                </div>
+                                                        <div class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_gender">{{ __('app.pension') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <select required name="pension" id="ff_3_gender"
+                                                                    class="form-control-27x">
+                                                                    <option value="">{{ __('app.select') }}</option>
+                                                                    <option value="pensions_and_social">{{
+                                                                        __('app.pensions_and_social') }}</option>
+                                                                    <option value="sharjah_social">{{
+                                                                        __('app.sharjah_social') }}</option>
+                                                                    <option value="dubai_social">{{
+                                                                        __('app.dubai_social') }}</option>
+                                                                    <option value="pensions__social">{{
+                                                                        __('app.pensions__social') }}</option>
+                                                                    <option value="ministry_of_defense">{{
+                                                                        __('app.ministry_of_defense') }}</option>
+                                                                    <option value="ministry_of_interior">{{
+                                                                        __('app.ministry_of_interior') }}</option>
+                                                                    <option value="police_dubai">{{
+                                                                        __('app.police_dubai') }}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
 
 
-</div>
-</div>
+                                                    </div>
+                                                </div>
 
 
-<div>
-    <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">{{ __('app.contact_details') }}</h3>
-    <div style="display: flex; align-items: center; gap: 20px;">
-        <div style="width: 50%;" class="ff-el-qhz">
-            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                <label for="ff_3_mobile_phone">{{ __('app.mobile_phone') }}</label>
-            </div>
-            <div class="content-mar">
-                <input type="text" name="mobile_phone" id="ff_3_mobile_phone" class="form-control-27x" placeholder="{{ __('app.mobile_phone_placeholder') }}">
-            </div>
-        </div>
-        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
-            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                <label id="phone-home" for="ff_3_home_phone">{{ __('app.home_phone') }}</label>
-            </div>
-            <div class="content-mar">
-                <input type="text" name="home_phone" id="ff_3_home_phone" class="form-control-27x" placeholder="{{ __('app.home_phone_placeholder') }}">
-            </div>
-        </div>
-    </div>
-    <div style="display: flex; align-items: center; gap: 20px;">
-        <div style="width: 50%;" class="ff-el-qhz">
-            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                <label for="ff_3_email">{{ __('app.email') }}</label>
-            </div>
-            <div class="content-mar">
-                <input type="email" name="email" id="ff_3_email" class="form-control-27x" placeholder="{{ __('app.email_placeholder') }}">
-            </div>
-        </div>
-        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
-            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                <label id="phone-home" for="ff_3_po_box">{{ __('app.po_box') }}</label>
-            </div>
-            <div class="content-mar">
-                <input type="text" name="po_box" id="ff_3_po_box" class="form-control-27x" placeholder="{{ __('app.po_box_placeholder') }}">
-            </div>
-        </div>
-    </div>
-    <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">{{ __('app.retirement_details') }}</h3>
-    <div style="display: flex; align-items: center; gap: 20px;">
-        <div style="width: 50%;" class="ff-el-qhz">
-            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                <label for="ff_3_retirement_date">{{ __('app.retirement_date') }}</label>
-            </div>
-            <div class="content-mar">
-                <input type="date" name="retirement_date" id="ff_3_retirement_date" class="form-control-27x">
-            </div>
-        </div>
-        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
-            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-                <label for="ff_3_contract_type">{{ __('app.contract_type') }}</label>
-            </div>
-            <div class="content-mar">
-                <select name="contract_type" id="ff_3_contract_type" class="form-control-27x">
-                    <option value="">{{ __('app.select') }}</option>
-                    <option value="نظامي">{{ __('app.regular') }}</option>
-                    <option value="مبكر">{{ __('app.early') }}</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="ff-el-qhz" id="early_reason_container" style="display: none;">
-        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
-            <label for="early_reason">{{ __('app.early_reason') }}</label>
-        </div>
-        <div class="content-mar">
-            <input type="text" name="early_reason" id="early_reason" class="form-control-27x" placeholder="{{ __('app.early_reason_placeholder') }}">
-        </div>
-    </div>
-</div>
-<h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">{{ __('app.previous_professional_details') }}</h3>
-<div class="table-container">
-    <table class="professional-table" id="professionalTable">
-        <thead>
-            <tr>
-                <th>{{ __('app.year') }}</th>
-                <th>{{ __('app.job_title') }}</th>
-                <th>{{ __('app.employer') }}</th>
-                <th>{{ __('app.years_of_experience') }}</th>
-                <th class="actions-cell">{{ __('app.actions') }}</th>
-            </tr>
-        </thead>
-        <tbody id="professionalTableBody">
-            <tr>
-                <td><input type="text" required  name="professional_experience[0][year]" placeholder="{{ __('app.example_year_range') }}"></td>
-                <td><input type="text" required  name="professional_experience[0][job_title]" placeholder="{{ __('app.example_job_title') }}"></td>
-                <td><input type="text" required  name="professional_experience[0][employer]" placeholder="{{ __('app.example_employer') }}"></td>
-                <td><input type="text" required  name="professional_experience[0][years_of_experience]" placeholder="{{ __('app.example_years_exp') }}"></td>
-                <td class="actions-cell">
-                    <button type="button" class="delete-btn" onclick="deleteProfessionalRow(this)">{{ __('app.delete') }}</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<button type="button" class="add-row-btn" onclick="addNewProfessionalRow()">{{ __('app.add_professional_data') }}</button>
-<div class="container">
-    <h3 id="style-HrvSv2" class="style-HrvSv" style="margin-top: 30px;">{{ __('app.previous_experiences') }}</h3>
-    <div class="table-container">
-        <table class="experience-table" id="experienceTable">
-            <thead>
-                <tr>
-                    <th>{{ __('app.year') }}</th>
-                    <th>{{ __('app.job_title') }}</th>
-                    <th>{{ __('app.employer') }}</th>
-                    <th>{{ __('app.years_of_experience') }}</th>
-                    <th class="actions-cell">{{ __('app.actions') }}</th>
-                </tr>
-            </thead>
-            <tbody id="experienceTableBody">
-                <tr>
-                    <td><input type="text" required name="previous_experience[0][year]" placeholder="{{ __('app.example_year_range') }}"></td>
-                    <td><input type="text" required name="previous_experience[0][job_title]" placeholder="{{ __('app.example_project_manager') }}"></td>
-                    <td><input type="text" required name="previous_experience[0][employer]" placeholder="{{ __('app.example_construction_company') }}"></td>
-                    <td><input type="text" required name="previous_experience[0][years_of_experience]" placeholder="{{ __('app.example_years_exp') }}"></td>
-                    <td class="actions-cell">
-                        <button type="button" class="delete-btn" onclick="deleteExperienceRow(this)">{{ __('app.delete') }}</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <button type="button" class="add-exp-btn" onclick="addNewExperienceRow()">{{ __('app.add_experience') }}</button>
-</div>
-<div class="ff-el-qhz content-mar">
-    <div class="form-ras ff-el-7d7">
-        <label class="label-iqv label-frw" for="terms-n-condition_726ef60f0da1bb731535cda34122e01f">
-            <span><input type="checkbox" name="terms-n-condition" class="input-nk3" id="ter-6zo" value="on"></span>
-            <div class="ff_-rtr">
-                <p>{{ __('app.agree_terms_and_privacy') }}</p>
-            </div>
-        </label>
-    </div>
-</div>
-<div class="ff-el-qhz text-g1j">
-    <button type="submit" class="btn-5mm btn-mo3 btn-lmc" style="background-color: #b28b46 !important; color: white !important;">{{ __('app.submit_application') }}</button>
-</div>
-</form>
+                                                <div>
+                                                    <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">
+                                                        {{ __('app.contact_details') }}</h3>
+                                                    <div style="display: flex; align-items: center; gap: 20px;">
+                                                        <div style="width: 50%;" class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_mobile_phone">{{ __('app.mobile_phone')
+                                                                    }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <input type="text" name="mobile_phone"
+                                                                    id="ff_3_mobile_phone" class="form-control-27x"
+                                                                    placeholder="{{ __('app.mobile_phone_placeholder') }}">
+                                                            </div>
+                                                        </div>
+                                                        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label id="phone-home" for="ff_3_home_phone">{{
+                                                                    __('app.home_phone') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <input type="text" name="home_phone"
+                                                                    id="ff_3_home_phone" class="form-control-27x"
+                                                                    placeholder="{{ __('app.home_phone_placeholder') }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div style="display: flex; align-items: center; gap: 20px;">
+                                                        <div style="width: 50%;" class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_email">{{ __('app.email') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <input type="email" name="email" id="ff_3_email"
+                                                                    class="form-control-27x"
+                                                                    placeholder="{{ __('app.email_placeholder') }}">
+                                                            </div>
+                                                        </div>
+                                                        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label id="phone-home" for="ff_3_po_box">{{
+                                                                    __('app.po_box') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <input type="text" name="po_box" id="ff_3_po_box"
+                                                                    class="form-control-27x"
+                                                                    placeholder="{{ __('app.po_box_placeholder') }}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">
+                                                        {{ __('app.retirement_details') }}</h3>
+                                                    <div style="display: flex; align-items: center; gap: 20px;">
+                                                        <div style="width: 50%;" class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_retirement_date">{{
+                                                                    __('app.retirement_date') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <input type="date" name="retirement_date"
+                                                                    id="ff_3_retirement_date" class="form-control-27x">
+                                                            </div>
+                                                        </div>
+                                                        <div style="width: 50%; margin-bottom: 20px;" class="ff-el-qhz">
+                                                            <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                                <label for="ff_3_contract_type">{{
+                                                                    __('app.contract_type') }}</label>
+                                                            </div>
+                                                            <div class="content-mar">
+                                                                <select name="contract_type" id="ff_3_contract_type"
+                                                                    class="form-control-27x">
+                                                                    <option value="">{{ __('app.select') }}</option>
+                                                                    <option value="نظامي">{{ __('app.regular') }}
+                                                                    </option>
+                                                                    <option value="مبكر">{{ __('app.early') }}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ff-el-qhz" id="early_reason_container"
+                                                        style="display: none;">
+                                                        <div class="input-ond ff-el-is-8a6 asterisk-9yx">
+                                                            <label for="early_reason">{{ __('app.early_reason')
+                                                                }}</label>
+                                                        </div>
+                                                        <div class="content-mar">
+                                                            <input type="text" name="early_reason" id="early_reason"
+                                                                class="form-control-27x"
+                                                                placeholder="{{ __('app.early_reason_placeholder') }}">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h3 id="style-HrvSv" class="style-HrvSv" style="margin-top: 30px;">{{
+                                                    __('app.previous_professional_details') }}</h3>
+                                                <div class="table-container">
+                                                    <table class="professional-table" id="professionalTable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>{{ __('app.year') }}</th>
+                                                                <th>{{ __('app.job_title') }}</th>
+                                                                <th>{{ __('app.employer') }}</th>
+                                                                <th>{{ __('app.years_of_experience') }}</th>
+                                                                <th class="actions-cell">{{ __('app.actions') }}</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="professionalTableBody">
+                                                            <tr>
+                                                                <td><input type="text" required
+                                                                        name="professional_experience[0][year]"
+                                                                        placeholder="{{ __('app.example_year_range') }}">
+                                                                </td>
+                                                                <td><input type="text" required
+                                                                        name="professional_experience[0][job_title]"
+                                                                        placeholder="{{ __('app.example_job_title') }}">
+                                                                </td>
+                                                                <td><input type="text" required
+                                                                        name="professional_experience[0][employer]"
+                                                                        placeholder="{{ __('app.example_employer') }}">
+                                                                </td>
+                                                                <td><input type="text" required
+                                                                        name="professional_experience[0][years_of_experience]"
+                                                                        placeholder="{{ __('app.example_years_exp') }}">
+                                                                </td>
+                                                                <td class="actions-cell">
+                                                                    <button type="button" class="delete-btn"
+                                                                        onclick="deleteProfessionalRow(this)">{{
+                                                                        __('app.delete') }}</button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <button type="button" class="add-row-btn"
+                                                    onclick="addNewProfessionalRow()">{{ __('app.add_professional_data')
+                                                    }}</button>
+                                                <div class="container">
+                                                    <h3 id="style-HrvSv2" class="style-HrvSv" style="margin-top: 30px;">
+                                                        {{ __('app.previous_experiences') }}</h3>
+                                                    <div class="table-container">
+                                                        <table class="experience-table" id="experienceTable">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>{{ __('app.year') }}</th>
+                                                                    <th>{{ __('app.job_title') }}</th>
+                                                                    <th>{{ __('app.employer') }}</th>
+                                                                    <th>{{ __('app.years_of_experience') }}</th>
+                                                                    <th class="actions-cell">{{ __('app.actions') }}
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="experienceTableBody">
+                                                                <tr>
+                                                                    <td><input type="text" required
+                                                                            name="previous_experience[0][year]"
+                                                                            placeholder="{{ __('app.example_year_range') }}">
+                                                                    </td>
+                                                                    <td><input type="text" required
+                                                                            name="previous_experience[0][job_title]"
+                                                                            placeholder="{{ __('app.example_project_manager') }}">
+                                                                    </td>
+                                                                    <td><input type="text" required
+                                                                            name="previous_experience[0][employer]"
+                                                                            placeholder="{{ __('app.example_construction_company') }}">
+                                                                    </td>
+                                                                    <td><input type="text" required
+                                                                            name="previous_experience[0][years_of_experience]"
+                                                                            placeholder="{{ __('app.example_years_exp') }}">
+                                                                    </td>
+                                                                    <td class="actions-cell">
+                                                                        <button type="button" class="delete-btn"
+                                                                            onclick="deleteExperienceRow(this)">{{
+                                                                            __('app.delete') }}</button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <button type="button" class="add-exp-btn"
+                                                        onclick="addNewExperienceRow()">{{ __('app.add_experience')
+                                                        }}</button>
+                                                </div>
+                                                <div class="ff-el-qhz content-mar">
+                                                    <div class="form-ras ff-el-7d7">
+                                                        <label class="label-iqv label-frw"
+                                                            for="terms-n-condition_726ef60f0da1bb731535cda34122e01f">
+                                                            <span><input type="checkbox" name="terms-n-condition"
+                                                                    class="input-nk3" id="ter-6zo" value="on"></span>
+                                                            <div class="ff_-rtr">
+                                                                <p>{{ __('app.agree_terms_and_privacy') }}</p>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="ff-el-qhz text-g1j">
+                                                    <button type="submit" class="btn-5mm btn-mo3 btn-lmc"
+                                                        style="background-color: #b28b46 !important; color: white !important;">{{
+                                                        __('app.submit_application') }}</button>
+                                                </div>
+                                            </form>
 
 
                                             <script>
@@ -2775,4 +3139,3 @@
 </body>
 
 </html>
-

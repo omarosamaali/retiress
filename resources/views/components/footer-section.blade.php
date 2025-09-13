@@ -179,6 +179,7 @@
         <div class="fs--hoe py-ac9 float-8xn">
             {{ __('app.all_rights_reserved') }} &copy; {{ date('Y') }} {{-- تم تغيير 2025 إلى دالة date('Y') لجعله ديناميكيًا --}}
         </div>
+
         <div class="fs--hoe py-ac9 float-prj" style="text-transform: uppercase">
             <a href="https://evorq.com/" target="_blank" class="text-7nf" id="kodoLink">
                 {{ __('app.developed_by') }}

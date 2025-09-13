@@ -51,27 +51,31 @@ class TransactionController extends Controller
 
     public function subscribe(Request $request, Service $service)
     {
+        // الشرط الجديد: التحقق من متطلبات العضوية 
+        if ($service->membership_required && !Auth::user()->hasActiveMembership()) {
+            return redirect()->back()->with('error', __('app.membership_required_to_subscribe'));
+        }
+
+        // الكود الأصلي: التحقق من وجود اشتراك سابق
         $existingTransaction = Transaction::where('user_id', Auth::id())
             ->where('service_id', $service->id)
-            ->whereIn('status', ['pending', 'waiting_for_payment', 'waiting_for_activation', 'active']) // يعتبرها اشتراك قائم لو في أي من الحالات دي
+            ->whereIn('status', ['pending', 'waiting_for_payment', 'waiting_for_activation', 'active'])
             ->exists();
 
         if ($existingTransaction) {
             return redirect()->route('members.record')->with('error', __('app.already_subscribed'));
         }
 
-        // Determine initial status based on service price and if it's marked as paid in the Service model
-        $initialStatus = 'pending'; // كل الاشتراكات تبدأ كـ 'pending' للموافقة الأولية من الأدمن
+        // باقي الكود: إنشاء المعاملة
+        $initialStatus = 'pending';
 
-        // Create transaction
         Transaction::create([
             'user_id' => Auth::id(),
-            'event_id' => null, // أضف هذا السطر
+            'event_id' => null,
             'service_id' => $service->id,
             'status' => $initialStatus,
             'type' => $request->type,
         ]);
-
 
         return redirect()->route('members.record')->with('success', __('app.subscription_success'));
     }

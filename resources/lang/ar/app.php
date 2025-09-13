@@ -62,7 +62,7 @@ return [
     'subscribe_button' => 'اشترك',
     'all_rights_reserved' => 'كافة الحقوق محفوظة لـ جمعية الإمارات للمتقاعدين',
     'developed_by' => 'تم تطويره بواسطة إيفورك للتكنولوجيا',
-
+    'membership_required_to_subscribe' => 'العضوية المطلوبة للتسجيل',
     // Modal section
     'implemented_by_evorq' => 'تم التنفيذ بواسطة إيفورك',
     'tareq_mohamed_bn_kalban' => 'طارق محمد بن كلبان',

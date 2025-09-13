@@ -122,4 +122,21 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Message::class, 'to_user_id');
     }
+
+    public function hasActiveMembership()
+    {
+        $threeMonth = now()->addMonths(3);
+        return $this->memberApplications()->where('status', '1')
+        ->whereDate('expiration_date', '>' , $threeMonth)->exists();
+    }
+
+    /**
+     * تحديد علاقة المستخدم مع طلبات العضوية.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function memberApplications()
+    {
+        return $this->hasMany(MemberApplication::class);
+    }
 }
