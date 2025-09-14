@@ -88,6 +88,7 @@ Route::post('contact-us', function(Request $request){
             border: 2px solid #e9ecef;
             border-radius: 8px;
             font-size: 16px;
+            font-family: 'Cairo';
             transition: all 0.3s;
         }
 
@@ -108,9 +109,10 @@ Route::post('contact-us', function(Request $request){
         }
 
         .btn-submit {
-            background: linear-gradient(45deg, #007bff, #0056b3);
+            background: #6e4c3e;
             color: white;
             border: none;
+            font-family: 'Cairo';
             border-radius: 8px;
             padding: 12px 40px;
             font-size: 16px;
@@ -123,7 +125,7 @@ Route::post('contact-us', function(Request $request){
 
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            box-shadow: 0 5px 15px #6e4c3e;
         }
 
         .alert {
@@ -149,9 +151,12 @@ Route::post('contact-us', function(Request $request){
             padding-right: 20px;
         }
 
+
+
         textarea.form-control {
             resize: vertical;
             min-height: 120px;
+            font-family: 'Cairo';
         }
 
         @media (max-width: 768px) {
