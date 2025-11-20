@@ -249,7 +249,7 @@ Route::post('contact-us', function(Request $request){
                 <textarea class="form-control" id="message" name="message" placeholder="اكتب رسالتك هنا..."
                     required>{{ old('message') }}</textarea>
             </div>
-
+            {{-- Send Message --}}
             <button type="submit" class="btn-submit">
                 إرسال الرسالة
             </button>
