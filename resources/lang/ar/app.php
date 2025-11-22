@@ -496,7 +496,7 @@ return [
     'ministry_of_defense' => 'وزارة الدفاع',
     'ministry_of_interior' => 'وزارة الداخلية',
     'police_dubai' => 'شرطة دبي',
-    'achievements' => 'انجازات الخبرات',
+    'achievements' => 'منبر الخبرات',
     'latest_magazine_issue' => 'هذه الإنجازات تؤكد أن المعرفة لا تتقادم، بل تزداد قيمة بمرور الزمن.',
     'gallery' => 'المعرض',
     'published_date' => 'تاريخ النشر',
