@@ -23,6 +23,7 @@ use App\Http\Controllers\ChatController;
 use App\Models\MemberApplication;
 use App\Http\Controllers\TransactionController;
 use App\Models\Transaction;
+use App\Models\Feature;
 use App\Models\Faq;
 use App\Http\Controllers\ContactMessageController;
 
@@ -226,10 +227,21 @@ Route::get('/magazines/show/{id}', function ($id) {
     return view('members.magazines.show', compact('magazines'));
 })->name('magazines.show');
 
+
+Route::get('/feature/show/{id}', function ($id) {
+    $magazines = Feature::find($id);
+    return view('members.magazines.show', compact('magazines'));
+})->name('magazines.show');
+
 Route::get('/magazines/all-magazines', function () {
     $magazines = Magazine::all();
     return view('members.magazines.all-magazines', compact('magazines'));
 })->name('magazines.all-magazines');
+
+Route::get('/magazines/feature', function () {
+    $magazines = Feature::all();
+    return view('members.feature.index', compact('magazines'));
+})->name('magazines.feature');
 
 Route::get('/services/show/{id}', function ($id) {
     $services = Service::find($id);

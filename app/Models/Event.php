@@ -16,6 +16,7 @@ class Event extends Model
         'sub_image',
         'price',
         'status',
+        'created_at',
     ];
 
     public function getMainImageUrlAttribute()

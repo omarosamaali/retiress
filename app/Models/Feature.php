@@ -5,43 +5,40 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-class News extends Model
+class Feature extends Model
 {
-    protected $table = 'news';
+    protected $table = 'features';
 
     protected $fillable = [
         'title_ar',
         'title_en',
         'description_ar',
         'description_en',
+        'member_id', // إضافة member_id هنا
         'main_image',
         'sub_image',
-        'price',
         'status',
-        'created_at',
     ];
 
-    protected $casts = [
-        'sub_image' => 'array',
-    ];
+    /**
+     * تعريف العلاقة مع موديل MemberApplication
+     */
+    public function member()
+    {
+        return $this->belongsTo(MemberApplication::class, 'member_id');
+    }
 
-    protected $attributes = [
-        'sub_image' => '[]', // Default to empty array
-    ];
 
     public function getMainImageUrlAttribute()
     {
         return $this->main_image ? Storage::url($this->main_image) : null;
     }
 
-    public function getSubImageUrlAttribute()
+    public function getPdfUrlAttribute()
     {
-        $imgs = [];
-        foreach ($this->sub_image ?? [] as $image) { // Ensure sub_image is an array
-            $imgs[] = Storage::url($image);
-        }
-        return $imgs;
+        return $this->pdf ? Storage::url($this->pdf) : null;
     }
+
 
     public function getStatusBadgeClassAttribute()
     {

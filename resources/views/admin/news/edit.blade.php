@@ -148,6 +148,17 @@
 
                 <div class="col-md-6">
                     <div class="mb-3">
+                        <label for="created_at" class="form-label">تاريخ الإضافة</label>
+                        <input type="datetime-local" class="form-control" id="created_at" name="created_at" value="{{ $news->created_at }}"
+                            required>
+                        @error('created_at')
+                        <div class="text-white">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="mb-3">
                         <label for="sub_image_input" class="form-label font-bold">الصورة الفرعية</label>
                         <input type="file" class="form-control" name="sub_image[]" id="sub_image_input" accept="image/*" multiple>
                         @error('sub_image')

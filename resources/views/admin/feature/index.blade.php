@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'إدارة إنجازات الخبرات')
-@section('page-title', 'إدارة إنجازات الخبرات')
+@section('title', 'إدارة مميزات التفاصيل')
+@section('page-title', 'إدارة مميزات التفاصيل')
 
 @push('styles')
 <style>
@@ -92,12 +92,12 @@
     </div>
     @endif
 
-    <form action="{{ route('admin.magazines.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.feature.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="title_ar" class="form-label">عنوان الإنجاز (بالعربية)</label>
+                    <label for="title_ar" class="form-label">عنوان الميزة (بالعربية)</label>
                     <input type="text" class="form-control" id="title_ar" name="title_ar" value="{{ old('title_ar') }}" required>
                     @error('title_ar')
                     <div class="text-white">{{ $message }}</div>
@@ -170,7 +170,7 @@
 
         <button type="submit" class="btn btn-light mt-3">
             <i class="fas fa-plus ms-1"></i>
-            إضافة الإنجاز
+            إضافة الميزة
         </button>
     </form>
 </div>
@@ -196,7 +196,7 @@
             <tr>
                 <th>#</th>
                 <th>تاريخ الإضافة</th>
-                <th>عنوان الإنجاز (عربي)</th>
+                <th>عنوان الميزة (عربي)</th>
                 <th>الصورة الرئيسية</th>
                 <th>الحالة</th>
                 <th>الإجراءات</th>
@@ -223,10 +223,10 @@
                 </td>
                 <td>
                     <div class="action-buttons">
-                        <a href="{{ route('admin.magazines.show', $item->id) }}" class="btn btn-info btn-sm" title="عرض">
+                        <a href="{{ route('admin.feature.show', $item->id) }}" class="btn btn-info btn-sm" title="عرض">
                             <i class="fas fa-eye"></i>
                         </a>
-                        <a href="{{ route('admin.magazines.edit', $item->id) }}" class="btn btn-warning btn-sm" title="تعديل">
+                        <a href="{{ route('admin.feature.edit', $item->id) }}" class="btn btn-warning btn-sm" title="تعديل">
                             <i class="fas fa-edit"></i>
                         </a>
                         <button class="btn btn-danger btn-sm" title="حذف" onclick="confirmDelete({{ $item->id }})">
@@ -240,7 +240,7 @@
             <tr>
                 <td colspan="6" class="text-center py-4">
                     <i class="fas fa-newspaper text-muted" style="font-size: 3rem;"></i>
-                    <p class="text-muted mt-2">لا توجد الإنجازات</p>
+                    <p class="text-muted mt-2">لا توجد الميزةات</p>
                 </td>
             </tr>
             @endforelse
@@ -263,7 +263,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                هل أنت متأكد من حذف هذه الإنجاز؟
+                هل أنت متأكد من حذف هذه الميزة؟
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>

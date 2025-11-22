@@ -199,7 +199,11 @@
                 </div>
             </div>
 
-            <h5 class="title--t5n">{{ app()->getLocale() == 'ar' ? $sections[7]->title_ar : $section[7]->title_en }}</h5>
+            <a href="{{ route('magazines.feature') }}" id="reg" style="margin-top: 20px;" class="btn-qhr btn-primary-t6n">
+                {{ __('app.تفاصيل المميزات') }}
+            </a>
+
+            <h5 class="title--t3n">{{ app()->getLocale() == 'ar' ? $sections[7]->title_ar : $section[7]->title_en }}</h5>
             @php
             $text = app()->getLocale() == 'ar' ? $sections[7]->description_ar : $sections[7]->description_en;
             $lines = preg_split('/\r\n|\r|\n/', trim($text));

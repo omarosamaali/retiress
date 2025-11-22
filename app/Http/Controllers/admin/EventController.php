@@ -93,12 +93,14 @@ class EventController extends Controller
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
+            'created_at' => 'required|date',
         ]);
 
         $eventData = [
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
+            'created_at' => $request->created_at,
             'price' => $request->is_payed === 'on' ? $request->price : null,
         ];
 

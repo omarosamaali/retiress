@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\MagazineController;
 use App\Http\Controllers\Admin\CommitteeController;
+use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\ManageMembershipController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\TransactionController;
@@ -72,6 +73,7 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::resource('event', EventController::class);
     Route::resource('news', NewsController::class);
     Route::resource('magazines', MagazineController::class);
+    Route::resource('feature', FeatureController::class);
     Route::resource('services', ServiceController::class);
     Route::resource('setting', ServiceController::class);
     Route::resource('about-us', AboutUsController::class);

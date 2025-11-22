@@ -90,12 +90,14 @@ class NewsController extends Controller
             'sub_image' => 'nullable|array',
             'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
+            'created_at' => 'nullable|date',
         ]);
 
         $newsData = [
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
+            'created_at' => $request->created_at,
             'sub_image' => $news->sub_image ?? [], // Preserve existing or initialize as empty array
         ];
 

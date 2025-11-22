@@ -259,7 +259,6 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-
     </style>
 
     @stack('styles')
@@ -287,7 +286,8 @@
             {{-- قائمة الجمعية --}}
             @can('isAdmin')
             <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     <i class="fas fa-book"></i>
                     عن الجمعية
                 </a>
@@ -308,7 +308,7 @@
                             <i class="fas fa-info-circle"></i> من نحن
                         </a>
                     </li>
-                               
+
 
                     <li>
                         <a class="dropdown-item" href="{{ route('admin.member.index') }}">
@@ -343,7 +343,8 @@
 
             @can('isAdmin')
             <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     <i class="fas fa-book"></i>
                     المركز الإعلامي
                 </a>
@@ -355,6 +356,9 @@
                         <a class="dropdown-item" href="{{ route('admin.magazines.index') }}">
                             <i class="fas fa-newspaper"></i> إنجازات الخبرات
                         </a>
+                        <a class="dropdown-item" href="{{ route('admin.feature.index') }}">
+                            <i class="fas fa-newspaper"></i> تفاصيل المميزات
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -364,7 +368,8 @@
             {{-- قائمة الإعدادات --}}
             @can('isAdmin')
             <div class="dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     <i class="fas fa-cog"></i>
                     الإعدادات
                 </a>
@@ -396,8 +401,8 @@
 
                     {{-- <li>
                         <a class="dropdown-item" href="{{ route('admin.about-us.index') }}">
-                    <i class="fas fa-info-circle"></i> معلومات عنا
-                    </a>
+                            <i class="fas fa-info-circle"></i> معلومات عنا
+                        </a>
                     </li> --}}
                     <li>
                         {{-- 11. الأسئلة الشائعة --}}
@@ -425,7 +430,8 @@
                 الرسائل
             </a>
 
-            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            <a class="nav-link" href="{{ route('logout') }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="fas fa-sign-out-alt"></i>
                 تسجيل الخروج
             </a>
