@@ -10,20 +10,15 @@ return new class extends Migration
     {
         Schema::create('features', function (Blueprint $table) {
             $table->id();
-
             $table->string('title_ar');
             $table->string('title_en')->nullable();
             $table->text('description_ar');
             $table->text('description_en')->nullable();
-
-            // إضافة المفتاح الأجنبي member_id
             $table->unsignedBigInteger('member_id');
             $table->foreign('member_id')->references('id')->on('member_applications')->onDelete('cascade');
-
             $table->string('main_image')->nullable();
             $table->json('sub_image')->nullable();
             $table->boolean('status')->default(1);
-
             $table->timestamps();
         });
     }
