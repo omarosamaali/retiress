@@ -553,7 +553,7 @@
 
             </div>
 
-            @if ($member && !empty($member->professional_experiences))
+            @if ($member && !empty($member->professional_experiences) && is_array($member->professional_experiences))
             <div class="experiences-container">
                 @foreach ($member->professional_experiences as $index => $experience)
                 <div class="experience-card mb-4 p-4 border rounded-lg shadow-sm bg-white position-relative">
