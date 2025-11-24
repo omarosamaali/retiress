@@ -409,64 +409,84 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="passport_photo_path" class="form-label font-bold">صورة الجواز</label>
-                    <img class="images-upload" src="{{ asset('storage/' . $member->passport_photo_path) }}" alt="Passport Photo" />
-                    @error('passport_photo_path')
-                    <div class="text-black">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
+{{-- 💡 ملاحظة: يجب أن تتحقق من كل مسار باستخدام @if قبل عرض الـ div بالكامل --}}
 
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="national_id_photo_path" class="form-label font-bold">صورة الهوية</label>
-                    <img class="images-upload" src="{{ asset('storage/' . $member->national_id_photo_path) }}" alt="Passport Photo" />
-                    @error('national_id_photo_path')
-                    <div class="text-black">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
+<div class="row">
+    {{-- عرض صورة الجواز --}}
+    @if ($member->passport_photo_path)
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="passport_photo_path" class="form-label font-bold">صورة الجواز</label>
+            {{-- تحقق إضافي لتجنب أخطاء asset() إذا كان المسار فارغاً --}}
+            <img class="images-upload" src="{{ asset('storage/' . $member->passport_photo_path) }}"
+                alt="Passport Photo" />
+            @error('passport_photo_path')
+            <div class="text-black">{{ $message }}</div>
+            @enderror
         </div>
+    </div>
+    @endif
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="educational_qualification_photo_path" class="form-label font-bold">صورة المؤهل</label>
-                    <img class="images-upload" src="{{ asset('storage/' . $member->educational_qualification_photo_path) }}" alt="Passport Photo" />
-                    @error('educational_qualification_photo_path')
-                    <div class="text-black">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="personal_photo_path" class="form-label font-bold">الصورة الشخصية</label>
-                    <img class="images-upload" src="{{ asset('storage/' . $member->personal_photo_path) }}" alt="Passport Photo" />
-                    @error('personal_photo_path')
-                    <div class="text-black">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
+    {{-- عرض صورة الهوية --}}
+    @if ($member->national_id_photo_path)
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="national_id_photo_path" class="form-label font-bold">صورة الهوية</label>
+            <img class="images-upload" src="{{ asset('storage/' . $member->national_id_photo_path) }}"
+                alt="National ID Photo" />
+            @error('national_id_photo_path')
+            <div class="text-black">{{ $message }}</div>
+            @enderror
         </div>
+    </div>
+    @endif
+</div>
 
-
-        <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="retirement_card_photo_path" class="form-label font-bold">صورة بطاقة التقاعد</label>
-                    <img class="images-upload" src="{{ asset('storage/' . $member->retirement_card_photo_path) }}" alt="Passport Photo" />
-                    @error('retirement_card_photo_path')
-                    <div class="text-black">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
+<div class="row">
+    {{-- عرض صورة المؤهل --}}
+    @if ($member->educational_qualification_photo_path)
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="educational_qualification_photo_path" class="form-label font-bold">صورة المؤهل</label>
+            <img class="images-upload" src="{{ asset('storage/' . $member->educational_qualification_photo_path) }}"
+                alt="Educational Qualification Photo" />
+            @error('educational_qualification_photo_path')
+            <div class="text-black">{{ $message }}</div>
+            @enderror
         </div>
+    </div>
+    @endif
+
+    {{-- عرض الصورة الشخصية --}}
+    @if ($member->personal_photo_path)
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="personal_photo_path" class="form-label font-bold">الصورة الشخصية</label>
+            <img class="images-upload" src="{{ asset('storage/' . $member->personal_photo_path) }}"
+                alt="Personal Photo" />
+            @error('personal_photo_path')
+            <div class="text-black">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+    @endif
+</div>
+
+<div class="row">
+    {{-- عرض صورة بطاقة التقاعد --}}
+    @if ($member->retirement_card_photo_path)
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="retirement_card_photo_path" class="form-label font-bold">صورة بطاقة التقاعد</label>
+            <img class="images-upload" src="{{ asset('storage/' . $member->retirement_card_photo_path) }}"
+                alt="Retirement Card Photo" />
+            @error('retirement_card_photo_path')
+            <div class="text-black">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+    @endif
+</div>
 
         <div class="row">
             @if($member->po_box)
