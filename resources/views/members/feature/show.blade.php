@@ -55,11 +55,11 @@
                             <h2 class="magazine-title">
                                 <div style="color: #800000;">
                                     {{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}
-                                </d>
+                                </div>
                             </h2>
                             <div class="member-details">
                                 <h4>بيانات العضو</h4>
-                                @if($magazines->member->personal_photo_path)
+                                @if($magazines->member->personal_photo_path != null)
                                 <img src="{{ asset('storage/' . $magazines->member->personal_photo_path) }}" class="member-image" alt="">
                                 @endif
                                 <h4> {{ $magazines->member->full_name }}</h4>
