@@ -107,14 +107,15 @@
 
             <div class="col-md-6">
                 <div class="mb-3">
-                <select name="member_id" id="member_id" class="form-select" required>
-                    <option value="">اختر العضو</option>
-                    @if(isset($member_applications))
-                    @foreach ($member_applications as $member_application)
-                    <option value="{{ $member_application->id }}">{{ $member_application->full_name }}</option>
-                    @endforeach
-                    @endif
-                </select>
+                    <label for="member_id" class="form-label">إسم العضو</label>
+                  <select name="member_id" id="member_id" class="form-select" required>
+                        <option value="">اختر العضو</option>
+                        @if(isset($member_applications))
+                        @foreach ($member_applications as $member_application)
+                        <option value="{{ $member_application->id }}">{{ $member_application->full_name }}</option>
+                        @endforeach
+                        @endif
+                    </select>
                     @error('member_id')
                     <div class="invalid-feedback">
                         {{ $message }}
