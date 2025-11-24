@@ -555,7 +555,7 @@
                         @elseif($member->marital_status == 'engaged')
                         <div style="display:block !important; font-size: 15px; background-color: unset;">مخطوب / مخطوبة</div>
                         @endif
-                        <input type="text" hidden name="marital_status" value="{{ $member->marital_status }}" id="">
+                        <input type="text" name="marital_status" value="{{ $member->marital_status }}" id="">
                     </div>
 
                     @error('marital_status')
