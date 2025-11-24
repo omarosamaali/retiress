@@ -558,7 +558,8 @@
                 @foreach ($member->professional_experiences as $index => $experience)
                 <div class="experience-card mb-4 p-4 border rounded-lg shadow-sm bg-white position-relative">
                     <div class="experience-number">
-                        <span class="badge bg-primary rounded-circle p-2">{{ $index + 1 }}</span>
+                        {{-- <span class="badge bg-primary rounded-circle p-2">{{ $index + 1 }}</span> --}}
+                        <span class="badge bg-primary rounded-circle p-2">{{ (int)$index + 1 }}</span>
                     </div>
                     <div class="experience-content">
                         <div class="row g-3">
@@ -656,7 +657,8 @@
                 @foreach ($member->previous_experience as $index => $experience)
                 <div class="experience-card mb-4 p-4 border rounded-lg shadow-sm bg-white position-relative">
                     <div class="experience-number">
-                        <span class="badge bg-primary rounded-circle p-2">{{ $index + 1 }}</span>
+                        {{-- <span class="badge bg-primary rounded-circle p-2">{{ $index + 1 }}</span> --}}
+                        <span class="badge bg-primary rounded-circle p-2">{{ (int)$index + 1 }}</span>
                     </div>
                     <div class="experience-content">
                         <div class="row g-3">
