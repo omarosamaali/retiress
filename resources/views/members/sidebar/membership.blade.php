@@ -200,7 +200,7 @@
             </div>
 
             <a href="{{ route('magazines.feature') }}" id="reg" style="margin-top: 20px;" class="btn-qhr btn-primary-t6n">
-                {{ __('app.تفاصيل المميزات') }}
+                {{ __('app.مميزات العضوية') }}
             </a>
 
             <h5 class="title--t3n">{{ app()->getLocale() == 'ar' ? $sections[7]->title_ar : $section[7]->title_en }}</h5>

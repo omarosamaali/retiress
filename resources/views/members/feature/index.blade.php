@@ -5128,7 +5128,7 @@
         <div class="inn-title" style="padding-top: 150px">
             <h2>
                 <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
-                {{ __('app.تفاصيل المميزات') }}
+                {{ __('app.مميزات العضوية') }}
             </h2>
         </div>
 

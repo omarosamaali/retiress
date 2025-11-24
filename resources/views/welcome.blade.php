@@ -506,7 +506,7 @@
     height: 56px;
     font-weight: bold;" class="btn-qhr btn-primary-t6n">
     <i class="fas fa-star" style="margin-left: 8px;"></i>
-        {{ __('app.تفاصيل المميزات') }}
+        {{ __('app.مميزات العضوية') }}
     </a>
     <div id="latest-news"
         style="margin-bottom: 16px !important; margin-top: 100px !important; display: flex; align-items: center; max-width: 1200px; width: 100%; margin: auto; justify-content: space-between;">

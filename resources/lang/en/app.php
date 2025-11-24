@@ -568,7 +568,7 @@ return [
     'beneficiary_membership_description' => 'These are members who meet the membership requirements and join the association for the purpose of benefiting from the services, programs, and activities provided by the association within the scope of its objectives without acquiring any administrative membership rights or obligations within the association, especially the right to participate in general assembly meetings, vote on its decisions, and the right to nominate and elect for membership in the board of directors',
     'honorary_membership_description' => 'This is a member who is granted honorary membership by the association in recognition of their distinguished contribution, social or professional status, or their continuous support for the association\'s work, whether material or moral support, without acquiring any administrative membership rights or obligations within the association, especially the right to participate in general assembly meetings and vote on its decisions',
 
-    'تفاصيل المميزات' => 'Details of Benefits',
+    'مميزات العضوية' => 'Details of Benefits',
 
 
 ];

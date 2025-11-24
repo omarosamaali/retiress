@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Magazine;
-use App\Models\Member;
+use App\Models\MemberApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Stichoza\GoogleTranslate\GoogleTranslate;
@@ -17,7 +17,7 @@ class MagazineController extends Controller
 
     public function index()
     {
-        $member_applications = Member::all();
+        $member_applications = MemberApplication::all();
         $magazines = Magazine::latest()->paginate(10);
         return view('admin.magazines.index', compact('magazines', 'member_applications'));
     }
