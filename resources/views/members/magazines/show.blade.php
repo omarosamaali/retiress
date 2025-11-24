@@ -53,13 +53,15 @@
                         </div>
                         <div class="col-md-6 magazine-info">
                             <h2 class="magazine-title">
-                                <a style="color: #800000;" href="{{ url('magazines/show/'.$magazines->id) }}">
+                                <div style="color: #800000;" >
                                     {{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}
-                                </a>
+                                </div>
                             </h2>
                             <div class="member-details">
                                 <h4>بيانات العضو</h4>
+                                @if($magazines->member->personal_photo_path != null)
                                 <img src="{{ asset('storage/' . $magazines->member->personal_photo_path) }}" class="member-image" alt="">
+                                @endif
                                 <h4> {{ $magazines->member->full_name }}</h4>
                                 <h4 style="font-weight: normal; font-size: 15px;"> {{ $magazines->member->emirate }}</h4>
                                 @php
