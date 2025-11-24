@@ -536,6 +536,7 @@
             </div>
             @endif
         </div>
+        @if($member->marital_status)
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
@@ -563,7 +564,7 @@
                 </div>
             </div>
         </div>
-
+        @endif
 
         <div class="section">
             <div class="section-header mb-4">
