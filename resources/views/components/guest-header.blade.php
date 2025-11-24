@@ -91,6 +91,10 @@
                     <li>
                         <a href="{{ route('members.membership') }}">{{ __('app.membership') }}</a>
                     </li>
+                    <li>
+                        <a href="{{ route('magazines.feature') }}">{{ __('app.مميزات العضوية') }}</a>
+                    </li>
+
                     <li><a href="{{ route('chat') }}">{{ __('app.contact_us') }}</a></li>
 
                     @auth
