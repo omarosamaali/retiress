@@ -7170,7 +7170,7 @@
                         <label>الجنس</label>
                         <div class="">
                             <div style="font-size: 15px; background-color: unset;" id="birth-date">
-                                {{ $membership->gender == "male" ? 'ذكر' : 'انثى' }}
+                                {{ $membership->gender == "male" || $membership->gender == "ذكر" ? 'ذكر' : 'انثى' }}
                             </div>
                         </div>
                     </div>
