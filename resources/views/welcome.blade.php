@@ -539,7 +539,16 @@
         </a>
         @endforeach
     </div>
-    <a href="{{ route('magazines.feature') }}" id="reg" style="width: fit-content; position: fixed; z-index: 99999; bottom: 20px; right: 20px;" class="btn-qhr btn-primary-t6n">
+    <a href="{{ route('magazines.feature') }}" id="reg" style="width: fit-content;
+    position: fixed;
+    z-index: 99999;
+    bottom: 20px;
+    right: 20px;
+    font-size: 11px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    background: green;" class="btn-qhr btn-primary-t6n">
                 مميزات
 </br>
                 العضوية
