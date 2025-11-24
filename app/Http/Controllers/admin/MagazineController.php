@@ -21,7 +21,7 @@ class MagazineController extends Controller
         $magazines = Magazine::latest()->paginate(10);
         return view('admin.magazines.index', compact('magazines', 'member_applications'));
     }
-
+    
     public function store(Request $request)
     {
         $request->validate([

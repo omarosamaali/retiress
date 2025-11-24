@@ -27,6 +27,8 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SliderController;
 
+Route::get('/admin/magazines', [MagazineController::class, 'index'])->name('admin.magazines.index');
+
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/sliders', [SliderController::class, 'index'])->name('sliders.index');
     Route::get('/sliders/create', [SliderController::class, 'create'])->name('sliders.create');

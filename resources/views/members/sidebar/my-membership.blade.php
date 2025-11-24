@@ -7330,94 +7330,103 @@
             <h2>متطلبات التسجيل</h2>
             <div class="section">
                 <div class="container--inputs">
+                    @if ($memberApplication->passport_photo_path)
                     <div class="form-group required" style="width: 30%;">
                         <label for="passport">صورة جواز السفر <span style="color: red;">*</span></label>
                         <button onclick="downloadDocument('passport', {{ $memberApplication->id }})">تحميل</button>
                     </div>
+                    @endif
+                    @if ($memberApplication->national_id_photo_path)
                     <div class="form-group required" style="width: 30%;">
                         <label for="id-photo">صورة الهوية الشخصية <span style="color: red;">*</span></label>
                         <button onclick="downloadDocument('national_id', {{ $memberApplication->id }})">تحميل</button>
                     </div>
+                    @endif
+                    @if ($memberApplication->personal_photo_path)
                     <div class="form-group required" style="width: 30%;">
                         <label for="personal-photo">صورة شخصية <span style="color: red;">*</span></label>
                         <button
                             onclick="downloadDocument('personal_photo', {{ $memberApplication->id }})">تحميل</button>
                     </div>
+                    @endif
                 </div>
                 <div class="container--inputs">
+                    @if ($memberApplication->educational_qualification_photo_path)
                     <div class="form-group optional" style="width: 30%;">
                         <label for="qualification">صورة من المؤهل العلمي</label>
                         <button
                             onclick="downloadDocument('educational_qualification', {{ $memberApplication->id }})">تحميل</button>
                     </div>
+                    @endif
+                    @if ($memberApplication->retirement_card_photo_path)
                     <div class="form-group required" style="width: 30%;">
                         <label for="retirement-proof">صورة بطاقة التقاعد (إثبات التقاعد) <span
                                 style="color: red;">*</span></label>
                         <button
                             onclick="downloadDocument('retirement_card', {{ $memberApplication->id }})">تحميل</button>
                     </div>
+                    @endif
                 </div>
             </div>
-            <script>
-                function downloadDocument(documentType, memberApplicationId) {
-                    const url = `/download-document/${documentType}/${memberApplicationId}`;
-                    window.location.href = url;
-                }
+<script>
+    // دالة تحميل المستندات
+    function downloadDocument(documentType, memberApplicationId) {
+        const url = `/download-document/${documentType}/${memberApplicationId}`;
+        window.location.href = url;
+    }
 
-                function validateRequiredDocuments() {
-                    const requiredDocuments = ['passport', 'national_id', 'personal_photo', 'retirement_card'];
-                    const errors = [];
+    // دالة التحقق من وجود المستند
+    function checkIfDocumentExists(documentType) {
+        const documents = @json($memberApplication->documents ?? []);
+        return documents.hasOwnProperty(documentType) && documents[documentType] !== null;
+    }
 
-                    requiredDocuments.forEach(docType => {
-                        // افترض أن لديك طريقة للتحقق من وجود الملف
-                        if (!checkIfDocumentExists(docType, {
-                                {
-                                    $memberApplication - > id
-                                }
-                            })) {
-                            const labels = {
-                                'passport': 'صورة جواز السفر'
-                                , 'national_id': 'صورة الهوية الشخصية'
-                                , 'personal_photo': 'صورة شخصية'
-                                , 'retirement_card': 'صورة بطاقة التقاعد'
-                            };
-                            errors.push(labels[docType]);
-                        }
-                    });
+    // دالة التحقق من المستندات المطلوبة
+    function validateRequiredDocuments() {
+        const requiredDocuments = ['passport', 'national_id', 'personal_photo', 'retirement_card'];
+        const errors = [];
 
-                    if (errors.length > 0) {
-                        showErrors(errors);
-                        return false;
-                    }
-                    return true;
-                }
+        requiredDocuments.forEach(docType => {
+            if (!checkIfDocumentExists(docType)) {
+                const labels = {
+                    'passport': 'صورة جواز السفر',
+                    'national_id': 'صورة الهوية الشخصية',
+                    'personal_photo': 'صورة شخصية',
+                    'retirement_card': 'صورة بطاقة التقاعد'
+                };
+                errors.push(labels[docType]);
+            }
+        });
 
-                    function checkIfDocumentExists(documentType, memberApplicationId) {
-                        const documents = @json($memberApplication->documents ?? []);
-                        return documents.hasOwnProperty(documentType) && documents[documentType] !== null;
-                    }
+        if (errors.length > 0) {
+            showErrors(errors);
+            return false;
+        }
+        return true;
+    }
 
-                function showErrors(errors) {
-                    // إزالة الأخطاء السابقة
-                    document.querySelectorAll('.error-message').forEach(el => el.remove());
+    // دالة عرض الأخطاء
+    function showErrors(errors) {
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
 
-                    // إضافة رسائل الخطأ
-                    errors.forEach(error => {
-                        const errorDiv = document.createElement('div');
-                        errorDiv.className = 'error-message';
-                        errorDiv.style.cssText = 'color: red; background: #ffe6e6; padding: 10px; margin: 10px 0; border: 1px solid red; border-radius: 5px;';
-                        errorDiv.textContent = `مطلوب رفع: ${error}`;
-                        document.querySelector('.section').insertBefore(errorDiv, document.querySelector('.container--inputs'));
-                    });
-                }
+        errors.forEach(error => {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.style.cssText = 'color: red; background: #ffe6e6; padding: 10px; margin: 10px 0; border: 1px solid red; border-radius: 5px;';
+            errorDiv.textContent = `مطلوب رفع: ${error}`;
+            const section = document.querySelector('.section');
+            const firstInput = document.querySelector('.container--inputs');
+            if (section && firstInput) {
+                section.insertBefore(errorDiv, firstInput);
+            }
+        });
+    }
 
-                // استدعاء الـ validation عند تحميل الصفحة أو عند الحاجة
-                document.addEventListener('DOMContentLoaded', function() {
-                    // يمكنك استدعاء validateRequiredDocuments() هنا أو عند الحاجة
-                });
-
-            </script>
-
+    // عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('الصفحة جاهزة - جميع الدوال متاحة');
+    });
+</script>
 
         </div>
         @else
