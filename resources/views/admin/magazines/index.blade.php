@@ -112,7 +112,7 @@
                         <option value="">اختر العضو</option>
                         @if(isset($member_applications))
                         @foreach ($member_applications as $member_application)
-                        <option value="{{ $member_application->id }}">{{ $member_application->full_name }}</option>
+                        <option value="{{ $member_application->id }}">{{ $member_application->name_ar }}</option>
                         @endforeach
                         @endif
                     </select>
