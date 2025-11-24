@@ -543,17 +543,17 @@
                     <label for="marital_status" class="form-label font-bold">الحالة الإجتماعية</label>
                     <div name="marital status" class="form-control">
                         @if($member->marital_status == 'single')
-                        <div style="font-size: 15px; background-color: unset;">أعزب / عزباء</div>
+                        <div style="display:block !important; font-size: 15px; background-color: unset;">أعزب / عزباء</div>
                         @elseif($member->marital_status == 'married')
-                        <div style="font-size: 15px; background-color: unset;">متزوج / متزوجات</div>
+                        <div style="display:block !important; font-size: 15px; background-color: unset;">متزوج / متزوجات</div>
                         @elseif($member->marital_status == 'divorced')
-                        <div style="font-size: 15px; background-color: unset;">مطلق / مطلقه</div>
+                        <div style="display:block !important; font-size: 15px; background-color: unset;">مطلق / مطلقه</div>
                         @elseif($member->marital_status == 'widowed')
-                        <div style="font-size: 15px; background-color: unset;">أرمل / أرملة</div>
+                        <div style="display:block !important; font-size: 15px; background-color: unset;">أرمل / أرملة</div>
                         @elseif($member->marital_status == 'separated')
-                        <div style="font-size: 15px; background-color: unset;">منفصل / منفصلة</div>
+                        <div style="display:block !important; font-size: 15px; background-color: unset;">منفصل / منفصلة</div>
                         @elseif($member->marital_status == 'engaged')
-                        <div style="font-size: 15px; background-color: unset;">مخطوب / مخطوبة</div>
+                        <div style="display:block !important; font-size: 15px; background-color: unset;">مخطوب / مخطوبة</div>
                         @endif
                         <input type="text" hidden name="marital_status" value="{{ $member->marital_status }}" id="">
                     </div>
