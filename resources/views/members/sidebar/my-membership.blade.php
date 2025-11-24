@@ -7142,9 +7142,11 @@
             </div>
             <h2>البيانات التعريفية</h2>
             <div class="section">
+                @if ($membership->personal_photo_path)
                 <div class="form-group">
                     <img src="{{ asset('storage/' . $membership->personal_photo_path) }}" alt="" class="img-name">
                 </div>
+                @endif
 
                 <div class="container--inputs">
                     <div class="form-group">
