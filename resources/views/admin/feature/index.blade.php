@@ -107,23 +107,6 @@
 
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="member_id" class="form-label">إسم العضو</label>
-                    <select name="member_id" id="member_id" class="form-select" required>
-                        <option value="">اختر العضو</option>
-                        @foreach ($member_applications as $member_application)
-                        <option value="{{ $member_application->id }}">{{ $member_application->full_name }}</option>
-                        @endforeach
-                    </select>
-                    @error('member_id')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="mb-3">
                     <label for="main_image_input" class="form-label">الصورة الرئيسية</label>
                     <input type="file" class="form-control" name="main_image" id="main_image_input" accept="image/*">
                     @error('main_image')
@@ -210,15 +193,12 @@
                 <td>{{ $item->created_at->format('d/m/Y') }}</td>
                 <td>{{ $item->title_ar }}</td>
                 <td>
-                    {{-- @if ($item->main_image) --}}
                     <img src="{{ asset('storage/' . $item->main_image) }}" alt="{{ $item->title_ar }}" class="news-img">
-                    {{-- @else
-                    لا توجد صورة
-                    @endif --}}
                 </td>
                 <td>
-                    <span class="badge {{ property_exists($item, 'status_badge_class') ? $item->status_badge_class : '' }}">
-                        {{ property_exists($item, 'status_text') ? $item->status_text : '' }}
+                    <span style="color: black;" class="badge {{ property_exists($item, 'status_badge_class') ? $item->status_badge_class : '' }}">
+                        {{ property_exists($item, 'status') ? $item->status : '' }}
+                        {{ $item->status == 1 ? 'نشط' : 'غير نشط' }}
                     </span>
                 </td>
                 <td>

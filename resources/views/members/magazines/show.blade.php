@@ -37,7 +37,8 @@
 <body>
     <x-guest-header></x-guest-header>
     <div id="in-cont" class="main-content">
-        <section style="background: unset ! important;" class="magazine-section">
+        <section style="padding-top: 50px !important; background: unset ! important;" class="magazine-section">
+            <h4 style="text-align: center; font-size: 27px; font-weight: bold;">مميزات العضوية</h4>
             <div class="container">
                 @if($magazines)
                 <div class="magazine-card" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
@@ -57,7 +58,7 @@
                                     {{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}
                                 </div>
                             </h2>
-                            <div class="member-details">
+                            {{-- <div class="member-details">
                                 <h4>بيانات العضو</h4>
                                 @if($magazines->member->personal_photo_path != null)
                                 <img src="{{ asset('storage/' . $magazines->member->personal_photo_path) }}" class="member-image" alt="">
@@ -74,7 +75,7 @@
                                     <strong></strong> {{ $firstExperience['job_title'] }}
                                 </p>
                                 @endif
-                            </div>
+                            </div> --}}
                             <hr>
 
                             <p class="magazine-description">

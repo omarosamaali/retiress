@@ -26,7 +26,6 @@ class FeatureController extends Controller
     {
         $request->validate([
             'title_ar' => 'required|string|max:255',
-            'member_id' => 'required|integer|exists:member_applications,id',
             'main_image' => 'nullable|image|max:2048',
             'sub_images' => 'nullable|array|max:10',
             'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -40,7 +39,6 @@ class FeatureController extends Controller
             $magazineData = [
                 'title_ar' => $request->title_ar,
                 'description_ar' => $request->description_ar,
-                'member_id' => $request->member_id,
                 'status' => $request->status, // استخدام القيمة من الطلب
             ];
 
@@ -104,7 +102,6 @@ class FeatureController extends Controller
     {
         $request->validate([
             'title_ar' => 'required|string|max:255',
-            'member_id' => 'required|integer|exists:member_applications,id',
             'main_image' => 'nullable|image|max:2048',
             'sub_images' => 'nullable|array|max:10',
             'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -118,7 +115,6 @@ class FeatureController extends Controller
             $magazineData = [
                 'title_ar' => $request->title_ar,
                 'description_ar' => $request->description_ar,
-                'member_id' => $request->member_id,
                 'status' => $request->status, // استخدام القيمة من الطلب
             ];
 

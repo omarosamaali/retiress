@@ -14,8 +14,6 @@ return new class extends Migration
             $table->string('title_en')->nullable();
             $table->text('description_ar');
             $table->text('description_en')->nullable();
-            $table->unsignedBigInteger('member_id');
-            $table->foreign('member_id')->references('id')->on('member_applications')->onDelete('cascade');
             $table->string('main_image')->nullable();
             $table->json('sub_image')->nullable();
             $table->boolean('status')->default(1);
