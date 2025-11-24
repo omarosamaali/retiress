@@ -7027,7 +7027,7 @@
             margin-bottom: 10px;
             text-align: center;
             position: relative;
-            z-index: 99999999999999;
+            z-index: 9;
             display: flex;
             width: 100%;
             justify-content: center;
