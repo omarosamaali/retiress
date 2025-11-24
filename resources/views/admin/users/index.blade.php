@@ -197,7 +197,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->created_at->format('d/m/Y') }}</td>
                         <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
+                        <td style="direction: ltr;">{{ $user->email }}</td>
                         <td>
                             <span class="badge {{ $user->getRoleBadgeClass() }}">
                                 {{ $user->role }}
