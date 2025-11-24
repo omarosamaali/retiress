@@ -7151,7 +7151,7 @@
                 <div class="container--inputs">
                     <div class="form-group">
                         <label for="full-name">الإسم الكامل</label>
-                        <input type="text" id="full-name" value="{{ $membership->full_name }}" readonly>
+                        <input type="text" id="full-name" style="width: 130%;" value="{{ $membership->full_name }}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="nationality">الجنسية</label>
