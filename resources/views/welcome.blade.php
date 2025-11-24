@@ -539,6 +539,11 @@
         </a>
         @endforeach
     </div>
+    <a href="{{ route('magazines.feature') }}" id="reg" style="width: fit-content; position: fixed; z-index: 99999; bottom: 20px; right: 20px;" class="btn-qhr btn-primary-t6n">
+                مميزات
+</br>
+                العضوية
+            </a>
     <section style="background: #704e40; margin-top: 100px;">
         <div class="container-e3z">
             <div class="row-sy7">
