@@ -104,7 +104,7 @@
                 <div class="text-center w-100">
                     <div class="alert alert-info">
                         <i class="fas fa-info-circle"></i>
-                        <p class="mb-0">المجلة غير موجودة</p>
+                        <p class="mb-0">لا يوجد مميزات</p>
                     </div>
                 </div>
                 @endif
