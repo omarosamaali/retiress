@@ -5150,7 +5150,7 @@
                 </div>
                 @empty
                 <div class="text-center w-100">
-                    <p>{{ __('app.no_magazines_available') }}</p>
+                    <p>{{ __('app.no_magazines_featured') }}</p>
                 </div>
                 @endforelse
             </div>

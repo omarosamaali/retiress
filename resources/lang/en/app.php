@@ -42,6 +42,7 @@ return [
     'no_description_available' => 'No description available.',
     'issue_date' => 'Issue Date',
     'no_magazines_available' => 'No magazines available currently.',
+    'no_magazines_featured' => 'No featured available currently.',
     'quick_links' => 'Quick Links',
     'magazine_pulse' => 'Pulse Magazine',
     'who_we_are' => 'Who We Are',

@@ -1781,7 +1781,6 @@
         #phone-home:after {
             content: "";
         }
-
     </style>
     <style>
         @font-face {
@@ -6929,7 +6928,6 @@
                 box-shadow: none;
             }
         }
-
     </style>
     <style>
         body {
@@ -7076,7 +7074,6 @@
         .form-group.optional {
             border: 2px solid #95a5a6;
         }
-
     </style>
 
 </head>
@@ -7094,7 +7091,8 @@
                 <h3 style="border-bottom: 0px; color: #2c3e50; font-weight: 600;">
                     تاريخ الإنتهاء :
                     @if($membership->expiration_date)
-                    {{ \Carbon\Carbon::parse($membership->expiration_date)->locale('ar')->translatedFormat('j F Y - h:i A') }}
+                    {{ \Carbon\Carbon::parse($membership->expiration_date)->locale('ar')->translatedFormat('j F Y - h:i
+                    A') }}
                     @else
                     غير محدد
                     @endif
@@ -7117,7 +7115,8 @@
                             }
                         ?>
 
-                <h3 style="{{ $badgeClass }} font-size: 15px; border-bottom: 0px; padding: 10px; border-radius: 8px; !important; color: white;">
+                <h3
+                    style="{{ $badgeClass }} font-size: 15px; border-bottom: 0px; padding: 10px; border-radius: 8px; !important; color: white;">
 
                     @if($membership->status == '0')
                     <div style="">بانتظار الدفع</div>
@@ -7132,7 +7131,8 @@
                         @endif
                 </h3>
             </div>
-            <div class="container-imgs" style="display: flex; align-items: center; justify-content: space-between; margin: 30px 0px;">
+            <div class="container-imgs"
+                style="display: flex; align-items: center; justify-content: space-between; margin: 30px 0px;">
                 @if ($membership->front_id)
                 <img src="{{ asset('storage/' . $membership->front_id) }}" alt class="id-img">
                 @endif
@@ -7160,7 +7160,8 @@
                 <div class="container--inputs">
                     <div class="form-group">
                         <label for="birth-date">تاريخ الميلاد</label>
-                        <div style="font-size: 15px; background-color: unset;" id="birth-date">{{ $membership->date_of_birth->format('Y-m-d') }}
+                        <div style="font-size: 15px; background-color: unset;" id="birth-date">{{
+                            $membership->date_of_birth->format('Y-m-d') }}
                         </div>
                     </div>
                     <div class="form-group" style="width: 169px;">
@@ -7228,7 +7229,8 @@
                     </div>
                     <div class="form-group">
                         <label for="years-of-experience">سنوات الخبرة</label>
-                        <input type="text" id="years-of-experience" readonly value="{{ $experience['years_of_experience'] ?? '' }}">
+                        <input type="text" id="years-of-experience" readonly
+                            value="{{ $experience['years_of_experience'] ?? '' }}">
                     </div>
                 </div>
                 @endforeach
@@ -7259,7 +7261,8 @@
                     </div>
                     <div class="form-group">
                         <label for="years-of-experience">سنوات الخبرة</label>
-                        <input type="text" id="years-of-experience" readonly value="{{ $experience['years_of_experience'] ?? '' }}">
+                        <input type="text" id="years-of-experience" readonly
+                            value="{{ $experience['years_of_experience'] ?? '' }}">
                     </div>
                 </div>
 
@@ -7268,7 +7271,8 @@
                 <div class="container--inputs">
                     <p>لا توجد خبرات سابقة متاحة.</p>
                 </div>
-                @endif </div>
+                @endif
+            </div>
 
 
             <h2>بيانات التواصل</h2>
@@ -7277,18 +7281,22 @@
 
                     <div class="form-group">
                         <label for="mobile">الهاتف المتحرك</label>
-                        <input type="tel" id="mobile" style="position: relative; right: -50px; background-color: unset;" value="{{ $membership->mobile_phone }}" readonly>
+                        <input type="tel" id="mobile" style="position: relative; right: -50px; background-color: unset;"
+                            value="{{ $membership->mobile_phone }}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="home-phone">هاتف المنزل</label>
-                        <input type="tel" id="home-phone" style="position: relative; right: -78px; background-color: unset;" value="{{ $membership->home_phone }}" readonly>
+                        <input type="tel" id="home-phone"
+                            style="position: relative; right: -78px; background-color: unset;"
+                            value="{{ $membership->home_phone }}" readonly>
                     </div>
                 </div>
                 <div class="container--inputs">
 
                     <div class="form-group">
                         <label for="email">البريد الإلكتروني</label>
-                        <input type="email" id="email" style="color: black; width: 220px;" value="{{ $membership->email }}" readonly>
+                        <input type="email" id="email" style="color: black; width: 220px;"
+                            value="{{ $membership->email }}" readonly>
 
                     </div>
                     <div class="form-group">
@@ -7303,7 +7311,8 @@
                 <div class="container--inputs">
                     <div class="form-group">
                         <label for="retirement-date">تاريخ التقاعد</label>
-                        <div style="font-size: 15px; background-color: unset;" id="birth-date">{{ $membership->date_of_birth->format('Y-m-d') }}
+                        <div style="font-size: 15px; background-color: unset;" id="birth-date">{{
+                            $membership->date_of_birth->format('Y-m-d') }}
                         </div>
                     </div>
                     <div class="form(iboard>form-group">
@@ -7329,17 +7338,21 @@
                     </div>
                     <div class="form-group required" style="width: 30%;">
                         <label for="personal-photo">صورة شخصية <span style="color: red;">*</span></label>
-                        <button onclick="downloadDocument('personal_photo', {{ $memberApplication->id }})">تحميل</button>
+                        <button
+                            onclick="downloadDocument('personal_photo', {{ $memberApplication->id }})">تحميل</button>
                     </div>
                 </div>
                 <div class="container--inputs">
                     <div class="form-group optional" style="width: 30%;">
                         <label for="qualification">صورة من المؤهل العلمي</label>
-                        <button onclick="downloadDocument('educational_qualification', {{ $memberApplication->id }})">تحميل</button>
+                        <button
+                            onclick="downloadDocument('educational_qualification', {{ $memberApplication->id }})">تحميل</button>
                     </div>
                     <div class="form-group required" style="width: 30%;">
-                        <label for="retirement-proof">صورة بطاقة التقاعد (إثبات التقاعد) <span style="color: red;">*</span></label>
-                        <button onclick="downloadDocument('retirement_card', {{ $memberApplication->id }})">تحميل</button>
+                        <label for="retirement-proof">صورة بطاقة التقاعد (إثبات التقاعد) <span
+                                style="color: red;">*</span></label>
+                        <button
+                            onclick="downloadDocument('retirement_card', {{ $memberApplication->id }})">تحميل</button>
                     </div>
                 </div>
             </div>
@@ -7377,13 +7390,10 @@
                     return true;
                 }
 
-                function checkIfDocumentExists(documentType, memberApplicationId) {
-                    // يمكنك استخدام AJAX للتحقق من وجود الملف
-                    // أو التحقق من متغير PHP إذا كان متاحاً
-                    // مثال:
-                    // return {{ isset($memberApplication->documents[$documentType]) ? 'true' : 'false' }};
-                    return false; // مؤقتاً للاختبار
-                }
+                    function checkIfDocumentExists(documentType, memberApplicationId) {
+                        const documents = @json($memberApplication->documents ?? []);
+                        return documents.hasOwnProperty(documentType) && documents[documentType] !== null;
+                    }
 
                 function showErrors(errors) {
                     // إزالة الأخطاء السابقة

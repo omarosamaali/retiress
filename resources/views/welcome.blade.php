@@ -208,7 +208,6 @@
         .swiper-slide {
             background: #cfa046c7 !important;
         }
-
     </style>
 </head>
 
@@ -224,8 +223,10 @@
         <div class="cloud cloud3" style="animation-delay: -50s;"></div>
     </div>
 
-    <div id="headerholdert" style="position: relative; width: 100%; height: 82vh; overflow: hidden;     margin-top: 145px;">
-        <img src="{{ Storage::url($banner?->image) }}" alt="Header Background" style="width: 100%; height: 100%; object-fit: fill;">
+    <div id="headerholdert"
+        style="position: relative; width: 100%; height: 82vh; overflow: hidden;     margin-top: 145px;">
+        <img src="{{ Storage::url($banner?->image) }}" alt="Header Background"
+            style="width: 100%; height: 100%; object-fit: fill;">
         <div class="swiper quoteSwiper">
             <div class="swiper-wrapper">
                 @foreach (\App\Models\Slider::where('is_active', true)->get() as $slider)
@@ -490,21 +491,37 @@
                     left: 100%;
                 }
             }
-
         </style>
     </div>
     <x-guest-header></x-guest-header>
-    <div id="latest-news" style="margin-bottom: 16px !important; margin-top: 100px !important; display: flex; align-items: center; max-width: 1200px; width: 100%; margin: auto; justify-content: space-between;">
+    <a href="{{ route('magazines.feature') }}" id="reg" style="margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+    max-width: 1200px;
+    margin-top: 20px;
+    font-size: 23px;
+    height: 56px;
+    font-weight: bold;" class="btn-qhr btn-primary-t6n">
+    <i class="fas fa-star" style="margin-left: 8px;"></i>
+        {{ __('app.تفاصيل المميزات') }}
+    </a>
+    <div id="latest-news"
+        style="margin-bottom: 16px !important; margin-top: 100px !important; display: flex; align-items: center; max-width: 1200px; width: 100%; margin: auto; justify-content: space-between;">
         <h3 style="text-align: center; font-size: 36px;">{{ __('app.latest_news') }}</h3>
         <div class="c-morebtn">
-            <a href="{{ route("news.all-news") }}" class="main-btn" style="background-color: black;">{{ __('app.more_news') }}</a>
+            <a href="{{ route("news.all-news") }}" class="main-btn" style="background-color: black;">{{
+                __('app.more_news') }}</a>
         </div>
     </div>
     <div style="max-width: 1200px; margin: auto;" class="list-l88 list-vja">
         @foreach($news as $singleNews)
         <a href="{{ url('/news/show/' . $singleNews->id) }}" style="border-radius: 13px !important;" class="list-2nx">
             <span class="image-dvm">
-                <img width="688" height="1024" src="{{ Storage::url($singleNews->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? $singleNews->title_ar : $singleNews->title_en }}">
+                <img width="688" height="1024" src="{{ Storage::url($singleNews->main_image) }}"
+                    alt="{{ app()->getLocale() == 'ar' ? $singleNews->title_ar : $singleNews->title_en }}">
             </span>
             <span class="list-o16 hqqhi">
                 <span class="list-m72">{{ \Carbon\Carbon::parse($singleNews->created_at)->day }}</span>
@@ -515,7 +532,8 @@
                     {{ app()->getLocale() == 'ar' ? $singleNews->title_ar : $singleNews->title_en }}
                 </span>
                 <span class="list-mzq">
-                    <p>{{ \Illuminate\Support\Str::limit(app()->getLocale() == 'ar' ? $singleNews->description_ar : $singleNews->description_en, 200) }}</p>
+                    <p>{{ \Illuminate\Support\Str::limit(app()->getLocale() == 'ar' ? $singleNews->description_ar :
+                        $singleNews->description_en, 200) }}</p>
                 </span>
             </span>
         </a>
@@ -534,11 +552,15 @@
                             @foreach ($events as $event)
                             <div class="swiper-slide">
                                 <a href="{{ url('/events/show/' . $event->id) }}" class="slide-content">
-                                    <img src="{{ asset('storage/' . $event->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}" class="slide-image">
+                                    <img src="{{ asset('storage/' . $event->main_image) }}"
+                                        alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
+                                        class="slide-image">
                                     <div class="slide-title">
                                         {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
                                     </div>
-                                    <p style="padding-top: 20px; padding-right: 20px; margin-bottom: 15px;">{{ __('app.date') }} : {{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}</p>
+                                    <p style="padding-top: 20px; padding-right: 20px; margin-bottom: 15px;">{{
+                                        __('app.date') }} : {{
+                                        \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}</p>
                                 </a>
                             </div>
                             @endforeach
@@ -551,7 +573,8 @@
                             <i class="fas fa-chevron-right"></i>
                         </div>
                     </div>
-                    <a href="{{ route('events.all-events') }}" class="btn-dwo block-qlo" style="display: block; text-align: center; margin-top: 30px;">
+                    <a href="{{ route('events.all-events') }}" class="btn-dwo block-qlo"
+                        style="display: block; text-align: center; margin-top: 30px;">
                         <i class="fas fa-eye"></i>
                         <span>{{ __('app.view_more') }}</span>
                     </a>
