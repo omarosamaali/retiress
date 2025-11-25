@@ -544,9 +544,9 @@
     z-index: 99999;
     bottom: 20px;
     right: 20px;
-    font-size: 11px;
-    width: 50px;
-    height: 50px;
+    font-size: 15px;
+    width: 100px;
+    height: 100px;
     border-radius: 50px;
     background: green;" class="btn-qhr btn-primary-t6n">
                 مميزات
