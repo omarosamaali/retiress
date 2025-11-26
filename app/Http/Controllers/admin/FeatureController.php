@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class FeatureController extends Controller
 {
-    protected $targetLanguages = ['en' => 'English'];
+     protected $targetLanguages = ['en' => 'English'];
 
     public function index()
     {

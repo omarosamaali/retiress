@@ -23,11 +23,17 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $query = User::latest();
-
         if ($request->has('role') && $request->role != '') {
             $query->where('role', $request->role);
         }
-        $users = $query->paginate(10);
+
+        $search = $request->search;
+        if ($search) {
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        $users = $query->paginate(50)->appends($request->query());
+
 
         return view('admin.users.index', compact('users'));
     }

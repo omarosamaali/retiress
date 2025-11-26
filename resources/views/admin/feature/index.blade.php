@@ -387,7 +387,7 @@
 
     function confirmDelete(newsId) {
         const deleteForm = document.getElementById('deleteForm');
-        deleteForm.action = `/admin/magazines/${newsId}`;
+        deleteForm.action = `/admin/feature/${newsId}`;
 
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
         deleteModal.show();
