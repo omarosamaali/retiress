@@ -147,25 +147,33 @@
 
 
                     <ul class="social-set" style="margin-top: 10px;">
+                        @if($settings->twitter_url)
                         <li>
-                            <a class="sociali" href="{{ $settings?->twitter }}" target="_blank" aria-label="Twitter">
-                                <i class="footer-icon fa fa-twitter fa-fw custom-icon" title="Twitter"></i></a></li>
-                        <li><a class="sociali" href="{{ $settings?->instagram }}" target="_blank" aria-label="Instagram">
+                            <a class="sociali" href="{{ $settings?->twitter_url }}" target="_blank" aria-label="Twitter">
+                                <i class="footer-icon fa fa-twitter fa-fw custom-icon" title="Twitter"></i></a>
+                        </li>
+                        @endif
+                        @if($settings->instagram_url)
+                        <li><a class="sociali" href="{{ $settings?->instagram_url }}" target="_blank" aria-label="Instagram">
                                 <i class="footer-icon fa fa-instagram fa-fw custom-icon" title="Instagram"></i></a></li>
-                        <li><a class="sociali" href="{{ $settings?->facebook }}" target="_blank" aria-label="Facebook">
+                        @endif
+                        @if($settings->facebook_url)
+                        <li><a class="sociali" href="{{ $settings?->facebook_url }}" target="_blank" aria-label="Facebook">
                                 <i style="    left: 0px;
     top: 1px;" class="footer-icon fa fa-facebook-square fa-fw custom-face" title="Facebook"></i></a></li>
+                        @endif
+                        @if($settings->youtube_url)
 
                         <li><a style="
     top: -5px;
     position: relative;
 
-" class="sociali" href="{{ $settings?->youtube }}" target="_blank" aria-label="Facebook">
+" class="sociali" href="{{ $settings?->youtube_url }}" target="_blank" aria-label="Facebook">
                                 <i style="    left: 0px;
     top: 1px;" class="footer-icon fa fa-youtube custom-face"></i>
 
                             </a></li>
-
+@endif
                     </ul>
 
                 </div>
