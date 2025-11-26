@@ -123,7 +123,7 @@
 <div class="detail-section">
     <h5 class="mb-4">
         <i class="fas fa-book ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
-        تفاصيل المجلة: {{ $magazine->title_ar }}
+        تفاصيل المجلة: {{ $feature->title_ar }}
     </h5>
 
     <div class="row">
@@ -131,37 +131,37 @@
             {{-- عرض اسم العضو مباشرةً --}}
             <div class="detail-item">
                 <strong class="text-black">إسم العضو:</strong>
-                <span>{{ $magazine->member ? $magazine->member->full_name : 'غير متوفر' }}</span>
+                <span>{{ $feature->member ? $feature->member->full_name : 'غير متوفر' }}</span>
             </div>
             <div class="detail-item">
                 <strong class="text-black">عنوان المجلة (عربي):</strong>
-                <span>{{ $magazine->title_ar }}</span>
+                <span>{{ $feature->title_ar }}</span>
             </div>
             <div class="detail-item">
                 <strong class="text-black">الوصف (عربي):</strong>
-                <span>{{ $magazine->description_ar }}</span>
+                <span>{{ $feature->description_ar }}</span>
             </div>
             <div class="detail-item">
                 <strong class="text-black">تاريخ الإضافة:</strong>
-                <span>{{ $magazine->created_at ? $magazine->created_at->format('d/m/Y H:i') : 'غير متوفر' }}</span>
+                <span>{{ $feature->created_at ? $feature->created_at->format('d/m/Y H:i') : 'غير متوفر' }}</span>
             </div>
             <div class="detail-item">
                 <strong class="text-black">تاريخ آخر تحديث:</strong>
-                <span>{{ $magazine->updated_at ? $magazine->updated_at->format('d/m/Y H:i') : 'غير متوفر' }}</span>
+                <span>{{ $feature->updated_at ? $feature->updated_at->format('d/m/Y H:i') : 'غير متوفر' }}</span>
             </div>
             <div class="detail-item">
                 <strong class="text-black">الحالة:</strong>
-                <span class="badge text-white {{ $magazine->status == 1 ? 'bg-success' : 'bg-danger' }}">
-                    {{ $magazine->status == 1 ? 'فعال' : 'غير فعال' }}
+                <span class="badge text-white {{ $feature->status == 1 ? 'bg-success' : 'bg-danger' }}">
+                    {{ $feature->status == 1 ? 'فعال' : 'غير فعال' }}
                 </span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="detail-item">
                 <strong class="text-black">الصورة الرئيسية:</strong>
-                @if ($magazine->main_image)
+                @if ($feature->main_image)
                 <div>
-                    <img src="{{ asset('storage/' . $magazine->main_image) }}" alt="{{ $magazine->title_ar }}" class="detail-image mt-2 main-image-preview">
+                    <img src="{{ asset('storage/' . $feature->main_image) }}" alt="{{ $feature->title_ar }}" class="detail-image mt-2 main-image-preview">
                 </div>
                 @else
                 <span>لا توجد صورة</span>
@@ -170,9 +170,9 @@
 
             <div class="detail-item">
                 <strong class="text-black">الصور الفرعية:</strong>
-                @if ($magazine->sub_image)
+                @if ($feature->sub_image)
                 @php
-                $subImages = json_decode($magazine->sub_image, true);
+                $subImages = json_decode($feature->sub_image, true);
                 @endphp
                 @if (is_array($subImages) && count($subImages) > 0)
                 <div class="sub-images-container">
@@ -197,8 +197,8 @@
         @php
         $titleColumn = 'title_' . $code;
         $descColumn = 'description_' . $code;
-        $translatedTitle = $magazine->$titleColumn;
-        $translatedDesc = $magazine->$descColumn;
+        $translatedTitle = $feature->$titleColumn;
+        $translatedDesc = $feature->$descColumn;
         @endphp
         @if ($translatedTitle || $translatedDesc)
         <div class="col-md-12 mb-3">
@@ -217,9 +217,9 @@
     <div class="btn-section">
         <a href="{{ route('admin.feature.index') }}" class="back-btn">
             <i class="fas fa-arrow-right ms-1"></i>
-            العودة لقائمة الإنجازات
+            العودة لقائمة المقالات
         </a>
-        <a href="{{ route('admin.feature.edit', $magazine->id) }}" class="edit-btn">
+        <a href="{{ route('admin.feature.edit', $feature->id) }}" class="edit-btn">
             <i class="fas fa-edit ms-1"></i>
             تعديل الميزة
         </a>

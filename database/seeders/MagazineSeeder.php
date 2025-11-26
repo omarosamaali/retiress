@@ -14,9 +14,9 @@ class MagazineSeeder extends Seeder
     public function run(): void
     {
         Magazine::create([
-            'title_ar' => 'الإنجاز الأطفال',
+            'title_ar' => 'المقال الأطفال',
             'title_en' => 'Children Magazine',
-            'description_ar' => 'هذه الإنجاز للأطفال',
+            'description_ar' => 'هذه المقال للأطفال',
             'description_en' => 'This is a children magazine',
             'main_image' => '/about-us/main/RpDdolZurlQ0gNP4jQrkCdgArfNjDZGY9ldWF4iY.png',
             'sub_image' => [
@@ -25,9 +25,9 @@ class MagazineSeeder extends Seeder
             ]
         ]);
         Magazine::create([
-            'title_ar' => 'الإنجاز المرأة',
+            'title_ar' => 'المقال المرأة',
             'title_en' => 'Women Magazine',
-            'description_ar' => 'هذه الإنجاز للمرأة',
+            'description_ar' => 'هذه المقال للمرأة',
             'description_en' => 'This is a women magazine',
             'main_image' => '/about-us/main/RpDdolZurlQ0gNP4jQrkCdgArfNjDZGY9ldWF4iY.png',
             'sub_image' => [
@@ -36,9 +36,9 @@ class MagazineSeeder extends Seeder
             ]
         ]);
         Magazine::create([
-            'title_ar' => 'الإنجاز الرياضة',
+            'title_ar' => 'المقال الرياضة',
             'title_en' => 'Sports Magazine',
-            'description_ar' => 'هذه الإنجاز للرياضة',
+            'description_ar' => 'هذه المقال للرياضة',
             'description_en' => 'This is a sports magazine',
             'main_image' => '/about-us/main/RpDdolZurlQ0gNP4jQrkCdgArfNjDZGY9ldWF4iY.png',
             'sub_image' => [

@@ -1794,7 +1794,6 @@
             <h3 class="modal-title" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
                 {{ __('app.membership_renewal_form_title') }}
             </h3>
-
             <form id="renewalForm" method="POST" action="{{ route('members.renewal') }}"
                 dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
                 @csrf
@@ -1826,13 +1825,11 @@
                         </div>
                     </div>
                 </div>
-                <button onclick="renewMembership()" type="submit" class="submit-btn"
+                <button type="submit" class="submit-btn"
                     style="color: white !important; background-color: #b68a35 !important;">
                     {{ __('app.confirm_renewal') }}
                 </button>
             </form>
-
-
         </div>
     </div>
     <x-guest-header></x-guest-header>
@@ -2855,285 +2852,287 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // كود معاينة الصور
-            function setupImagePreview(inputId, previewId) {
-                const inputElement = document.getElementById(inputId);
-                const previewElement = document.getElementById(previewId);
+document.addEventListener('DOMContentLoaded', function() {
+    // كود معاينة الصور
+    function setupImagePreview(inputId, previewId) {
+        const inputElement = document.getElementById(inputId);
+        const previewElement = document.getElementById(previewId);
 
-                if (inputElement && previewElement) {
-                    inputElement.addEventListener('change', function(event) {
-                        const file = event.target.files[0];
-                        if (file) {
-                            const reader = new FileReader();
-                            reader.onload = function(e) {
-                                previewElement.src = e.target.result;
-                                previewElement.style.display = 'block';
-                            };
-                            reader.readAsDataURL(file);
-                        } else {
-                            previewElement.src = '#';
-                            previewElement.style.display = 'none';
-                        }
-                    });
-                }
-            }
-
-            setupImagePreview('ff_3_passport_photo', 'preview_passport_photo');
-            setupImagePreview('ff_3_national_id_photo', 'preview_national_id_photo');
-            setupImagePreview('ff_3_personal_photo', 'preview_personal_photo');
-            setupImagePreview('ff_3_educational_qualification_photo', 'preview_educational_qualification_photo');
-            setupImagePreview('ff_3_retirement_card_photo', 'preview_retirement_card_photo');
-
-            // كود الـ contractTypeSelect
-            const contractTypeSelect = document.getElementById('contract_type');
-            const earlyReasonContainer = document.getElementById('early_reason_container');
-            if (contractTypeSelect && earlyReasonContainer) { // تأكد من وجود العناصر
-                contractTypeSelect.addEventListener('change', function() {
-                    if (this.value == 'مبكر') {
-                        earlyReasonContainer.style.display = 'block';
-                    } else {
-                        earlyReasonContainer.style.display = 'none';
-                    }
-                });
-            }
-
-            // كود جداول البيانات المهنية والخبرات
-            let professionalRowCount = 1;
-            let experienceRowCount = 1;
-                
-            window.addNewProfessionalRow = function() { // اجعلها متاحة عالميا
-                professionalRowCount++;
-                const tableBody = document.getElementById('professionalTableBody');
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td><input type="text" name="professional_years[]" placeholder="مثال: 2020-2023"></td>
-                    <td><input type="text" name="professional_job_title[]" placeholder="مثال: مطور ويب"></td>
-                    <td><input type="text" name="professional_company[]" placeholder="مثال: شركة التقنية"></td>
-                    <td><input type="text" name="professional_experience[]" placeholder="مثال: 3 سنوات"></td>
-                    <td class="actions-cell">
-                        <button type="button" class="delete-btn" onclick="deleteProfessionalRow(this)">حذف</button>
-                    </td>
-                `;
-                tableBody.appendChild(newRow);
-                newRow.querySelector('input').focus();
-            }
-
-            window.deleteProfessionalRow = function(button) { // اجعلها متاحة عالميا
-                const tableBody = document.getElementById('professionalTableBody');
-                if (tableBody.children.length > 1) {
-                    button.closest('tr').remove();
+        if (inputElement && previewElement) {
+            inputElement.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewElement.src = e.target.result;
+                        previewElement.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
                 } else {
-                    Swal.fire({ // استخدم SweetAlert2 بدلاً من alert
-                        icon: 'warning'
-                        , title: 'تنبيه'
-                        , text: 'يجب الاحتفاظ بصف واحد على الأقل'
-                        , confirmButtonText: 'حسناً'
+                    previewElement.src = '#';
+                    previewElement.style.display = 'none';
+                }
+            });
+        }
+    }
+
+    setupImagePreview('ff_3_passport_photo', 'preview_passport_photo');
+    setupImagePreview('ff_3_national_id_photo', 'preview_national_id_photo');
+    setupImagePreview('ff_3_personal_photo', 'preview_personal_photo');
+    setupImagePreview('ff_3_educational_qualification_photo', 'preview_educational_qualification_photo');
+    setupImagePreview('ff_3_retirement_card_photo', 'preview_retirement_card_photo');
+
+    // كود الـ contractTypeSelect
+    const contractTypeSelect = document.getElementById('contract_type');
+    const earlyReasonContainer = document.getElementById('early_reason_container');
+    if (contractTypeSelect && earlyReasonContainer) {
+        contractTypeSelect.addEventListener('change', function() {
+            if (this.value == 'مبكر') {
+                earlyReasonContainer.style.display = 'block';
+            } else {
+                earlyReasonContainer.style.display = 'none';
+            }
+        });
+    }
+
+    // كود جداول البيانات المهنية والخبرات
+    let professionalRowCount = 1;
+    let experienceRowCount = 1;
+        
+    window.addNewProfessionalRow = function() {
+        professionalRowCount++;
+        const tableBody = document.getElementById('professionalTableBody');
+        if (!tableBody) return;
+        
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td><input type="text" name="professional_years[]" placeholder="مثال: 2020-2023"></td>
+            <td><input type="text" name="professional_job_title[]" placeholder="مثال: مطور ويب"></td>
+            <td><input type="text" name="professional_company[]" placeholder="مثال: شركة التقنية"></td>
+            <td><input type="text" name="professional_experience[]" placeholder="مثال: 3 سنوات"></td>
+            <td class="actions-cell">
+                <button type="button" class="delete-btn" onclick="deleteProfessionalRow(this)">حذف</button>
+            </td>
+        `;
+        tableBody.appendChild(newRow);
+        newRow.querySelector('input').focus();
+    }
+
+    window.deleteProfessionalRow = function(button) {
+        const tableBody = document.getElementById('professionalTableBody');
+        if (!tableBody) return;
+        
+        if (tableBody.children.length > 1) {
+            button.closest('tr').remove();
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'تنبيه',
+                text: 'يجب الاحتفاظ بصف واحد على الأقل',
+                confirmButtonText: 'حسناً'
+            });
+        }
+    }
+
+    window.addNewExperienceRow = function() {
+        experienceRowCount++;
+        const tableBody = document.getElementById('experienceTableBody');
+        if (!tableBody) return;
+        
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td><input type="text" name="experience_year[]" placeholder="مثال: 2018-2021"></td>
+            <td><input type="text" name="experience_job_title[]" placeholder="مثال: مدير مشاريع"></td>
+            <td><input type="text" name="experience_company[]" placeholder="مثال: شركة الإنشاءات"></td>
+            <td><input type="text" name="experience_years[]" placeholder="مثال: 3 سنوات"></td>
+            <td class="actions-cell">
+                <button type="button" class="delete-btn" onclick="deleteExperienceRow(this)">حذف</button>
+            </td>
+        `;
+        tableBody.appendChild(newRow);
+        newRow.querySelector('input').focus();
+    }
+
+    window.deleteExperienceRow = function(button) {
+        const tableBody = document.getElementById('experienceTableBody');
+        if (!tableBody) return;
+        
+        if (tableBody.children.length > 1) {
+            button.closest('tr').remove();
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'تنبيه',
+                text: 'يجب الاحتفاظ بخبرة واحدة على الأقل',
+                confirmButtonText: 'حسناً'
+            });
+        }
+    }
+
+    // اختصارات الكيبورد
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && event.ctrlKey) {
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.tagName === 'INPUT') {
+                const table = activeElement.closest('table');
+                if (table && table.id === 'professionalTable') {
+                    addNewProfessionalRow();
+                } else if (table && table.id === 'experienceTable') {
+                    addNewExperienceRow();
+                }
+            }
+            event.preventDefault();
+        }
+    });
+
+    // كود المودال والتجديد
+    const renewalModal = document.getElementById('renewalModal');
+    const renewalRadio = document.getElementById('renewal');
+    const newRadio = document.getElementById('new1');
+    const closeBtn = document.querySelector('.close');
+    const renewalForm = document.getElementById('renewalForm');
+    const newMembershipContent = document.getElementById('newMembershipContent');
+
+    // إخفاء المحتوى افتراضيًا
+    if (renewalModal) renewalModal.classList.remove('active');
+    if (newMembershipContent) newMembershipContent.classList.remove('active');
+
+    // عند اختيار "جديد"
+    if (newRadio) {
+        newRadio.addEventListener('change', function() {
+            if (this.checked) {
+                if (newMembershipContent) newMembershipContent.classList.add('active');
+                if (renewalModal) renewalModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                if (renewalForm) renewalForm.reset();
+                if (newMembershipContent) {
+                    newMembershipContent.scrollIntoView({
+                        behavior: 'smooth'
                     });
                 }
             }
+        });
+    }
 
-            window.addNewExperienceRow = function() { // اجعلها متاحة عالميا
-                experienceRowCount++;
-                const tableBody = document.getElementById('experienceTableBody');
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td><input type="text" name="experience_year[]" placeholder="مثال: 2018-2021"></td>
-                    <td><input type="text" name="experience_job_title[]" placeholder="مثال: مدير مشاريع"></td>
-                    <td><input type="text" name="experience_company[]" placeholder="مثال: شركة الإنشاءات"></td>
-                    <td><input type="text" name="experience_years[]" placeholder="مثال: 3 سنوات"></td>
-                    <td class="actions-cell">
-                        <button type="button" class="delete-btn" onclick="deleteExperienceRow(this)">حذف</button>
-                    </td>
-                `;
-                tableBody.appendChild(newRow);
-                newRow.querySelector('input').focus();
+    // عند اختيار "تجديد"
+    if (renewalRadio) {
+        renewalRadio.addEventListener('change', function() {
+            if (this.checked) {
+                if (renewalModal) renewalModal.classList.add('active');
+                if (newMembershipContent) newMembershipContent.classList.remove('active');
+                document.body.style.overflow = 'hidden';
             }
+        });
+    }
 
-            window.deleteExperienceRow = function(button) { // اجعلها متاحة عالميا
-                const tableBody = document.getElementById('experienceTableBody');
-                if (tableBody.children.length > 1) {
-                    button.closest('tr').remove();
-                } else {
-                    Swal.fire({ // استخدم SweetAlert2 بدلاً من alert
-                        icon: 'warning'
-                        , title: 'تنبيه'
-                        , text: 'يجب الاحتفاظ بخبرة واحدة على الأقل'
-                        , confirmButtonText: 'حسناً'
-                    });
-                }
+    // إغلاق الـ modal عند الضغط على زر الإغلاق
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            if (renewalModal) renewalModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            resetFormAndRadios();
+        });
+    }
+
+    // إغلاق الـ modal عند الضغط خارج النافذة
+    if (renewalModal) {
+        window.addEventListener('click', function(event) {
+            if (event.target === renewalModal) {
+                renewalModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                resetFormAndRadios();
             }
+        });
+    }
 
-            // اختصارات الكيبورد (حافظ عليها كما هي)
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter' && event.ctrlKey) {
-                    const activeElement = document.activeElement;
-                    if (activeElement && activeElement.tagName === 'INPUT') {
-                        const table = activeElement.closest('table');
-                        if (table && table.id === 'professionalTable') {
-                            addNewProfessionalRow();
-                        } else if (table && table.id === 'experienceTable') {
-                            addNewExperienceRow();
-                        }
-                    }
-                    event.preventDefault();
+    // إعادة ضبط النموذج والـ radio buttons
+    function resetFormAndRadios() {
+        document.querySelectorAll('input[name="membership_type"]').forEach(radio => {
+            radio.checked = false;
+        });
+        if (renewalForm) renewalForm.reset();
+        if (newMembershipContent) newMembershipContent.classList.remove('active');
+    }
+
+    // معالج إرسال نموذج التجديد
+    if (renewalForm) {
+        renewalForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // عرض تحميل
+            Swal.fire({
+                title: 'جاري الإرسال...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
                 }
             });
 
-            // كود المودال والتجديد (تأكد أن هذا الجزء يتبع)
-            const renewalModal = document.getElementById('renewalModal');
-            const renewalRadio = document.getElementById('renewal');
-            const newRadio = document.getElementById('new1');
-            const closeBtn = document.querySelector('.close');
-            const renewalForm = document.getElementById('renewalForm');
-            const newMembershipContent = document.getElementById('newMembershipContent');
+            const formData = new FormData(this);
 
-            // إخفاء المحتوى افتراضيًا
-            if (renewalModal) renewalModal.classList.remove('active');
-            if (newMembershipContent) newMembershipContent.classList.remove('active');
+            try {
+                const csrfToken = document.querySelector('input[name="_token"]');
+                if (!csrfToken) {
+                    throw new Error('CSRF token not found');
+                }
 
-            // عند اختيار "جديد"
-            if (newRadio) {
-                newRadio.addEventListener('change', function() {
-                    if (this.checked) {
-                        if (newMembershipContent) newMembershipContent.classList.add('active');
-                        if (renewalModal) renewalModal.classList.remove('active');
-                        document.body.style.overflow = 'auto';
-                        if (renewalForm) renewalForm.reset();
-                        if (newMembershipContent) {
-                            newMembershipContent.scrollIntoView({
-                                behavior: 'smooth'
-                            });
-                        }
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken.value,
+                        'Accept': 'application/json'
                     }
                 });
-            }
 
-            // عند اختيار "تجديد"
-            if (renewalRadio) {
-                renewalRadio.addEventListener('change', function() {
-                    if (this.checked) {
-                        if (renewalModal) renewalModal.classList.add('active');
-                        if (newMembershipContent) newMembershipContent.classList.remove('active');
-                        document.body.style.overflow = 'hidden';
-                    }
-                });
-            }
+                const result = await response.json();
 
-            // إغلاق الـ modal عند الضغط على زر الإغلاق
-            if (closeBtn) {
-                closeBtn.addEventListener('click', function() {
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'رائع!',
+                        text: result.message || 'تم تقديم طلب التجديد بنجاح!',
+                        confirmButtonText: 'حسناً'
+                    });
+
                     if (renewalModal) renewalModal.classList.remove('active');
                     document.body.style.overflow = 'auto';
                     resetFormAndRadios();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'خطأ!',
+                        text: result.error || 'حدث خطأ أثناء تقديم الطلب. الرجاء المحاولة مرة أخرى.',
+                        confirmButtonText: 'حسناً'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'خطأ في الاتصال!',
+                    text: 'حدث خطأ أثناء إرسال النموذج. الرجاء التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.',
+                    confirmButtonText: 'حسناً'
                 });
             }
-
-            // إغلاق الـ modal عند الضغط خارج النافذة
-            if (renewalModal) { // تأكد من وجود المودال
-                window.addEventListener('click', function(event) {
-                    if (event.target === renewalModal) {
-                        renewalModal.classList.remove('active');
-                        document.body.style.overflow = 'auto';
-                        resetFormAndRadios();
-                    }
-                });
-            }
-
-            // إعادة ضبط النموذج والـ radio buttons
-            function resetFormAndRadios() {
-                document.querySelectorAll('input[name="membership_type"]').forEach(radio => {
-                    radio.checked = false;
-                });
-                if (renewalForm) renewalForm.reset();
-                if (newMembershipContent) newMembershipContent.classList.remove('active');
-            }
-
-            // هذا هو الجزء الأهم: إضافة كود SweetAlert2 للرسائل من السيرفر
-            @if(session('success'))
-            Swal.fire({
-                icon: 'success'
-                , title: 'نجاح!'
-                , text: '{{ session('
-                success ') }}'
-                , confirmButtonText: 'حسناً'
-            });
-            @endif
-
-            @if(session('error'))
-            Swal.fire({
-                icon: 'error'
-                , title: 'خطأ!'
-                , text: '{{ session('
-                error ') }}'
-                , confirmButtonText: 'حسناً'
-            });
-            @endif
-
-            // معالج إرسال نموذج التجديد
-            if (renewalForm) { // تأكد أن النموذج موجود
-                renewalForm.addEventListener('submit', async function(e) {
-                    e.preventDefault(); // منع إعادة تحميل الصفحة
-                    const formData = new FormData(this);
-
-                    try {
-                        const response = await fetch('{{ route('members.renewal') }}', {
-                                method: 'POST'
-                                , body: formData
-                                , headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                                    , 'Accept': 'application/json'
-                                }
-                            });
-
-                        const result = await response.json();
-
-                        if (response.ok) {
-                            Swal.fire({
-                                icon: 'success'
-                                , title: 'رائع!'
-                                , text: 'تم تقديم طلب التجديد بنجاح!'
-                                , confirmButtonText: 'حسناً'
-                            });
-
-                            renewalModal.classList.remove('active');
-                            document.body.style.overflow = 'auto';
-                            resetFormAndRadios();
-                        } else {
-                            Swal.fire({
-                                icon: 'error'
-                                , title: 'خطأ!'
-                                , text: result.error || 'حدث خطأ أثناء تقديم الطلب. الرجاء المحاولة مرة أخرى.'
-                                , confirmButtonText: 'حسناً'
-                            });
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        Swal.fire({
-                            icon: 'error'
-                            , title: 'خطأ في الاتصال!'
-                            , text: 'حدث خطأ أثناء إرسال النموذج. الرجاء التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.'
-                            , confirmButtonText: 'حسناً'
-                        });
-                    }
-                });
-            }
-
-            const renewalInputs = renewalForm ? renewalForm.querySelectorAll('input[type="text"], input[type="email"]') : [];
-            renewalInputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    this.style.borderColor = this.value.trim() ? '#28a745' : '#e1e5e9';
-                });
-            });
-
-            const newMembershipInputs = newMembershipContent ? newMembershipContent.querySelectorAll('input[type="text"], input[type="email"]') : [];
-            newMembershipInputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    this.style.borderColor = this.value.trim() ? '#28a745' : '#e1e5e9';
-                });
-            });
         });
+    }
 
+    // تلوين الحقول عند الإدخال
+    const renewalInputs = renewalForm ? renewalForm.querySelectorAll('input[type="text"], input[type="email"]') : [];
+    renewalInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            this.style.borderColor = this.value.trim() ? '#28a745' : '#e1e5e9';
+        });
+    });
+
+    const newMembershipInputs = newMembershipContent ? newMembershipContent.querySelectorAll('input[type="text"], input[type="email"]') : [];
+    newMembershipInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            this.style.borderColor = this.value.trim() ? '#28a745' : '#e1e5e9';
+        });
+    });
+});
     </script>
     </div>
 </body>

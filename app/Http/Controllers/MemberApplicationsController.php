@@ -20,13 +20,7 @@ class MemberApplicationsController extends Controller
     /**
      * Generate a unique 5-digit membership number.
      */
-    private function generateMembershipNumber()
-    {
-        do {
-            $membershipNumber = str_pad(rand(0, 99999), 5, '0', STR_PAD_LEFT);
-        } while (MemberApplication::where('membership_number', $membershipNumber)->exists());
-        return $membershipNumber;
-    }
+
 
     /**
      * تخزين بيانات طلب العضوية الجديد.
@@ -150,46 +144,116 @@ class MemberApplicationsController extends Controller
      */
     public function renew(Request $request)
     {
-        if (!Auth::check()) {
-            return response()->json(['error' => 'يجب تسجيل الدخول لتجديد عضويتك.'], 401);
+        try {
+            // تسجيل البيانات المستلمة للتشخيص
+            \Log::info('Renewal request received', $request->all());
+
+            if (!Auth::check()) {
+                return response()->json(['error' => 'يجب تسجيل الدخول لتجديد عضويتك.'], 401);
+            }
+
+            // Validate renewal form data
+            $validated = $request->validate([
+                'membership_id_kw' => 'required|string|max:255',
+                'national_id_kw' => 'required|string|max:255',
+                'email_kw' => 'required|email|max:255',
+                'pension' => 'nullable|string|max:255',
+            ]);
+
+            \Log::info('Validation passed', $validated);
+
+            // Find the existing application
+            $application = MemberApplication::where('membership_number', $validated['membership_id_kw'])
+                ->where('national_id', $validated['national_id_kw'])
+                ->where('email', $validated['email_kw'])
+                ->where('user_id', Auth::id())
+                ->first();
+
+            if (!$application) {
+                \Log::warning('Application not found', [
+                    'membership_number' => $validated['membership_id_kw'],
+                    'user_id' => Auth::id()
+                ]);
+                return response()->json(['error' => 'بيانات العضوية المدخلة غير صحيحة أو لا تتطابق مع حسابك.'], 422);
+            }
+
+            \Log::info('Application found', ['id' => $application->id]);
+
+            // Create a new application for renewal
+            $newApplicationData = $application->toArray();
+
+            // إزالة الحقول التي لا نريد نسخها
+            unset(
+                $newApplicationData['id'],
+                $newApplicationData['created_at'],
+                $newApplicationData['updated_at']
+            );
+
+            // Generate new membership number
+            $newMembershipNumber = $this->generateMembershipNumber();
+            \Log::info('Generated membership number', ['number' => $newMembershipNumber]);
+
+            $newApplicationData['membership_number'] = $newMembershipNumber;
+            $newApplicationData['pension'] = $validated['pension'] ?? $application->pension;
+            $newApplicationData['user_id'] = Auth::id();
+
+            // إزالة أي حقول nullable قد تسبب مشاكل
+            $newApplicationData = array_filter($newApplicationData, function ($value) {
+                return $value !== null;
+            });
+
+            \Log::info('Creating new application', $newApplicationData);
+
+            $renewedApplication = MemberApplication::create($newApplicationData);
+
+            \Log::info('Application created successfully', ['id' => $renewedApplication->id]);
+
+            return response()->json([
+                'message' => 'تم تأكيد تجديد عضويتك بنجاح! رقم العضوية الجديد هو: ' . $renewedApplication->membership_number,
+                'membership_number' => $renewedApplication->membership_number
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Validation error', ['errors' => $e->errors()]);
+            return response()->json([
+                'error' => 'بيانات غير صحيحة',
+                'details' => $e->errors()
+            ], 422);
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Log::error('Database error in renewal', [
+                'message' => $e->getMessage(),
+                'code' => $e->getCode()
+            ]);
+            return response()->json([
+                'error' => 'حدث خطأ في قاعدة البيانات. الرجاء التحقق من البيانات والمحاولة مرة أخرى.'
+            ], 500);
+        } catch (\Exception $e) {
+            \Log::error('Renewal error', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'error' => 'حدث خطأ غير متوقع. الرجاء المحاولة لاحقاً.'
+            ], 500);
         }
+    }
 
-        // Validate renewal form data
-        $validated = $request->validate([
-            'membership_id_kw' => 'required|string|max:255',
-            'national_id_kw' => 'required|string|max:255',
-            'email_kw' => 'required|email|max:255',
-            'pension' => 'nullable|string|max:255', // Added validation for pension
-        ]);
+    private function generateMembershipNumber()
+    {
+        $maxAttempts = 10;
+        $attempt = 0;
 
-        // Find the existing application
-        $application = MemberApplication::where('membership_number', $request->input('membership_id_kw'))
-            ->where('national_id', $request->input('national_id_kw'))
-            ->where('email', $request->input('email_kw'))
-            ->where('user_id', Auth::id())
-            ->first();
+        do {
+            $attempt++;
+            $number = 'MEM-' . date('Y') . '-' . str_pad(rand(1, 99999), 5, '0', STR_PAD_LEFT);
 
-        if (!$application) {
-            return response()->json(['error' => 'بيانات العضوية المدخلة غير صحيحة أو لا تتطابق مع حسابك.'], 422);
-        }
+            if ($attempt >= $maxAttempts) {
+                throw new \Exception('Failed to generate unique membership number after ' . $maxAttempts . ' attempts');
+            }
+        } while (MemberApplication::where('membership_number', $number)->exists());
 
-        // Create a new application for renewal
-        $newApplicationData = $application->toArray();
-        unset($newApplicationData['id']);
-        $newApplicationData['membership_number'] = $this->generateMembershipNumber();
-        $newApplicationData['created_at'] = now();
-        $newApplicationData['updated_at'] = now();
-        $newApplicationData['pension'] = $request->input('pension'); // Include pension in the renewal data
-
-        // Optionally add renewal-specific fields
-        // $newApplicationData['status'] = 'renewed';
-        // $newApplicationData['expires_at'] = now()->addYear();
-
-        $renewedApplication = MemberApplication::create($newApplicationData);
-
-        return response()->json([
-            'message' => 'تم تأكيد تجديد عضويتك بنجاح! رقم العضوية الجديد هو: ' . $renewedApplication->membership_number
-        ], 200);
+        return $number;
     }
 
     /**

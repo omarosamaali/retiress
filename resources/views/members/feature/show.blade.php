@@ -30,7 +30,6 @@
             padding: 2px;
 
         }
-
     </style>
 </head>
 
@@ -39,76 +38,96 @@
     <div id="in-cont" class="main-content">
         <section style="background: unset ! important;" class="magazine-section">
             <div class="container">
-                @if($magazines)
-                <div class="magazine-card" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="magazine-image">
-                                @if($magazines->main_image)
-                                <img src="{{ asset('storage/' . $magazines->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($magazines->title_ar ?? 'صورة المجلة') : ($magazines->title_en ?? 'Magazine Image') }}">
-                                @else
-                                <img src="{{ asset('images/default-magazine.jpg') }}" alt="صورة المجلة الافتراضية">
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6 magazine-info">
-                            <h2 class="magazine-title">
-                                <div style="color: #800000;">
-                                    {{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}
-                                </div>
-                            </h2>
-                            <div class="member-details">
-                                <h4>بيانات العضو</h4>
-                                @if($magazines->member->personal_photo_path != null)
-                                <img src="{{ asset('storage/' . $magazines->member->personal_photo_path) }}" class="member-image" alt="">
-                                @endif
-                                <h4> {{ $magazines->member->full_name }}</h4>
-                                <h4 style="font-weight: normal; font-size: 15px;"> {{ $magazines->member->emirate }}</h4>
-                                @php
-                                $previousExperiences = $magazines->member->previous_experience;
-                                $firstExperience = $previousExperiences[0] ?? null;
-                                @endphp
-                                @if ($firstExperience)
-                                <p style="font-weight: bold;">
-                                    <strong> </strong> {{ $firstExperience['employer'] }}<br>
-                                    <strong></strong> {{ $firstExperience['job_title'] }}
-                                </p>
-                                @endif
-                            </div>
-                            <hr>
-
-                            <p class="magazine-description">
-                                {{ app()->getLocale() == 'ar' ? $magazines->description_ar : $magazines->description_en }}
-                            </p>
-                            @if($magazines->sub_image)
-                            @php
-                            $subImages = json_decode($magazines->sub_image, true);
-                            @endphp
-                            @if(is_array($subImages) && count($subImages) > 0)
-                            <div class="sub-images-gallery">
-                                <h5>معرض الصور</h5>
-                                <div class="gallery-grid">
-                                    @foreach($subImages as $subImage)
-                                    <div class="gallery-item">
-                                        <img src="{{ asset('storage/' . $subImage) }}" alt="صورة من المعرض" onclick="openImageModal(this.src)">
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @endif
-                            @endif
-                        </div>
-                    </div>
-                </div>
+@if($magazines)
+<div class="magazine-card" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="magazine-image">
+                @if($magazines->main_image)
+                <img src="{{ asset('storage/' . $magazines->main_image) }}"
+                    alt="{{ app()->getLocale() == 'ar' ? ($magazines->title_ar ?? 'صورة المجلة') : ($magazines->title_en ?? 'Magazine Image') }}">
                 @else
-                <div class="text-center w-100">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i>
-                        <p class="mb-0">لا يوجد مميزات</p>
-                    </div>
-                </div>
+                <img src="{{ asset('images/default-magazine.jpg') }}" alt="صورة المجلة الافتراضية">
                 @endif
             </div>
+        </div>
+        <div class="col-md-6 magazine-info">
+            <h2 class="magazine-title">
+                <div style="color: #800000;">
+                    {{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}
+                </div>
+            </h2>
+            <div class="member-details">
+                <h4>بيانات العضو</h4>
+                @if($magazines->member->personal_photo_path != null)
+                <img src="{{ asset('storage/' . $magazines->member->personal_photo_path) }}" class="member-image"
+                    alt="">
+                @endif
+                <h4>{{ $magazines->member->full_name }}</h4>
+                <h4 style="font-weight: normal; font-size: 15px;">{{ $magazines->member->emirate }}</h4>
+                @php
+                $previousExperiences = $magazines->member->previous_experience;
+                $firstExperience = $previousExperiences[0] ?? null;
+                @endphp
+                @if ($firstExperience)
+                <p style="font-weight: bold;">
+                    <strong></strong> {{ $firstExperience['employer'] }}<br>
+                    <strong></strong> {{ $firstExperience['job_title'] }}
+                </p>
+                @endif
+            </div>
+            <hr>
+
+            <p class="magazine-description">
+                {{ app()->getLocale() == 'ar' ? $magazines->description_ar : $magazines->description_en }}
+            </p>
+
+            @if($magazines->sub_image)
+            @php
+            $subImages = json_decode($magazines->sub_image, true);
+            @endphp
+            @if(is_array($subImages) && count($subImages) > 0)
+            <div class="sub-images-gallery">
+                <h5>مزيد من الصور</h5>
+                <div class="gallery-grid">
+                    @foreach($subImages as $subImage)
+                    <div class="gallery-item">
+                        <img src="{{ asset('storage/' . $subImage) }}" alt="صورة من المعرض"
+                            onclick="openImage('{{ asset('storage/' . $subImage) }}')">
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+            @endif
+        </div>
+    </div>
+</div>
+@else
+<div class="text-center w-100">
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        <p class="mb-0">لا يوجد مميزات</p>
+    </div>
+</div>
+@endif
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function openImage(imageUrl) {
+        Swal.fire({
+            imageUrl: imageUrl,
+            imageWidth: 600,
+            imageAlt: 'صورة من المعرض',
+            showCloseButton: true,
+            showConfirmButton: false,
+            background: '#fff',
+            customClass: {
+                image: 'img-fluid'
+            }
+        });
+    }
+</script>            </div>
         </section>
         <style>
             /* General Styling */
@@ -315,21 +334,11 @@
                     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
                 }
             }
-
         </style>
 
-        <script>
-            function openImageModal(imageSrc) {
-                document.getElementById('modalImage').src = imageSrc;
-                var imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
-                imageModal.show();
-            }
-
-        </script>
-
         <x-footer-section></x-footer-section>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
-        <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+        <script src="{{ asset('assets/js/scriptU.js') }}"></script> --}}
     </div>
 </body>
 

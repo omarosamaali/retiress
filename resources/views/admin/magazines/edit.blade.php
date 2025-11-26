@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'تعديل الالإنجاز')
-@section('page-title', 'تعديل الالإنجاز')
+@section('title', 'تعديل الالمقال')
+@section('page-title', 'تعديل الالمقال')
 
 @section('content')
 <div class="container-fluid">
@@ -9,7 +9,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">تعديل الإنجاز</h4>
+                    <h4 class="card-title">تعديل المقال</h4>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.magazines.update', $magazine->id) }}" method="POST" enctype="multipart/form-data">
@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label for="title_ar">عنوان الالإنجاز (عربي)</label>
+                            <label for="title_ar">عنوان الالمقال (عربي)</label>
                             <input type="text" name="title_ar" id="title_ar" class="form-control" value="{{ old('title_ar', $magazine->title_ar) }}" required>
                             @error('title_ar')
                             <span class="text-danger">{{ $message }}</span>
@@ -90,7 +90,7 @@
                             @endif
                         </div>
 
-                        <button type="submit" class="btn btn-primary">تحديث الإنجاز</button>
+                        <button type="submit" class="btn btn-primary">تحديث المقال</button>
                         <a href="{{ route('admin.magazines.index') }}" class="btn btn-secondary">إلغاء</a>
                     </form>
                 </div>

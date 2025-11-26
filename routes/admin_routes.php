@@ -20,7 +20,7 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\MagazineController;
 use App\Http\Controllers\Admin\CommitteeController;
-use App\Http\Controllers\Admin\FeatureController;
+use App\Http\Controllers\admin\FeatureController;
 use App\Http\Controllers\Admin\ManageMembershipController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\TransactionController;

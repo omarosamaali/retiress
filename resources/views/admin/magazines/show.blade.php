@@ -217,7 +217,7 @@
     <div class="btn-section">
         <a href="{{ route('admin.magazines.index') }}" class="back-btn">
             <i class="fas fa-arrow-right ms-1"></i>
-            العودة لقائمة الإنجازات
+            العودة لقائمة المقالات
         </a>
         <a href="{{ route('admin.magazines.edit', $magazine->id) }}" class="edit-btn">
             <i class="fas fa-edit ms-1"></i>

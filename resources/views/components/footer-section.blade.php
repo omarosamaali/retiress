@@ -147,9 +147,9 @@
 
 
                     <ul class="social-set" style="margin-top: 10px;">
-                        @if($settings->twitter_url)
+                        @if($settings->tiktok_url)
                         <li>
-                            <a class="sociali" href="{{ $settings?->twitter_url }}" target="_blank" aria-label="Twitter">
+                            <a class="sociali" href="{{ $settings?->tiktok_url }}" target="_blank" aria-label="Twitter">
                                 <i class="footer-icon fa fa-twitter fa-fw custom-icon" title="Twitter"></i></a>
                         </li>
                         @endif

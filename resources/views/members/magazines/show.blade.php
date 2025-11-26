@@ -87,11 +87,12 @@
                             @endphp
                             @if(is_array($subImages) && count($subImages) > 0)
                             <div class="sub-images-gallery">
-                                <h5>معرض الصور</h5>
+                                <h5>مزيد من الصور</h5>
                                 <div class="gallery-grid">
                                     @foreach($subImages as $subImage)
                                     <div class="gallery-item">
-                                        <img src="{{ asset('storage/' . $subImage) }}" alt="صورة من المعرض" onclick="openImageModal(this.src)">
+                                        <img src="{{ asset('storage/' . $subImage) }}" alt="صورة من المعرض" 
+                                        onclick="openImage('{{ asset('storage/' . $subImage) }}')">
                                     </div>
                                     @endforeach
                                 </div>
@@ -109,6 +110,22 @@
                     </div>
                 </div>
                 @endif
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+                    function openImage(imageUrl) {
+                        Swal.fire({
+                            imageUrl: imageUrl,
+                            imageWidth: 600,
+                            imageAlt: 'صورة من المعرض',
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                            background: '#fff',
+                            customClass: {
+                                image: 'img-fluid'
+                            }
+                        });
+                    }
+                </script>
             </div>
         </section>
         <style>

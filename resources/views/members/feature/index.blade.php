@@ -5144,6 +5144,7 @@
                         </div>
                         <figure class="m-d29 text-tfh rou-xnf overflow-g44">
                             <img class="img-5ia" src="{{ asset('storage/' . $magazine->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($magazine->name_ar ?? __('app.magazine_image_alt_fallback')) : ($magazine->name_en ?? __('app.magazine_image_alt_fallback')) }}">
+                            <p style="margin-top: 5px; margin-bottom: 5px;">{{ app()->getLocale() == 'ar' ? $magazine->title_ar : $magazine->title_en }}</p>
                             <span style="font-size: 15px;">{{ __('app.publication_date_short') }} : {{ \Carbon\Carbon::parse($magazine->created_at)->translatedFormat('d/m/Y') }}</span>
                         </figure>
                     </div>

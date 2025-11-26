@@ -97,7 +97,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="title_ar" class="form-label">عنوان الإنجاز (بالعربية)</label>
+                    <label for="title_ar" class="form-label">عنوان المقال (بالعربية)</label>
                     <input type="text" class="form-control" id="title_ar" name="title_ar" value="{{ old('title_ar') }}" required>
                     @error('title_ar')
                     <div class="text-white">{{ $message }}</div>
@@ -172,7 +172,7 @@
 
         <button type="submit" class="btn btn-light mt-3">
             <i class="fas fa-plus ms-1"></i>
-            إضافة الإنجاز
+            إضافة المقال
         </button>
     </form>
 </div>
@@ -198,7 +198,7 @@
             <tr>
                 <th>#</th>
                 <th>تاريخ الإضافة</th>
-                <th>عنوان الإنجاز (عربي)</th>
+                <th>عنوان المقال (عربي)</th>
                 <th>الصورة الرئيسية</th>
                 <th>الحالة</th>
                 <th>الإجراءات</th>
@@ -242,7 +242,7 @@
             <tr>
                 <td colspan="6" class="text-center py-4">
                     <i class="fas fa-newspaper text-muted" style="font-size: 3rem;"></i>
-                    <p class="text-muted mt-2">لا توجد الإنجازات</p>
+                    <p class="text-muted mt-2">لا توجد المقالات</p>
                 </td>
             </tr>
             @endforelse
@@ -265,7 +265,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                هل أنت متأكد من حذف هذه الإنجاز؟
+                هل أنت متأكد من حذف هذه المقال؟
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>

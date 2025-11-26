@@ -202,7 +202,7 @@
                     <tr>
                         <td colspan="6" class="text-center py-4">
                             <i class="fas fa-newspaper text-muted" style="font-size: 3rem;"></i>
-                            <p class="text-muted mt-2">لا توجد الإنجازات</p>
+                            <p class="text-muted mt-2">لا توجد المقالات</p>
                         </td>
                     </tr>
                 @endforelse

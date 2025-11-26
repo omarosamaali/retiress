@@ -111,7 +111,7 @@ return [
     'no_sub_images_available' => 'No additional sub-images available for this news.',
     'news_not_found' => 'Sorry, this news could not be found.',
     'sub_image_alt_fallback' => 'News Sub-Image',
-    'magazine_page_title' => 'Nabdh Al-Mutqaed Magazine', // Or "Pulse of the Retired Magazine"
+    'magazine_page_title' => 'Experience platform', // Or "Pulse of the Retired Magazine"
     'view_magazine' => 'View Magazine',
     'publication_date_short' => 'Publication Date',
     'magazine_image_alt_fallback' => 'Magazine Image',

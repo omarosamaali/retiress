@@ -85,17 +85,17 @@ class FeatureController extends Controller
         }
     }
 
-    public function show(Feature $magazine)
+    public function show(Feature $feature)
     {
         $targetLanguages = $this->targetLanguages;
-        return view('admin.feature.show', compact('magazine', 'targetLanguages'));
+        return view('admin.feature.show', compact('feature', 'targetLanguages'));
     }
 
-    public function edit(Feature $magazine)
+    public function edit(Feature $feature)
     {
         $targetLanguages = $this->targetLanguages;
         $member_applications = MemberApplication::all();
-        return view('admin.feature.edit', compact('magazine', 'targetLanguages', 'member_applications'));
+        return view('admin.feature.edit', compact('feature', 'targetLanguages', 'member_applications'));
     }
 
     public function update(Request $request, Feature $magazine)
@@ -177,14 +177,14 @@ class FeatureController extends Controller
         }
     }
 
-    public function destroy(Feature $magazine)
+    public function destroy(Feature $feature)
     {
-        if ($magazine->main_image) {
-            Storage::disk('public')->delete($magazine->main_image);
+        if ($feature->main_image) {
+            Storage::disk('public')->delete($feature->main_image);
         }
 
-        if ($magazine->sub_image) {
-            $subImages = json_decode($magazine->sub_image, true);
+        if ($feature->sub_image) {
+            $subImages = json_decode($feature->sub_image, true);
             if (is_array($subImages)) {
                 foreach ($subImages as $subImage) {
                     Storage::disk('public')->delete($subImage);
@@ -192,7 +192,7 @@ class FeatureController extends Controller
             }
         }
 
-        $magazine->delete();
+        $feature->delete();
 
         return redirect()->route('admin.feature.index')->with('success', 'تم حذف المجلة بنجاح!');
     }
