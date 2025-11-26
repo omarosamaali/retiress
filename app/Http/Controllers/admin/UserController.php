@@ -128,7 +128,7 @@ class UserController extends Controller
     // End of public function store
     public function show(User $user)
     {
-        // $user->load('chefProfile');
+        $user = User::findOrFail($user->id);
         return view('admin.users.show', compact('user'));
     }
 

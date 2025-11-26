@@ -96,8 +96,8 @@
                         <td>{{ optional($about->created_at)->format('d/m/Y') ?? 'N/A' }}</td>
                         <td>{{ $about->title_ar ?? 'لا يوجد عنوان' }}</td>
                         <td>
-                            @if ($about->main_image_url)
-                            <img src="{{ asset( $about->main_image_url) }}" alt="{{ $about->title_ar }}" class="about-img">
+                            @if ($about->main_image)
+                            <img src="{{ asset( 'storage/' . $about->main_image) }}" alt="{{ $about->title_ar }}" class="about-img">
                             @else
                             لا توجد صورة
                             @endif
