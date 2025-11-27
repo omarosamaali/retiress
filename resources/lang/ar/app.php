@@ -550,7 +550,7 @@ return [
     // Consumer Discounts
     'consumer_discounts' => 'خصومات استهلاكية',
     'esaad_card_discounts' => 'بطاقة إسعاد للخصومات',
-    'injazat_service_centers' => 'تسهيلات مراكز خدمة "إنجازات"',
+    'injazat_service_centers' => 'تسهيلات مراكز خدمة "منبر"',
     'du_telecom_discounts' => 'خصومات شركة دو للاتصالات',
     'sharjah_ladies_club_discounts' => 'خصومات نادي سيدات الشارقة',
 

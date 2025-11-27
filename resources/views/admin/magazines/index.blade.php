@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'إدارة إنجازات الخبرات')
-@section('page-title', 'إدارة إنجازات الخبرات')
+@section('title', 'إدارة منبر الخبرات')
+@section('page-title', 'إدارة منبر الخبرات')
 
 @push('styles')
 <style>
