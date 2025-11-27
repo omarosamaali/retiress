@@ -94,9 +94,8 @@ Route::middleware('auth')->group(function () {
         ->where('user_id', Auth::id())
         ->get();
         $memberships = MemberApplication::where('user_id', Auth::id())->get();
-
         return view('members.sidebar.record', compact('transactions', 'memberships'));
-     })->name('members.record');
+    })->name('members.record');
 
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');

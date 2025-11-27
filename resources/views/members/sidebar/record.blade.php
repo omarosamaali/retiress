@@ -5721,7 +5721,7 @@
                                 @endswitch
                             </td>
                             <td style="min-width: 142px;">
-                                <a href="{{ route('services.show', $transaction) }}" type="button" class="btn btn-gray">{{ __('app.view') }}</a>
+                                <a href="{{ route('events.show', $transaction) }}" type="button" class="btn btn-gray">{{ __('app.view') }}</a>
                                 @if($transaction->status == 'waiting_for_payment')
                                 <button type="button" class="btn btn-blue trigger-file-input" data-transaction-id="{{ $transaction->id }}">
                                     {{ __('app.upload_receipt') }}
@@ -5739,7 +5739,6 @@
                         </tr>
                         @endforeach
                         @foreach ($memberships as $index => $transaction)
-
                         <tr class="table-row">
                             <th scope="row">{{ $index + 1 }}</th>
                             <td>{{ \Carbon\Carbon::parse($transaction->subscribed_at)->translatedFormat('d/m/Y - h:i A') }}</td>
@@ -5761,20 +5760,6 @@
                             </td>
                             <td style="min-width: 142px;">
                                 <a href="{{ route('members.my-membership') }}" type="button" class="btn btn-gray">{{ __('app.view') }}</a>
-
-                                {{-- @if($transaction->status == '0')
-                                <button type="button" class="btn btn-blue trigger-file-input" data-transaction-id="{{ $transaction->id }}">
-                                    {{ __('app.upload_receipt') }}
-                                </button>
-                                <form id="uploadReceiptForm-{{ $transaction->id }}" action="{{ route('members.upload_receipt', $transaction) }}" method="POST" enctype="multipart/form-data" style="display: none;">
-                                    @csrf
-                                    <input type="file" class="form-control d-none" id="receipt_image_input-{{ $transaction->id }}" name="receipt_image" accept="image/*">
-                                </form>
-                                @elseif($transaction->receipt_image)
-                                <a href="{{ Storage::url($transaction->receipt_image) }}" style="background-color: #007BFF; color: white;" target="_blank" class="btn btn-secondary">
-                                    {{ __('app.view_receipt') }}
-                                </a>
-                                @endif --}}
                             </td>
                         </tr>
                         @endforeach
