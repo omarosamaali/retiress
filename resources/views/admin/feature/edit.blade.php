@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label for="title_ar">عنوان الالمقال (عربي)</label>
+                            <label for="title_ar">عنوان المقال (عربي)</label>
                             <input type="text" name="title_ar" id="title_ar" class="form-control" value="{{ old('title_ar', $feature->title_ar) }}" required>
                             @error('title_ar')
                             <span class="text-danger">{{ $message }}</span>

@@ -7074,6 +7074,20 @@
         .form-group.optional {
             border: 2px solid #95a5a6;
         }
+
+        .main-btn {
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            font-size: 29px;
+            margin-bottom: 10px !important;
+            background: #a07a2e;
+            max-width: 800px;
+            margin: auto;
+            border-radius: 14px;
+            color: white;
+        }
     </style>
 
 </head>
@@ -7082,22 +7096,25 @@
     <x-auth-header></x-auth-header>
 
     <div id="in-cont" style="padding-top: 150px">
-        @if($membership)
+        @if($membership->expiration_date && \Carbon\Carbon::parse($membership->expiration_date)->diffInDays(now()) <= 90) 
+            <a class="main-btn" href="{{ route('members.membership-show') }}">تجديد</a>
+        @endif
 
-        <div class="container">
-            <h1 class="profile-title">عضويتي</h1>
-            <div class="container--inputs">
-                <h3 style="border-bottom: 0px;"> رقم العضوية : {{ $membership->membership_number }}</h3>
-                <h3 style="border-bottom: 0px; color: #2c3e50; font-weight: 600;">
-                    تاريخ الإنتهاء :
-                    @if($membership->expiration_date)
-                    {{ \Carbon\Carbon::parse($membership->expiration_date)->locale('ar')->translatedFormat('j F Y - h:i
-                    A') }}
-                    @else
-                    غير محدد
-                    @endif
-                </h3>
-                <?php
+            @if($membership)
+            <div class="container" style="margin-top: 0px !important;">
+                <h1 class="profile-title">عضويتي</h1>
+                <div class="container--inputs">
+                    <h3 style="border-bottom: 0px;"> رقم العضوية : {{ $membership->membership_number }}</h3>
+                    <h3 style="border-bottom: 0px; color: #2c3e50; font-weight: 600;">
+                        تاريخ الإنتهاء :
+                        @if($membership->expiration_date)
+                        {{ \Carbon\Carbon::parse($membership->expiration_date)->locale('ar')->translatedFormat('j F Y')
+                        }}
+                        @else
+                        غير محدد
+                        @endif
+                    </h3>
+                    <?php
                         $badgeClass = '';
                             if($membership->status == '0')
                             {
@@ -7115,261 +7132,265 @@
                             }
                         ?>
 
-                <h3
-                    style="{{ $badgeClass }} font-size: 15px; border-bottom: 0px; padding: 10px; border-radius: 8px; !important; color: white;">
+                    <h3
+                        style="{{ $badgeClass }} font-size: 15px; border-bottom: 0px; padding: 10px; border-radius: 8px; !important; color: white;">
 
-                    @if($membership->status == '0')
-                    <div style="">بانتظار الدفع</div>
-                    @elseif($membership->status == '1')
-                    <div style="font-size: 15px;">بانتظار التفعيل</div>
-                    @elseif($membership->status == '2')
-                    <div style="font-size: 15px;">بانتظار الموافقة</div>
-                    @elseif($membership->status == '3')
-                    <div style="font-size: 15px;">فعال
-                        @elseif($membership->status == '4')
-                        <div style="font-size: 15px;">منتهية</div>
-                        @endif
-                </h3>
-            </div>
-            <div class="container-imgs"
-                style="display: flex; align-items: center; justify-content: space-between; margin: 30px 0px;">
-                @if ($membership->front_id)
-                <img src="{{ asset('storage/' . $membership->front_id) }}" alt class="id-img">
-                @endif
-                @if ($membership->back_id)
-                <img src="{{ asset('storage/' . $membership->back_id) }}" alt class="id-img">
-                @endif
-            </div>
-            <h2>البيانات التعريفية</h2>
-            <div class="section">
-                @if ($membership->personal_photo_path)
-                <div class="form-group">
-                    <img src="{{ asset('storage/' . $membership->personal_photo_path) }}" alt="" class="img-name">
+                        @if($membership->status == '0')
+                        <div style="">بانتظار الدفع</div>
+                        @elseif($membership->status == '1')
+                        <div style="font-size: 15px;">بانتظار التفعيل</div>
+                        @elseif($membership->status == '2')
+                        <div style="font-size: 15px;">بانتظار الموافقة</div>
+                        @elseif($membership->status == '3')
+                        <div style="font-size: 15px;">فعال
+                            @elseif($membership->status == '4')
+                            <div style="font-size: 15px;">منتهية</div>
+                            @endif
+                    </h3>
                 </div>
-                @endif
-
-                <div class="container--inputs">
-                    <div class="form-group">
-                        <label for="full-name">الإسم الكامل</label>
-                        <input type="text" id="full-name" style="width: 130%;" value="{{ $membership->full_name }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="nationality">الجنسية</label>
-                        <input type="text" id="nationality" value="{{ $membership->nationality }}" readonly>
-                    </div>
+                <div class="container-imgs"
+                    style="display: flex; align-items: center; justify-content: space-between; margin: 30px 0px;">
+                    @if ($membership->front_id)
+                    <img src="{{ asset('storage/' . $membership->front_id) }}" alt class="id-img">
+                    @endif
+                    @if ($membership->back_id)
+                    <img src="{{ asset('storage/' . $membership->back_id) }}" alt class="id-img">
+                    @endif
                 </div>
-
-                <div class="container--inputs">
+                <h2>البيانات التعريفية</h2>
+                <div class="section">
+                    @if ($membership->personal_photo_path)
                     <div class="form-group">
-                        <label for="birth-date">تاريخ الميلاد</label>
-                        <div style="font-size: 15px; background-color: unset;" id="birth-date">{{
-                            $membership->date_of_birth->format('Y-m-d') }}
+                        <img src="{{ asset('storage/' . $membership->personal_photo_path) }}" alt="" class="img-name">
+                    </div>
+                    @endif
+
+                    <div class="container--inputs">
+                        <div class="form-group">
+                            <label for="full-name">الإسم الكامل</label>
+                            <input type="text" id="full-name" style="width: 130%;" value="{{ $membership->full_name }}"
+                                readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="nationality">الجنسية</label>
+                            <input type="text" id="nationality" value="{{ $membership->nationality }}" readonly>
                         </div>
                     </div>
-                    <div class="form-group" style="width: 169px;">
-                        <label>الجنس</label>
-                        <div class="">
-                            <div style="font-size: 15px; background-color: unset;" id="birth-date">
-                                {{ $membership->gender == "male" || $membership->gender == "ذكر" ? 'ذكر' : 'انثى' }}
+
+                    <div class="container--inputs">
+                        <div class="form-group">
+                            <label for="birth-date">تاريخ الميلاد</label>
+                            <div style="font-size: 15px; background-color: unset;" id="birth-date">{{
+                                $membership->date_of_birth->format('Y-m-d') }}
                             </div>
                         </div>
-                    </div>
+                        <div class="form-group" style="width: 169px;">
+                            <label>الجنس</label>
+                            <div class="">
+                                <div style="font-size: 15px; background-color: unset;" id="birth-date">
+                                    {{ $membership->gender == "male" || $membership->gender == "ذكر" ? 'ذكر' : 'انثى' }}
+                                </div>
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="container--inputs">
+
+                        <div class="form-group">
+                            <label for="emirate">الإمارة</label>
+                            <input type="text" id="po-box" value="{{ $membership->emirate }}" readonly>
+                        </div>
+                        <div class="form-group" style="width:170px;">
+                            <label for="marital-status">الحالة الإجتماعية</label>
+                            @if($membership->marital_status == 'single')
+                            <div style="font-size: 15px; background-color: unset;">أعزب / عزباء</div>
+                            @elseif($membership->marital_status == 'married')
+                            <div style="font-size: 15px; background-color: unset;">متزوج / متزوجات</div>
+                            @elseif($membership->marital_status == 'divorced')
+                            <div style="font-size: 15px; background-color: unset;">مطلق / مطلقات</div>
+                            @elseif($membership->marital_status == 'widowed')
+                            <div style="font-size: 15px; background-color: unset;">أرمل / أرملة</div>
+                            @elseif($membership->marital_status == 'separated')
+                            <div style="font-size: 15px; background-color: unset;">منفصل / منفصلة</div>
+                            @elseif($membership->marital_status == 'engaged')
+                            <div style="font-size: 15px; background-color: unset;">مخطوب / مخطوبة</div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="container--inputs">
+
+                        <div class="form-group">
+                            <label for="id-number">رقم الهوية</label>
+                            <input type="text" id="id-number" value="{{ $membership->national_id }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="education">المؤهل التعليمي</label>
+                            <input type="text" id="po-box" value="{{ $membership->educational_qualification }}"
+                                readonly>
+                        </div>
+                    </div>
                 </div>
-                <div class="container--inputs">
 
-                    <div class="form-group">
-                        <label for="emirate">الإمارة</label>
-                        <input type="text" id="po-box" value="{{ $membership->emirate }}" readonly>
+                <h2>البيانات المهنية السابقة</h2>
+                <div class="section">
+                    @if ($membership && !empty($membership->professional_experiences))
+                    @foreach ($membership->professional_experiences as $experience)
+                    <div style="border-bottom: 1px solid #ccc;" class="container--inputs">
+                        <div class="form-group">
+                            <label for="year">السنة</label>
+                            <input type="text" id="year" readonly value="{{ $experience['year'] ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="job-title">المسمى الوظيفي</label>
+                            <input type="text" id="job-title" readonly value="{{ $experience['job_title'] ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="employer">جهة العمل</label>
+                            <input type="text" id="employer" readonly value="{{ $experience['employer'] ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="years-of-experience">سنوات الخبرة</label>
+                            <input type="text" id="years-of-experience" readonly
+                                value="{{ $experience['years_of_experience'] ?? '' }}">
+                        </div>
                     </div>
-                    <div class="form-group" style="width:170px;">
-                        <label for="marital-status">الحالة الإجتماعية</label>
-                        @if($membership->marital_status == 'single')
-                        <div style="font-size: 15px; background-color: unset;">أعزب / عزباء</div>
-                        @elseif($membership->marital_status == 'married')
-                        <div style="font-size: 15px; background-color: unset;">متزوج / متزوجات</div>
-                        @elseif($membership->marital_status == 'divorced')
-                        <div style="font-size: 15px; background-color: unset;">مطلق / مطلقات</div>
-                        @elseif($membership->marital_status == 'widowed')
-                        <div style="font-size: 15px; background-color: unset;">أرمل / أرملة</div>
-                        @elseif($membership->marital_status == 'separated')
-                        <div style="font-size: 15px; background-color: unset;">منفصل / منفصلة</div>
-                        @elseif($membership->marital_status == 'engaged')
-                        <div style="font-size: 15px; background-color: unset;">مخطوب / مخطوبة</div>
+                    @endforeach
+                    @else
+                    <div class="container--inputs">
+                        <p>لا توجد بيانات مهنية سابقة متاحة.</p>
+                    </div>
+                    @endif
+                </div>
+                <h2>الخبرات السابقة</h2>
+                <div class="section">
+                    @if($membership && !empty($membership->previous_experience))
+
+                    @foreach ($membership->previous_experience as $experience)
+
+                    <div style="border-bottom: 1px solid #ccc;" class="container--inputs">
+                        <div class="form-group">
+                            <label for="year">السنة</label>
+                            <input type="text" id="year" readonly value="{{ $experience['year'] ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="job-title">المسمى الوظيفي</label>
+                            <input type="text" id="job-title" readonly value="{{ $experience['job_title'] ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="employer">جهة العمل</label>
+                            <input type="text" id="employer" readonly value="{{ $experience['employer'] ?? '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="years-of-experience">سنوات الخبرة</label>
+                            <input type="text" id="years-of-experience" readonly
+                                value="{{ $experience['years_of_experience'] ?? '' }}">
+                        </div>
+                    </div>
+
+                    @endforeach
+                    @else
+                    <div class="container--inputs">
+                        <p>لا توجد خبرات سابقة متاحة.</p>
+                    </div>
+                    @endif
+                </div>
+
+
+                <h2>بيانات التواصل</h2>
+                <div class="section">
+                    <div class="container--inputs">
+
+                        <div class="form-group">
+                            <label for="mobile">الهاتف المتحرك</label>
+                            <input type="tel" id="mobile"
+                                style="position: relative; right: -50px; background-color: unset;"
+                                value="{{ $membership->mobile_phone }}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="home-phone">هاتف المنزل</label>
+                            <input type="tel" id="home-phone"
+                                style="position: relative; right: -78px; background-color: unset;"
+                                value="{{ $membership->home_phone }}" readonly>
+                        </div>
+                    </div>
+                    <div class="container--inputs">
+
+                        <div class="form-group">
+                            <label for="email">البريد الإلكتروني</label>
+                            <input type="email" id="email" style="color: black; width: 220px;"
+                                value="{{ $membership->email }}" readonly>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="po-box">صندوق البريد</label>
+                            <input type="text" id="po-box" value="{{ $membership->po_box }}" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>بيانات التقاعد</h2>
+                <div class="section">
+                    <div class="container--inputs">
+                        <div class="form-group">
+                            <label for="retirement-date">تاريخ التقاعد</label>
+                            <div style="font-size: 15px; background-color: unset;" id="birth-date">{{
+                                $membership->date_of_birth->format('Y-m-d') }}
+                            </div>
+                        </div>
+                        <div class="form(iboard>form-group">
+                            <label for="retirement-type">نوع التقاعد</label>
+                            <input type="text" id="po-box" value="{{ $membership->contract_type }}" readonly>
+                        </div>
+                    </div>
+                    @if($membership->early_reason)
+                    <input type="text" id="po-box" value="{{ $membership->early_reason ?? '' }}" readonly>
+                    @endif
+                </div>
+
+                <h2>متطلبات التسجيل</h2>
+                <div class="section">
+                    <div class="container--inputs">
+                        @if ($memberApplication->passport_photo_path)
+                        <div class="form-group required" style="width: 30%;">
+                            <label for="passport">صورة جواز السفر <span style="color: red;">*</span></label>
+                            <button onclick="downloadDocument('passport', {{ $memberApplication->id }})">تحميل</button>
+                        </div>
+                        @endif
+                        @if ($memberApplication->national_id_photo_path)
+                        <div class="form-group required" style="width: 30%;">
+                            <label for="id-photo">صورة الهوية الشخصية <span style="color: red;">*</span></label>
+                            <button
+                                onclick="downloadDocument('national_id', {{ $memberApplication->id }})">تحميل</button>
+                        </div>
+                        @endif
+                        @if ($memberApplication->personal_photo_path)
+                        <div class="form-group required" style="width: 30%;">
+                            <label for="personal-photo">صورة شخصية <span style="color: red;">*</span></label>
+                            <button
+                                onclick="downloadDocument('personal_photo', {{ $memberApplication->id }})">تحميل</button>
+                        </div>
+                        @endif
+                    </div>
+                    <div class="container--inputs">
+                        @if ($memberApplication->educational_qualification_photo_path)
+                        <div class="form-group optional" style="width: 30%;">
+                            <label for="qualification">صورة من المؤهل العلمي</label>
+                            <button
+                                onclick="downloadDocument('educational_qualification', {{ $memberApplication->id }})">تحميل</button>
+                        </div>
+                        @endif
+                        @if ($memberApplication->retirement_card_photo_path)
+                        <div class="form-group required" style="width: 30%;">
+                            <label for="retirement-proof">صورة بطاقة التقاعد (إثبات التقاعد) <span
+                                    style="color: red;">*</span></label>
+                            <button
+                                onclick="downloadDocument('retirement_card', {{ $memberApplication->id }})">تحميل</button>
+                        </div>
                         @endif
                     </div>
                 </div>
-                <div class="container--inputs">
-
-                    <div class="form-group">
-                        <label for="id-number">رقم الهوية</label>
-                        <input type="text" id="id-number" value="{{ $membership->national_id }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="education">المؤهل التعليمي</label>
-                        <input type="text" id="po-box" value="{{ $membership->educational_qualification }}" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <h2>البيانات المهنية السابقة</h2>
-            <div class="section">
-                @if ($membership && !empty($membership->professional_experiences))
-                @foreach ($membership->professional_experiences as $experience)
-                <div style="border-bottom: 1px solid #ccc;" class="container--inputs">
-                    <div class="form-group">
-                        <label for="year">السنة</label>
-                        <input type="text" id="year" readonly value="{{ $experience['year'] ?? '' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="job-title">المسمى الوظيفي</label>
-                        <input type="text" id="job-title" readonly value="{{ $experience['job_title'] ?? '' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="employer">جهة العمل</label>
-                        <input type="text" id="employer" readonly value="{{ $experience['employer'] ?? '' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="years-of-experience">سنوات الخبرة</label>
-                        <input type="text" id="years-of-experience" readonly
-                            value="{{ $experience['years_of_experience'] ?? '' }}">
-                    </div>
-                </div>
-                @endforeach
-                @else
-                <div class="container--inputs">
-                    <p>لا توجد بيانات مهنية سابقة متاحة.</p>
-                </div>
-                @endif
-            </div>
-            <h2>الخبرات السابقة</h2>
-            <div class="section">
-                @if($membership && !empty($membership->previous_experience))
-
-                @foreach ($membership->previous_experience as $experience)
-
-                <div style="border-bottom: 1px solid #ccc;" class="container--inputs">
-                    <div class="form-group">
-                        <label for="year">السنة</label>
-                        <input type="text" id="year" readonly value="{{ $experience['year'] ?? '' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="job-title">المسمى الوظيفي</label>
-                        <input type="text" id="job-title" readonly value="{{ $experience['job_title'] ?? '' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="employer">جهة العمل</label>
-                        <input type="text" id="employer" readonly value="{{ $experience['employer'] ?? '' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="years-of-experience">سنوات الخبرة</label>
-                        <input type="text" id="years-of-experience" readonly
-                            value="{{ $experience['years_of_experience'] ?? '' }}">
-                    </div>
-                </div>
-
-                @endforeach
-                @else
-                <div class="container--inputs">
-                    <p>لا توجد خبرات سابقة متاحة.</p>
-                </div>
-                @endif
-            </div>
-
-
-            <h2>بيانات التواصل</h2>
-            <div class="section">
-                <div class="container--inputs">
-
-                    <div class="form-group">
-                        <label for="mobile">الهاتف المتحرك</label>
-                        <input type="tel" id="mobile" style="position: relative; right: -50px; background-color: unset;"
-                            value="{{ $membership->mobile_phone }}" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="home-phone">هاتف المنزل</label>
-                        <input type="tel" id="home-phone"
-                            style="position: relative; right: -78px; background-color: unset;"
-                            value="{{ $membership->home_phone }}" readonly>
-                    </div>
-                </div>
-                <div class="container--inputs">
-
-                    <div class="form-group">
-                        <label for="email">البريد الإلكتروني</label>
-                        <input type="email" id="email" style="color: black; width: 220px;"
-                            value="{{ $membership->email }}" readonly>
-
-                    </div>
-                    <div class="form-group">
-                        <label for="po-box">صندوق البريد</label>
-                        <input type="text" id="po-box" value="{{ $membership->po_box }}" readonly>
-                    </div>
-                </div>
-            </div>
-
-            <h2>بيانات التقاعد</h2>
-            <div class="section">
-                <div class="container--inputs">
-                    <div class="form-group">
-                        <label for="retirement-date">تاريخ التقاعد</label>
-                        <div style="font-size: 15px; background-color: unset;" id="birth-date">{{
-                            $membership->date_of_birth->format('Y-m-d') }}
-                        </div>
-                    </div>
-                    <div class="form(iboard>form-group">
-                        <label for="retirement-type">نوع التقاعد</label>
-                        <input type="text" id="po-box" value="{{ $membership->contract_type }}" readonly>
-                    </div>
-                </div>
-                @if($membership->early_reason)
-                <input type="text" id="po-box" value="{{ $membership->early_reason ?? '' }}" readonly>
-                @endif
-            </div>
-
-            <h2>متطلبات التسجيل</h2>
-            <div class="section">
-                <div class="container--inputs">
-                    @if ($memberApplication->passport_photo_path)
-                    <div class="form-group required" style="width: 30%;">
-                        <label for="passport">صورة جواز السفر <span style="color: red;">*</span></label>
-                        <button onclick="downloadDocument('passport', {{ $memberApplication->id }})">تحميل</button>
-                    </div>
-                    @endif
-                    @if ($memberApplication->national_id_photo_path)
-                    <div class="form-group required" style="width: 30%;">
-                        <label for="id-photo">صورة الهوية الشخصية <span style="color: red;">*</span></label>
-                        <button onclick="downloadDocument('national_id', {{ $memberApplication->id }})">تحميل</button>
-                    </div>
-                    @endif
-                    @if ($memberApplication->personal_photo_path)
-                    <div class="form-group required" style="width: 30%;">
-                        <label for="personal-photo">صورة شخصية <span style="color: red;">*</span></label>
-                        <button
-                            onclick="downloadDocument('personal_photo', {{ $memberApplication->id }})">تحميل</button>
-                    </div>
-                    @endif
-                </div>
-                <div class="container--inputs">
-                    @if ($memberApplication->educational_qualification_photo_path)
-                    <div class="form-group optional" style="width: 30%;">
-                        <label for="qualification">صورة من المؤهل العلمي</label>
-                        <button
-                            onclick="downloadDocument('educational_qualification', {{ $memberApplication->id }})">تحميل</button>
-                    </div>
-                    @endif
-                    @if ($memberApplication->retirement_card_photo_path)
-                    <div class="form-group required" style="width: 30%;">
-                        <label for="retirement-proof">صورة بطاقة التقاعد (إثبات التقاعد) <span
-                                style="color: red;">*</span></label>
-                        <button
-                            onclick="downloadDocument('retirement_card', {{ $memberApplication->id }})">تحميل</button>
-                    </div>
-                    @endif
-                </div>
-            </div>
-<script>
-    // دالة تحميل المستندات
+                <script>
+                    // دالة تحميل المستندات
     function downloadDocument(documentType, memberApplicationId) {
         const url = `/download-document/${documentType}/${memberApplicationId}`;
         window.location.href = url;
@@ -7426,17 +7447,17 @@
     document.addEventListener('DOMContentLoaded', function() {
         console.log('الصفحة جاهزة - جميع الدوال متاحة');
     });
-</script>
+                </script>
 
-        </div>
-        @else
-        <div style="font-size: 34px; text-align: center; padding-top: 50px; padding-bottom: 50px;">
-            لا يوجد طلب تسجيل عضوية بعد
-        </div>
-        <div style="font-size: 24px; text-align: center; padding-bottom: 50px;">
-            يمكنك التسجيل من هنا <a href="{{ route('members.membership') }}">اضافة طلب تسجيل</a>
-        </div>
-        @endif
+            </div>
+            @else
+            <div style="font-size: 34px; text-align: center; padding-top: 50px; padding-bottom: 50px;">
+                لا يوجد طلب تسجيل عضوية بعد
+            </div>
+            <div style="font-size: 24px; text-align: center; padding-bottom: 50px;">
+                يمكنك التسجيل من هنا <a href="{{ route('members.membership') }}">اضافة طلب تسجيل</a>
+            </div>
+            @endif
     </div>
 
     <x-footer-section></x-footer-section>

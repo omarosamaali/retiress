@@ -21,17 +21,18 @@ class MagazineController extends Controller
         $magazines = Magazine::latest()->paginate(10);
         return view('admin.magazines.index', compact('magazines', 'member_applications'));
     }
-    
+
     public function store(Request $request)
     {
         $request->validate([
             'title_ar' => 'required|string|max:255',
-            'member_id' => 'required|integer|exists:member_applications,id',
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'main_image' => 'nullable|image|max:2048',
             'sub_images' => 'nullable|array|max:10',
             'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'description_ar' => 'required|string',
-            'status' => 'required|boolean', // إضافة حقل الحالة
+            'status' => 'required|boolean',
         ]);
 
         try {
@@ -39,10 +40,15 @@ class MagazineController extends Controller
 
             $magazineData = [
                 'title_ar' => $request->title_ar,
+                'name' => $request->name, // إضافة name
                 'description_ar' => $request->description_ar,
-                'member_id' => $request->member_id,
-                'status' => $request->status, // استخدام القيمة من الطلب
+                'status' => $request->status,
             ];
+
+            // معالجة الـ image لو موجودة
+            if ($request->hasFile('image')) {
+                $magazineData['image'] = $request->file('image')->store('magazines', 'public');
+            }
 
             $tr = new GoogleTranslate('ar');
             $magazineModel = new Magazine();
@@ -80,36 +86,24 @@ class MagazineController extends Controller
             Magazine::create($magazineData);
 
             DB::commit();
-            return redirect()->route('admin.magazines.index')->with('success', 'تمت إضافة المجلة بنجاح!');
+            return redirect()->route('admin.magazines.index')->with('success', 'تمت إضافة المقال بنجاح!');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());
         }
     }
 
-    public function show(Magazine $magazine)
-    {
-        $targetLanguages = $this->targetLanguages;
-        return view('admin.magazines.show', compact('magazine', 'targetLanguages'));
-    }
-
-    public function edit(Magazine $magazine)
-    {
-        $targetLanguages = $this->targetLanguages;
-        $member_applications = MemberApplication::all();
-        return view('admin.magazines.edit', compact('magazine', 'targetLanguages', 'member_applications'));
-    }
-
     public function update(Request $request, Magazine $magazine)
     {
         $request->validate([
             'title_ar' => 'required|string|max:255',
-            'member_id' => 'required|integer|exists:member_applications,id',
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'main_image' => 'nullable|image|max:2048',
             'sub_images' => 'nullable|array|max:10',
             'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'description_ar' => 'required|string',
-            'status' => 'required|boolean', // إضافة حقل الحالة
+            'status' => 'required|boolean',
         ]);
 
         try {
@@ -117,10 +111,23 @@ class MagazineController extends Controller
 
             $magazineData = [
                 'title_ar' => $request->title_ar,
+                'name' => $request->name,
                 'description_ar' => $request->description_ar,
-                'member_id' => $request->member_id,
-                'status' => $request->status, // استخدام القيمة من الطلب
+                'status' => $request->status,
             ];
+
+            // معالجة الـ image
+            if ($request->hasFile('image')) {
+                if ($magazine->image) {
+                    Storage::disk('public')->delete($magazine->image);
+                }
+                $magazineData['image'] = $request->file('image')->store('magazines', 'public');
+            } elseif ($request->boolean('remove_image')) {
+                if ($magazine->image) {
+                    Storage::disk('public')->delete($magazine->image);
+                    $magazineData['image'] = null;
+                }
+            }
 
             $tr = new GoogleTranslate('ar');
             $magazineModel = new Magazine();
@@ -174,12 +181,27 @@ class MagazineController extends Controller
             $magazine->update($magazineData);
 
             DB::commit();
-            return redirect()->route('admin.magazines.index')->with('success', 'تم تحديث المجلة بنجاح!');
+            return redirect()->route('admin.magazines.index')->with('success', 'تم تحديث المقال بنجاح!');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());
         }
     }
+
+    public function show(Magazine $magazine)
+    {
+        $targetLanguages = $this->targetLanguages;
+        return view('admin.magazines.show', compact('magazine', 'targetLanguages'));
+    }
+
+    public function edit(Magazine $magazine)
+    {
+        $targetLanguages = $this->targetLanguages;
+        $member_applications = MemberApplication::all();
+        return view('admin.magazines.edit', compact('magazine', 'targetLanguages', 'member_applications'));
+    }
+
+
 
     public function destroy(Magazine $magazine)
     {
@@ -198,6 +220,6 @@ class MagazineController extends Controller
 
         $magazine->delete();
 
-        return redirect()->route('admin.magazines.index')->with('success', 'تم حذف المجلة بنجاح!');
+        return redirect()->route('admin.magazines.index')->with('success', 'تم حذف المقال بنجاح!');
     }
 }

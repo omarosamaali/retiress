@@ -70,7 +70,6 @@
         border-radius: 5px;
         border: 1px solid #ddd;
     }
-
 </style>
 @endpush
 
@@ -98,7 +97,8 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="title_ar" class="form-label">عنوان المقال (بالعربية)</label>
-                    <input type="text" class="form-control" id="title_ar" name="title_ar" value="{{ old('title_ar') }}" required>
+                    <input type="text" class="form-control" id="title_ar" name="title_ar" value="{{ old('title_ar') }}"
+                        required>
                     @error('title_ar')
                     <div class="text-white">{{ $message }}</div>
                     @enderror
@@ -108,22 +108,28 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="member_id" class="form-label">إسم العضو</label>
-                  <select name="member_id" id="member_id" class="form-select" required>
-                        <option value="">اختر العضو</option>
-                        @if(isset($member_applications))
-                        @foreach ($member_applications as $member_application)
-                        <option value="{{ $member_application->id }}">{{ $member_application->full_name }}</option>
-                        @endforeach
-                        @endif
-                    </select>
-                    @error('member_id')
+                    <input type="text" class="form-control" id="name" name="name" value="{{ old('title_ar') }}"
+                        required> @error('name')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>
                     @enderror
                 </div>
             </div>
-
+            
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="avatar_image_input" class="form-label">صورة العضو</label>
+                    <input type="file" class="form-control" id="avatar_image_input" name="image"
+                    required>
+                    @error('image')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                    <img id="avatar_image_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: {{ old('image') ? 'block' : 'none' }};">
+                </div>
+            </div>
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="main_image_input" class="form-label">الصورة الرئيسية</label>
@@ -131,14 +137,16 @@
                     @error('main_image')
                     <div class="text-white">{{ $message }}</div>
                     @enderror
-                    <img id="main_image_preview" src="#" alt="معاينة الصورة" class="news-preview" style="display: {{ old('main_image') ? 'block' : 'none' }};">
+                    <img id="main_image_preview" src="#" alt="معاينة الصورة" class="news-preview"
+                        style="display: {{ old('main_image') ? 'block' : 'none' }};">
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="sub_images_input" class="form-label">الصور الفرعية</label>
-                    <input type="file" class="form-control" name="sub_images[]" id="sub_images_input" accept="image/*" multiple>
+                    <input type="file" class="form-control" name="sub_images[]" id="sub_images_input" accept="image/*"
+                        multiple>
                     @error('sub_images')
                     <div class="text-white">{{ $message }}</div>
                     @enderror
@@ -153,7 +161,8 @@
             <div class="col-md-12">
                 <div class="mb-3">
                     <label for="description_ar" class="form-label">الموضوع (بالعربية)</label>
-                    <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar') }}</textarea>
+                    <textarea class="form-control" id="description_ar" name="description_ar" rows="4"
+                        required>{{ old('description_ar') }}</textarea>
                     @error('description_ar')
                     <div class="text-white">{{ $message }}</div>
                     @enderror
@@ -219,16 +228,21 @@
                     @endif --}}
                 </td>
                 <td>
-                    <span class="badge {{ property_exists($item, 'status_badge_class') ? $item->status_badge_class : '' }}">
-                        {{ property_exists($item, 'status_text') ? $item->status_text : '' }}
+                    <span
+                        style="color: #212529;"
+                        class="badge {{ property_exists($item, 'status') ? $item->status: '' }}">
+                        {{ property_exists($item, 'status') ? $item->status : '' }}
+                        {{ $item->status == 1 ? 'نشط' : 'غير نشط' }}
                     </span>
                 </td>
                 <td>
                     <div class="action-buttons">
-                        <a href="{{ route('admin.magazines.show', $item->id) }}" class="btn btn-info btn-sm" title="عرض">
+                        <a href="{{ route('admin.magazines.show', $item->id) }}" class="btn btn-info btn-sm"
+                            title="عرض">
                             <i class="fas fa-eye"></i>
                         </a>
-                        <a href="{{ route('admin.magazines.edit', $item->id) }}" class="btn btn-warning btn-sm" title="تعديل">
+                        <a href="{{ route('admin.magazines.edit', $item->id) }}" class="btn btn-warning btn-sm"
+                            title="تعديل">
                             <i class="fas fa-edit"></i>
                         </a>
                         <button class="btn btn-danger btn-sm" title="حذف" onclick="confirmDelete({{ $item->id }})">
@@ -300,6 +314,22 @@
             preview.style.display = 'none';
         }
     });
+
+    document.getElementById('avatar_image_input').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('avatar_image_preview');
+        
+        if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+        } else {
+        preview.style.display = 'none';
+        }
+        });
 
     document.getElementById('sub_images_input').addEventListener('change', function(event) {
         const files = event.target.files;

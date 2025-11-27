@@ -115,7 +115,6 @@
         font-weight: bold;
         cursor: pointer;
     }
-
 </style>
 @endpush
 
@@ -131,7 +130,13 @@
             {{-- عرض اسم العضو مباشرةً --}}
             <div class="detail-item">
                 <strong class="text-black">إسم العضو:</strong>
-                <span>{{ $magazine->member ? $magazine->member->full_name : 'غير متوفر' }}</span>
+                <span>{{ $magazine->name }}</span>
+            </div>
+            <div class="detail-item" style="display: flex; ">
+                <strong class="text-black">صورة العضو:</strong>
+                <span>
+                    <img src="{{ asset('storage/' . $magazine->image) }}" class="sub-image sub-image-preview w-20 h-20" style="border-radius: 50%;" alt="">
+                </span>
             </div>
             <div class="detail-item">
                 <strong class="text-black">عنوان المجلة (عربي):</strong>
@@ -161,7 +166,8 @@
                 <strong class="text-black">الصورة الرئيسية:</strong>
                 @if ($magazine->main_image)
                 <div>
-                    <img src="{{ asset('storage/' . $magazine->main_image) }}" alt="{{ $magazine->title_ar }}" class="detail-image mt-2 main-image-preview">
+                    <img src="{{ asset('storage/' . $magazine->main_image) }}" alt="{{ $magazine->title_ar }}"
+                        class="detail-image mt-2 main-image-preview">
                 </div>
                 @else
                 <span>لا توجد صورة</span>

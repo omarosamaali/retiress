@@ -145,7 +145,6 @@ class MemberApplicationsController extends Controller
     public function renew(Request $request)
     {
         try {
-            // تسجيل البيانات المستلمة للتشخيص
             \Log::info('Renewal request received', $request->all());
 
             if (!Auth::check()) {
@@ -157,7 +156,6 @@ class MemberApplicationsController extends Controller
                 'membership_id_kw' => 'required|string|max:255',
                 'national_id_kw' => 'required|string|max:255',
                 'email_kw' => 'required|email|max:255',
-                'pension' => 'nullable|string|max:255',
             ]);
 
             \Log::info('Validation passed', $validated);
@@ -179,38 +177,22 @@ class MemberApplicationsController extends Controller
 
             \Log::info('Application found', ['id' => $application->id]);
 
-            // Create a new application for renewal
-            $newApplicationData = $application->toArray();
+            // تحديث تاريخ انتهاء العضوية بإضافة سنة
+            $currentExpirationDate = \Carbon\Carbon::parse($application->expiration_date);
+            $newExpirationDate = $currentExpirationDate->addYear();
 
-            // إزالة الحقول التي لا نريد نسخها
-            unset(
-                $newApplicationData['id'],
-                $newApplicationData['created_at'],
-                $newApplicationData['updated_at']
-            );
+            $application->expiration_date = $newExpirationDate;
+            $application->save();
 
-            // Generate new membership number
-            $newMembershipNumber = $this->generateMembershipNumber();
-            \Log::info('Generated membership number', ['number' => $newMembershipNumber]);
-
-            $newApplicationData['membership_number'] = $newMembershipNumber;
-            $newApplicationData['pension'] = $validated['pension'] ?? $application->pension;
-            $newApplicationData['user_id'] = Auth::id();
-
-            // إزالة أي حقول nullable قد تسبب مشاكل
-            $newApplicationData = array_filter($newApplicationData, function ($value) {
-                return $value !== null;
-            });
-
-            \Log::info('Creating new application', $newApplicationData);
-
-            $renewedApplication = MemberApplication::create($newApplicationData);
-
-            \Log::info('Application created successfully', ['id' => $renewedApplication->id]);
+            \Log::info('Application renewed successfully', [
+                'id' => $application->id,
+                'new_expiration_date' => $newExpirationDate->format('Y-m-d')
+            ]);
 
             return response()->json([
-                'message' => 'تم تأكيد تجديد عضويتك بنجاح! رقم العضوية الجديد هو: ' . $renewedApplication->membership_number,
-                'membership_number' => $renewedApplication->membership_number
+                'message' => 'تم تجديد عضويتك بنجاح! تاريخ الانتهاء الجديد: ' . $newExpirationDate->format('Y-m-d'),
+                'membership_number' => $application->membership_number,
+                'expiration_date' => $newExpirationDate->format('Y-m-d')
             ], 200);
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::error('Validation error', ['errors' => $e->errors()]);
@@ -218,14 +200,6 @@ class MemberApplicationsController extends Controller
                 'error' => 'بيانات غير صحيحة',
                 'details' => $e->errors()
             ], 422);
-        } catch (\Illuminate\Database\QueryException $e) {
-            \Log::error('Database error in renewal', [
-                'message' => $e->getMessage(),
-                'code' => $e->getCode()
-            ]);
-            return response()->json([
-                'error' => 'حدث خطأ في قاعدة البيانات. الرجاء التحقق من البيانات والمحاولة مرة أخرى.'
-            ], 500);
         } catch (\Exception $e) {
             \Log::error('Renewal error', [
                 'message' => $e->getMessage(),

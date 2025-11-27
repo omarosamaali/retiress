@@ -111,7 +111,7 @@ return [
     'news_not_found' => 'عذراً، لم يتم العثور على هذا الخبر.',
     'sub_image_alt_fallback' => 'صورة فرعية للخبر',
     'magazine_page_title' => 'منبر الخبرات',
-    'view_magazine' => 'عرض الالمقال',
+    'view_magazine' => 'عرض المقال',
     'publication_date_short' => 'تاريخ النشر', // Shortened key for 'تاريخ النشر'
     'magazine_image_alt_fallback' => 'صورة المقال',
     'magazine_details_page_title' => 'تفاصيل الإصدار',
