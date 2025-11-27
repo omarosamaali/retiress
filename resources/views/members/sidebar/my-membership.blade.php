@@ -5,7 +5,7 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/images/fav.png') }}" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width; initial-scale=1;" />
-    <title>من نحن</title>
+    <title>عضويتي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/other-devices.css') }}" />
@@ -7096,10 +7096,14 @@
     <x-auth-header></x-auth-header>
 
     <div id="in-cont" style="padding-top: 150px">
-        @if($membership->expiration_date && \Carbon\Carbon::parse($membership->expiration_date)->diffInDays(now()) <= 90) 
-            <a class="main-btn" href="{{ route('members.membership-show') }}">تجديد</a>
-        @endif
+@php
+$expirationDate = \Carbon\Carbon::parse($membership?->expiration_date);
+$daysRemaining = now()->diffInDays($expirationDate, false); // false عشان يرجع رقم سالب لو التاريخ فات
+@endphp
 
+@if($membership?->expiration_date && $daysRemaining >= 0 && $daysRemaining <= 90) <a class="main-btn"
+    href="{{ route('members.membership-show') }}">تجديد</a>
+    @endif
             @if($membership)
             <div class="container" style="margin-top: 0px !important;">
                 <h1 class="profile-title">عضويتي</h1>
@@ -7107,7 +7111,7 @@
                     <h3 style="border-bottom: 0px;"> رقم العضوية : {{ $membership->membership_number }}</h3>
                     <h3 style="border-bottom: 0px; color: #2c3e50; font-weight: 600;">
                         تاريخ الإنتهاء :
-                        @if($membership->expiration_date)
+                        @if($membership?->expiration_date)
                         {{ \Carbon\Carbon::parse($membership->expiration_date)->locale('ar')->translatedFormat('j F Y')
                         }}
                         @else

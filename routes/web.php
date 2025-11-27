@@ -178,8 +178,14 @@ Route::get('/members/membership-show', function () {
 
 Route::get('/members/membership', function () {
     $sections = Membership::all();
-    
-    return view('members.sidebar.membership', compact('sections')); 
+    // Get the member application for the currently authenticated user
+    $memberApplication = MemberApplication::where('user_id', Auth::user()->id)->first();
+
+    // Check if a membership application was found for the user
+    $membership = $memberApplication; // Assuming membership is the same as memberApplication
+
+
+    return view('members.sidebar.membership', compact('sections', 'membership')); 
 })->name('members.membership');
 
 Route::get('/members/committees', function () {

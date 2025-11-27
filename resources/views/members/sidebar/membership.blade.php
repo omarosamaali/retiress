@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="icon" type="image/png" href="{{ asset('assets/images/fav.png') }}" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -71,18 +72,24 @@
         p {
             line-height: 29px !important;
         }
-
     </style>
 </head>
+
 <body>
     <x-guest-header></x-guest-header>
 
     <div class="membership" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
         <div style="margin-bottom: 20px;">
             @auth
-            <a href="{{ route('members.membership-show') }}" id="reg" class="btn-qhr btn-primary-t6n">
-                {{ __('app.register') }}
+            @if($membership)
+            <a href="{{ route('members.my-membership') }}" id="reg" class="btn-qhr btn-primary-t6n">
+                إضغط لتجديد العضوية
             </a>
+            @else
+            <a href="{{ route('members.membership-show') }}" id="reg" class="btn-qhr btn-primary-t6n">
+                إضغط للتسجيل
+            </a>
+            @endif
             @else
             <a href="#" id="reg" class="btn-qhr btn-primary-t6n">{{ __('app.register') }}</a>
             @endauth
@@ -199,19 +206,26 @@
                 </div>
             </div>
 
-            <a href="{{ route('magazines.feature') }}" id="reg" style="margin-top: 20px;" class="btn-qhr btn-primary-t6n">
+            <a href="{{ route('magazines.feature') }}" id="reg" style="margin-top: 20px;"
+                class="btn-qhr btn-primary-t6n">
                 {{ __('app.مميزات العضوية') }}
             </a>
 
-            <h5 class="title--t3n">{{ app()->getLocale() == 'ar' ? $sections[7]->title_ar : $section[7]->title_en }}</h5>
+            <h5 class="title--t3n">{{ app()->getLocale() == 'ar' ? $sections[7]->title_ar : $section[7]->title_en }}
+            </h5>
             @php
             $text = app()->getLocale() == 'ar' ? $sections[7]->description_ar : $sections[7]->description_en;
             $lines = preg_split('/\r\n|\r|\n/', trim($text));
 
-            $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" style="margin-right: -3px; font-size: 38px; top: 7px; position: relative;" viewBox="0 0 24 24" fill="none">
-                <path d="M8 7V17H12C14.8 17 17 14.8 17 12C17 9.2 14.8 7 12 7H8Z" stroke="#d4af37" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M6.5 11H18.5" stroke="#d4af37" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M6.5 13H12.5H18.5" stroke="#d4af37" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+            $icon = '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+                style="margin-right: -3px; font-size: 38px; top: 7px; position: relative;" viewBox="0 0 24 24"
+                fill="none">
+                <path d="M8 7V17H12C14.8 17 17 14.8 17 12C17 9.2 14.8 7 12 7H8Z" stroke="#d4af37" stroke-width="1.5"
+                    stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M6.5 11H18.5" stroke="#d4af37" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                <path d="M6.5 13H12.5H18.5" stroke="#d4af37" stroke-width="1.5" stroke-miterlimit="10"
+                    stroke-linecap="round" stroke-linejoin="round"></path>
             </svg>';
             @endphp
 
@@ -262,4 +276,5 @@
 
     </script>
 </body>
+
 </html>
