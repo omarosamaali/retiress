@@ -16,20 +16,20 @@
                         @csrf
                         @method('PUT')
 
-                        <div class="form-group mb-4">
-                            <label for="member_id">اسم العضو</label>
-                            <select name="member_id" id="member_id" class="form-control select2" required>
-                                <option value="">اختر العضو</option>
-                                @foreach($member_applications as $member)
-                                <option value="{{ $member->id }}" {{ $feature->member_id == $member->id ? 'selected' : '' }}>
-                                    {{ $member->full_name }}
-                                </option>
-                                @endforeach
-                            </select>
-                            @error('member_id')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        <!--<div class="form-group mb-4">-->
+                        <!--    <label for="member_id">اسم العضو</label>-->
+                        <!--    <select name="member_id" id="member_id" class="form-control select2">-->
+                        <!--        <option value="">اختر العضو</option>-->
+                        <!--        @foreach($member_applications as $member)-->
+                        <!--        <option value="{{ $member->id }}" {{ $feature->member_id == $member->id ? 'selected' : '' }}>-->
+                        <!--            {{ $member->full_name }}-->
+                        <!--        </option>-->
+                        <!--        @endforeach-->
+                        <!--    </select>-->
+                        <!--    @error('member_id')-->
+                        <!--    <span class="text-danger">{{ $message }}</span>-->
+                        <!--    @enderror-->
+                        <!--</div>-->
 
                         <div class="form-group mb-4">
                             <label for="title_ar">عنوان المقال (عربي)</label>

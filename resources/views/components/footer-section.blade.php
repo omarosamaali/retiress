@@ -147,22 +147,22 @@
 
 
                     <ul class="social-set" style="margin-top: 10px;">
-                        @if($settings->tiktok_url)
+                        @if($settings?->tiktok_url)
                         <li>
                             <a class="sociali" href="{{ $settings?->tiktok_url }}" target="_blank" aria-label="Twitter">
                                 <i class="footer-icon fa fa-twitter fa-fw custom-icon" title="Twitter"></i></a>
                         </li>
                         @endif
-                        @if($settings->instagram_url)
+                        @if($settings?->instagram_url)
                         <li><a class="sociali" href="{{ $settings?->instagram_url }}" target="_blank" aria-label="Instagram">
                                 <i class="footer-icon fa fa-instagram fa-fw custom-icon" title="Instagram"></i></a></li>
                         @endif
-                        @if($settings->facebook_url)
+                        @if($settings?->facebook_url)
                         <li><a class="sociali" href="{{ $settings?->facebook_url }}" target="_blank" aria-label="Facebook">
                                 <i style="    left: 0px;
     top: 1px;" class="footer-icon fa fa-facebook-square fa-fw custom-face" title="Facebook"></i></a></li>
                         @endif
-                        @if($settings->youtube_url)
+                        @if($settings?->youtube_url)
 
                         <li><a style="
     top: -5px;

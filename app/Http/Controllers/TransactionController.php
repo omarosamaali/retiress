@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class TransactionController extends Controller
@@ -51,24 +52,17 @@ class TransactionController extends Controller
 
     public function subscribe(Request $request, Service $service)
     {
-        // الشرط الجديد: التحقق من متطلبات العضوية 
         if ($service->membership_required && !Auth::user()->hasActiveMembership()) {
             return redirect()->back()->with('error', __('app.membership_required_to_subscribe'));
         }
-
-        // الكود الأصلي: التحقق من وجود اشتراك سابق
         $existingTransaction = Transaction::where('user_id', Auth::id())
             ->where('service_id', $service->id)
             ->whereIn('status', ['pending', 'waiting_for_payment', 'waiting_for_activation', 'active'])
             ->exists();
-
         if ($existingTransaction) {
             return redirect()->route('members.record')->with('error', __('app.already_subscribed'));
         }
-
-        // باقي الكود: إنشاء المعاملة
         $initialStatus = 'pending';
-
         Transaction::create([
             'user_id' => Auth::id(),
             'event_id' => null,
@@ -76,7 +70,9 @@ class TransactionController extends Controller
             'status' => $initialStatus,
             'type' => $request->type,
         ]);
-
+        Mail::raw('رائع تم الإشتراك في ' . $service->name_ar . ' بنجاح', function ($message) use ($service) {
+            $message->to([Auth::user()->email, 'contact@uaeretired.ae'])->subject('تم الإشتراك في خدمة  ');
+        });
         return redirect()->route('members.record')->with('success', __('app.subscription_success'));
     }
 
@@ -101,7 +97,9 @@ class TransactionController extends Controller
             'status' => $initialStatus,
             'type' => $request->type,
         ]);
-
+        Mail::raw('رائع تم الاشتراك في ' . $event->title_ar . ' بنجاح', function ($message) use ($event) {
+            $message->to([Auth::user()->email, 'contact@uaeretired.ae'])->subject('تم الإشتراك في فعالية ');
+        });
         return redirect()->route('members.record')->with('success', __('app.event_subscription_success'));
     }
 
@@ -125,6 +123,9 @@ class TransactionController extends Controller
                 } else {
                     $transaction->status = 'active';
                     $message = 'تمت الموافقة وتفعيل الخدمة بنجاح.';
+                    Mail::raw('رائع تم تفعيل ' . $transaction->service->name_ar . ' بنجاح يمكنك استخدام الخدمة', function ($message) use ($transaction) {
+                        $message->to([$transaction->user->email, 'contact@uaeretired.ae'])->subject('تم تفعيل فعالية ');
+                    });
                 }
             } elseif ($transaction->event) {
                 if ($transaction->event->price > 0) {
@@ -133,6 +134,9 @@ class TransactionController extends Controller
                 } else {
                     $transaction->status = 'active';
                     $message = 'تمت الموافقة وتفعيل الفعالية بنجاح.';
+                    Mail::raw('رائع تم تفعيل ' . $transaction->event->title_ar . ' بنجاح يمكنك استخدام الخدمة', function ($message) use ($transaction) {
+                        $message->to([$transaction->user->email, 'contact@uaeretired.ae'])->subject('تم تفعيل فعالية ');
+                    });
                 }
             } else {
                 return redirect()->back()->with('error', 'لا يمكن تحديد نوع المعاملة.');

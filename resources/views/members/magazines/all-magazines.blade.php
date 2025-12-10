@@ -20,6 +20,7 @@
     <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
     <link rel="icon" href="http://127.0.0.1:8000/assets/img/Group.png" type="image/x-icon">
+        <link rel="favicon" href="{{ asset('assets/img/Group.png') }}" type="image/x-icon">
 
     <style>
         body:not(.layout-admin) section {
@@ -5144,6 +5145,13 @@
                         </div>
                         <figure class="m-d29 text-tfh rou-xnf overflow-g44">
                             <img class="img-5ia" src="{{ asset('storage/' . $magazine->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($magazine->name_ar ?? __('app.magazine_image_alt_fallback')) : ($magazine->name_en ?? __('app.magazine_image_alt_fallback')) }}">
+                         
+                            <h2 class="magazine-title">
+                                <div style="font-size: 15px; line-height: 17px; margin-top: 11px; padding: 0px 5px;">
+                                    {{ Str::limit(app()->getLocale() == 'ar' ? $magazine->title_ar : $magazine->title_en, 30) }}
+                                </div>
+                            </h2>
+
                             <span style="font-size: 15px;">{{ __('app.publication_date_short') }} : {{ \Carbon\Carbon::parse($magazine->created_at)->translatedFormat('d/m/Y') }}</span>
                         </figure>
                     </div>

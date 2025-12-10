@@ -109,8 +109,10 @@
 
 <div class="table-container">
     <div class="table-header">
-        <h3 class="title-table">أحدث البرامج والفعاليات</h3>
+        <h3 class="title-table">أحدث البرامج والفعاليات</h3
+        @if(Auth::user()->role == 'مدير')
         <a href="{{ route('admin.event.index') }}" class="preview-btn">إنشاء فعالية</a>
+        @endif
     </div>
         <table>
         <thead>

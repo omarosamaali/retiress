@@ -6,6 +6,7 @@ use App\Models\MemberApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class MemberApplicationsController extends Controller
 {
@@ -38,7 +39,6 @@ class MemberApplicationsController extends Controller
             return redirect()->back()->with('error', 'لقد قمت بتقديم طلب بالفعل. لا يمكن تقديم أكثر من طلب واحد.');
         }
 
-        // Validate the input data, including the new pension field
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'nationality' => 'required|string|max:255',
@@ -55,7 +55,7 @@ class MemberApplicationsController extends Controller
             'retirement_date' => 'nullable|date',
             'contract_type' => 'nullable|string|in:نظامي,مبكر',
             'early_reason' => 'nullable|string|max:500',
-            'pension' => 'nullable|string|max:255', // Added validation for pension
+            'pension' => 'nullable|string|max:255',
             'passport_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
             'national_id_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
             'personal_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
@@ -71,10 +71,7 @@ class MemberApplicationsController extends Controller
             'previous_experience.*.years_of_experience' => 'nullable|integer',
         ]);
 
-        // Get the authenticated user's ID
         $user_id = Auth::id();
-
-        // Prepare data for creation
         $data = $request->except([
             'passport_photo',
             'national_id_photo',
@@ -85,7 +82,6 @@ class MemberApplicationsController extends Controller
             'previous_experience',
         ]);
 
-        // Handle file uploads
         $fileFields = [
             'passport_photo',
             'national_id_photo',
@@ -101,12 +97,9 @@ class MemberApplicationsController extends Controller
             }
         }
 
-        // Add user_id, membership_number, and pension
         $data['user_id'] = $user_id;
         $data['membership_number'] = $this->generateMembershipNumber();
-        $data['pension'] = $request->input('pension'); // Include pension in the data
-
-        // Handle professional experiences
+        $data['pension'] = $request->input('pension');
         if ($request->has('professional_experience')) {
             $cleanedExperiences = [];
             foreach ($request->input('professional_experience') as $experienceData) {
@@ -119,7 +112,6 @@ class MemberApplicationsController extends Controller
             $data['professional_experiences'] = [];
         }
 
-        // Handle previous experiences
         if ($request->has('previous_experience')) {
             $cleanedPreviousExperiences = [];
             foreach ($request->input('previous_experience') as $experienceData) {
@@ -132,10 +124,14 @@ class MemberApplicationsController extends Controller
             $data['previous_experience'] = [];
         }
 
-        // Create the membership application
         $application = MemberApplication::create($data);
-
-        // Return response
+        Mail::raw(
+            'تم تقديم طلب العضوية بنجاح! رقم العضوية هو: ' . $application->membership_number,
+            function ($message) use ($application) {
+                $message->to([$application->email, 'contact@uaeretired.ae'])
+                ->subject('تم تقديم طلب العضوية بنجاح');
+            }
+        );
         return redirect()->back()->with('success', 'تم تقديم طلب العضوية بنجاح! رقم العضوية هو: ' . $application->membership_number);
     }
 
@@ -145,22 +141,14 @@ class MemberApplicationsController extends Controller
     public function renew(Request $request)
     {
         try {
-            \Log::info('Renewal request received', $request->all());
-
             if (!Auth::check()) {
                 return response()->json(['error' => 'يجب تسجيل الدخول لتجديد عضويتك.'], 401);
             }
-
-            // Validate renewal form data
             $validated = $request->validate([
                 'membership_id_kw' => 'required|string|max:255',
                 'national_id_kw' => 'required|string|max:255',
                 'email_kw' => 'required|email|max:255',
             ]);
-
-            \Log::info('Validation passed', $validated);
-
-            // Find the existing application
             $application = MemberApplication::where('membership_number', $validated['membership_id_kw'])
                 ->where('national_id', $validated['national_id_kw'])
                 ->where('email', $validated['email_kw'])
@@ -189,11 +177,21 @@ class MemberApplicationsController extends Controller
                 'new_expiration_date' => $newExpirationDate->format('Y-m-d')
             ]);
 
+            Mail::raw(
+                'تم تقديم طلب تجديد العضوية بنجاح! رقم العضوية هو: ' . $application->membership_number,
+                function ($message) use ($application) {
+                    $message->to([$application->email, 'contact@uaeretired.ae'])
+                        ->subject('طلب تجديد العضوية');
+                }
+            );
+
             return response()->json([
-                'message' => 'تم تجديد عضويتك بنجاح! تاريخ الانتهاء الجديد: ' . $newExpirationDate->format('Y-m-d'),
+                'message' => 'تم ارسال طلب التجديد بنجاح وسيتم التواصل معكم بالبريد الإلكتروني المسجل لاستكمال الاجراءات',
                 'membership_number' => $application->membership_number,
                 'expiration_date' => $newExpirationDate->format('Y-m-d')
             ], 200);
+
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::error('Validation error', ['errors' => $e->errors()]);
             return response()->json([

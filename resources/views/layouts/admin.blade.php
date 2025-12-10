@@ -276,12 +276,12 @@
                 <i class="fas fa-home"></i>
                 الرئيسية
             </a>
-
+            @if(Auth::user()->role == 'مدير')
             <a class="nav-link" href="{{ route('admin.users.index') }}">
                 <i class="fas fa-users"></i>
                 المستخدمين
             </a>
-
+            @endif
 
             {{-- قائمة الجمعية --}}
             @can('isAdmin')
@@ -420,10 +420,12 @@
             </div>
             @endcan
 
+            @if(Auth::user()->role == 'مدير')
             <a class="nav-link" href="{{ route('admin.chat') }}">
                 <i class="fas fa-message"></i>
                 المراسلات
             </a>
+            @endif
 
             <a class="nav-link" href="{{ route('admin.contact-messages') }}">
                 <i class="fas fa-message"></i>

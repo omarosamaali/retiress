@@ -21,8 +21,11 @@
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-
     <style>
+        div:where(.swal2-container).swal2-center>.swal2-popup {
+            font-size: 15px;
+        }
+
         #newMembershipContent {
             display: none;
             /* مخفي افتراضيًا */
@@ -2852,7 +2855,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
     <script>
-document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
     // كود معاينة الصور
     function setupImagePreview(inputId, previewId) {
         const inputElement = document.getElementById(inputId);

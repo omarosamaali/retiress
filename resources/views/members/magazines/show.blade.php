@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/amazingslider-2.css') }}">
     <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
     <link rel="icon" href="http://127.0.0.1:8000/assets/img/Group.png" type="image/x-icon">
+        <link rel="favicon" href="{{ asset('assets/img/Group.png') }}" type="image/x-icon">
 
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
     <style>
@@ -38,7 +39,7 @@
     <x-guest-header></x-guest-header>
     <div id="in-cont" class="main-content">
         <section style="padding-top: 50px !important; background: unset ! important;" class="magazine-section">
-            <h4 style="text-align: center; font-size: 27px; font-weight: bold;">مميزات العضوية</h4>
+            <h4 style="text-align: center; font-size: 27px; font-weight: bold;">منبر الخبراء</h4>
             <div class="container">
                 @if($magazines)
                 <div class="magazine-card" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
@@ -51,6 +52,10 @@
                                 <img src="{{ asset('images/default-magazine.jpg') }}" alt="صورة المجلة الافتراضية">
                                 @endif
                             </div>
+                        </div>
+                        <div style="margin-top: 30px">
+                            <img style="width: 80px; height: 80px; border-radius: 50%;" src="{{ asset('storage/' . $magazines->image) }}" alt="">
+                            <span style="margin-right: 8px">{{ $magazines->name }}</span>
                         </div>
                         <div class="col-md-6 magazine-info">
                             <h2 class="magazine-title">
@@ -258,9 +263,9 @@
             }
 
             .magazine-description {
-                font-size: 1rem;
-                color: #555;
-                line-height: 1.8;
+                font-size: 1.3rem;
+                color: #2c2b2b;
+                line-height: 46px !important;
                 margin-top: 20px;
             }
 

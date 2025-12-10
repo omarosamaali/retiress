@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Console\Scheduling\Schedule;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -11,16 +12,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // إضافة الـ middleware لكل الـ web routes
         $middleware->web(append: [
             \App\Http\Middleware\Localization::class,
         ]);
-
-        // تسجيل alias للـ middleware
-        // $middleware->alias([
-        //     'localization' => \App\Http\Middleware\Localization::class,
-        // ]);
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        $schedule->command('memberships:update-expired')->daily();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->create();

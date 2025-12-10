@@ -9,6 +9,49 @@
         box-sizing: border-box;
     }
 
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        height: 85vh;
+    }
+
+    .row {
+        display: flex;
+        height: 100%;
+    }
+
+    .col-md-8 {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: #f8fafc;
+        height: 100%;
+    }
+
+    #messages {
+        flex: 1;
+        padding: 20px 30px;
+        padding-bottom: 20px;
+        overflow-y: auto;
+        background: #f1f5f9;
+        max-height: calc(85vh - 200px);
+    }
+
+    #send-message {
+        padding: 20px 30px;
+        background: white;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         min-height: 100vh;
@@ -186,6 +229,9 @@
         display: flex;
         gap: 15px;
         align-items: center;
+        position: absolute;
+        bottom: 0px;
+        width: 67%;
     }
 
     .form-control {
@@ -320,10 +366,10 @@
             opacity: 0.8;
         }
     }
-
 </style>
 
 @section( 'content')
+
 <body>
     <div id="app">
         <div class="container">
@@ -365,7 +411,7 @@
 
 
     <script>
-                document.querySelectorAll('#users li').forEach(user => {
+        document.querySelectorAll('#users li').forEach(user => {
                 user.addEventListener('click', function() {
                 // إضافة active class للتصميم
                 document.querySelectorAll('#users li').forEach(u => u.classList.remove('active'));
@@ -456,6 +502,7 @@ messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
     </script>
 </body>
+
 </html>
 
 

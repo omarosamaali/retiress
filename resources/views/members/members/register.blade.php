@@ -737,6 +737,8 @@
                     <p class="b-r8w">{{ __('app.register_new_account') }}</p>
                     <div class="p-72h rou-kih shadow-eoy">
                         <div class="label-dav mb-os5">
+                                                    <input type="hidden" name="role" value="مستخدم">
+
                             <input placeholder="{{ __('app.name_placeholder') }}" id="name" name="name" type="text" class="form-control-k7o fsbsy" required>
                             <div class="error-message" id="name-error"></div>
                         </div>
@@ -806,41 +808,54 @@
                 });
             }
 
-            // إرسال النموذج عبر AJAX
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                resetErrors();
-
-                const formData = new FormData(this);
-
-                fetch("{{ route('members.register.store') }}", {
-                        method: 'POST'
-                        , body: formData
-                        , headers: {
-                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
-                        }
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(error => {
-                                throw error;
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        form.reset();
-                        window.location.href = "{{ route('members.login') }}";
-                    })
-                    .catch(error => {
-                        if (error.errors) {
-                            displayErrors(error.errors);
-                        } else {
-                            alert('حدث خطأ أثناء تسجيل الحساب');
-                            console.error('Error:', error);
-                        }
-                    });
-            });
+      form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    resetErrors();
+    
+    const formData = new FormData(this);
+    
+    fetch("{{ route('members.register.store') }}", {
+    method: 'POST',
+    body: formData,
+    headers: {
+    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+    'Accept': 'application/json' // مهم جداً!
+    }
+    })
+    .then(response => {
+    // Check if response is JSON
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.indexOf("application/json") !== -1) {
+    return response.json().then(data => {
+    if (!response.ok) {
+    throw data;
+    }
+    return data;
+    });
+    } else {
+    // If not JSON, it's probably an HTML error page
+    return response.text().then(html => {
+    console.error('Server returned HTML instead of JSON:', html);
+    throw new Error('خطأ في الاتصال بالخادم. يرجى التحقق من سجلات الأخطاء.');
+    });
+    }
+    })
+    .then(data => {
+    if (data.success) {
+    alert(data.message);
+    form.reset();
+    window.location.href = data.redirect || "{{ route('members.login') }}";
+    }
+    })
+    .catch(error => {
+    console.error('Full Error:', error);
+    if (error.errors) {
+    displayErrors(error.errors);
+    } else {
+    alert(error.message || 'حدث خطأ أثناء تسجيل الحساب');
+    }
+    });
+    });
 
             // تحقق من الإدخالات في الوقت الفعلي
             const inputs = form.querySelectorAll('input');
@@ -856,8 +871,6 @@
         });
 
     </script>
-
-
     </div>
 </body>
 

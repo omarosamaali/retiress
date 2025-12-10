@@ -15,8 +15,8 @@ class DashboardController extends Controller
     public function __invoke(Request $request)
     {
 
-        $transactions = Transaction::whereNotIn('status', ['active', 'deactivated'])->get();
-        $memberships = MemberApplication::where('status', '!=', 4)->get();
+        $transactions = Transaction::whereNotIn('status', ['active', 'deactivated'])->paginate(5);
+        $memberships = MemberApplication::where('status', '!=', 4)->paginate(5);
 
         $events = Event::latest()->where('status', 1)->limit(3)->get();
         $services = Service::latest()->where('status', 1)->limit(3)->get();

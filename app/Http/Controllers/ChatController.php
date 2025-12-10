@@ -9,6 +9,7 @@ use App\Models\Settings;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ChatController extends Controller
 {
@@ -68,6 +69,14 @@ public function adminIndex()
         ]);
 
         broadcast(new MessageSent(Auth::user(), $message))->toOthers();
+
+        Mail::raw(
+            'رسالة جديدة من الإدارة: ' . $request->message,
+            function ($messages) use ($message) {
+                $messages->to([$message->receiver->email, 'contact@uaeretired.ae'])
+                    ->subject('رسالة جديدة');
+            }
+        );
 
         return response()->json(['status' => 'Message Sent!', 'message' => $message]);
     }

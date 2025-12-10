@@ -17,6 +17,7 @@ class MemberApplication extends Model
         'nationality',
         'date_of_birth',
         'gender',
+        'expiration_warning_sent_at',
         'emirate',
         'expiration_date',
         'marital_status',

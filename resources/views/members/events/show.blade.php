@@ -5128,7 +5128,6 @@
         .column-9kr div {
             font-size: 15px;
         }
-
     </style>
 
 </head>
@@ -5145,7 +5144,6 @@
 
         <section class="py-hp3">
             <div class="container-rni">
-                {{-- Check if $events is available before attempting to display details --}}
                 @if($events)
                 <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
                     <div style="flex-direction: column;" class="row-cwp py-hp3">
@@ -5153,46 +5151,66 @@
                             <div class="bg-xf5 shadow-primary-sxe position-1lp">
                                 <div class="block-osq text-b1x">
                                     <figure class="m-38w text-m1o overflow-khm">
-                                        <img class="img-odq rou-m3b" src="{{ asset('storage/' . $events->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($events->title_ar ?? __('app.event_image_alt_fallback')) : ($events->title_en ?? __('app.event_image_alt_fallback')) }}">
+                                        <img class="img-odq rou-m3b" src="{{ asset('storage/' . $events->main_image) }}"
+                                            alt="{{ app()->getLocale() == 'ar' ? ($events->title_ar ?? __('app.event_image_alt_fallback')) : ($events->title_en ?? __('app.event_image_alt_fallback')) }}">
                                     </figure>
                                 </div>
                             </div>
                         </div>
                         <div class="col-5vc col-cvg my-mpv">
                             <a class="text-7zo text-b1x" href="{{ route('events.show', $events->id) }}">
-                                <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $events->title_ar : $events->title_en }}</h2>
+                                <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ?
+                                    $events->title_ar : $events->title_en }}</h2>
                             </a>
                             <hr>
                             <div class="my-7z8 fs--oox">
                                 <div style="display: inline-block;">
-                                    <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{ \Carbon\Carbon::parse($events->date)->translatedFormat('Y-m-d') }}
+                                    <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{
+                                    \Carbon\Carbon::parse($events->date)->translatedFormat('Y-m-d') }}
                                 </div>
                                 <div style="display: inline-block; margin-right: 15px;">
-                                    <i class="fa-vxc fa-p16 mx-8rj"></i> {{ __('app.price') }}: {{ number_format($events->price, 2) }} {{ __('app.aed') }}
+                                    <i class="fa-vxc fa-p16 mx-8rj"></i> {{ __('app.price') }}: {{
+                                    number_format($events->price, 2) }} {{ __('app.aed') }}
                                 </div>
                             </div>
                             <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                                <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ? $events->description_ar : $events->description_en }} </span>
+                                <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ?
+                                    $events->description_ar : $events->description_en }} </span>
                             </p>
-                            <p>{{ app()->getLocale() == 'ar' ? $events->long_description : $events->long_description_en }}</p>
+                            <p>{{ app()->getLocale() == 'ar' ? $events->long_description : $events->long_description_en
+                                }}</p>
                             <hr>
                             <div class="text-jdt">
                                 @auth
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                @if(Auth::user()->role == 'عضو')
+                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h"
+                                    style="margin-bottom: 0px !important;">
                                     {{ __('app.subscribe_to_service') }}
-                                    <form action="{{ route('events.subscribe', $events->id) }}" method="POST" style="display: inline;">
-
+                                    <form action="{{ route('events.subscribe', $events->id) }}" method="POST"
+                                        style="display: inline;">
                                         @csrf
-                                        <input type="text" name="type" value="event" style="display: none;">
-                                        <button id="subscribe-form" type="submit" class="text-7zo">{{ __('app.click_here') }}</button>
+                                        <input type="hidden" name="type" value="event">
+                                        <button id="subscribe-form" type="submit" class="text-7zo">
+                                            {{ __('app.click_here') }}
+                                        </button>
                                     </form>
-
                                 </div>
+                                @else
+                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h"
+                                    style="margin-bottom: 0px !important;">
+                                    {{ __('app.subscribe_to_service') }}
+                                    <button style="font-size: 16px; font-weight: bold; color: #b68a35 !important; border: none; background: none; font-family: 'Cairo';" id="subscribe-non-member" type="button" class="text-7zo">
+                                        {{ __('app.click_here') }}
+                                    </button>
+                                </div>
+                                @endif
                                 @endauth
                                 @guest
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
+                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h"
+                                    style="margin-bottom: 0px !important;">
                                     {{ __('app.request_to_join_please') }}
-                                    <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }} <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
+                                    <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }} <a
+                                        href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
                                 </div>
                                 @endguest
                             </div>
@@ -5210,6 +5228,35 @@
         <x-footer-section></x-footer-section>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
         <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const subscribeBtn = document.getElementById('subscribe-non-member');
+                
+                if (subscribeBtn) {
+                    subscribeBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'عضوية مطلوبة',
+                            html: 'يجب الاشتراك في العضوية للاستفادة من خدمات الجمعية<br><strong>هل ترغب في التسجيل كعضو الآن؟</strong>',
+                            showCancelButton: true,
+                            confirmButtonText: 'نعم، أريد الاشتراك',
+                            cancelButtonText: 'ليس الآن',
+                            confirmButtonColor: '#28a745',
+                            cancelButtonColor: '#6c757d',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "{{ route('members.membership-show') }}"; // غير الرابط حسب نظامك
+                            }
+                        });
+                    });
+                }
+            });
+        </script>
     </div>
 </body>
 

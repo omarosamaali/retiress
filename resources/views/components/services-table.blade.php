@@ -96,7 +96,9 @@
 <div class="table-container">
     <div class="table-header">
         <h3 class="title-table">أحدث الخدمات</h3>
+        @if(Auth::user()->role == 'مدير')
         <a href="{{ route('admin.services.create') }}" class="preview-btn">إنشاء خدمة</a>
+        @endif
     </div>
     <table>
         <thead>

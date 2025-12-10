@@ -21,26 +21,41 @@ class RegisterControllerUser extends Controller
 
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8',
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => $request->role ?? 'مستخدم'
+            ]);
+
+            // تسجيل الدخول تلقائيًا بعد التسجيل
+            auth()->login($user);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'تم تسجيل الحساب بنجاح!',
+                'redirect' => route('members.login')
+            ], 201);
+        } catch (\Exception $e) {
+            \Log::error('Registration Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'حدث خطأ أثناء تسجيل الحساب',
+                'error' => config('app.debug') ? $e->getMessage() : 'خطأ في الخادم'
+            ], 500);
         }
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        // تسجيل الدخول تلقائيًا بعد التسجيل (اختياري)
-        auth()->login($user);
-
-        return response()->json(['message' => 'تم تسجيل الحساب بنجاح!']);
     }
 
     public function forgetpassword()
