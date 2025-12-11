@@ -63,7 +63,7 @@
 <a href="{{ route('contact-us') }}">
     <section style="background: rgb(182, 138, 53) !important; margin-top: 0px !important; padding: 18px 0 !important;">
         <div style="text-align: center; justify-content: center;">
-            <h1 style="color: white; margin-top: 25px;">تواصل مع القيادات</h1>
+            <h1 style="color: white; margin-top: 25px;">تواصل مع الإدارة</h1>
             <p class="text-jli">للشكاوي والاقتراحات وتقييم الخدمات</p>
         </div>
     </section>

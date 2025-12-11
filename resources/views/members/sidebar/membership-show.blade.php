@@ -2917,7 +2917,7 @@
         });
     }
 
-    // كود جداول البيانات المهنية والخبرات
+    // كود جداول البيانات المهنية والخبراء
     let professionalRowCount = 1;
     let experienceRowCount = 1;
         

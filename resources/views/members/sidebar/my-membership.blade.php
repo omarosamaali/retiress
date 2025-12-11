@@ -7265,7 +7265,7 @@ $daysRemaining = now()->diffInDays($expirationDate, false); // false عشان ي
                     </div>
                     @endif
                 </div>
-                <h2>الخبرات السابقة</h2>
+                <h2>الخبراء السابقة</h2>
                 <div class="section">
                     @if($membership && !empty($membership->previous_experience))
 

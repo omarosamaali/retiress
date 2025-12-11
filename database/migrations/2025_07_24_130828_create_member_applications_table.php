@@ -46,7 +46,7 @@ return new class extends Migration
             $table->string('contract_type')->nullable(); // نظامي/مبكر
             $table->text('early_reason')->nullable(); // سبب التعاقد المبكر
 
-            // عمود JSON لتخزين الخبرات المهنية
+            // عمود JSON لتخزين الخبراء المهنية
             $table->json('professional_experiences')->nullable();
             $table->json('previous_experience')->nullable();
 

@@ -354,7 +354,7 @@
                             <i class="fas fa-newspaper"></i> أخبار الجمعية
                         </a>
                         <a class="dropdown-item" href="{{ route('admin.magazines.index') }}">
-                            <i class="fas fa-newspaper"></i> منبر الخبرات
+                            <i class="fas fa-newspaper"></i> منبر الخبراء
                         </a>
                         <a class="dropdown-item" href="{{ route('admin.feature.index') }}">
                             <i class="fas fa-newspaper"></i> مميزات العضوية

@@ -643,9 +643,9 @@
                     <div class="col-md-8">
                         <h6 class="text-primary mb-1">
                             <i class="fas fa-chart-line me-2"></i>
-                            إجمالي الخبرات المهنية
+                            إجمالي الخبراء المهنية
                         </h6>
-                        <small class="text-muted">عدد الخبرات المسجلة</small>
+                        <small class="text-muted">عدد الخبراء المسجلة</small>
                     </div>
                     <div class="col-md-4 text-end">
                         <span class="badge bg-primary fs-6 p-2">
@@ -669,7 +669,7 @@
             <div class="section-header mb-4">
                 <h5 class="text-primary mb-0" style="margin-top: 15px;">
                     <i class="fas fa-history me-2"></i>
-                    الخبرات السابقة
+                    الخبراء السابقة
                 </h5>
             </div>
 
@@ -744,9 +744,9 @@
                     <div class="col-md-8">
                         <h6 class="text-primary mb-1">
                             <i class="fas fa-chart-line me-2"></i>
-                            إجمالي الخبرات السابقة
+                            إجمالي الخبراء السابقة
                         </h6>
-                        <small class="text-muted">عدد الخبرات المسجلة سابقاً</small>
+                        <small class="text-muted">عدد الخبراء المسجلة سابقاً</small>
                     </div>
                     <div class="col-md-4 text-end">
                         <span class="badge bg-primary fs-6 p-2">
