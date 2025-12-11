@@ -178,7 +178,10 @@ class MemberApplicationsController extends Controller
             ]);
 
             Mail::raw(
-                'تم تقديم طلب تجديد العضوية بنجاح! رقم العضوية هو: ' . $application->membership_number,
+                "تم تقديم طلب تجديد العضوية بنجاح!\n\n" .
+                    "رقم العضوية: " . $application->membership_number . "\n" .
+                    "الاسم: " . $application->full_name . "\n" .
+                    "رقم الهاتف: " . $application->mobile_phone,
                 function ($message) use ($application) {
                     $message->to([$application->email, 'contact@uaeretired.ae'])
                         ->subject('طلب تجديد العضوية');

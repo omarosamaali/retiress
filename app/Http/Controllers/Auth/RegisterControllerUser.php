@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon; // For handling dates and times
 use Exception;
+use Illuminate\Support\Facades\Http;
 
 class RegisterControllerUser extends Controller
 {
@@ -26,10 +27,37 @@ class RegisterControllerUser extends Controller
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:8',
+                'g-recaptcha-response' => 'required'
+            ], [
+                'g-recaptcha-response.required' => 'يرجى التحقق من أنك لست روبوت'
             ]);
 
             if ($validator->fails()) {
                 return response()->json(['errors' => $validator->errors()], 422);
+            }
+
+            // التحقق من reCAPTCHA
+            $recaptchaSecret = config('services.recaptcha.secret');
+            $recaptchaResponse = $request->input('g-recaptcha-response');
+
+            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => $recaptchaSecret,
+                'response' => $recaptchaResponse,
+                'remoteip' => $request->ip()
+            ]);
+
+            $responseData = $response->json();
+
+            // تسجيل الاستجابة للتأكد
+            \Log::info('reCAPTCHA Response:', $responseData);
+
+            if (!$responseData['success']) {
+                $errorCodes = $responseData['error-codes'] ?? [];
+                \Log::error('reCAPTCHA Failed:', $errorCodes);
+
+                return response()->json([
+                    'errors' => ['recaptcha' => ['فشل التحقق من reCAPTCHA. حاول مرة أخرى.']]
+                ], 422);
             }
 
             $user = User::create([
@@ -39,7 +67,6 @@ class RegisterControllerUser extends Controller
                 'role' => $request->role ?? 'مستخدم'
             ]);
 
-            // تسجيل الدخول تلقائيًا بعد التسجيل
             auth()->login($user);
 
             return response()->json([

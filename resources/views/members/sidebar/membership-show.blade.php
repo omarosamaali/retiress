@@ -20,6 +20,7 @@
     <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <style>
         div:where(.swal2-container).swal2-center>.swal2-popup {
@@ -1826,6 +1827,14 @@
                             <input type="email" id="email_kw" name="email_kw"
                                 placeholder="{{ __('app.email_placeholder') }}">
                         </div>
+                        <!-- reCAPTCHA -->
+                        <div class="mb-os5" style="margin-bottom: 15px; margin-top: 15px;">
+                            <div class="g-recaptcha" data-sitekey="6Le8MSgsAAAAACpmYLs_Rzga_iIewZ-qCDPAN0MD">
+                            </div>
+                            <div class="error-message" id="recaptcha-error"
+                                style="display: none; color: #dc3545; font-size: 0.875rem; margin-top: 5px;">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <button type="submit" class="submit-btn"
@@ -2760,6 +2769,16 @@
                                                     <button type="button" class="add-exp-btn"
                                                         onclick="addNewExperienceRow()">{{ __('app.add_experience')
                                                         }}</button>
+                                                </div>
+
+                                                <!-- reCAPTCHA -->
+                                                <div class="mb-os5" style="margin-bottom: 15px; margin-top: 15px;">
+                                                    <div class="g-recaptcha"
+                                                        data-sitekey="6Le8MSgsAAAAACpmYLs_Rzga_iIewZ-qCDPAN0MD">
+                                                    </div>
+                                                    <div class="error-message" id="recaptcha-error"
+                                                        style="display: none; color: #dc3545; font-size: 0.875rem; margin-top: 5px;">
+                                                    </div>
                                                 </div>
                                                 <div class="ff-el-qhz content-mar">
                                                     <div class="form-ras ff-el-7d7">
