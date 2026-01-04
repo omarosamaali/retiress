@@ -108,12 +108,12 @@ class RegisterControllerUser extends Controller
         \Log::info('Attempting to send OTP for email: ' . $request->email);
 
         try {
-            Mail::send('emails.otp', ['otp' => $otp], function ($message) use ($user) {
-                \Log::info('Inside Mail::send() callback for email: ' . $user->email);
-                $message->to($user->email);
-                $message->subject('Your Password Reset OTP');
-                \Log::info('Mail subject and recipient set.');
-            });
+            // Mail::send('emails.otp', ['otp' => $otp], function ($message) use ($user) {
+            //     \Log::info('Inside Mail::send() callback for email: ' . $user->email);
+            //     $message->to($user->email);
+            //     $message->subject('Your Password Reset OTP');
+            //     \Log::info('Mail subject and recipient set.');
+            // });
 
             \Log::info('OTP email sent successfully for email: ' . $user->email);
 

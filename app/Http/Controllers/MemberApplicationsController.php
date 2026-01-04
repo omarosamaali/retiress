@@ -125,13 +125,13 @@ class MemberApplicationsController extends Controller
         }
 
         $application = MemberApplication::create($data);
-        Mail::raw(
-            'تم تقديم طلب العضوية بنجاح! رقم العضوية هو: ' . $application->membership_number,
-            function ($message) use ($application) {
-                $message->to([$application->email, 'contact@uaeretired.ae'])
-                ->subject('تم تقديم طلب العضوية بنجاح');
-            }
-        );
+        // Mail::raw(
+        //     'تم تقديم طلب العضوية بنجاح! رقم العضوية هو: ' . $application->membership_number,
+        //     function ($message) use ($application) {
+        //         $message->to([$application->email, 'contact@uaeretired.ae'])
+        //         ->subject('تم تقديم طلب العضوية بنجاح');
+        //     }
+        // );
         return redirect()->back()->with('success', 'تم تقديم طلب العضوية بنجاح! رقم العضوية هو: ' . $application->membership_number);
     }
 
@@ -177,16 +177,16 @@ class MemberApplicationsController extends Controller
                 'new_expiration_date' => $newExpirationDate->format('Y-m-d')
             ]);
 
-            Mail::raw(
-                "تم تقديم طلب تجديد العضوية بنجاح!\n\n" .
-                    "رقم العضوية: " . $application->membership_number . "\n" .
-                    "الاسم: " . $application->full_name . "\n" .
-                    "رقم الهاتف: " . $application->mobile_phone,
-                function ($message) use ($application) {
-                    $message->to([$application->email, 'contact@uaeretired.ae'])
-                        ->subject('طلب تجديد العضوية');
-                }
-            );
+            // Mail::raw(
+            //     "تم تقديم طلب تجديد العضوية بنجاح!\n\n" .
+            //         "رقم العضوية: " . $application->membership_number . "\n" .
+            //         "الاسم: " . $application->full_name . "\n" .
+            //         "رقم الهاتف: " . $application->mobile_phone,
+            //     function ($message) use ($application) {
+            //         $message->to([$application->email, 'contact@uaeretired.ae'])
+            //             ->subject('طلب تجديد العضوية');
+            //     }
+            // );
 
             return response()->json([
                 'message' => 'تم ارسال طلب التجديد بنجاح وسيتم التواصل معكم بالبريد الإلكتروني المسجل لاستكمال الاجراءات',

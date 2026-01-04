@@ -5134,7 +5134,7 @@
         </div>
 
         <section class="py-hp3">
-            <div class="container-rni">
+            <div class="container-rni" style="flex-wrap: wrap;">
                 @forelse($magazines as $magazine)
                 <div class="col-oaq col-2yx mt-am8 my-eeo" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
                     <div class="d-log flex-mb4 item-zsg content-85f text-if3 bg-ptb shadow-h9k shadow-3d-7n5 transition-all-ease-qd6 transition-hover-36d rou-xnf container-8q9 h-5rt overlay-xkz overlay-1yx">

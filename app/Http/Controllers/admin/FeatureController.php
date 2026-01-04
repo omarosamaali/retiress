@@ -79,12 +79,12 @@ class FeatureController extends Controller
             $activeMembers = MemberApplication::where('expiration_date', '>=', now())->get();
             $newsUrl = 'https://uaeretired.ae/magazines/feature';
 
-            foreach ($activeMembers as $member) {
-                Mail::raw("تم إضافة ميزة جديدة من قبل الإدارة\n\nيمكنك زيارة الرابط التالي لمعرفة أحدث الميزات:\n{$newsUrl}", function ($message) use ($member) {
-                    $message->to($member->email)
-                        ->subject('ميزة جديدة');
-                });
-            }
+            // foreach ($activeMembers as $member) {
+            //     Mail::raw("تم إضافة ميزة جديدة من قبل الإدارة\n\nيمكنك زيارة الرابط التالي لمعرفة أحدث الميزات:\n{$newsUrl}", function ($message) use ($member) {
+            //         $message->to($member->email)
+            //             ->subject('ميزة جديدة');
+            //     });
+            // }
 
             DB::commit();
             return redirect()->route('admin.feature.index')->with('success', 'تمت إضافة المجلة بنجاح!');

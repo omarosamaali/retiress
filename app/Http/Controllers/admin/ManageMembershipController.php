@@ -181,9 +181,9 @@ class ManageMembershipController extends Controller
                 'role' => 'عضو'
             ]);
 
-            Mail::raw('رائع تم تفعيل طلب العضوية بنجاح انت الان تستمتع بخدماتنا يمكنك الاشتراك في خدماتنا', function ($message) use ($memberApplication) {
-                $message->to([$memberApplication->email, 'contact@uaeretired.ae'])->subject('تم تفعيل طلب العضوية بنجاح');
-            });
+            // Mail::raw('رائع تم تفعيل طلب العضوية بنجاح انت الان تستمتع بخدماتنا يمكنك الاشتراك في خدماتنا', function ($message) use ($memberApplication) {
+            //     $message->to([$memberApplication->email, 'contact@uaeretired.ae'])->subject('تم تفعيل طلب العضوية بنجاح');
+            // });
         }
         
         // Redirect with success message

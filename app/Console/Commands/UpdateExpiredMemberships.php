@@ -46,9 +46,9 @@ class UpdateExpiredMemberships extends Command
             }
 
             try {
-                Mail::raw('عضويتك ستنتهي في ' . $member->expiration_date, function ($message) use ($member) {
-                    $message->to($member->email)->subject('تنبيه: انتهاء العضوية قريباً');
-                });
+                // Mail::raw('عضويتك ستنتهي في ' . $member->expiration_date, function ($message) use ($member) {
+                //     $message->to($member->email)->subject('تنبيه: انتهاء العضوية قريباً');
+                // });
 
                 // سجّل إنك بعتله إيميل
                 $member->expiration_warning_sent_at = Carbon::now();

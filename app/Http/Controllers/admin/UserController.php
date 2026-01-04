@@ -88,7 +88,7 @@ class UserController extends Controller
             ])->save();
 
             // إرسال الـ OTP عبر البريد الإلكتروني
-            Mail::to($user->email)->send(new OtpMail($otp));
+            // Mail::to($user->email)->send(new OtpMail($otp));
 
             // بيانات ChefProfile
             $chefProfileData = [

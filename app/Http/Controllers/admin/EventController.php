@@ -71,11 +71,11 @@ class EventController extends Controller
         Event::create($eventData);
         $membersShip = MemberApplication::where('expiration_date', '>', now())->get();
         
-        foreach($membersShip as $member){
-            Mail::raw(' تم إضافة فعالية جديدة' . $request->title_ar, function ($message) use($member) {
-                $message->to($member->email)->subject('تم اضافة فعالية جديدة');
-            });
-        }
+        // foreach($membersShip as $member){
+        //     Mail::raw(' تم إضافة فعالية جديدة' . $request->title_ar, function ($message) use($member) {
+        //         $message->to($member->email)->subject('تم اضافة فعالية جديدة');
+        //     });
+        // }
 
         return redirect()->route('admin.event.index')->with('success', 'تمت إضافة الفعالية بنجاح!');
     }

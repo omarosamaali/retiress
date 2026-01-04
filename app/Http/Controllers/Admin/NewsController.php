@@ -72,12 +72,12 @@ class NewsController extends Controller
         $activeMembers = MemberApplication::where('expiration_date', '>=', now())->get();
         $newsUrl = 'https://uaeretired.ae/news/all-news';
 
-        foreach($activeMembers as $member) {
-            Mail::raw("تم إضافة خبر جديد من قبل الإدارة\n\nيمكنك زيارة الرابط التالي لمعرفة أحدث الأخبار:\n{$newsUrl}", function ($message) use ($member) {
-                $message->to($member->email)
-                    ->subject('خبر جديد');
-            });
-        }
+        // foreach($activeMembers as $member) {
+        //     Mail::raw("تم إضافة خبر جديد من قبل الإدارة\n\nيمكنك زيارة الرابط التالي لمعرفة أحدث الأخبار:\n{$newsUrl}", function ($message) use ($member) {
+        //         $message->to($member->email)
+        //             ->subject('خبر جديد');
+        //     });
+        // }
 
         return redirect()->route('admin.news.index')->with('success', 'تمت إضافة الخبر بنجاح!');
     }
