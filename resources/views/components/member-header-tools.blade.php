@@ -6,7 +6,7 @@
                 <i class="fa-solid fa-id-card"></i>
             </button>
         </div>
-
+        {{-- here --}}
         <a href="{{ route('members.panel') }}" style="padding: 5px 8px !important;" class="member-panel-link">{{ __('app.my_panel') }}</a>
 
         <div class="member-notifications-wrap">
