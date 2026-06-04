@@ -26,19 +26,27 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'type' => ['required', Rule::in(Event::TYPES)],
+            'audience' => ['required', Rule::in(Event::AUDIENCES)],
             'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
             'price' => 'nullable|integer',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
+            'starts_at' => 'nullable|date',
+            'ends_at' => 'nullable|date|after_or_equal:starts_at',
         ]);
 
         $eventData = [
+            'type' => $request->type,
+            'audience' => $request->audience,
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
             'price' => $request->is_payed === 'on' ? $request->price : null,
+            'starts_at' => $request->starts_at,
+            'ends_at' => $request->ends_at,
         ];
 
         $tr = new GoogleTranslate('ar');
@@ -77,38 +85,79 @@ class EventController extends Controller
         //     });
         // }
 
-        return redirect()->route('admin.event.index')->with('success', 'تمت إضافة الفعالية بنجاح!');
+        return redirect()->route('admin.event.index')->with('success', 'تمت إضافة الإعلان بنجاح!');
     }
 
-    public function show(Event $event)
+    public function show(Event $event, Request $request)
     {
         $targetLanguages = $this->targetLanguages;
-        return view('admin.events.show', compact('event', 'targetLanguages'));
+        $subscriberData = $this->subscriberDataForEvent($event, $request->input('subscription_status'));
+
+        return view('admin.events.show', compact('event', 'targetLanguages') + $subscriberData);
     }
 
-    public function edit(Event $event)
+    public function edit(Event $event, Request $request)
     {
         $targetLanguages = $this->targetLanguages;
-        return view('admin.events.edit', compact('event', 'targetLanguages'));
+        $subscriberData = $this->subscriberDataForEvent($event, $request->input('subscription_status'));
+
+        return view('admin.events.edit', compact('event', 'targetLanguages') + $subscriberData);
+    }
+
+    protected function subscriberDataForEvent(Event $event, ?string $statusFilter = null): array
+    {
+        $query = Transaction::with('user')
+            ->where('event_id', $event->id)
+            ->orderByDesc('subscribed_at');
+
+        if ($statusFilter && $statusFilter !== 'all' && in_array($statusFilter, Transaction::SUBSCRIPTION_STATUSES, true)) {
+            $query->where('status', $statusFilter);
+        }
+
+        $eventTransactions = $query->get();
+
+        $allEventTransactions = Transaction::where('event_id', $event->id)->get();
+        $subscriptionStatusCounts = ['all' => $allEventTransactions->count()];
+        foreach (Transaction::SUBSCRIPTION_STATUSES as $status) {
+            $subscriptionStatusCounts[$status] = $allEventTransactions->where('status', $status)->count();
+        }
+
+        $subscriptionTypeCounts = $allEventTransactions
+            ->groupBy(fn ($t) => $t->type ?: 'غير محدد')
+            ->map->count()
+            ->all();
+
+        return [
+            'eventTransactions' => $eventTransactions,
+            'subscriptionStatusCounts' => $subscriptionStatusCounts,
+            'subscriptionTypeCounts' => $subscriptionTypeCounts,
+            'subscriptionStatusFilter' => $statusFilter ?: 'all',
+        ];
     }
 
     public function update(Request $request, Event $event)
     {
         $request->validate([
+            'type' => ['required', Rule::in(Event::TYPES)],
+            'audience' => ['required', Rule::in(Event::AUDIENCES)],
             'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
             'price' => 'nullable|integer',
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
-            'created_at' => 'required|date',
+            'starts_at' => 'nullable|date',
+            'ends_at' => 'nullable|date|after_or_equal:starts_at',
         ]);
 
         $eventData = [
+            'type' => $request->type,
+            'audience' => $request->audience,
             'title_ar' => $request->title_ar,
             'description_ar' => $request->description_ar,
             'status' => $request->status,
-            'created_at' => $request->created_at,
+            'starts_at' => $request->starts_at,
+            'ends_at' => $request->ends_at,
             'price' => $request->is_payed === 'on' ? $request->price : null,
         ];
 
@@ -157,7 +206,7 @@ class EventController extends Controller
 
         $event->update($eventData);
 
-        return redirect()->route('admin.event.index')->with('success', 'تم تحديث الفعالية بنجاح!');
+        return redirect()->route('admin.event.index')->with('success', 'تم تحديث الإعلان بنجاح!');
     }
 
     public function destroy(Event $event)
@@ -171,6 +220,6 @@ class EventController extends Controller
 
         $event->delete();
 
-        return redirect()->route('admin.event.index')->with('success', 'تم حذف الفعالية بنجاح!');
+        return redirect()->route('admin.event.index')->with('success', 'تم حذف الإعلان بنجاح!');
     }
 }

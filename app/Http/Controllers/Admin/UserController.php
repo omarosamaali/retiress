@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\ChefProfile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -16,13 +17,15 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon; // تأكد من استيراد Carbon
 use App\Mail\OtpMail; // تأكد من استيراد OtpMail
 use Illuminate\Support\Facades\Mail; // <--- ADD THIS LINE
+use App\Services\MemberApplicationUpdater;
+use App\Services\MemberApplicationCreator;
 
 class UserController extends Controller
 {
 
     public function index(Request $request)
     {
-        $query = User::latest();
+        $query = User::with('memberApplication')->latest();
         if ($request->has('role') && $request->role != '') {
             $query->where('role', $request->role);
         }
@@ -32,20 +35,32 @@ class UserController extends Controller
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
+        $query->filterMembershipStatus($request->input('membership_status'));
+
         $users = $query->paginate(50)->appends($request->query());
 
+        $membershipStatusFilters = \App\Models\MemberApplication::MEMBERSHIP_STATUS_FILTERS;
 
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('users', 'membershipStatusFilters'));
+    }
+
+    public function create()
+    {
+        return view('admin.users.create');
     }
 
     public function store(Request $request)
     {
+        if ($request->boolean('register_as_member')) {
+            return $this->storeMember($request);
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:مدير,مشرف,مدخل بيانات,طاه',
-            'status' => 'sometimes|in:فعال,غير فعال,بانتظار التفعيل',
+            'role' => 'required|in:مدير,مشرف,موظف استقبال,أمين الصندوق,عضو,مدخل بيانات',
+            'status' => 'sometimes|in:فعال,غير فعال,بانتظار التفعيل,بإنتظار إستكمال البيانات',
         ]);
 
         // إعداد بيانات المستخدم
@@ -122,24 +137,52 @@ class UserController extends Controller
             // إعادة التوجيه إلى صفحة تأكيد الـ OTP للطهاة
             return redirect()->route('c1he3f.auth.otp-confirm', ['email' => $user->email])
                 ->with('success', 'تم التسجيل بنجاح! الرجاء إدخال رمز التحقق الذي تم إرساله إلى بريدك الإلكتروني.');
-        } else {
-            // إذا لم يكن الدور 'طاه'، قم بتسجيل الدخول مباشرة (كما كان يحدث سابقاً)
-            Auth::login($user);
-            return redirect()->route('admin.users.index')
-                ->with('success', 'تم إضافة المستخدم بنجاح.');
         }
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'تم إضافة المستخدم بنجاح.');
     }
 
+    protected function storeMember(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'status' => 'required|in:فعال,غير فعال,بانتظار التفعيل,بإنتظار إستكمال البيانات',
+        ]);
 
-    // End of public function store
+        $user = null;
+
+        DB::transaction(function () use ($request, &$user) {
+            $userData = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'عضو',
+                'status' => $request->status,
+                'email_verified_at' => now(),
+            ];
+
+            $user = User::create($userData);
+            app(MemberApplicationCreator::class)->create($request, $user);
+        });
+
+        return redirect()->route('admin.users.show', $user)
+            ->with('success', 'تم تسجيل العضو وإنشاء طلب العضوية بنجاح.');
+    }
+
     public function show(User $user)
     {
-        $user = User::findOrFail($user->id);
+        $user->load('memberApplication');
+
         return view('admin.users.show', compact('user'));
     }
 
     public function edit(User $user)
     {
+        $user->load('memberApplication');
+
         return view('admin.users.edit', compact('user'));
     }
 
@@ -185,7 +228,13 @@ class UserController extends Controller
             $data['password'] = Hash::make($request->password);
         }
 
-        $user->update($data);
+        DB::transaction(function () use ($request, $user, $data) {
+            $user->update($data);
+
+            if ($user->memberApplication) {
+                app(MemberApplicationUpdater::class)->update($request, $user->memberApplication);
+            }
+        });
 
         if ($request->role === 'طاه') {
             $chefProfileData = [
@@ -233,8 +282,8 @@ class UserController extends Controller
             }
         }
 
-        return redirect()->route('admin.users.index')
-            ->with('success', 'تم تحديث المستخدم بنجاح');
+        return redirect()->route('admin.users.show', $user)
+            ->with('success', 'تم تحديث المستخدم وبيانات العضوية بنجاح');
     }
 
     public function destroy(User $user)
