@@ -7002,7 +7002,7 @@
         }
 
         button {
-            background-color: #a07a2e !important;
+            background-color: #6e4c3e !important;
             color: #fff;
             padding: 10px 20px;
             border: none;
@@ -7013,7 +7013,7 @@
         }
 
         button:hover {
-            background-color: #a07a2e !important;
+            background-color: #6e4c3e !important;
         }
 
         .section {
