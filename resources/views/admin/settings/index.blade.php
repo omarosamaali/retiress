@@ -269,7 +269,7 @@
     </div>
 
     <div class="form-container">
-        <form id="contactForm" method="post" action="{{ route('settings.store') }}">
+        <form id="contactForm" method="post" action="{{ route('admin.settings.store') }}">
             @csrf
             <!-- معلومات الاتصال الأساسية -->
             <div class="form-section">

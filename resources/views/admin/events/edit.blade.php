@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'تعديل الفعالية')
-@section('page-title', 'تعديل الفعالية')
+@section('title', 'تعديل الإعلان')
+@section('page-title', 'تعديل الإعلان')
 
 @push('styles')
 <style>
@@ -82,7 +82,7 @@
 <div class="add-section">
     <h5 class="mb-4">
         <i class="fas fa-newspaper ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
-        تعديل الفعالية: {{ $event->title_ar }}
+        تعديل الإعلان: {{ $event->title_ar }}
     </h5>
 
     @if ($errors->any())
@@ -103,13 +103,29 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="title_ar" class="form-label font-bold">عنوان الفعالية (بالعربية)</label>
+                    <label for="title_ar" class="form-label font-bold">عنوان الإعلان (بالعربية)</label>
                     <input type="text" class="form-control" id="title_ar" name="title_ar"
                         value="{{ old('title_ar', $event->title_ar) }}" required>
                     @error('title_ar')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
                 </div>
+            </div>
+
+            <div class="col-md-6">
+                @include('admin.events.partials.type-select', [
+                    'selectedType' => $event->type,
+                    'labelClass' => 'font-bold',
+                    'errorClass' => 'text-black',
+                ])
+            </div>
+
+            <div class="col-md-6">
+                @include('admin.events.partials.audience-select', [
+                    'selectedAudience' => $event->audience,
+                    'labelClass' => 'font-bold',
+                    'errorClass' => 'text-black',
+                ])
             </div>
 
             <div class="col-md-6">
@@ -149,14 +165,13 @@
                 </div>
             </div>
 
-<div class="col-md-6">
+                @include('admin.events.partials.schedule-fields', ['event' => $event, 'errorClass' => 'text-black'])
+
+                <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="created_at" class="form-label">تاريخ الإضافة</label>
-                        <input type="datetime-local" class="form-control" id="created_at" name="created_at"
-                            value="{{ $event->created_at ? $event->created_at->format('Y-m-d\TH:i') : '' }}">
-                        @error('created_at')
-                        <div class="text-white">{{ $message }}</div>
-                        @enderror
+                        <label class="form-label">تاريخ الإضافة</label>
+                        <input type="text" class="form-control" readonly
+                            value="{{ $event->created_at ? $event->created_at->format('d/m/Y H:i') : 'غير متوفر' }}">
                     </div>
                 </div>
 
@@ -201,7 +216,7 @@
 
             <div class="col-md-12">
                 <div class="mb-3">
-                    <label for="description_ar" class="form-label font-bold">وصف الفعالية (بالعربية)</label>
+                    <label for="description_ar" class="form-label font-bold">وصف الإعلان (بالعربية)</label>
                     <textarea class="form-control" id="description_ar" name="description_ar" rows="4"
                         required>{{ old('description_ar', $event->description_ar) }}</textarea>
                     @error('description_ar')
@@ -241,6 +256,10 @@
         </div>
 
     </form>
+
+    @include('admin.events.partials.subscribers-table', [
+        'filterBaseUrl' => route('admin.event.edit', $event),
+    ])
 </div>
 @endsection
 

@@ -823,7 +823,7 @@
                     })
                     .then(data => {
                         form.reset();
-                        window.location.href = "/";
+                        window.location.href = data.redirect || "/";
                     })
                     .catch(error => {
                         if (error.errors) {

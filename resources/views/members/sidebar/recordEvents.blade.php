@@ -5,7 +5,7 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/images/fav.png') }}" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width; initial-scale=1;" />
-    <title>البرامج والفاعليات</title>
+    <title>الإعلانات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/other-devices.css') }}" />
@@ -5601,12 +5601,12 @@
     <div id="in-cont">
         <div class="inn-title" style="padding-top: 150px">
             <h2><span><a href="{{ url('/') }}">الرئيسية</a> &raquo;</span>
-                البرامج والفاعليات </h2>
+                الإعلانات </h2>
         </div>
         <div class="profile-container">
 
             <div class="profile-header">
-                <h1 class="profile-title">البرامج والفاعليات</h1>
+                <h1 class="profile-title">الإعلانات</h1>
             </div>
             <div class="table-container">
                 <table class="data-table rtl">
@@ -5647,7 +5647,7 @@
                                 القاهرة
                             </td>
                             <td>
-                                فعالية
+                                إعلان
                             </td>
                             <td>
                                 100 درهم

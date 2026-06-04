@@ -8,12 +8,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasMany; // Import HasMany
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Event;
+use App\Models\Message;
 
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    public const ADMIN_PANEL_ROLES = [
+        'مدير',
+        'مشرف',
+        'موظف استقبال',
+        'أمين الصندوق',
+        'مدخل بيانات',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -73,9 +84,74 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role === 'مدير';
     }
 
+    public function canAccessAdminPanel(): bool
+    {
+        $role = trim((string) $this->role);
+
+        return in_array($role, self::ADMIN_PANEL_ROLES, true);
+    }
+
+    public function isStaff(): bool
+    {
+        return $this->canAccessAdminPanel() || (bool) ($this->is_admin ?? false);
+    }
+
+    public function isMemberRole(): bool
+    {
+        return $this->role === 'عضو';
+    }
+
+    public function scopeStaff(Builder $query): Builder
+    {
+        return $query->where(function (Builder $q) {
+            $q->whereIn('role', self::ADMIN_PANEL_ROLES)
+                ->orWhere('is_admin', true);
+        });
+    }
+
+    public function scopeMembers(Builder $query): Builder
+    {
+        return $query->where('role', 'عضو');
+    }
+
     public function isActive()
     {
         return $this->status === 'فعال';
+    }
+
+    public function canViewMemberOnlyAnnouncements(): bool
+    {
+        return $this->isActive() && $this->role === 'عضو';
+    }
+
+    public function canSubscribeToEvent(Event $event): bool
+    {
+        return $this->getSubscribeToEventBlockReason($event) === null;
+    }
+
+    public function getSubscribeToEventBlockReason(Event $event): ?string
+    {
+        if (! $this->isActive()) {
+            return 'account_inactive';
+        }
+
+        if (! $event->isVisibleTo($this)) {
+            return 'not_visible';
+        }
+
+        if ($this->role !== 'عضو') {
+            return 'member_role_required';
+        }
+
+        if (! $this->memberApplication) {
+            return 'membership_required';
+        }
+
+        if (! $this->hasActiveMembership()) {
+            return 'membership_inactive';
+        }
+
+        return null;
     }
 
     public function getRoleBadgeClass()
@@ -123,11 +199,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Message::class, 'to_user_id');
     }
 
-    public function hasActiveMembership()
+    public function hasActiveMembership(): bool
     {
-        $threeMonth = now()->addMonths(3);
-        return $this->memberApplications()->where('status', '1')
-        ->whereDate('expiration_date', '>' , $threeMonth)->exists();
+        $application = $this->memberApplication;
+
+        if (! $application) {
+            return false;
+        }
+
+        if ($application->isExpiredByDate() || (string) $application->status === '4') {
+            return false;
+        }
+
+        return (string) $application->status === '3';
     }
 
     /**
@@ -143,5 +227,89 @@ class User extends Authenticatable implements MustVerifyEmail
     public function memberApplication()
     {
         return $this->hasOne(MemberApplication::class);
+    }
+
+    public function userNotifications(): HasMany
+    {
+        return $this->hasMany(UserNotification::class);
+    }
+
+    public function unreadUserNotificationsCount(): int
+    {
+        return $this->userNotifications()
+            ->visibleInBell()
+            ->unread()
+            ->count();
+    }
+
+    public function unreadChatMessagesCount(): int
+    {
+        return Message::where('to_user_id', $this->id)
+            ->whereNull('read_at')
+            ->count();
+    }
+
+    public function headerNotificationCount(): int
+    {
+        return $this->unreadUserNotificationsCount() + $this->unreadChatMessagesCount();
+    }
+
+    public function scopeFilterMembershipStatus($query, ?string $status)
+    {
+        if (blank($status) || ! array_key_exists($status, MemberApplication::MEMBERSHIP_STATUS_FILTERS)) {
+            return $query;
+        }
+
+        return match ($status) {
+            MemberApplication::MEMBERSHIP_FILTER_NONE => $query->whereDoesntHave('memberApplication'),
+            MemberApplication::MEMBERSHIP_FILTER_EXPIRED => $query->whereHas(
+                'memberApplication',
+                fn ($q) => $q->membershipExpired()
+            ),
+            MemberApplication::MEMBERSHIP_FILTER_NOT_EXPIRED => $query->whereHas(
+                'memberApplication',
+                fn ($q) => $q->membershipNotExpired()
+            ),
+            MemberApplication::MEMBERSHIP_FILTER_ACTIVE => $query->whereHas(
+                'memberApplication',
+                fn ($q) => $q->membershipNotExpired()->where('status', '3')
+            ),
+            MemberApplication::MEMBERSHIP_FILTER_PENDING_PAYMENT => $query->whereHas(
+                'memberApplication',
+                fn ($q) => $q->membershipNotExpired()->where('status', '0')
+            ),
+            MemberApplication::MEMBERSHIP_FILTER_PENDING_ACTIVATION => $query->whereHas(
+                'memberApplication',
+                fn ($q) => $q->membershipNotExpired()->where('status', '1')
+            ),
+            MemberApplication::MEMBERSHIP_FILTER_PENDING_APPROVAL => $query->whereHas(
+                'memberApplication',
+                fn ($q) => $q->membershipNotExpired()->where('status', '2')
+            ),
+            default => $query,
+        };
+    }
+
+    public function getMembershipStatusTextAttribute(): string
+    {
+        if (! $this->memberApplication) {
+            return 'لا توجد عضوية';
+        }
+
+        return $this->memberApplication->status_text;
+    }
+
+    public function getMembershipStatusBadgeClassAttribute(): string
+    {
+        if (! $this->memberApplication) {
+            return 'bg-secondary';
+        }
+
+        return $this->memberApplication->status_badge_class;
+    }
+
+    public function getMembershipTypeTextAttribute(): string
+    {
+        return $this->memberApplication?->membership_type_label ?? '—';
     }
 }

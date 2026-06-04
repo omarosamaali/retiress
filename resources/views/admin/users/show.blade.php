@@ -48,6 +48,19 @@
             border-radius: 8px;
             margin-top: 10px;
         }
+
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #0e6939;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .membership-section .detail-value {
+            min-height: 42px;
+        }
     </style>
 @endpush
 
@@ -57,6 +70,11 @@
             <i class="fas fa-info-circle ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
             <h4 class="mb-0">تفاصيل المستخدم: {{ $user->name }}</h4>
         </div>
+
+        <h5 class="section-title">
+            <i class="fas fa-user ms-2"></i>
+            بيانات الحساب
+        </h5>
 
         <div class="row">
             <div class="col-md-6">
@@ -85,7 +103,7 @@
 
             <div class="col-md-6">
                 <div class="detail-item">
-                    <span class="detail-label">الحالة:</span>
+                    <span class="detail-label">حالة الحساب:</span>
                     <div class="detail-value">
                         <span class="badge {{ $user->getStatusBadgeClass() }}" style="color: black;"> {{ $user->status }}
                         </span>
@@ -200,6 +218,15 @@
                         @endif
                     </div>
                 </div>
+            </div>
+        @endif
+
+        @if ($user->memberApplication)
+            @include('admin.users.partials.membership-details')
+        @else
+            <div class="alert alert-secondary mt-5" role="alert">
+                <i class="fas fa-id-card ms-2"></i>
+                لا يوجد طلب عضوية مرتبط بهذا المستخدم.
             </div>
         @endif
 

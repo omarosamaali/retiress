@@ -7,6 +7,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\View;
 use App\Models\Settings;
+use App\View\Composers\MemberHeaderComposer;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -26,6 +28,11 @@ class AppServiceProvider extends ServiceProvider
             $settings = Settings::getActiveContactInfo();
             $view->with('settings', $settings);
         });
+
+        View::composer(
+            ['components.guest-header', 'components.auth-header'],
+            MemberHeaderComposer::class
+        );
         
         Paginator::useTailwind();
 

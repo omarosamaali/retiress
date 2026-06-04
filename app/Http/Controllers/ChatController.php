@@ -5,79 +5,145 @@ namespace App\Http\Controllers;
 use App\Events\MessageSent;
 use App\Models\Message;
 use App\Models\User;
-use App\Models\Settings;
-
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class ChatController extends Controller
 {
-    public function index()
-    {
-        $settings = Settings::first();
-        if (Auth::user()->role === 'مدير') {
-            $users = User::where('id', '!=', Auth::id())->get();
-            return view('admin.chat', compact('users'));
-        } else {
-            // عرض المديرين فقط للمستخدم العادي
-            $contacts = User::where('role', 'مدير')
-                ->where('id', '!=', Auth::id())
-                ->get();
-            return view('user.chat', compact('contacts', 'settings'));
-        }
-    }
-public function adminIndex()
-{
-    if (!(Auth::user()->role === 'مدير')) {
-        abort(403, 'Unauthorized');
-    }
-    $users = User::where('id', '!=', Auth::id())->get();
-    return view('admin.chat', compact('users'));
-}
-    public function getMessages($userId)
+    public function memberChat(): View|RedirectResponse
     {
         $user = Auth::user();
-        if ($user->is_admin) {
-            // الأدمن يرى جميع الرسائل مع المستخدم المحدد
-            $messages = Message::where(function ($query) use ($userId) {
-                $query->where('from_user_id', $userId)
-                    ->orWhere('to_user_id', $userId);
-            })->with(['sender', 'receiver'])->get();
+
+        if ($user->isStaff()) {
+            return redirect()->route('admin.chat');
+        }
+
+        $contacts = User::staff()
+            ->where('id', '!=', $user->id)
+            ->orderBy('name')
+            ->get();
+
+        return view('members.chat.index', [
+            'contacts' => $contacts,
+            'chatMode' => 'member',
+            'pageTitle' => __('app.chat_with_administration'),
+        ]);
+    }
+
+    public function adminChat(): View|RedirectResponse
+    {
+        $user = Auth::user();
+
+        if (! $user->isStaff()) {
+            return redirect()->route('chat');
+        }
+
+        $contacts = $this->memberContactsForStaff();
+
+        return view('admin.chat.index', [
+            'contacts' => $contacts,
+            'chatMode' => 'admin',
+            'pageTitle' => __('app.chat_with_members'),
+        ]);
+    }
+
+    public function getMessages(int $userId): JsonResponse
+    {
+        $user = Auth::user();
+        $other = User::findOrFail($userId);
+
+        abort_unless($this->canAccessConversation($user, $other), 403);
+
+        $messages = Message::where(function ($query) use ($user, $userId) {
+            $query->where('from_user_id', $user->id)->where('to_user_id', $userId)
+                ->orWhere('from_user_id', $userId)->where('to_user_id', $user->id);
+        })
+            ->with(['sender:id,name', 'receiver:id,name'])
+            ->orderBy('created_at')
+            ->get();
+
+        if ($user->isStaff()) {
+            Message::where('to_user_id', $user->id)
+                ->where('from_user_id', $userId)
+                ->whereNull('read_at')
+                ->update(['read_at' => now()]);
         } else {
-            // المستخدم يرى الرسائل الخاصة به فقط
-            $messages = Message::where(function ($query) use ($user, $userId) {
-                $query->where('from_user_id', $user->id)->where('to_user_id', $userId)
-                    ->orWhere('from_user_id', $userId)->where('to_user_id', $user->id);
-            })->with(['sender', 'receiver'])->get();
+            Message::where('to_user_id', $user->id)
+                ->where('from_user_id', $userId)
+                ->whereNull('read_at')
+                ->update(['read_at' => now()]);
         }
 
         return response()->json($messages);
     }
 
-    public function sendMessage(Request $request)
+    public function sendMessage(Request $request): JsonResponse
     {
-        $request->validate([
+        $user = Auth::user();
+
+        $validated = $request->validate([
             'to_user_id' => 'required|exists:users,id',
-            'message' => 'required|string|max:255',
+            'message' => 'required|string|max:2000',
         ]);
+
+        $recipient = User::findOrFail($validated['to_user_id']);
+
+        abort_unless($this->canAccessConversation($user, $recipient), 403);
 
         $message = Message::create([
-            'from_user_id' => Auth::id(),
-            'to_user_id' => $request->to_user_id,
-            'message' => $request->message,
+            'from_user_id' => $user->id,
+            'to_user_id' => $recipient->id,
+            'message' => $validated['message'],
         ]);
 
-        broadcast(new MessageSent(Auth::user(), $message))->toOthers();
+        $message->load(['sender:id,name', 'receiver:id,name']);
 
-        // Mail::raw(
-        //     'رسالة جديدة من الإدارة: ' . $request->message,
-        //     function ($messages) use ($message) {
-        //         $messages->to([$message->receiver->email, 'contact@uaeretired.ae'])
-        //             ->subject('رسالة جديدة');
-        //     }
-        // );
+        broadcast(new MessageSent($user, $message))->toOthers();
 
-        return response()->json(['status' => 'Message Sent!', 'message' => $message]);
+        return response()->json([
+            'status' => 'ok',
+            'message' => $message,
+        ]);
+    }
+
+    /** @deprecated Use memberChat() or adminChat() */
+    public function index(): View|RedirectResponse
+    {
+        return Auth::user()->isStaff()
+            ? $this->adminChat()
+            : $this->memberChat();
+    }
+
+    /** @deprecated Use adminChat() */
+    public function adminIndex(): View|RedirectResponse
+    {
+        return $this->adminChat();
+    }
+
+    protected function memberContactsForStaff()
+    {
+        return User::members()
+            ->orderBy('name')
+            ->get();
+    }
+
+    protected function canAccessConversation(User $viewer, User $other): bool
+    {
+        if ($viewer->id === $other->id) {
+            return false;
+        }
+
+        if ($viewer->isStaff() && ! $other->isStaff()) {
+            return true;
+        }
+
+        if (! $viewer->isStaff() && $other->isStaff()) {
+            return true;
+        }
+
+        return false;
     }
 }

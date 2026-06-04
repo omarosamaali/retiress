@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'تفاصيل الفعالية')
-@section('page-title', 'تفاصيل الفعالية')
+@section('title', 'تفاصيل الإعلان')
+@section('page-title', 'تفاصيل الإعلان')
 
 @push('styles')
     <style>
@@ -69,7 +69,7 @@
     <div class="detail-section">
         <h5 class="mb-4">
             <i class="fas fa-newspaper ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
-            تفاصيل الفعالية: {{ $event->title_ar }}
+            تفاصيل الإعلان: {{ $event->title_ar }}
         </h5>
 
         <div class="row">
@@ -79,8 +79,28 @@
                     <span>{{ $event->title_ar }}</span>
                 </div>
                 <div class="detail-item">
+                    <strong class="text-black">النوع:</strong>
+                    <span class="badge bg-secondary">{{ $event->type_label }}</span>
+                </div>
+                <div class="detail-item">
+                    <strong class="text-black">الفئة المستهدفة:</strong>
+                    <span class="badge {{ $event->isForMembersOnly() ? 'bg-info' : 'bg-dark' }}">{{ $event->audience_label }}</span>
+                </div>
+                <div class="detail-item">
                     <strong class="text-black">الوصف (عربي):</strong>
                     <span>{{ $event->description_ar }}</span>
+                </div>
+                <div class="detail-item">
+                    <strong class="text-black">{{ __('app.event_starts_at') }}:</strong>
+                    <span>{{ $event->display_starts_at ? $event->display_starts_at->format('d/m/Y H:i') : 'غير متوفر' }}</span>
+                </div>
+                <div class="detail-item">
+                    <strong class="text-black">{{ __('app.event_ends_at') }}:</strong>
+                    <span>{{ $event->display_ends_at ? $event->display_ends_at->format('d/m/Y H:i') : 'غير متوفر' }}</span>
+                </div>
+                <div class="detail-item">
+                    <strong class="text-black">السعر:</strong>
+                    <span>{{ $event->isFree() ? __('app.free_event') : number_format((float) $event->price, 2) . ' ' . __('app.aed') }}</span>
                 </div>
                 <div class="detail-item">
                     <strong class="text-black">تاريخ الإضافة:</strong>
@@ -142,6 +162,10 @@
                 @endif
             @endforeach
         </div>
+        @include('admin.events.partials.subscribers-table', [
+            'filterBaseUrl' => route('admin.event.show', $event),
+        ])
+
         <div class="btn-section">
             <a href="{{ route('admin.event.index') }}" class="back-btn">
                 <i class="fas fa-arrow-right ms-1"></i>
@@ -149,7 +173,7 @@
             </a>
             <a href="{{ route('admin.event.edit', $event->id) }}" class="edit-btn">
                 <i class="fas fa-edit ms-1"></i>
-                تعديل الفعالية
+                تعديل الإعلان
             </a>
         </div>
     </div>

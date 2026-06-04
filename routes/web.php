@@ -26,11 +26,13 @@ use App\Models\Transaction;
 use App\Models\Feature;
 use App\Models\Faq;
 use App\Http\Controllers\ContactMessageController;
+use App\Http\Controllers\PublicEventController;
+use App\Http\Middleware\CheckUserStatus;
 
 Route::get('contact-us', [ContactMessageController::class, 'index'])->name('contact-us');
 Route::post('contact-us', [ContactMessageController::class, 'store'])->name('contact-us.store');
 
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', CheckUserStatus::class])->group(function () {
     Route::get('contact-messages', [ContactMessageController::class, 'admin'])->name('contact-messages');
     Route::get('contact-messages/{contactMessage}', [ContactMessageController::class, 'show'])->name('contact-messages.show');
     Route::delete('contact-messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
@@ -53,10 +55,8 @@ Route::middleware(['auth'])->name('members.')->group(function () {
     // المسار الجديد لرفع الإيصال
     Route::post('/transactions/{transaction}/upload-receipt', [TransactionController::class, 'uploadReceipt'])->name('upload_receipt');
 });
-// Event Subscription Route
-Route::post('/events/{event}/subscribe', [TransactionController::class, 'subscribeToEvent'])->name('events.subscribe');
-
 Route::middleware(['auth'])->group(function () {
+    Route::post('/events/{event}/subscribe', [TransactionController::class, 'subscribeToEvent'])->name('events.subscribe');
     Route::post('/services/{service}/subscribe', [TransactionController::class, 'subscribe'])->name('services.subscribe');
 });
 
@@ -86,24 +86,30 @@ Route::get('/members/committee-members/{id}', function ($id) {
 
 
 Route::middleware('auth')->group(function () {
+    Route::get('/members/panel', [\App\Http\Controllers\MemberPanelController::class, 'index'])->name('members.panel');
+    Route::get('/members/notifications', [\App\Http\Controllers\MemberNotificationController::class, 'index'])->name('members.notifications.index');
+    Route::post('/members/notifications/{userNotification}/dismiss', [\App\Http\Controllers\MemberNotificationController::class, 'dismiss'])->name('members.notifications.dismiss');
+    Route::post('/members/notifications/{userNotification}/read', [\App\Http\Controllers\MemberNotificationController::class, 'read'])->name('members.notifications.read');
+
     Route::get('/members/recordEvents', function () {
         return view('members.sidebar.recordEvents');
     })->name('members.recordEvents');
-    Route::get('/members/record', function(){
-        $transactions = Transaction::with('service')
-        ->where('user_id', Auth::id())
-        ->get();
+    Route::get('/members/record', function () {
+        $transactions = Transaction::with(['service', 'event'])
+            ->where('user_id', Auth::id())
+            ->orderByDesc('subscribed_at')
+            ->get();
         $memberships = MemberApplication::where('user_id', Auth::id())->get();
+
         return view('members.sidebar.record', compact('transactions', 'memberships'));
     })->name('members.record');
 
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
     Route::put('/members/profile', [GuestProfileController::class, 'update'])->name('members.profile.update');
-    Route::get('/chat', [ChatController::class, 'index'])->name('chat');
-    Route::get('/admin/chat', [ChatController::class, 'adminIndex'])->name('admin.chat'); // أضف هذا السطر
-    Route::get('/messages/{userId}', [ChatController::class, 'getMessages']);
-    Route::post('/send-message', [ChatController::class, 'sendMessage']);
+    Route::get('/chat', [ChatController::class, 'memberChat'])->name('chat');
+    Route::get('/messages/{userId}', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::post('/send-message', [ChatController::class, 'sendMessage'])->name('chat.send');
 });
 
 Route::get('/download-document/{documentType}/{memberApplicationId}', function ($documentType, $memberApplicationId) {
@@ -170,10 +176,6 @@ Route::post('/members/logout', function () {
 Route::get('/members/membership-show', [MemberApplicationsController::class, 'showForm'])->name('members.membership-show');
 Route::post('/members/application', [MemberApplicationsController::class, 'store'])->name('members.application.store');
 Route::post('/members/renewal', [MemberApplicationsController::class, 'renew'])->name('members.renewal');
-
-Route::get('/members/membership-show', function () {
-    return view('members.sidebar.membership-show');
-})->name('members.membership-show');
 
 Route::get('/members/membership', function () {
     $sections = Membership::all();
@@ -258,15 +260,9 @@ Route::get('/services/all-services', function () {
     return view('members.services.all-services', compact('services'));
 })->name('services.all-services');
 
-Route::get('/events/show/{id}', function ($id) {
-    $events = Event::find($id);
-    return view('members.events.show', compact('events'));
-})->name('events.show');
+Route::get('/events/show/{id}', [PublicEventController::class, 'show'])->name('events.show');
 
-Route::get('/events/all-events', function () {
-    $events = Event::all();
-    return view('members.events.all-events', compact('events'));
-})->name('events.all-events');
+Route::get('/events/all-events', [PublicEventController::class, 'index'])->name('events.all-events');
 
 Route::get('/news/show/{id}', function ($id) {
     $news = News::find($id);
@@ -286,7 +282,7 @@ Route::get('/dashboard', function () {
         ->first();
 
     $news = News::latest()->limit(3)->get();
-    $events = Event::latest()->get();
+    $events = Event::publiclyListed()->latest()->get();
     $services = Service::latest()->limit(3)->get();
     $magazines = Magazine::latest()->first();
     return view('dashboard', compact('banner', 'news', 'events', 'services', 'magazines'));
@@ -301,7 +297,7 @@ Route::get('/', function () {
         ->first();
 
     $news = News::latest()->limit(3)->get();
-    $events = Event::latest()->get();
+    $events = Event::publiclyListed()->latest()->get();
     $services = Service::latest()->limit(3)->get();
     // $magazines = Magazine::latest()->get();
     $magazinesCount = Magazine::count();

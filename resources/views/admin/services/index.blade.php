@@ -129,7 +129,7 @@
             <tr>
                 <td colspan="7" class="text-center py-4">
                     <i class="fas fa-newspaper text-muted" style="font-size: 3rem;"></i>
-                    <p class="text-muted mt-2">لا توجد فعاليات</p>
+                    <p class="text-muted mt-2">لا توجد خدمات</p>
                 </td>
             </tr>
             @endforelse
@@ -151,7 +151,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                هل أنت متأكد من حذف هذه الفعاليه؟
+                هل أنت متأكد من حذف هذه الخدمة؟
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>

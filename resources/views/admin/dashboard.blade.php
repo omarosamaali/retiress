@@ -147,7 +147,7 @@
             <div class="stats-card">
                 <div class="icon third container-top">
                     <i class="fas fa-calendar-check"></i>
-                    <div class="label">عدد البرامج والفعاليات الفعالة</div>
+                    <div class="label">عدد الإعلانات الفعالة</div>
                 </div>
                 <div class="number" data-count="{{ $activeEventsCount }}">0</div>
                 <p class="text-muted">آخر انضمام:
@@ -158,7 +158,7 @@
             <div class="stats-card">
                 <div class="icon fourth container-top">
                     <i class="fas fa-calendar-times"></i>
-                    <div class="label">عدد البرامج والفعاليات المنتهية</div>
+                    <div class="label">عدد الإعلانات المنتهية</div>
                 </div>
                 <div class="number" data-count="{{ $inActiveEventsCount }}">0</div>
                 <p class="text-muted">آخر انضمام:

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'إدارة الفعاليات')
-@section('page-title', 'إدارة الفعاليات')
+@section('title', 'إدارة الإعلانات')
+@section('page-title', 'إدارة الإعلانات')
 
 @push('styles')
     <style>
@@ -59,7 +59,7 @@
     <div class="add-section">
         <h5 class="mb-4">
             <i class="fas fa-newspaper ms-2"></i>
-            إضافة فعاليه جديد
+            إضافة إعلان جديد
         </h5>
 
         @if ($errors->any())
@@ -78,13 +78,23 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
-                        <label for="title_ar" class="form-label">عنوان الفعاليه (بالعربية)</label>
+                        <label for="title_ar" class="form-label">عنوان الإعلان (بالعربية)</label>
                         <input type="text" class="form-control" id="title_ar" name="title_ar" value="{{ old('title_ar') }}" required>
                         @error('title_ar')
                             <div class="text-white">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
+
+                <div class="col-md-6">
+                    @include('admin.events.partials.type-select', ['errorClass' => 'text-white'])
+                </div>
+
+                <div class="col-md-6">
+                    @include('admin.events.partials.audience-select', ['errorClass' => 'text-white'])
+                </div>
+
+                @include('admin.events.partials.schedule-fields', ['errorClass' => 'text-white'])
 
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -138,7 +148,7 @@
 
                 <div class="col-md-12">
                     <div class="mb-3">
-                        <label for="description_ar" class="form-label">وصف الفعاليه (بالعربية)</label>
+                        <label for="description_ar" class="form-label">وصف الإعلان (بالعربية)</label>
                         <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar') }}</textarea>
                         @error('description_ar')
                             <div class="text-white">{{ $message }}</div>
@@ -149,7 +159,7 @@
 
             <button type="submit" class="btn btn-light mt-3">
                 <i class="fas fa-plus ms-1"></i>
-                إضافة الفعاليه
+                إضافة الإعلان
             </button>
         </form>
     </div>
@@ -175,6 +185,8 @@
                     <th>#</th>
                     <th>تاريخ الإضافة</th>
                     <th>العنوان (عربي)</th>
+                    <th>النوع</th>
+                    <th>الفئة</th>
                     <th>مدفوع</th>
                     <th>السعر</th>
                     <th>الصورة الرئيسية</th>
@@ -188,6 +200,8 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->created_at->format('d/m/Y') }}</td>
                         <td>{{ $item->title_ar }}</td>
+                        <td><span class="badge bg-secondary">{{ $item->type_label }}</span></td>
+                        <td><span class="badge {{ $item->isForMembersOnly() ? 'bg-info' : 'bg-dark' }}">{{ $item->audience_label }}</span></td>
                         @if ($item->price)
                             <td class="text-success">مدفوع</td>
                             <td class="text-success">{{ $item->price }}</td>
@@ -223,9 +237,9 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="text-center py-4">
+                        <td colspan="10" class="text-center py-4">
                             <i class="fas fa-newspaper text-muted" style="font-size: 3rem;"></i>
-                            <p class="text-muted mt-2">لا توجد فعاليات</p>
+                            <p class="text-muted mt-2">لا توجد إعلانات</p>
                         </td>
                     </tr>
                 @endforelse
@@ -247,7 +261,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    هل أنت متأكد من حذف هذه الفعاليه؟
+                    هل أنت متأكد من حذف هذا الإعلان؟
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
@@ -262,7 +276,7 @@
     </div>
 
     <div class="table-responsive" style="margin-top: 50px">
-        <h5 class="mb-3">المشتركين في الفاعلية</h5>
+        <h5 class="mb-3">المشتركين في الإعلان</h5>
         <table class="table table-hover">
             <thead>
                 <tr>

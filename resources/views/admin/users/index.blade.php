@@ -39,7 +39,13 @@
 
     .filter-buttons .btn {
         margin-right: 10px;
+        margin-bottom: 8px;
         min-width: 120px;
+    }
+
+    .membership-filter-buttons .btn {
+        min-width: 110px;
+        font-size: 0.85rem;
     }
 
     .chef-fields {
@@ -127,10 +133,23 @@
 @endpush
 
 @section('content')
+<div class="add-user-section mb-3">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <h5 class="mb-0">
+            <i class="fas fa-users ms-2"></i>
+            إدارة المستخدمين والأعضاء
+        </h5>
+        <a href="{{ route('admin.users.create') }}" class="btn btn-success">
+            <i class="fas fa-id-card ms-1"></i>
+            تسجيل عضو جديد
+        </a>
+    </div>
+</div>
+
 <div class="add-user-section">
     <h5 class="mb-4">
         <i class="fas fa-user-plus ms-2"></i>
-        إضافة مستخدم جديد
+        إضافة موظف / مستخدم نظام
     </h5>
 
     <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
@@ -188,7 +207,7 @@
 
             <div class="col-md-2">
                 <div class="mb-3">
-                    <label for="status" class="form-label">الحالة</label>
+                    <label for="status" class="form-label">حالة الحساب</label>
                     <select class="form-select" name="status" id="status">
                         <option value="فعال" {{ old('status')=='فعال' ? 'selected' : '' }}>فعال</option>
                         <option value="غير فعال" {{ old('status')=='غير فعال' ? 'selected' : '' }}>غير فعال</option>
@@ -207,7 +226,7 @@
 
         <button type="submit" class="btn btn-light">
             <i class="fas fa-plus ms-1"></i>
-            إضافة المستخدم
+            إضافة موظف
         </button>
     </form>
 </div>
@@ -226,34 +245,55 @@
 </div>
 @endif
 
-<div class="mb-4 filter-buttons d-flex justify-content-center">
-    <a href="{{ route('admin.users.index') }}"
+<div class="mb-3 filter-buttons d-flex flex-wrap justify-content-center">
+    <a href="{{ route('admin.users.index', request()->only('search', 'membership_status')) }}"
         class="btn {{ request()->get('role') == '' ? 'btn-primary' : 'btn-outline-primary' }}">
         عرض الجميع
     </a>
-    <a href="{{ route('admin.users.index', ['role' => 'مدير']) }}"
+    <a href="{{ route('admin.users.index', array_merge(request()->only('search', 'membership_status'), ['role' => 'مدير'])) }}"
         class="btn {{ request()->get('role') == 'مدير' ? 'btn-primary' : 'btn-outline-primary' }}">
         المدراء
     </a>
-    <a href="{{ route('admin.users.index', ['role' => 'موظف استقبال']) }}"
+    <a href="{{ route('admin.users.index', array_merge(request()->only('search', 'membership_status'), ['role' => 'موظف استقبال'])) }}"
         class="btn {{ request()->get('role') == 'موظف استقبال' ? 'btn-primary' : 'btn-outline-primary' }}">
         موظف الإستقبال
     </a>
-    <a href="{{ route('admin.users.index', ['role' => 'مدخل بيانات']) }}"
+    <a href="{{ route('admin.users.index', array_merge(request()->only('search', 'membership_status'), ['role' => 'مدخل بيانات'])) }}"
         class="btn {{ request()->get('role') == 'مدخل بيانات' ? 'btn-primary' : 'btn-outline-primary' }}">
         مدخل البيانات
     </a>
-    <a href="{{ route('admin.users.index', ['role' => 'عضو']) }}"
+    <a href="{{ route('admin.users.index', array_merge(request()->only('search', 'membership_status'), ['role' => 'عضو'])) }}"
         class="btn {{ request()->get('role') == 'عضو' ? 'btn-primary' : 'btn-outline-primary' }}">
         عضو
     </a>
-    <a href="{{ route('admin.users.index', ['role' => 'أمين الصندوق']) }}"
+    <a href="{{ route('admin.users.index', array_merge(request()->only('search', 'membership_status'), ['role' => 'أمين الصندوق'])) }}"
         class="btn {{ request()->get('role') == 'أمين الصندوق' ? 'btn-primary' : 'btn-outline-primary' }}">
         أمين الصندوق
     </a>
 </div>
+
+<div class="mb-4 membership-filter-buttons d-flex flex-wrap justify-content-center">
+    <span class="align-self-center ms-2 me-2 text-muted small">حالة العضوية:</span>
+    <a href="{{ route('admin.users.index', request()->only(['role', 'search'])) }}"
+        class="btn {{ ! request()->filled('membership_status') ? 'btn-success' : 'btn-outline-success' }}">
+        الكل
+    </a>
+    @foreach ($membershipStatusFilters ?? [] as $filterKey => $filterLabel)
+        <a href="{{ route('admin.users.index', array_merge(request()->only(['role', 'search']), ['membership_status' => $filterKey])) }}"
+            class="btn {{ request()->get('membership_status') === $filterKey ? 'btn-success' : 'btn-outline-success' }}">
+            {{ $filterLabel }}
+        </a>
+    @endforeach
+</div>
+
 <div style="margin-bottom: 15px;">
     <form action="{{ route('admin.users.index') }}" method="GET">
+        @if (request()->filled('role'))
+            <input type="hidden" name="role" value="{{ request('role') }}">
+        @endif
+        @if (request()->filled('membership_status'))
+            <input type="hidden" name="membership_status" value="{{ request('membership_status') }}">
+        @endif
         <div>
             <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -263,9 +303,10 @@
                             d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                     </svg>
                 </div>
-                <input type="search" id="search" name="search" class="search-input" placeholder="إبحث بإسم العضو..." />
+                <input type="search" id="search" name="search" class="search-input" placeholder="إبحث بإسم العضو..."
+                    value="{{ request('search') }}" />
                 @if(request()->filled('search'))
-                <a href="{{ route('admin.users.index') }}" class="search-button">إعادة تعيين</a>
+                <a href="{{ route('admin.users.index', request()->only(['role', 'membership_status'])) }}" class="search-button">إعادة تعيين</a>
                 @else
                 <button type="submit" class="search-button">بحث</button>
                 @endif
@@ -282,7 +323,10 @@
                 <th>الاسم</th>
                 <th>البريد الإلكتروني</th>
                 <th>الصلاحية</th>
-                <th>الحالة</th>
+                <th>تاريخ الانتهاء</th>
+                <th>نوع العضوية</th>
+                <th>حالة العضوية</th>
+                <th>حالة الحساب</th>
                 <th>الإجراءات</th>
             </tr>
         </thead>
@@ -296,6 +340,25 @@
                 <td>
                     <span class="badge {{ $user->getRoleBadgeClass() }}">
                         {{ $user->role }}
+                    </span>
+                </td>
+                <td>
+                    @if ($user->memberApplication?->expiration_date)
+                        {{ \Carbon\Carbon::parse($user->memberApplication->expiration_date)->format('d/m/Y') }}
+                    @else
+                        <span class="text-muted">—</span>
+                    @endif
+                </td>
+                <td>
+                    @if ($user->memberApplication)
+                        <span class="badge bg-dark">{{ $user->membership_type_text }}</span>
+                    @else
+                        <span class="text-muted">—</span>
+                    @endif
+                </td>
+                <td>
+                    <span class="badge {{ $user->membership_status_badge_class }}">
+                        {{ $user->membership_status_text }}
                     </span>
                 </td>
                 <td>
@@ -352,7 +415,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="7" class="text-center py-4">
+                <td colspan="10" class="text-center py-4">
                     <i class="fas fa-users text-muted" style="font-size: 3rem;"></i>
                     <p class="text-muted mt-2">لا توجد بيانات مستخدمين</p>
                 </td>

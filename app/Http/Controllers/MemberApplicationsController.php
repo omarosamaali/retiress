@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MemberApplication;
+use App\Support\Turnstile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,9 @@ class MemberApplicationsController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'يجب تسجيل الدخول لتقديم طلب العضوية أو تجديدها.');
         }
-        return view('members.sidebar.membership-show');
+        return view('members.membership.wizard', [
+            'turnstileSiteKey' => config('services.turnstile.site_key'),
+        ]);
     }
 
     /**
@@ -39,6 +42,13 @@ class MemberApplicationsController extends Controller
             return redirect()->back()->with('error', 'لقد قمت بتقديم طلب بالفعل. لا يمكن تقديم أكثر من طلب واحد.');
         }
 
+        $captchaToken = (string) $request->input('captcha_token', '');
+        if (! Turnstile::verify($captchaToken, $request->ip())) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['captcha_token' => __('app.captcha_verification_failed')]);
+        }
+
         $validated = $request->validate([
             'full_name' => 'required|string|max:255',
             'nationality' => 'required|string|max:255',
@@ -53,9 +63,9 @@ class MemberApplicationsController extends Controller
             'email' => 'required|email|max:255',
             'po_box' => 'nullable|string|max:255',
             'retirement_date' => 'nullable|date',
-            'contract_type' => 'nullable|string|in:نظامي,مبكر',
+            'contract_type' => 'required|string|in:نظامي,مبكر',
             'early_reason' => 'nullable|string|max:500',
-            'pension' => 'nullable|string|max:255',
+            'pension' => 'required|string|max:255',
             'passport_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
             'national_id_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
             'personal_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
@@ -64,11 +74,8 @@ class MemberApplicationsController extends Controller
             'professional_experience.*.year' => 'nullable|string|max:255',
             'professional_experience.*.job_title' => 'nullable|string|max:255',
             'professional_experience.*.employer' => 'nullable|string|max:255',
-            'professional_experience.*.years_of_experience' => 'nullable|integer',
-            'previous_experience.*.year' => 'nullable|string|max:255',
-            'previous_experience.*.job_title' => 'nullable|string|max:255',
-            'previous_experience.*.employer' => 'nullable|string|max:255',
-            'previous_experience.*.years_of_experience' => 'nullable|integer',
+            'professional_experience.*.years_of_experience' => 'nullable|string|max:255',
+            'terms_accepted' => 'accepted',
         ]);
 
         $user_id = Auth::id();
@@ -79,7 +86,8 @@ class MemberApplicationsController extends Controller
             'educational_qualification_photo',
             'retirement_card_photo',
             'professional_experience',
-            'previous_experience',
+            'captcha_token',
+            'terms_accepted',
         ]);
 
         $fileFields = [
@@ -112,17 +120,7 @@ class MemberApplicationsController extends Controller
             $data['professional_experiences'] = [];
         }
 
-        if ($request->has('previous_experience')) {
-            $cleanedPreviousExperiences = [];
-            foreach ($request->input('previous_experience') as $experienceData) {
-                if (!empty(array_filter($experienceData))) {
-                    $cleanedPreviousExperiences[] = $experienceData;
-                }
-            }
-            $data['previous_experience'] = $cleanedPreviousExperiences;
-        } else {
-            $data['previous_experience'] = [];
-        }
+        $data['previous_experience'] = [];
 
         $application = MemberApplication::create($data);
         // Mail::raw(

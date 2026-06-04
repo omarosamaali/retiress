@@ -38,7 +38,7 @@
                     </li>
 
                     {{-- <li>
-                        <a href="{{ route('members.recordEvents') }}">البرامج والفاعليات</a>
+                        <a href="{{ route('members.recordEvents') }}">الإعلانات</a>
                     </li> --}}
 
                     <li>
@@ -94,12 +94,19 @@
                     </a>
                 </div>
                 @auth
-                <div> مرحبا.. {{ Auth::user()->name }}</div>
+                <div class="member-header-welcome d-flex align-items-center flex-wrap gap-1">
+                    @include('components.member-header-tools')
+                    <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
+                </div>
                 @endauth
 
             </div>
         </div>
     </div>
+    @auth
+        @include('components.membership-card-modal')
+        <script src="{{ asset('assets/js/member-header.js') }}" defer></script>
+    @endauth
     <!--START CLOUDS -->
     <div class="sky">
         <div class="clouds_one"></div>

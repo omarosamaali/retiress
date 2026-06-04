@@ -64,7 +64,7 @@ class RegisterControllerUser extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'role' => $request->role ?? 'مستخدم'
+                'role' => 'عضو',
             ]);
 
             auth()->login($user);

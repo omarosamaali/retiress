@@ -5123,6 +5123,12 @@
             </h2>
         </div>
 
+        @if (session('error'))
+            <div class="container-rni">
+                <div class="alert alert-warning">{{ session('error') }}</div>
+            </div>
+        @endif
+
         <section class="py-hp3">
             <div class="container-rni">
                 @forelse($events as $event)
@@ -5141,23 +5147,12 @@
                             <a class="text-7zo text-b1x" href="{{ route('events.show', $event) }}">
                                 <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}</h2>
                             </a>
+                            <span class="badge bg-secondary">{{ $event->type_label }}</span>
+                            @if ($event->isForMembersOnly())
+                                <span class="badge bg-info">{{ $event->audience_label }}</span>
+                            @endif
                             <hr>
-                            <div class="my-7z8 fs--oox">
-                                <div style="display: inline-block;">
-                                    <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{ \Carbon\Carbon::parse($event->date)->translatedFormat('Y-m-d') }}
-                                </div>
-                                {{-- Uncomment and translate if you need these time fields --}}
-                                {{--
-                            <div style="display: inline-block; margin-right: 15px;">
-                                <i class="fa fa-calendar"></i> {{ __('app.from') }}: {{ \Carbon\Carbon::parse($event->start_time)->translatedFormat('h:i A') }}
-                            </div>
-                            <div style="display: inline-block;">
-                                <i class="fa-vxc fa-otp mx-8rj"></i> {{ __('app.to') }}: {{ \Carbon\Carbon::parse($event->end_time)->translatedFormat('h:i A') }}
-                            </div>
-                            --}}
-                            <div style="display: inline-block; margin-right: 15px;">
-                                <i class="fa-vxc fa-p16 mx-8rj"></i> {{ __('app.price') }}: {{ number_format($event->price, 2) }} {{ __('app.aed') }}
-                            </div>
+                            @include('members.events.partials.event-meta', ['event' => $event])
                         </div>
                         <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
                             <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ? $event->description_ar : $event->description_en }} </span>

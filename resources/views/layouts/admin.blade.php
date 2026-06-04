@@ -327,7 +327,7 @@
                     </li>
                     <li>
                         <a class="dropdown-item" href="{{ route('admin.event.index') }}">
-                            <i class="fas fa-newspaper"></i> البرامج والفعاليات
+                            <i class="fas fa-newspaper"></i> الإعلانات
                         </a>
                     </li>
                     <li>
@@ -420,10 +420,17 @@
             </div>
             @endcan
 
-            @if(Auth::user()->role == 'مدير')
+            @if(Auth::user()->canAccessAdminPanel())
             <a class="nav-link" href="{{ route('admin.chat') }}">
-                <i class="fas fa-message"></i>
-                المراسلات
+                <i class="fas fa-comments"></i>
+                مراسلة الأعضاء
+            </a>
+            @endif
+
+            @if(Auth::user()->canAccessAdminPanel())
+            <a class="nav-link" href="{{ route('admin.member-notifications.create') }}">
+                <i class="fas fa-bell"></i>
+                إشعار فوري للأعضاء
             </a>
             @endif
 

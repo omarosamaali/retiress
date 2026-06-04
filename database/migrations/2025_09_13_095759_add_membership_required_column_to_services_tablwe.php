@@ -6,23 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
+        if (! Schema::hasTable('services') || Schema::hasColumn('services', 'membership_required')) {
+            return;
+        }
+
         Schema::table('services', function (Blueprint $table) {
-            $table->boolean('membership_required')->default(0);
+            $table->boolean('membership_required')->default(false);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        if (! Schema::hasTable('services') || ! Schema::hasColumn('services', 'membership_required')) {
+            return;
+        }
+
         Schema::table('services', function (Blueprint $table) {
-            //
+            $table->dropColumn('membership_required');
         });
     }
 };

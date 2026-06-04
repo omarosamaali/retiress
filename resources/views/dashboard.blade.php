@@ -80,7 +80,7 @@
             <div class="row-sy7">
                 <div class="col-w5q">
                     <h1 class="font-weight-5zk text-jli" style="margin-top: 25px;">أحدث
-                        الفعاليات</h1>
+                        الإعلانات</h1>
                     <p class="text-jli">برامج وخدمات اجتماعية وتربوية وثقافية منوعة لكافة
                         شرائح المجتمع مع التركيز على
                         فئة
@@ -93,6 +93,7 @@
                             @foreach ($events as $event)
                             <div class="swiper-slide">
                                 <a href="{{ url('/events/show/' . $event->id) }}" class="slide-content">
+                                    <x-event-type-badge :event="$event" />
                                     <img src="{{ asset('storage/' . $event->main_image) }}" alt="{{ $event->title_ar }}" class="slide-image">
                                     <div class="slide-title">
                                         {{ $event->title_ar }}

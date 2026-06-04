@@ -5162,57 +5162,16 @@
                                 <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ?
                                     $events->title_ar : $events->title_en }}</h2>
                             </a>
+                            <span class="badge bg-secondary">{{ $events->type_label }}</span>
+                            <span class="badge {{ $events->isForMembersOnly() ? 'bg-info' : 'bg-dark' }}">{{ $events->audience_label }}</span>
                             <hr>
-                            <div class="my-7z8 fs--oox">
-                                <div style="display: inline-block;">
-                                    <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{
-                                    \Carbon\Carbon::parse($events->date)->translatedFormat('Y-m-d') }}
-                                </div>
-                                <div style="display: inline-block; margin-right: 15px;">
-                                    <i class="fa-vxc fa-p16 mx-8rj"></i> {{ __('app.price') }}: {{
-                                    number_format($events->price, 2) }} {{ __('app.aed') }}
-                                </div>
-                            </div>
+                            @include('members.events.partials.event-meta', ['event' => $events])
                             <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                                <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ?
-                                    $events->description_ar : $events->description_en }} </span>
+                                <span class="text-7zo block-osq">{{ app()->getLocale() == 'ar' ? $events->description_ar : ($events->description_en ?: $events->description_ar) }}</span>
                             </p>
-                            <p>{{ app()->getLocale() == 'ar' ? $events->long_description : $events->long_description_en
-                                }}</p>
                             <hr>
                             <div class="text-jdt">
-                                @auth
-                                @if(Auth::user()->role == 'عضو')
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h"
-                                    style="margin-bottom: 0px !important;">
-                                    {{ __('app.subscribe_to_service') }}
-                                    <form action="{{ route('events.subscribe', $events->id) }}" method="POST"
-                                        style="display: inline;">
-                                        @csrf
-                                        <input type="hidden" name="type" value="event">
-                                        <button id="subscribe-form" type="submit" class="text-7zo">
-                                            {{ __('app.click_here') }}
-                                        </button>
-                                    </form>
-                                </div>
-                                @else
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h"
-                                    style="margin-bottom: 0px !important;">
-                                    {{ __('app.subscribe_to_service') }}
-                                    <button style="font-size: 16px; font-weight: bold; color: #b68a35 !important; border: none; background: none; font-family: 'Cairo';" id="subscribe-non-member" type="button" class="text-7zo">
-                                        {{ __('app.click_here') }}
-                                    </button>
-                                </div>
-                                @endif
-                                @endauth
-                                @guest
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h"
-                                    style="margin-bottom: 0px !important;">
-                                    {{ __('app.request_to_join_please') }}
-                                    <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }} <a
-                                        href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
-                                </div>
-                                @endguest
+                                @include('members.events.partials.subscription-box')
                             </div>
                         </div>
                     </div>
@@ -5240,11 +5199,11 @@
                         
                         Swal.fire({
                             icon: 'info',
-                            title: 'عضوية مطلوبة',
-                            html: 'يجب الاشتراك في العضوية للاستفادة من خدمات الجمعية<br><strong>هل ترغب في التسجيل كعضو الآن؟</strong>',
+                            title: @json(__('app.membership_required_title')),
+                            html: @json(__('app.membership_required_swal_html')),
                             showCancelButton: true,
-                            confirmButtonText: 'نعم، أريد الاشتراك',
-                            cancelButtonText: 'ليس الآن',
+                            confirmButtonText: @json(__('app.yes_register_as_member')),
+                            cancelButtonText: @json(__('app.not_now')),
                             confirmButtonColor: '#28a745',
                             cancelButtonColor: '#6c757d',
                             reverseButtons: true

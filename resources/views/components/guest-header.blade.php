@@ -95,7 +95,13 @@
                         <a href="{{ route('magazines.feature') }}">{{ __('app.مميزات العضوية') }}</a>
                     </li>
 
-                    <li><a href="{{ route('chat') }}">{{ __('app.contact_us') }}</a></li>
+                    <li>
+                        @auth
+                            <a href="{{ Auth::user()->isStaff() ? route('admin.chat') : route('chat') }}">{{ __('app.contact_us') }}</a>
+                        @else
+                            <a href="{{ route('members.login') }}">{{ __('app.contact_us') }}</a>
+                        @endauth
+                    </li>
 
                     @auth
                     <form action="{{ route('members.logout') }}" method="POST" style="margin-top: 1rem;">
@@ -132,11 +138,6 @@
                         <a href="{{ route('members.login') }}">{{ __('app.login') }}</a>
                     </span>
                     @endguest
-                    @auth
-                    <span>
-                        <a href="{{ route('dashboard') }}">{{ __('app.dashboard') }}</a>
-                    </span>
-                    @endauth
                     <a href="#"><img src="{{ asset('assets/images/apple.png') }}" width="20" height="20" /></a>
                     <a href="#"><img src="{{ asset('assets/images/android.png') }}" width="20" height="20" /></a>
                 </div>
@@ -149,11 +150,18 @@
                     </a>
                 </div>
                 @auth
-                <div> {{ __('app.welcome') }}.. {{ Auth::user()->name }}</div>
+                <div class="member-header-welcome d-flex align-items-center flex-wrap gap-1">
+                    @include('components.member-header-tools')
+                    <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
+                </div>
                 @endauth
             </div>
         </div>
     </div>
+    @auth
+        @include('components.membership-card-modal')
+        <script src="{{ asset('assets/js/member-header.js') }}" defer></script>
+    @endauth
     <div class="sky">
         <div class="clouds_one"></div>
         <div class="clouds_two"></div>

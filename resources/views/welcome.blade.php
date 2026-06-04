@@ -566,6 +566,7 @@
                             @foreach ($events as $event)
                             <div class="swiper-slide">
                                 <a href="{{ url('/events/show/' . $event->id) }}" class="slide-content">
+                                    <x-event-type-badge :event="$event" />
                                     <img src="{{ asset('storage/' . $event->main_image) }}"
                                         alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
                                         class="slide-image">

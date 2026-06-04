@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Support\RedirectsAfterLogin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -26,7 +27,14 @@ class LoginControllerUser extends Controller
         }
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return response()->json(['message' => 'تم تسجيل الدخول بنجاح!']);
+            $request->session()->regenerate();
+
+            $redirect = $request->session()->pull('url.intended', RedirectsAfterLogin::url(Auth::user()));
+
+            return response()->json([
+                'message' => 'تم تسجيل الدخول بنجاح!',
+                'redirect' => $redirect,
+            ]);
         }
 
         return response()->json(['errors' => ['email' => ['البريد الإلكتروني أو كلمة المرور غير صحيحة']]], 422);

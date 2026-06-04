@@ -231,7 +231,7 @@ $growthIcon = '↗';
 
     <div class="dashboard-container">
         <div class="page-header">
-            <h1>📊 إحصائيات البرامج والفاعليات</h1>
+            <h1>📊 إحصائيات الإعلانات</h1>
         </div>
 
         <div class="stats-grid">

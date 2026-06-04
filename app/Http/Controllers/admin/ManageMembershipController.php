@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage; // Don't forget this for file operations!
 use Illuminate\Validation\Rule; // Needed for unique validation on update
 use Illuminate\Support\Str;
+use App\Services\MemberApplicationUpdater;
 
 class ManageMembershipController extends Controller
 {
@@ -66,127 +67,17 @@ class ManageMembershipController extends Controller
     public function update(Request $request, $manageMembership)
     {
         $memberApplication = MemberApplication::findOrFail($manageMembership);
-        $userId = $memberApplication->user_id;
 
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login')->with('error', 'يجب تسجيل الدخول لإكمال هذه العملية.');
         }
 
-        $validated = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'nationality' => 'required|string|max:255',
-            'date_of_birth' => 'required|date',
-            'gender' => 'required|string|in:male,female',
-            'emirate' => 'required|string|max:255',
-            'marital_status' => 'required|string|max:255',
-            'expiration_date'=> 'nullable|date',
-            'national_id' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('member_applications')->ignore($memberApplication->id),
-            ],
-            'educational_qualification' => 'required|string|max:255',
-            'mobile_phone' => 'required|string|max:20',
-            'home_phone' => 'nullable|string|max:20',
-            'email' => 'required|email|max:255',
-            'po_box' => 'nullable|string|max:255',
-            'retirement_date' => 'nullable|date',
-            'contract_type' => 'nullable|string|in:نظامي,مبكر',
-            'early_reason' => 'nullable|string|max:500',
-
-            // File uploads are nullable
-            'passport_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
-            'front_id' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
-            'back_id' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
-            'national_id_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
-            'personal_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
-            'educational_qualification_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
-            'retirement_card_photo' => 'nullable|file|mimes:jpeg,png,pdf|max:2048',
-            'professional_experiences.*.year' => 'nullable|string|max:255',
-            'professional_experiences.*.job_title' => 'nullable|string|max:255',
-            'professional_experiences.*.employer' => 'nullable|string|max:255',
-            'professional_experiences.*.years_of_experience' => 'nullable|integer',
-            'previous_experience.*.year' => 'nullable|string|max:255',
-            'previous_experience.*.job_title' => 'nullable|string|max:255',
-            'previous_experience.*.employer' => 'nullable|string|max:255',
-            'previous_experience.*.years_of_experience' => 'nullable|integer',
-        ]);
-
-        $data = $request->except([
-            'passport_photo',
-            'national_id_photo',
-            'front_id',
-            'back_id',
-            'personal_photo',
-            'educational_qualification_photo',
-            'retirement_card_photo',
-            // استبعد هذه الحقول من هنا أيضاً، ولكن **لا** تقم بتعيينها لـ [] بعد ذلك
-            'professional_experiences',
-            'previous_experience',
-            '_token',
-            '_method',
-        ]);
-
-        // Handle file uploads (delete old file if new one is uploaded)
-        $fileFields = [
-            // تأكد من أن مفاتيح الـ array هنا هي أسماء الحقول في الـ Request
-            // وقيم الـ array هي أسماء الأعمدة في قاعدة البيانات/الـ Model
-            'passport_photo' => 'passport_photo', // يجب أن تكون نفس اسم العمود في DB
-            'front_id' => 'front_id',
-            'back_id' => 'back_id',
-            'national_id_photo' => 'national_id_photo', // يجب أن تكون نفس اسم العمود في DB
-            'personal_photo' => 'personal_photo', // يجب أن تكون نفس اسم العمود في DB
-            'educational_qualification_photo' => 'educational_qualification_photo', // يجب أن تكون نفس اسم العمود في DB
-            'retirement_card_photo' => 'retirement_card_photo', // يجب أن تكون نفس اسم العمود في DB
-        ];
-
-        foreach ($fileFields as $requestField => $dbField) {
-            if ($request->hasFile($requestField)) {
-                // Delete old file if it exists
-                if ($memberApplication->$dbField && Storage::disk('public')->exists($memberApplication->$dbField)) {
-                    Storage::disk('public')->delete($memberApplication->$dbField);
-                }
-                // Store new file
-                $path = $request->file($requestField)->store('member_applications_documents/' . $userId, 'public');
-                $data[$dbField] = $path; // Update the path in $data
-            }
-            // إذا لم يتم رفع ملف جديد، لا تفعل شيئاً هنا.
-            // القيمة القديمة ستظل محفوظة في $memberApplication ولن تتغير بواسطة $data.
+        if ($request->filled('email') && ! $request->filled('membership_email')) {
+            $request->merge(['membership_email' => $request->input('email')]);
         }
 
-        if ($request->has('professional_experiences')) { // لاحظ أن اسم الحقل في الـ request هنا يجب أن يكون 'professional_experiences'
-            $cleanedExperiences = [];
-            foreach ($request->input('professional_experiences') as $experienceData) {
-                if (!empty(array_filter($experienceData))) { // Only include non-empty experience rows
-                    $cleanedExperiences[] = $experienceData;
-                }
-            }
-            $data['professional_experiences'] = $cleanedExperiences;
-        }
+        app(MemberApplicationUpdater::class)->update($request, $memberApplication);
 
-        if ($request->has('previous_experience')) {
-            $cleanedPreviousExperiences = [];
-            foreach ($request->input('previous_experience') as $experienceData) {
-                if (!empty(array_filter($experienceData))) { // Only include non-empty experience rows
-                    $cleanedPreviousExperiences[] = $experienceData;
-                }
-            }
-            $data['previous_experience'] = $cleanedPreviousExperiences;
-        }
-
-        $memberApplication->update($data);
-        if($memberApplication->status == 3) {
-            User::where('id', $memberApplication->user_id)->update([
-                'role' => 'عضو'
-            ]);
-
-            // Mail::raw('رائع تم تفعيل طلب العضوية بنجاح انت الان تستمتع بخدماتنا يمكنك الاشتراك في خدماتنا', function ($message) use ($memberApplication) {
-            //     $message->to([$memberApplication->email, 'contact@uaeretired.ae'])->subject('تم تفعيل طلب العضوية بنجاح');
-            // });
-        }
-        
-        // Redirect with success message
         return redirect()->route('admin.manageMembership.index')->with('success', 'تم تحديث طلب العضوية بنجاح!');
     }
 

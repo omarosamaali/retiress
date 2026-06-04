@@ -82,25 +82,40 @@ class TransactionController extends Controller
      */
     public function subscribeToEvent(Request $request, Event $event)
     {
-        $existingTransaction = Transaction::where('user_id', Auth::id())
-            ->where('event_id', $event->id)
-            ->whereIn('status', ['pending', 'waiting_for_payment', 'waiting_for_activation', 'active'])
-            ->exists();
-        if ($existingTransaction) {
-            return redirect()->route('members.record')->with('error', __('app.already_subscribed_to_event'));
+        $user = Auth::user();
+
+        if (! $user) {
+            return redirect()->route('login')->with('error', __('app.login_required_to_subscribe'));
         }
-        $initialStatus = 'pending';
-        Transaction::create([
-            'user_id' => Auth::id(),
-            'service_id' => null, // أضف هذا السطر
+
+        $blockReason = $user->getSubscribeToEventBlockReason($event);
+
+        if ($blockReason) {
+            return redirect()
+                ->route('events.show', $event->id)
+                ->with('error', __('app.event_subscribe_blocked_'.$blockReason));
+        }
+
+        if ($event->userHasOpenSubscription($user)) {
+            return redirect()
+                ->route('events.show', $event->id)
+                ->with('error', __('app.already_subscribed_to_event'));
+        }
+
+        $transaction = Transaction::create([
+            'user_id' => $user->id,
+            'service_id' => null,
             'event_id' => $event->id,
-            'status' => $initialStatus,
-            'type' => $request->type,
+            'status' => 'pending',
+            'type' => $request->input('type', 'event'),
+            'subscribed_at' => now(),
         ]);
-        // Mail::raw('رائع تم الاشتراك في ' . $event->title_ar . ' بنجاح', function ($message) use ($event) {
-        //     $message->to([Auth::user()->email, 'contact@uaeretired.ae'])->subject('تم الإشتراك في فعالية ');
-        // });
-        return redirect()->route('members.record')->with('success', __('app.event_subscription_success'));
+
+        return redirect()
+            ->route('events.show', $event->id)
+            ->with('success', __('app.event_subscription_success'))
+            ->with('subscription_registered_at', $transaction->subscribed_at->format('d/m/Y H:i'))
+            ->with('subscription_status_label', $transaction->status_label);
     }
 
     public function record()
@@ -130,10 +145,10 @@ class TransactionController extends Controller
             } elseif ($transaction->event) {
                 if ($transaction->event->price > 0) {
                     $transaction->status = 'waiting_for_payment';
-                    $message = 'تمت الموافقة على طلب الفعالية المدفوعة بنجاح. بانتظار إتمام المستخدم عملية الدفع.';
+                    $message = 'تمت الموافقة على طلب الإعلان المدفوع بنجاح. بانتظار إتمام المستخدم عملية الدفع.';
                 } else {
                     $transaction->status = 'active';
-                    $message = 'تمت الموافقة وتفعيل الفعالية بنجاح.';
+                    $message = 'تمت الموافقة وتفعيل الإعلان بنجاح.';
                     // Mail::raw('رائع تم تفعيل ' . $transaction->event->title_ar . ' بنجاح يمكنك استخدام الخدمة', function ($message) use ($transaction) {
                     //     $message->to([$transaction->user->email, 'contact@uaeretired.ae'])->subject('تم تفعيل فعالية ');
                     // });

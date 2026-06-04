@@ -5643,6 +5643,22 @@
             <div class="profile-header">
                 <h1 class="profile-title">{{ __('app.transaction_record') }}</h1>
             </div>
+
+            @if (session('success'))
+                <div class="alert alert-success mb-3" role="alert">
+                    {{ session('success') }}
+                    @if (session('subscription_registered_at'))
+                        <div class="small mt-1">{{ __('app.subscription_date') }}: {{ session('subscription_registered_at') }}</div>
+                    @endif
+                    @if (session('subscription_status_label'))
+                        <div class="small">{{ __('app.subscription_status') }}: {{ session('subscription_status_label') }}</div>
+                    @endif
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger mb-3" role="alert">{{ session('error') }}</div>
+            @endif
+
             <div class="table-container">
                 <table class="data-table rtl">
                     <thead class="table-header">
@@ -5650,6 +5666,7 @@
                             <th scope="col">#</th>
                             <th scope="col">{{ __('app.date_time') }}</th>
                             <th scope="col">{{ __('app.service_name') }}</th>
+                            <th scope="col">{{ __('app.announcement_audience') }}</th>
                             <th scope="col">{{ __('app.type') }}</th>
                             <th scope="col">{{ __('app.status') }}</th>
                             <th scope="col">{{ __('app.action') }}</th>
@@ -5680,48 +5697,26 @@
 
 
                             <td>
-                                @switch($transaction->type)
-                                @case('service')
-                                {{ __('app.service') }}
-                                @break
-                                @case('event')
-                                {{ __('app.event') }}
-                                @break
-                                @case('membership')
-                                {{ __('app.membership') }}
-                                @break
-                                @endswitch
+                                @if ($transaction->type === 'event' && $transaction->event)
+                                    <span class="badge {{ $transaction->event->isForMembersOnly() ? 'bg-info' : 'bg-dark' }}">
+                                        {{ $transaction->event->audience_label }}
+                                    </span>
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
                             </td>
                             <td>
-                                @switch($transaction->status)
-                                @case('pending')
-                             {{ __('app.pending_approval') }}
-                                @break
-                                @case('waiting_for_payment')
-                               {{ __('app.waiting_for_payment') }}
-                                @break
-                                @case('waiting_for_activation')
-                               {{ __('app.waiting_for_activation') }}
-                                @break
-                                @case('active')
-                             {{ __('app.active') }}
-                                @break
-                                @case('rejected')
-                               {{ __('app.rejected') }}
-                                @break
-                                @case('expired')
-                                {{ __('app.expired') }}
-                                @break
-                                @case('deactivated')
-                               {{ __('app.deactivated') }}
-                                @break
-
-                                @default
-                                <span class="badge bg-secondary">{{ $transaction->status }}</span>
-                                @endswitch
+                                <span class="badge bg-secondary">{{ $transaction->type_label }}</span>
+                            </td>
+                            <td>
+                                <span class="badge {{ $transaction->status_badge_class }}">{{ $transaction->status_label }}</span>
                             </td>
                             <td style="min-width: 142px;">
-                                <a href="{{ route('events.show', $transaction) }}" type="button" class="btn btn-gray">{{ __('app.view') }}</a>
+                                @if ($transaction->event_id)
+                                    <a href="{{ route('events.show', $transaction->event_id) }}" type="button" class="btn btn-gray">{{ __('app.view') }}</a>
+                                @elseif ($transaction->service_id)
+                                    <a href="{{ route('services.show', $transaction->service_id) }}" type="button" class="btn btn-gray">{{ __('app.view') }}</a>
+                                @endif
                                 @if($transaction->status == 'waiting_for_payment')
                                 <button type="button" class="btn btn-blue trigger-file-input" data-transaction-id="{{ $transaction->id }}">
                                     {{ __('app.upload_receipt') }}
@@ -5745,8 +5740,9 @@
                             <td>
                                 {{ $transaction->full_name }}
                             </td>
+                            <td><span class="text-muted">—</span></td>
                             <td>
-                                {{ __('app.membership') }}
+                                <span class="badge bg-secondary">{{ __('app.membership') }}</span>
                             </td>
                             <td>
                                 @switch($transaction->status)
