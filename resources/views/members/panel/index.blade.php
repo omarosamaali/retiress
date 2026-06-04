@@ -190,6 +190,6 @@
 
     <x-footer-section></x-footer-section>
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
-    <script src="{{ asset('assets/js/member-header.js') }}" defer></script>
+    <script src="{{ asset('assets/js/scriptU.js') }}" defer></script>
 </body>
 </html>
