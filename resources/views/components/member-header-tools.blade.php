@@ -7,7 +7,7 @@
             </button>
         </div>
 
-        <a href="{{ route('members.panel') }}" class="member-panel-link">{{ __('app.my_panel') }}</a>
+        <a href="{{ route('members.panel') }}" style="padding: 5px 8px !important;" class="member-panel-link">{{ __('app.my_panel') }}</a>
 
         <div class="member-notifications-wrap">
             <button type="button" class="member-notifications-btn" id="toggleMemberNotifications"
