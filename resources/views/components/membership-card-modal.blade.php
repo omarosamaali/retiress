@@ -14,62 +14,60 @@
         <p class="mcard-sheet__hint">{{ __('app.tap_to_flip_card') }}</p>
 
         <div class="mcard-flip" id="membershipFlipCard">
-            <div class="mcard-flip__inner" id="membershipFlipInner">
+            <div class="mcard-flip__inner">
 
                 {{-- ── FRONT ── --}}
                 <div class="mcard-flip__face mcard-flip__face--front">
                     <img src="{{ asset('assets/card-f.png') }}" class="mcard-flip__bg" alt="">
 
                     @if ($card['show_details'] ?? false)
-                        {{-- Photo --}}
-                        <div class="mcard-photo-wrap">
+
+                        {{-- Photo (top right) --}}
+                        <div class="mci-photo-box">
                             @if (!empty($card['photo_url']))
-                                <img src="{{ $card['photo_url'] }}" class="mcard-photo" alt="">
+                                <img src="{{ $card['photo_url'] }}" class="mci-photo-img" alt="">
                             @else
-                                <div class="mcard-photo mcard-photo--placeholder">
-                                    <i class="fa-solid fa-user"></i>
-                                </div>
+                                <div class="mci-photo-placeholder"><i class="fa-solid fa-user"></i></div>
                             @endif
                         </div>
 
-                        {{-- Membership number --}}
-                        <div class="mcard-num-wrap">
-                            <div class="mcard-num__label">{{ __('app.membership_number') }}</div>
-                            <div class="mcard-num__val">{{ $card['membership_number'] ?? '—' }}</div>
+                        {{-- Membership number (below photo) --}}
+                        <div class="mci-number">
+                            <div class="mci-number__lbl">{{ __('app.membership_number') }}</div>
+                            <div class="mci-number__val">{{ $card['membership_number'] ?? '—' }}</div>
                         </div>
 
-                        {{-- Data rows --}}
-                        <div class="mcard-data">
-                            <div class="mcard-row">
-                                <span class="mcard-row__label">{{ __('app.full_name') }} :</span>
-                                <span class="mcard-row__val">{{ $card['full_name'] ?? '—' }}</span>
-                            </div>
-                            <div class="mcard-row">
-                                <span class="mcard-row__label">{{ __('app.job_title') }} :</span>
-                                <span class="mcard-row__val">
-                                    {{ $card['job_title'] ?? '' }}
-                                    @if (!empty($card['employer'])) — {{ $card['employer'] }} @endif
-                                    @if (empty($card['job_title']) && empty($card['employer'])) — @endif
-                                </span>
-                            </div>
+                        {{-- Name row --}}
+                        <div class="mci-row mci-row--name">
+                            <span class="mci-row__lbl">{{ __('app.full_name') }} :</span>
+                            <span class="mci-row__val">{{ $card['full_name'] ?? '—' }}</span>
                         </div>
 
-                        {{-- Dates --}}
-                        <div class="mcard-dates">
-                            <div class="mcard-date-item">
-                                <span class="mcard-date-item__label">{{ __('app.issue_date') }} :</span>
-                                <span class="mcard-date-item__val">{{ $card['issue_date'] ?? '—' }}</span>
+                        {{-- Job row --}}
+                        <div class="mci-row mci-row--job">
+                            <span class="mci-row__lbl">{{ __('app.job_title') }} :</span>
+                            <span class="mci-row__val">
+                                {{ trim(($card['job_title'] ?? '') . ($card['employer'] ? ' — ' . $card['employer'] : '')) ?: '—' }}
+                            </span>
+                        </div>
+
+                        {{-- Dates (bottom) --}}
+                        <div class="mci-dates">
+                            <div class="mci-date-group">
+                                <span class="mci-date__lbl">{{ __('app.issue_date') }} :</span>
+                                <span class="mci-date__val">{{ $card['issue_date'] ?? '—' }}</span>
                             </div>
-                            <div class="mcard-date-item">
-                                <span class="mcard-date-item__label">{{ __('app.membership_expiry') }} :</span>
-                                <span class="mcard-date-item__val">{{ $card['expiration_date'] ?? '—' }}</span>
+                            <div class="mci-date-group">
+                                <span class="mci-date__lbl">{{ __('app.membership_expiry') }} :</span>
+                                <span class="mci-date__val">{{ $card['expiration_date'] ?? '—' }}</span>
                             </div>
                         </div>
 
                     @else
-                        <div class="mcard-inactive">
+                        {{-- Inactive state --}}
+                        <div class="mci-inactive">
                             <span class="membership-status-badge {{ $status['badge_class'] ?? '' }}">{{ $status['label'] ?? '' }}</span>
-                            <a href="{{ $card['renew_url'] ?? route('members.my-membership') }}" class="mcard-renew-btn">
+                            <a href="{{ $card['renew_url'] ?? route('members.my-membership') }}" class="mci-renew-btn">
                                 {{ __('app.renewal') }}
                             </a>
                         </div>
@@ -82,7 +80,7 @@
                 </div>
 
             </div>
-        </div>{{-- /mcard-flip --}}
+        </div>
     </div>
 </div>
 @endif

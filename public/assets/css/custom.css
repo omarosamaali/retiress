@@ -3643,126 +3643,130 @@ p {
     border-radius: 14px;
 }
 
-/* Front overlay data */
-.mcard-photo-wrap {
+/* ── Front card overlay — pixel-matched to design ── */
+
+/* Photo: top-right, portrait 3:4 */
+.mci-photo-box {
     position: absolute;
-    top: 7%;
-    inset-inline-end: 3%;
-    width: 22%;
-    aspect-ratio: 0.8;
-    border: 2px solid #aaa;
-    background: #f0f0f0;
-    border-radius: 4px;
+    top: 5%;
+    inset-inline-end: 1.5%;
+    width: 19%;
+    aspect-ratio: 3 / 4;
+    border: 2px solid #999;
+    background: #e8e8e8;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.mcard-photo {
+.mci-photo-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.mcard-photo--placeholder {
-    font-size: 28px;
-    color: #999;
-    background: none;
-    width: auto;
-    height: auto;
+.mci-photo-placeholder {
+    font-size: clamp(16px, 4vw, 28px);
+    color: #bbb;
 }
 
-.mcard-num-wrap {
+/* Membership number: below photo, centered on photo column */
+.mci-number {
     position: absolute;
-    top: calc(7% + 22% / 0.8 + 2%);
-    inset-inline-end: 3%;
-    width: 22%;
+    top: 49%;
+    inset-inline-end: 1.5%;
+    width: 19%;
     text-align: center;
+    line-height: 1.4;
 }
 
-.mcard-num__label {
-    font-size: clamp(7px, 1.5vw, 11px);
-    color: #333;
+.mci-number__lbl {
+    font-size: clamp(6px, 1.3vw, 10px);
+    color: #222;
     font-weight: 600;
 }
 
-.mcard-num__val {
-    font-size: clamp(9px, 1.8vw, 14px);
+.mci-number__val {
+    font-size: clamp(8px, 1.8vw, 14px);
     font-weight: 700;
     color: #111;
+    margin-top: 2px;
 }
 
-.mcard-data {
+/* Name row: ~58% from top */
+.mci-row {
     position: absolute;
-    top: 52%;
-    inset-inline-start: 28%;
-    inset-inline-end: 27%;
-    display: flex;
-    flex-direction: column;
-    gap: 6%;
-}
-
-.mcard-row {
+    inset-inline-start: 27%;
+    inset-inline-end: 22%;
     display: flex;
     align-items: baseline;
-    gap: 6px;
+    gap: 4%;
 }
 
-.mcard-row__label {
-    font-size: clamp(8px, 1.6vw, 12px);
-    font-weight: 700;
-    color: #222;
-    white-space: nowrap;
+.mci-row--name { top: 59%; }
+.mci-row--job  { top: 72%; }
+
+.mci-row__lbl {
     flex-shrink: 0;
-}
-
-.mcard-row__val {
-    font-size: clamp(8px, 1.5vw, 11px);
+    font-size: clamp(8px, 1.7vw, 13px);
+    font-weight: 700;
     color: #111;
+    white-space: nowrap;
 }
 
-.mcard-dates {
+.mci-row__val {
+    font-size: clamp(8px, 1.6vw, 12px);
+    color: #111;
+    text-align: center;
+    flex: 1;
+}
+
+/* Dates row: bottom ~84% */
+.mci-dates {
     position: absolute;
-    bottom: 8%;
-    inset-inline-start: 28%;
-    inset-inline-end: 4%;
+    top: 84%;
+    inset-inline-start: 27%;
+    inset-inline-end: 2%;
     display: flex;
     justify-content: space-between;
-    gap: 8px;
+    align-items: baseline;
+    gap: 4%;
 }
 
-.mcard-date-item {
+.mci-date-group {
     display: flex;
     align-items: baseline;
     gap: 4px;
 }
 
-.mcard-date-item__label {
-    font-size: clamp(7px, 1.4vw, 10px);
+.mci-date__lbl {
+    font-size: clamp(7px, 1.4vw, 11px);
     font-weight: 700;
-    color: #222;
+    color: #111;
     white-space: nowrap;
 }
 
-.mcard-date-item__val {
-    font-size: clamp(7px, 1.4vw, 10px);
+.mci-date__val {
+    font-size: clamp(7px, 1.5vw, 12px);
     font-weight: 700;
     color: #111;
+    white-space: nowrap;
 }
 
-.mcard-inactive {
+/* Inactive state */
+.mci-inactive {
     position: absolute;
     inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    background: rgba(255,255,255,0.5);
+    gap: 14px;
+    background: rgba(255,255,255,0.55);
 }
 
-.mcard-renew-btn {
+.mci-renew-btn {
     padding: 8px 20px;
     background: #016330;
     color: #fff;
