@@ -22,7 +22,7 @@
 
                     @if ($card['show_details'] ?? false)
 
-                        {{-- Photo (top right) --}}
+                        {{-- Photo: top-right --}}
                         <div class="mci-photo-box">
                             @if (!empty($card['photo_url']))
                                 <img src="{{ $card['photo_url'] }}" class="mci-photo-img" alt="">
@@ -31,11 +31,14 @@
                             @endif
                         </div>
 
-                        {{-- Membership number (below photo) --}}
+                        {{-- Membership number: below photo --}}
                         <div class="mci-number">
                             <div class="mci-number__lbl">{{ __('app.membership_number') }}</div>
                             <div class="mci-number__val">{{ $card['membership_number'] ?? '—' }}</div>
                         </div>
+
+                        {{-- Separator 1 --}}
+                        <div class="mci-sep"></div>
 
                         {{-- Name row --}}
                         <div class="mci-row mci-row--name">
@@ -51,7 +54,10 @@
                             </span>
                         </div>
 
-                        {{-- Dates (bottom) --}}
+                        {{-- Separator 2 --}}
+                        <div class="mci-sep mci-sep--2"></div>
+
+                        {{-- Dates --}}
                         <div class="mci-dates">
                             <div class="mci-date-group">
                                 <span class="mci-date__lbl">{{ __('app.issue_date') }} :</span>
@@ -64,7 +70,7 @@
                         </div>
 
                     @else
-                        {{-- Inactive state --}}
+                        {{-- Inactive --}}
                         <div class="mci-inactive">
                             <span class="membership-status-badge {{ $status['badge_class'] ?? '' }}">{{ $status['label'] ?? '' }}</span>
                             <a href="{{ $card['renew_url'] ?? route('members.my-membership') }}" class="mci-renew-btn">

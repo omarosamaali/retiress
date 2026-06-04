@@ -3643,17 +3643,17 @@ p {
     border-radius: 14px;
 }
 
-/* ── Front card overlay — pixel-matched to design ── */
+/* ── Front card overlay — exact match to design ── */
 
-/* Photo: top-right, portrait 3:4 */
+/* Photo: top=4%, right=1%, width=19.3%, height=37% of card */
 .mci-photo-box {
     position: absolute;
-    top: 5%;
-    inset-inline-end: 1.5%;
-    width: 19%;
-    aspect-ratio: 3 / 4;
-    border: 2px solid #999;
-    background: #e8e8e8;
+    top: 4%;
+    inset-inline-end: 1%;
+    width: 19.3%;
+    height: 37%;
+    border: 2px solid #aaa;
+    background: #e5e5e5;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -3667,71 +3667,88 @@ p {
 }
 
 .mci-photo-placeholder {
-    font-size: clamp(16px, 4vw, 28px);
+    font-size: clamp(18px, 4vw, 30px);
     color: #bbb;
 }
 
-/* Membership number: below photo, centered on photo column */
+/* "رقم العضوية" label below photo */
 .mci-number {
     position: absolute;
-    top: 49%;
-    inset-inline-end: 1.5%;
-    width: 19%;
+    top: 43%;
+    inset-inline-end: 1%;
+    width: 19.3%;
     text-align: center;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
 .mci-number__lbl {
-    font-size: clamp(6px, 1.3vw, 10px);
-    color: #222;
-    font-weight: 600;
+    font-size: clamp(6px, 1.2vw, 10px);
+    color: #111;
+    font-weight: 500;
+    display: block;
 }
 
 .mci-number__val {
-    font-size: clamp(8px, 1.8vw, 14px);
+    font-size: clamp(9px, 1.9vw, 16px);
     font-weight: 700;
     color: #111;
+    display: block;
     margin-top: 2px;
 }
 
-/* Name row: ~58% from top */
+/* Separator lines */
+.mci-sep {
+    position: absolute;
+    top: 55%;
+    inset-inline-start: 27%;
+    inset-inline-end: 1%;
+    height: 1px;
+    background: #ccc;
+}
+
+.mci-sep--2 {
+    top: 81%;
+}
+
+/* Name row: top=63%, spans from 27% to 99% */
 .mci-row {
     position: absolute;
     inset-inline-start: 27%;
-    inset-inline-end: 22%;
+    inset-inline-end: 1%;
     display: flex;
-    align-items: baseline;
-    gap: 4%;
+    align-items: center;
+    gap: 3%;
+    padding: 0 1%;
 }
 
-.mci-row--name { top: 59%; }
-.mci-row--job  { top: 72%; }
+.mci-row--name { top: 62%; }
+.mci-row--job  { top: 73%; }
 
 .mci-row__lbl {
     flex-shrink: 0;
-    font-size: clamp(8px, 1.7vw, 13px);
+    font-size: clamp(9px, 1.8vw, 14px);
     font-weight: 700;
     color: #111;
     white-space: nowrap;
 }
 
 .mci-row__val {
-    font-size: clamp(8px, 1.6vw, 12px);
+    flex: 1;
+    font-size: clamp(9px, 1.7vw, 13px);
     color: #111;
     text-align: center;
-    flex: 1;
 }
 
-/* Dates row: bottom ~84% */
+/* Dates row: top=86% */
 .mci-dates {
     position: absolute;
-    top: 84%;
+    top: 85%;
     inset-inline-start: 27%;
-    inset-inline-end: 2%;
+    inset-inline-end: 1%;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    gap: 4%;
+    padding: 0 1%;
 }
 
 .mci-date-group {
@@ -3741,14 +3758,14 @@ p {
 }
 
 .mci-date__lbl {
-    font-size: clamp(7px, 1.4vw, 11px);
+    font-size: clamp(8px, 1.5vw, 12px);
     font-weight: 700;
     color: #111;
     white-space: nowrap;
 }
 
 .mci-date__val {
-    font-size: clamp(7px, 1.5vw, 12px);
+    font-size: clamp(8px, 1.6vw, 13px);
     font-weight: 700;
     color: #111;
     white-space: nowrap;
