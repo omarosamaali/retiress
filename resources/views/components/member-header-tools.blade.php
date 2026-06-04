@@ -1,44 +1,16 @@
 @if ($showMemberHeaderTools ?? false)
     <div class="member-header-tools d-flex align-items-center gap-2 flex-wrap" style="margin-right: 12px;">
         <div class="downapp">
+            <button type="button" class="member-card-trigger btn btn-link p-0 border-0" id="openMembershipCard"
+                title="{{ __('app.membership_card') }}" aria-label="{{ __('app.membership_card') }}">
+                <i class="fa-solid fa-id-card"></i>
+            </button>
+        </div>
 
-            <button style="text-decoration: none;
-    color: #ffffff;
-    font-size: 14px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    border: 1px solid #6e4c3e;
-    line-height: 30px;
-    text-shadow: 1px 1px 0px #43302f63;
-    text-align: right;
-    display: inline-block; background-color: #6e4c3e;" type="button" class="member-card-trigger btn btn-link p-0 border-0" id="openMembershipCard"
-            title="{{ __('app.membership_card') }}" aria-label="{{ __('app.membership_card') }}">
-            <i class="fa-solid fa-id-card"></i>
-        </button>
-    </div>
-        
-        <a href="{{ route('members.panel') }}" style="text-decoration: none;
-    color: #ffffff;
-    font-size: 14px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    border: 1px solid #6e4c3e;
-    line-height: 30px;
-    text-shadow: 1px 1px 0px #43302f63;
-    text-align: right;
-    display: inline-block; background-color: #6e4c3e;" class="member-panel-link">{{ __('app.my_panel') }}</a>
+        <a href="{{ route('members.panel') }}" class="member-panel-link">{{ __('app.my_panel') }}</a>
 
         <div class="member-notifications-wrap position-relative">
-            <button style="text-decoration: none;
-    color: #ffffff;
-    font-size: 14px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    border: 1px solid #6e4c3e;
-    line-height: 30px;
-    text-shadow: 1px 1px 0px #43302f63;
-    text-align: right;
-    display: inline-block; background-color: #6e4c3e;" type="button" class="member-notifications-btn btn btn-link p-0 border-0" id="toggleMemberNotifications"
+            <button type="button" class="member-notifications-btn btn btn-link p-0 border-0" id="toggleMemberNotifications"
                 aria-expanded="false" aria-label="{{ __('app.notifications') }}">
                 <i class="fa-solid fa-bell"></i>
                 @if (($headerNotificationCount ?? 0) > 0)
