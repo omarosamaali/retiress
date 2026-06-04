@@ -27,11 +27,11 @@
         }
     });
 
-    const sheet = document.getElementById('membershipCardSheet');
+    const sheet     = document.getElementById('membershipCardSheet');
     const openCardBtn = document.getElementById('openMembershipCard');
     const closeCardBtn = document.getElementById('closeMembershipCard');
-    const backdrop = document.getElementById('membershipCardBackdrop');
-    const flipCard = document.getElementById('membershipFlipCard');
+    const backdrop  = document.getElementById('membershipCardBackdrop');
+    const flipCard  = document.getElementById('membershipFlipCard');
 
     function openSheet() {
         if (!sheet) return;
@@ -52,7 +52,7 @@
     backdrop?.addEventListener('click', closeSheet);
 
     flipCard?.addEventListener('click', function (e) {
-        if (e.target.closest('.flip-card__back-content a')) return;
+        if (e.target.closest('a')) return;
         flipCard.classList.toggle('is-flipped');
     });
 

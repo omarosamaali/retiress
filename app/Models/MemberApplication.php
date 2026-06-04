@@ -284,7 +284,10 @@ class MemberApplication extends Model
             'employer' => $showDetails ? ($experience['employer'] ?? null) : null,
             'membership_number' => $showDetails ? $this->membership_number : null,
             'expiration_date' => $showDetails && $this->expiration_date
-                ? Carbon::parse($this->expiration_date)->translatedFormat('d/m/Y')
+                ? Carbon::parse($this->expiration_date)->format('Y/m/d')
+                : null,
+            'issue_date' => $showDetails && $this->created_at
+                ? $this->created_at->format('Y/m/d')
                 : null,
             'renew_url' => route('members.my-membership'),
         ];

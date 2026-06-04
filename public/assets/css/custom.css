@@ -3531,125 +3531,248 @@ p {
 .member-notification-dismiss { display: none; }
 .member-notifications-view-all { display: none; }
 
-.membership-sheet {
+/* ── Membership Card Modal ── */
+.mcard-sheet {
     position: fixed;
     inset: 0;
-    z-index: 9999;
+    z-index: 999998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     pointer-events: none;
-    visibility: hidden;
-}
-
-.membership-sheet.is-open {
-    pointer-events: auto;
-    visibility: visible;
-}
-
-.membership-sheet__backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s;
 }
 
-.membership-sheet.is-open .membership-sheet__backdrop {
+.mcard-sheet.is-open {
+    pointer-events: auto;
     opacity: 1;
 }
 
-.membership-sheet__panel {
+.mcard-sheet__backdrop {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #fff;
-    border-radius: 16px 16px 0 0;
-    padding: 20px 16px 28px;
-    transform: translateY(100%);
-    transition: transform 0.35s ease;
-    max-height: 85vh;
-    overflow-y: auto;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    cursor: pointer;
 }
 
-.membership-sheet.is-open .membership-sheet__panel {
-    transform: translateY(0);
+.mcard-sheet__dialog {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    transform: scale(0.92);
+    transition: transform 0.3s;
 }
 
-.membership-sheet__close {
+.mcard-sheet.is-open .mcard-sheet__dialog {
+    transform: scale(1);
+}
+
+.mcard-sheet__close {
     position: absolute;
-    top: 12px;
-    inset-inline-end: 16px;
+    top: -4px;
+    inset-inline-end: 0;
+    background: rgba(255,255,255,0.9);
     border: none;
-    background: transparent;
-    font-size: 28px;
-    line-height: 1;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 16px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.18s;
 }
 
-.membership-sheet__title {
+.mcard-sheet__close:hover { background: #fff; }
+
+.mcard-sheet__hint {
+    color: rgba(255,255,255,0.8);
+    font-size: 12px;
+    margin: 0;
     text-align: center;
-    margin-bottom: 16px;
-    font-size: 1.1rem;
 }
 
-.flip-card {
-    perspective: 1200px;
-    max-width: 340px;
-    margin: 0 auto;
+/* ── Flip card ── */
+.mcard-flip {
+    width: min(480px, 92vw);
+    aspect-ratio: 1.586;
+    perspective: 1400px;
     cursor: pointer;
 }
 
-.flip-card__inner {
+.mcard-flip__inner {
     position: relative;
     width: 100%;
-    min-height: 200px;
-    transition: transform 0.6s;
+    height: 100%;
     transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(.4,0,.2,1);
 }
 
-.flip-card.is-flipped .flip-card__inner {
+.mcard-flip.is-flipped .mcard-flip__inner {
     transform: rotateY(180deg);
 }
 
-.flip-card__face {
+.mcard-flip__face {
     position: absolute;
     inset: 0;
     backface-visibility: hidden;
-    border-radius: 12px;
+    border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
 }
 
-.flip-card__face--back {
+.mcard-flip__face--back {
     transform: rotateY(180deg);
-    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
-    padding: 16px;
 }
 
-.flip-card__front-bg {
+.mcard-flip__bg {
     position: absolute;
     inset: 0;
-    background-size: cover;
-    background-position: center;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 14px;
 }
 
-.flip-card__face--front .membership-status-badge {
+/* Front overlay data */
+.mcard-photo-wrap {
     position: absolute;
-    bottom: 12px;
-    inset-inline-start: 12px;
-    z-index: 2;
+    top: 7%;
+    inset-inline-end: 3%;
+    width: 22%;
+    aspect-ratio: 0.8;
+    border: 2px solid #aaa;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.flip-card__tap-hint {
+.mcard-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mcard-photo--placeholder {
+    font-size: 28px;
+    color: #999;
+    background: none;
+    width: auto;
+    height: auto;
+}
+
+.mcard-num-wrap {
     position: absolute;
-    bottom: 40px;
-    inset-inline-start: 12px;
-    z-index: 2;
+    top: calc(7% + 22% / 0.8 + 2%);
+    inset-inline-end: 3%;
+    width: 22%;
+    text-align: center;
+}
+
+.mcard-num__label {
+    font-size: clamp(7px, 1.5vw, 11px);
+    color: #333;
+    font-weight: 600;
+}
+
+.mcard-num__val {
+    font-size: clamp(9px, 1.8vw, 14px);
+    font-weight: 700;
+    color: #111;
+}
+
+.mcard-data {
+    position: absolute;
+    top: 52%;
+    inset-inline-start: 28%;
+    inset-inline-end: 27%;
+    display: flex;
+    flex-direction: column;
+    gap: 6%;
+}
+
+.mcard-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.mcard-row__label {
+    font-size: clamp(8px, 1.6vw, 12px);
+    font-weight: 700;
+    color: #222;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.mcard-row__val {
+    font-size: clamp(8px, 1.5vw, 11px);
+    color: #111;
+}
+
+.mcard-dates {
+    position: absolute;
+    bottom: 8%;
+    inset-inline-start: 28%;
+    inset-inline-end: 4%;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.mcard-date-item {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.mcard-date-item__label {
+    font-size: clamp(7px, 1.4vw, 10px);
+    font-weight: 700;
+    color: #222;
+    white-space: nowrap;
+}
+
+.mcard-date-item__val {
+    font-size: clamp(7px, 1.4vw, 10px);
+    font-weight: 700;
+    color: #111;
+}
+
+.mcard-inactive {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.5);
+}
+
+.mcard-renew-btn {
+    padding: 8px 20px;
+    background: #016330;
     color: #fff;
-    font-size: 12px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-    margin: 0;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
 }
 
+/* keep status badges */
 .membership-status-badge {
     display: inline-block;
     padding: 4px 10px;
@@ -3658,57 +3781,14 @@ p {
     font-weight: 600;
     color: #fff;
 }
+.membership-status--active   { background: #198754; }
+.membership-status--expiring { background: #fd7e14; }
+.membership-status--expired  { background: #dc3545; }
+.membership-status--pending  { background: #6c757d; }
 
-.membership-status--active {
-    background: #198754;
-}
-
-.membership-status--expiring {
-    background: #fd7e14;
-}
-
-.membership-status--expired {
-    background: #dc3545;
-}
-
-.membership-status--pending {
-    background: #6c757d;
-}
-
-.flip-card__photo {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto 10px;
-}
-
-.flip-card__name {
-    text-align: center;
-    font-size: 1rem;
-    margin-bottom: 8px;
-}
-
-.flip-card__job {
-    text-align: center;
-    font-size: 0.85rem;
-    color: #495057;
-}
-
-.flip-card__details li {
-    font-size: 0.85rem;
-    margin-bottom: 6px;
-}
-
-.flip-card__back-content--inactive {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 180px;
-    text-align: center;
-}
+/* legacy selectors — kept so old JS still works */
+.flip-card { display: none; }
+.membership-sheet { display: none; }
 
 /* =============================================
    Member Panel — full redesign
