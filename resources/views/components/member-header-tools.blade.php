@@ -3,7 +3,7 @@
         <div class="downapp">
             <button type="button" class="member-card-trigger" id="openMembershipCard"
                 title="{{ __('app.membership_card') }}" aria-label="{{ __('app.membership_card') }}">
-                <i class="fa-solid fa-id-card"></i>
+                <i class="fa-solid fa-id-card" ></i>
             </button>
         </div>
 
