@@ -3223,70 +3223,37 @@ p {
 }
 
 /* Member header: card, notifications, flip modal */
-.member-card-trigger {
-    display: inline-flex;
+.member-card-trigger,
+.member-notifications-btn,
+.member-panel-link {
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
     color: #ffffff !important;
-    font-size: 14px;
-    padding: 3px 8px;
-    border-radius: 4px;
+    font-size: 14px !important;
+    padding: 3px 8px !important;
+    border-radius: 4px !important;
     border: 1px solid #6e4c3e !important;
-    line-height: 30px;
+    line-height: 30px !important;
     text-shadow: 1px 1px 0px #43302f63;
-    background-color: #6e4c3e;
+    background-color: #6e4c3e !important;
+    text-decoration: none !important;
+    cursor: pointer;
     transition: background 0.18s, border-color 0.18s;
+    white-space: nowrap;
 }
 
-.member-card-trigger:hover {
-    background-color: #5a3c30;
+.member-card-trigger:hover,
+.member-notifications-btn:hover,
+.member-panel-link:hover {
+    background-color: #5a3c30 !important;
     border-color: #5a3c30 !important;
     color: #fff !important;
-}
-
-.member-panel-link {
-    display: inline-flex;
-    align-items: center;
-    color: #ffffff !important;
-    font-size: 14px;
-    text-decoration: none;
-    white-space: nowrap;
-    padding: 3px 8px;
-    border-radius: 4px;
-    border: 1px solid #6e4c3e;
-    line-height: 30px;
-    text-shadow: 1px 1px 0px #43302f63;
-    background-color: #6e4c3e;
-    transition: background 0.18s, border-color 0.18s;
-}
-
-.member-panel-link:hover {
-    background-color: #5a3c30;
-    border-color: #5a3c30;
-    color: #fff !important;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .member-notifications-btn {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff !important;
-    font-size: 14px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    border: 1px solid #6e4c3e !important;
-    line-height: 30px;
-    text-shadow: 1px 1px 0px #43302f63;
-    background-color: #6e4c3e;
-    transition: background 0.18s, border-color 0.18s;
-}
-
-.member-notifications-btn:hover {
-    background-color: #5a3c30;
-    border-color: #5a3c30 !important;
-    color: #fff !important;
 }
 
 .member-notifications-badge {
