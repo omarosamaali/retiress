@@ -3771,27 +3771,14 @@ p {
     white-space: nowrap;
 }
 
-/* Inactive state — positioned in data area only (right of waves) */
-.mci-inactive {
+/* Status badge: bottom-left of data area */
+.mci-status-badge {
     position: absolute;
-    top: 45%;
-    inset-inline-start: 27%;
-    inset-inline-end: 2%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.mci-renew-btn {
-    padding: 6px 18px;
-    background: #016330;
-    color: #fff !important;
-    border-radius: 8px;
-    text-decoration: none !important;
-    font-size: clamp(9px, 1.8vw, 13px);
-    font-weight: 600;
+    bottom: 3%;
+    inset-inline-start: 28%;
+    font-size: clamp(6px, 1.2vw, 10px) !important;
+    padding: 2px 7px !important;
+    z-index: 2;
 }
 
 /* keep status badges */

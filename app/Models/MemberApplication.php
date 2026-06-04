@@ -276,17 +276,17 @@ class MemberApplication extends Model
         return [
             'show_details' => $showDetails,
             'status' => $status,
-            'full_name' => $showDetails ? ($this->full_name ?: $this->user?->name) : null,
-            'photo_url' => $showDetails && $this->personal_photo_path
+            'full_name' => $this->full_name ?: $this->user?->name,
+            'photo_url' => $this->personal_photo_path
                 ? asset('storage/'.$this->personal_photo_path)
                 : null,
-            'job_title' => $showDetails ? ($experience['job_title'] ?? null) : null,
-            'employer' => $showDetails ? ($experience['employer'] ?? null) : null,
-            'membership_number' => $showDetails ? $this->membership_number : null,
-            'expiration_date' => $showDetails && $this->expiration_date
+            'job_title' => $experience['job_title'] ?? null,
+            'employer' => $experience['employer'] ?? null,
+            'membership_number' => $this->membership_number,
+            'expiration_date' => $this->expiration_date
                 ? Carbon::parse($this->expiration_date)->format('Y/m/d')
                 : null,
-            'issue_date' => $showDetails && $this->created_at
+            'issue_date' => $this->created_at
                 ? $this->created_at->format('Y/m/d')
                 : null,
             'renew_url' => route('members.my-membership'),
