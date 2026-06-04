@@ -197,58 +197,6 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6">
-                <div class="mb-3">
-
-                    <label for="front_id" class="form-label font-bold">صورة البطاقة من الأمام</label>
-                    <input type="file" class="form-control" id="front_id" name="front_id" value="{{ old('front_id', $member->front_id) }}" accept="image/*" onchange="previewImage(this, 'front_preview')">
-                    @error('front_id')
-                    <div class="text-black">{{ $message }}</div>
-                    @enderror
-
-                    <!-- مربع معاينة الصورة الأمامية -->
-                    <div class="mt-3">
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center" style="min-height: 200px; background-color: #f9f9f9;">
-                            @if(isset($member->front_id) && $member->front_id)
-                            <img id="front_preview" src="{{ asset('storage/' . $member->front_id) }}" alt="صورة البطاقة من الأمام" class="img-fluid rounded" style="max-height: 200px; object-fit: contain;">
-                            @else
-                            <div id="front_preview" class="d-flex align-items-center justify-content-center h-100">
-                                <div class="text-muted">
-                                    <i class="fas fa-image fa-3x mb-2 d-block"></i>
-                                    <span>معاينة صورة البطاقة من الأمام</span>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="mb-3">
-                    <label for="back_id" class="form-label font-bold">صورة البطاقة من الخلف</label>
-                    <input type="file" class="form-control" id="back_id" name="back_id" value="{{ old('back_id', $member->back_id) }}" accept="image/*" onchange="previewImage(this, 'back_preview')">
-                    @error('back_id')
-                    <div class="text-black">{{ $message }}</div>
-                    @enderror
-
-                    <!-- مربع معاينة الصورة الخلفية -->
-                    <div class="mt-3">
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-3 text-center" style="min-height: 200px; background-color: #f9f9f9;">
-                            @if(isset($member->back_id) && $member->back_id)
-                            <img id="back_preview" src="{{ asset('storage/' . $member->back_id) }}" alt="صورة البطاقة من الخلف" class="img-fluid rounded" style="max-height: 200px; object-fit: contain;">
-                            @else
-                            <div id="back_preview" class="d-flex align-items-center justify-content-center h-100">
-                                <div class="text-muted">
-                                    <i class="fas fa-image fa-3x mb-2 d-block"></i>
-                                    <span>معاينة صورة البطاقة من الخلف</span>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="row" style="margin-top: 159px;">

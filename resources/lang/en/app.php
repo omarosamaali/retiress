@@ -601,6 +601,7 @@ return [
     'مميزات العضوية' => 'Details of Benefits',
 
     'membership_card' => 'Membership card',
+    'my_card' => 'My card',
     'my_panel' => 'My panel',
     'notifications' => 'Notifications',
     'close' => 'Close',

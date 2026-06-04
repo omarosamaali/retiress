@@ -21,13 +21,17 @@ class ChatController extends Controller
             return redirect()->route('admin.chat');
         }
 
-        $contacts = User::staff()
-            ->where('id', '!=', $user->id)
+        // الأعضاء يتواصلون مع مدخلي البيانات فقط
+        $contacts = User::where('role', 'مدخل بيانات')
             ->orderBy('name')
             ->get();
 
+        // إذا كان يوجد مدخل بيانات واحد فقط، افتح المحادثة تلقائياً
+        $autoContact = $contacts->count() === 1 ? $contacts->first() : null;
+
         return view('members.chat.index', [
             'contacts' => $contacts,
+            'autoContact' => $autoContact,
             'chatMode' => 'member',
             'pageTitle' => __('app.chat_with_administration'),
         ]);

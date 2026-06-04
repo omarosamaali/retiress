@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Message;
 use App\Models\Service;
 use App\Models\MemberApplication;
 use App\Models\Transaction;
@@ -17,6 +18,12 @@ class DashboardController extends Controller
 
         $transactions = Transaction::whereNotIn('status', ['active', 'deactivated'])->paginate(5);
         $memberships = MemberApplication::where('status', '!=', 4)->paginate(5);
+
+        // إشعارات الداشبورد
+        $newMembershipRequests = MemberApplication::where('status', 2)->count(); // بانتظار الموافقة
+        $unreadMessages = Message::whereNull('read_at')
+            ->whereHas('sender', fn($q) => $q->where('role', 'عضو'))
+            ->count();
 
         $events = Event::latest()->where('status', 1)->limit(3)->get();
         $services = Service::latest()->where('status', 1)->limit(3)->get();
@@ -45,7 +52,9 @@ class DashboardController extends Controller
             'activeEvents',
             'activeEventsCount',
             'inActiveEvents',
-            'inActiveEventsCount'
+            'inActiveEventsCount',
+            'newMembershipRequests',
+            'unreadMessages'
         ));
     }
 }

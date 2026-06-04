@@ -109,6 +109,26 @@
 @endpush
 
 @section('content')
+{{-- إشعارات الداشبورد --}}
+@if ($newMembershipRequests > 0 || $unreadMessages > 0)
+<div class="dash-alerts">
+    @if ($newMembershipRequests > 0)
+    <a href="{{ route('admin.manageMembership.index') }}" class="dash-alert dash-alert--membership">
+        <i class="fa-solid fa-user-clock"></i>
+        <span>{{ $newMembershipRequests }} طلب عضوية جديد بانتظار الموافقة</span>
+        <i class="fa-solid fa-chevron-left dash-alert__arrow"></i>
+    </a>
+    @endif
+    @if ($unreadMessages > 0)
+    <a href="{{ route('admin.chat') }}" class="dash-alert dash-alert--messages">
+        <i class="fa-solid fa-envelope"></i>
+        <span>{{ $unreadMessages }} رسالة غير مقروءة من الأعضاء</span>
+        <i class="fa-solid fa-chevron-left dash-alert__arrow"></i>
+    </a>
+    @endif
+</div>
+@endif
+
 <div class="welcome-section">
     <h2>مرحباً بك في لوحة تحكم الإدارة</h2>
     <p>
@@ -324,7 +344,7 @@
                             @endswitch
                         </td>
                         <td style="min-width: 142px;">
-                            <a href="{{ route('members.my-membership') }}" type="button" class="btn btn-gray">{{ __('app.view') }}</a>
+                            <a href="{{ route('admin.manageMembership.show', $transaction->id) }}" type="button" class="btn btn-gray">{{ __('app.view') }}</a>
                         </td>
                     </tr>
                     @endforeach

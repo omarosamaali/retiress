@@ -25,18 +25,36 @@
                     <div class="mp-welcome__name">{{ auth()->user()->name }}</div>
                 </div>
             </div>
-            <div class="mp-welcome__stats">
-                <div class="mp-stat">
-                    <span class="mp-stat__num">{{ $subscribedTransactions->count() }}</span>
-                    <span class="mp-stat__label">{{ __('app.subscribed_events') }}</span>
+        </div>
+
+        {{-- Stats row --}}
+        <div class="mp-stats-row">
+            <div class="mp-stat-card">
+                <div class="mp-stat-card__icon" style="background:#e8f3ed;color:#016330"><i class="fa-solid fa-ticket"></i></div>
+                <div class="mp-stat-card__body">
+                    <div class="mp-stat-card__num">{{ $subscribedTransactions->count() }}</div>
+                    <div class="mp-stat-card__label">{{ __('app.subscribed_events') }}</div>
                 </div>
-                <div class="mp-stat">
-                    <span class="mp-stat__num">{{ $recentMessages->count() }}</span>
-                    <span class="mp-stat__label">{{ __('app.correspondence') }}</span>
+            </div>
+            <div class="mp-stat-card">
+                <div class="mp-stat-card__icon" style="background:#e8f0fe;color:#1a73e8"><i class="fa-solid fa-calendar-days"></i></div>
+                <div class="mp-stat-card__body">
+                    <div class="mp-stat-card__num">{{ $availableEvents->count() }}</div>
+                    <div class="mp-stat-card__label">{{ __('app.available_events') }}</div>
                 </div>
-                <div class="mp-stat">
-                    <span class="mp-stat__num">{{ $panelNotifications->count() }}</span>
-                    <span class="mp-stat__label">{{ __('app.system_notifications') }}</span>
+            </div>
+            <div class="mp-stat-card">
+                <div class="mp-stat-card__icon" style="background:#fff3e0;color:#f57c00"><i class="fa-solid fa-envelope"></i></div>
+                <div class="mp-stat-card__body">
+                    <div class="mp-stat-card__num">{{ $recentMessages->count() }}</div>
+                    <div class="mp-stat-card__label">{{ __('app.correspondence') }}</div>
+                </div>
+            </div>
+            <div class="mp-stat-card">
+                <div class="mp-stat-card__icon" style="background:#fce4ec;color:#c2185b"><i class="fa-solid fa-bell"></i></div>
+                <div class="mp-stat-card__body">
+                    <div class="mp-stat-card__num">{{ $panelNotifications->count() }}</div>
+                    <div class="mp-stat-card__label">{{ __('app.system_notifications') }}</div>
                 </div>
             </div>
         </div>
