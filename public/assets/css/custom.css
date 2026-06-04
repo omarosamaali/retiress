@@ -1735,7 +1735,6 @@ a,
     margin-right: auto;
     margin-left: auto;
 }
-}
 
 @media (min-width: 768px) {
     .container-he4 {
@@ -3721,7 +3720,7 @@ p {
 
 .mp-page {
     max-width: 1160px;
-    margin: 110px auto 60px;
+    margin: 133px auto 60px;
     padding: 0 20px;
     display: flex;
     flex-direction: column;

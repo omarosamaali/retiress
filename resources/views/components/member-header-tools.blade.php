@@ -20,7 +20,7 @@
         </div>
 
         {{-- Full-screen notifications panel --}}
-        <div class="notif-screen" id="memberNotificationsDropdown" aria-hidden="true">
+        <div class="notif-screen" id="memberNotificationsDropdown" hidden aria-hidden="true">
             <div class="notif-screen__backdrop" id="closeMemberNotifications"></div>
             <div class="notif-screen__panel" role="dialog" aria-label="{{ __('app.notifications') }}">
                 <div class="notif-screen__head">
