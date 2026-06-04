@@ -169,3 +169,73 @@
         <div class="clouds_four"></div>
     </div>
 </div>
+
+{{-- Portals: خارج الهيدر تماماً لتجنب overflow:hidden --}}
+@auth
+@if ($showMemberHeaderTools ?? false)
+<div class="notif-screen" id="memberNotificationsDropdown" hidden aria-hidden="true">
+    <div class="notif-screen__backdrop" id="closeMemberNotifications"></div>
+    <div class="notif-screen__panel" role="dialog" aria-label="{{ __('app.notifications') }}">
+        <div class="notif-screen__head">
+            <span class="notif-screen__title">
+                <i class="fa-solid fa-bell"></i>
+                {{ __('app.notifications') }}
+                @if (($headerNotificationCount ?? 0) > 0)
+                    <span class="notif-screen__count">{{ $headerNotificationCount > 99 ? '99+' : $headerNotificationCount }}</span>
+                @endif
+            </span>
+            <button type="button" class="notif-screen__close" id="closeMemberNotificationsBtn" aria-label="{{ __('app.close') }}">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="notif-screen__body">
+            @if (($unreadChatCount ?? 0) > 0)
+                <div class="notif-screen__section-title">{{ __('app.correspondence') }}</div>
+                <a href="{{ route('chat') }}" class="notif-screen__item notif-screen__item--chat">
+                    <div class="notif-screen__item-icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="notif-screen__item-content">
+                        <span class="notif-screen__item-title">{{ __('app.unread_messages_count', ['count' => $unreadChatCount]) }}</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left notif-screen__item-arrow"></i>
+                </a>
+            @endif
+
+            <div class="notif-screen__section-title">{{ __('app.system_notifications') }}</div>
+
+            @forelse ($headerNotifications ?? [] as $userNotification)
+                <div class="notif-screen__item" data-id="{{ $userNotification->id }}">
+                    <div class="notif-screen__item-icon notif-screen__item-icon--bell">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </div>
+                    <div class="notif-screen__item-content">
+                        <div class="notif-screen__item-title">{{ $userNotification->broadcast?->title }}</div>
+                        <div class="notif-screen__item-body">{{ \Illuminate\Support\Str::limit($userNotification->broadcast?->body, 120) }}</div>
+                        <div class="notif-screen__item-time">{{ $userNotification->created_at?->diffForHumans() }}</div>
+                    </div>
+                    <button type="button" class="notif-screen__dismiss member-notification-dismiss"
+                        data-dismiss-url="{{ route('members.notifications.dismiss', $userNotification) }}"
+                        title="{{ __('app.dismiss') }}">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            @empty
+                <div class="notif-screen__empty">
+                    <i class="fa-regular fa-bell-slash"></i>
+                    <span>{{ __('app.no_notifications') }}</span>
+                </div>
+            @endforelse
+        </div>
+
+        <div class="notif-screen__footer">
+            <a href="{{ route('members.panel') }}#notifications" class="notif-screen__view-all">
+                {{ __('app.view_all_notifications') }}
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+</div>
+@endif
+@endauth
