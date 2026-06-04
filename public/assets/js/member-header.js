@@ -19,6 +19,14 @@
         });
     }
 
+    // Move portals to body to escape header's overflow:hidden
+    ['memberNotificationsDropdown', 'membershipCardSheet'].forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el && el.parentNode !== document.body) {
+            document.body.appendChild(el);
+        }
+    });
+
     const sheet = document.getElementById('membershipCardSheet');
     const openCardBtn = document.getElementById('openMembershipCard');
     const closeCardBtn = document.getElementById('closeMembershipCard');
