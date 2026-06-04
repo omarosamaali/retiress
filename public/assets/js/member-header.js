@@ -49,29 +49,37 @@
     });
 
     const notifToggle = document.getElementById('toggleMemberNotifications');
-    const notifDropdown = document.getElementById('memberNotificationsDropdown');
-    const notifClose = document.getElementById('closeMemberNotifications');
+    const notifScreen = document.getElementById('memberNotificationsDropdown');
+    const notifBackdrop = document.getElementById('closeMemberNotifications');
+    const notifCloseBtn = document.getElementById('closeMemberNotificationsBtn');
 
-    function closeNotifDropdown() {
-        if (!notifDropdown) return;
-        notifDropdown.hidden = true;
+    function openNotifScreen() {
+        if (!notifScreen) return;
+        notifScreen.removeAttribute('hidden');
+        notifScreen.setAttribute('aria-hidden', 'false');
+        notifToggle?.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeNotifScreen() {
+        if (!notifScreen) return;
+        notifScreen.setAttribute('aria-hidden', 'true');
+        notifScreen.setAttribute('hidden', '');
         notifToggle?.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
     }
 
     notifToggle?.addEventListener('click', function (e) {
         e.stopPropagation();
-        if (!notifDropdown) return;
-        const open = notifDropdown.hidden;
-        notifDropdown.hidden = !open;
-        notifToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        const isHidden = notifScreen?.hasAttribute('hidden') || notifScreen?.getAttribute('aria-hidden') === 'true';
+        isHidden ? openNotifScreen() : closeNotifScreen();
     });
 
-    notifClose?.addEventListener('click', closeNotifDropdown);
+    notifBackdrop?.addEventListener('click', closeNotifScreen);
+    notifCloseBtn?.addEventListener('click', closeNotifScreen);
 
-    document.addEventListener('click', function (e) {
-        if (!e.target.closest('.member-notifications-wrap')) {
-            closeNotifDropdown();
-        }
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeNotifScreen();
     });
 
     document.querySelectorAll('.member-notification-dismiss').forEach(function (btn) {
