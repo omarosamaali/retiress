@@ -3602,7 +3602,7 @@ p {
 
 /* ── Flip card ── */
 .mcard-flip {
-    width: min(480px, 92vw);
+    width: min(560px, 94vw);
     aspect-ratio: 1.586;
     perspective: 1400px;
     cursor: pointer;
@@ -3754,25 +3754,26 @@ p {
     white-space: nowrap;
 }
 
-/* Inactive state */
+/* Inactive state — positioned in data area only (right of waves) */
 .mci-inactive {
     position: absolute;
-    inset: 0;
+    top: 45%;
+    inset-inline-start: 27%;
+    inset-inline-end: 2%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    background: rgba(255,255,255,0.55);
+    gap: 10px;
 }
 
 .mci-renew-btn {
-    padding: 8px 20px;
+    padding: 6px 18px;
     background: #016330;
-    color: #fff;
+    color: #fff !important;
     border-radius: 8px;
-    text-decoration: none;
-    font-size: 13px;
+    text-decoration: none !important;
+    font-size: clamp(9px, 1.8vw, 13px);
     font-weight: 600;
 }
 
