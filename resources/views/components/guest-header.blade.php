@@ -153,12 +153,6 @@
                 <div class="member-header-welcome d-flex align-items-center flex-wrap gap-1">
                     @include('components.member-header-tools')
                     <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
-                    @if (!empty($membershipCardPayload['expiration_date']) && ($membershipCardPayload['status']['key'] ?? '') !== 'expired')
-                        <span class="header-expiry-badge header-expiry-badge--{{ ($membershipCardPayload['status']['key'] ?? '') === 'expiring' ? 'expiring' : 'active' }}">
-                            <i class="fa-solid fa-calendar-xmark"></i>
-                            {{ $membershipCardPayload['expiration_date'] }}
-                        </span>
-                    @endif
                 </div>
                 @endauth
             </div>
