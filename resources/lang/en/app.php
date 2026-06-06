@@ -148,6 +148,7 @@ return [
     'required_field_indicator' => '*',
     'new' => 'New',
     'renewal' => 'Renewal',
+    'days_left' => ':days days left',
     'contact_details' => 'Contact Details',
     'mobile_phone' => 'Mobile Phone',
     'home_phone' => 'Home Phone',

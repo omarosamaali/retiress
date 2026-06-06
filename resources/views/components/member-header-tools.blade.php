@@ -2,6 +2,8 @@
 @php
     $cardStatus = $membershipCardPayload['status']['key'] ?? 'pending';
     $showRenewal = in_array($cardStatus, ['expiring', 'expired']);
+    $daysLeft   = $membershipCardPayload['status']['days_left'] ?? null;
+    $showDays   = $daysLeft !== null && in_array($cardStatus, ['active', 'expiring']);
 @endphp
 <div class="member-header-tools d-flex align-items-center gap-2 flex-wrap" style="margin-right: 12px;">
 
@@ -34,6 +36,14 @@
         <a href="{{ route('members.my-membership') }}" class="member-renewal-btn">
             <i class="fa-solid fa-rotate-right"></i> {{ __('app.renewal') }}
         </a>
+    @endif
+
+    {{-- عداد أيام انتهاء العضوية --}}
+    @if ($showDays)
+        <span class="member-days-left member-days-left--{{ $cardStatus }}">
+            <i class="fa-solid fa-clock"></i>
+            {{ __('app.days_left', ['days' => $daysLeft]) }}
+        </span>
     @endif
 
 </div>

@@ -3222,6 +3222,10 @@ p {
 }
 
 /* Member header: card, notifications, flip modal */
+.member-card-trigger {
+    padding: 4px 8px !important;
+}
+
 .member-card-trigger,
 .member-notifications-btn,
 .member-panel-link {
@@ -3922,6 +3926,31 @@ p {
     background-color: #b02a37 !important;
     color: #fff !important;
     text-decoration: none !important;
+}
+
+/* Days-left badge in header */
+.member-days-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.member-days-left--active {
+    background: rgba(255,255,255,0.18);
+    color: #ffffff;
+    border: 1px solid rgba(255,255,255,0.35);
+}
+
+.member-days-left--expiring {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.5);
 }
 
 @keyframes pulse-renewal {
