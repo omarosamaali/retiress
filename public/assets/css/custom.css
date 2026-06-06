@@ -3663,6 +3663,8 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
+    right: 7px;    border-radius: 17px;
+
 }
 
 .mci-photo-img {
@@ -3684,6 +3686,7 @@ p {
     width: 19.3%;
     text-align: center;
     line-height: 1.5;
+    right: 0;
 }
 
 .mci-number__lbl {
@@ -3701,16 +3704,6 @@ p {
     margin-top: 2px;
 }
 
-/* Separator lines */
-.mci-sep {
-    position: absolute;
-    top: 55%;
-    inset-inline-start: 27%;
-    inset-inline-end: 1%;
-    height: 1px;
-    background: #ccc;
-}
-
 .mci-sep--2 {
     top: 81%;
 }
@@ -3726,8 +3719,8 @@ p {
     padding: 0 1%;
 }
 
-.mci-row--name { top: 62%; }
-.mci-row--job  { top: 73%; }
+.mci-row--name { top: 50%; }
+.mci-row--job  { top: 63%; }
 
 .mci-row__lbl {
     flex-shrink: 0;
@@ -3747,7 +3740,7 @@ p {
 /* Dates row: top=86% */
 .mci-dates {
     position: absolute;
-    top: 85%;
+    top: 75%;
     inset-inline-start: 27%;
     inset-inline-end: 1%;
     display: flex;
@@ -3779,7 +3772,7 @@ p {
 /* Status badge: bottom-left of data area */
 .mci-status-badge {
     position: absolute;
-    bottom: 3%;
+    bottom: 7%;
     inset-inline-start: 28%;
     font-size: clamp(6px, 1.2vw, 10px) !important;
     padding: 2px 7px !important;
