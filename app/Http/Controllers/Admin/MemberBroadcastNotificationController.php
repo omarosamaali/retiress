@@ -16,29 +16,37 @@ class MemberBroadcastNotificationController extends Controller
 {
     public function create(): View
     {
-        $recent = MemberBroadcastNotification::with('creator')->latest()->limit(10)->get();
+        $recent  = MemberBroadcastNotification::with('creator')->latest()->limit(10)->get();
+        $members = User::where('role', 'عضو')->orderBy('name')->get(['id', 'name']);
 
-        return view('admin.notifications.create', compact('recent'));
+        return view('admin.notifications.create', compact('recent', 'members'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'body' => 'required|string|max:5000',
+            'title'      => 'required|string|max:255',
+            'body'       => 'required|string|max:5000',
+            'audience'   => 'required|in:all,specific',
+            'user_ids'   => 'required_if:audience,specific|nullable|array',
+            'user_ids.*' => 'exists:users,id',
         ]);
 
-        DB::transaction(function () use ($validated) {
+        $sendToAll = $validated['audience'] === 'all';
+
+        DB::transaction(function () use ($validated, $sendToAll) {
             $broadcast = MemberBroadcastNotification::create([
-                'title' => $validated['title'],
-                'body' => $validated['body'],
+                'title'      => $validated['title'],
+                'body'       => $validated['body'],
                 'created_by' => Auth::id(),
-                'sent_at' => now(),
+                'sent_at'    => now(),
             ]);
 
-            $memberIds = User::where('role', 'عضو')->pluck('id');
+            $userIds = $sendToAll
+                ? User::where('role', 'عضو')->pluck('id')
+                : collect($validated['user_ids'] ?? []);
 
-            foreach ($memberIds as $userId) {
+            foreach ($userIds as $userId) {
                 UserNotification::create([
                     'member_broadcast_notification_id' => $broadcast->id,
                     'user_id' => $userId,
@@ -46,8 +54,10 @@ class MemberBroadcastNotificationController extends Controller
             }
         });
 
-        return redirect()
-            ->route('admin.member-notifications.create')
-            ->with('success', 'تم إرسال الإشعار لجميع الأعضاء بنجاح.');
+        $msg = $sendToAll
+            ? 'تم إرسال الإشعار لجميع الأعضاء بنجاح.'
+            : 'تم إرسال الإشعار للأعضاء المحددين بنجاح.';
+
+        return redirect()->route('admin.member-notifications.create')->with('success', $msg);
     }
 }
