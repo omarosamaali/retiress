@@ -49,6 +49,14 @@ class MemberHeaderComposer
             ->limit(10)
             ->get();
 
+        $status = $application?->membershipDisplayStatus();
+        $headerExpiryDate   = null;
+        $headerExpiryStatus = 'active';
+        if ($application && $application->expiration_date && ($status['key'] ?? '') !== 'expired') {
+            $headerExpiryDate   = \Carbon\Carbon::parse($application->expiration_date)->format('Y/m/d');
+            $headerExpiryStatus = $status['key'] ?? 'active';
+        }
+
         $view->with([
             'showMemberHeaderTools' => true,
             'memberApplication' => $application,
@@ -56,6 +64,8 @@ class MemberHeaderComposer
             'headerNotificationCount' => $user->headerNotificationCount(),
             'headerNotifications' => $headerNotifications,
             'unreadChatCount' => $user->unreadChatMessagesCount(),
+            'headerExpiryDate'   => $headerExpiryDate,
+            'headerExpiryStatus' => $headerExpiryStatus,
         ]);
     }
 }

@@ -153,6 +153,12 @@
                 <div class="member-header-welcome d-flex align-items-center flex-wrap gap-1">
                     @include('components.member-header-tools')
                     <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
+                    @if ($headerExpiryDate ?? null)
+                        <span class="header-expiry-badge header-expiry-badge--{{ $headerExpiryStatus ?? 'active' }}">
+                            <i class="fa-solid fa-clock"></i>
+                            باقي علي انتهاء العضوية حتي {{ $headerExpiryDate }}
+                        </span>
+                    @endif
                 </div>
                 @endauth
             </div>
