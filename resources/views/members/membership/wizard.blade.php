@@ -12,7 +12,36 @@
     <style>
         body { background: #f0f4f8; }
 
-        .membership-wizard-page { padding-top: 130px; padding-bottom: 50px; min-height: 100vh; }
+        /* ── Force centered layout (RTL-safe) ── */
+        .membership-wizard-page {
+            padding-top: 130px;
+            padding-bottom: 50px;
+            min-height: 100vh;
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            width: 100% !important;
+            box-sizing: border-box;
+        }
+        .mwiz-container {
+            width: 100%;
+            max-width: 820px;
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+
+        /* ── Custom Grid (RTL-safe, no Bootstrap dependency) ── */
+        .mwiz-row {
+            display: grid;
+            gap: 14px;
+            margin-bottom: 0;
+        }
+        .mwiz-row--2 { grid-template-columns: 1fr 1fr; }
+        .mwiz-row--3 { grid-template-columns: 1fr 1fr 1fr; }
+        .mwiz-row--1 { grid-template-columns: 1fr; }
+        @media(max-width: 640px) {
+            .mwiz-row--2, .mwiz-row--3 { grid-template-columns: 1fr; }
+        }
 
         /* ── Type toggle ── */
         .mwiz-type-toggle {
@@ -180,8 +209,8 @@
 
     <x-guest-header></x-guest-header>
 
-    <main class="membership-wizard-page" style="padding-top: 150px;">
-        <div class="container" style="max-width: 900px;">
+    <main class="membership-wizard-page">
+        <div class="mwiz-container">
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
