@@ -16,13 +16,13 @@
     </div>
 
     {{-- لوحتي --}}
-    <a href="{{ route('members.panel') }}" class="member-panel-link">
+    <a href="{{ route('members.panel') }}" class="member-panel-link" style="gap: 5px !important;">
         <i class="fa-solid fa-table-cells-large"></i> {{ __('app.my_panel') }}
     </a>
 
     {{-- الإشعارات --}}
     <div class="member-notifications-wrap">
-        <button style="padding: 11px 8px;" type="button" class="member-notifications-btn" id="toggleMemberNotifications"
+        <button style="padding: 3px 8px; gap: 5px !important;" type="button" class="member-notifications-btn" id="toggleMemberNotifications"
             aria-expanded="false" aria-label="{{ __('app.notifications') }}">
             <i class="fa-solid fa-bell"></i> {{ __('app.notifications') }}
             @if (($headerNotificationCount ?? 0) > 0)
