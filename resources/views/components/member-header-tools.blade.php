@@ -38,11 +38,11 @@
         </a>
     @endif
 
-    {{-- تاريخ انتهاء العضوية --}}
-    @if (!empty($membershipCardPayload['expiration_date']) && $cardStatus !== 'expired')
-        <span class="header-expiry-badge header-expiry-badge--{{ $cardStatus === 'expiring' ? 'expiring' : 'active' }}">
+    {{-- عداد أيام انتهاء العضوية --}}
+    @if ($showDays)
+        <span class="member-days-left member-days-left--{{ $cardStatus }}">
             <i class="fa-solid fa-clock"></i>
-            {{ $membershipCardPayload['expiration_date'] }}
+            {{ __('app.days_left', ['days' => $daysLeft]) }}
         </span>
     @endif
 
