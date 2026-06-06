@@ -152,7 +152,19 @@
                 @auth
                 <div class="member-header-welcome d-flex align-items-center flex-wrap gap-1">
                     @include('components.member-header-tools')
-                    <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
+                        @php
+                            $hDaysLeft  = $membershipCardPayload['status']['days_left'] ?? null;
+                            $hCardStatus = $membershipCardPayload['status']['key'] ?? 'pending';
+                        @endphp
+                        @if ($hDaysLeft !== null && in_array($hCardStatus, ['active', 'expiring']))
+                            <span class="header-days-left header-days-left--{{ $hCardStatus }}">
+                                <i class="fa-solid fa-clock"></i>
+                                {{ __('app.days_left', ['days' => $hDaysLeft]) }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
                 @endauth
             </div>

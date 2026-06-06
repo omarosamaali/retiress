@@ -3947,6 +3947,30 @@ p {
     border: 1px solid rgba(255, 193, 7, 0.5);
 }
 
+/* Days-left badge next to username in header */
+.header-days-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.header-days-left--active {
+    background: rgba(110, 76, 62, 0.12);
+    color: #6e4c3e;
+    border: 1px solid rgba(110, 76, 62, 0.3);
+}
+
+.header-days-left--expiring {
+    background: rgba(255, 193, 7, 0.15);
+    color: #b8860b;
+    border: 1px solid rgba(255, 193, 7, 0.5);
+}
+
 @keyframes pulse-renewal {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.8; }
