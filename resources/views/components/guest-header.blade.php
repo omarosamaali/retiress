@@ -138,8 +138,6 @@
                         <a href="{{ route('members.login') }}">{{ __('app.login') }}</a>
                     </span>
                     @endguest
-                    <a href="#"><img src="{{ asset('assets/images/apple.png') }}" width="20" height="20" /></a>
-                    <a href="#"><img src="{{ asset('assets/images/android.png') }}" width="20" height="20" /></a>
                 </div>
                 <div class="lang">
                     {{-- الزر ده هيغير اللغة ويعرض اسم اللغة الأخرى --}}
@@ -156,7 +154,7 @@
                     @if ($headerExpiryDate ?? null)
                         <span class="header-expiry-badge header-expiry-badge--{{ $headerExpiryStatus ?? 'active' }}">
                             <i class="fa-solid fa-clock"></i>
-                            باقي علي انتهاء العضوية حتي {{ $headerExpiryDate }}
+                         انتهاء العضوية  {{ $headerExpiryDate }}
                         </span>
                     @endif
                 </div>

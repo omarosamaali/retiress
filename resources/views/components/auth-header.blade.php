@@ -84,8 +84,6 @@
                         <a href="{{ route('/') }}">الموقع الرئيسي</a>
                     </span>
                     @endauth
-                    <a href="#"><img src="{{ asset('assets/images/apple.png') }}" width="20" height="20" /></a> <a href="#">
-                        <img src="{{ asset('assets/images/android.png') }}" width="20" height="20" /></a>
                 </div>
                 <div class="lang">
                     <a href="index-en.html">
