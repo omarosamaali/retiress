@@ -154,7 +154,7 @@
                     @if ($headerExpiryDate ?? null)
                         <span class="header-expiry-badge header-expiry-badge--{{ $headerExpiryStatus ?? 'active' }}">
                             <i class="fa-solid fa-clock"></i>
-                         انتهاء العضوية  {{ $headerExpiryDate }}
+                         انتهاء العضوية 30 يوم
                         </span>
                     @endif
                 </div>
