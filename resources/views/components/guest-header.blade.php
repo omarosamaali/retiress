@@ -140,32 +140,111 @@
                     @endguest
                 </div>
                 <div class="lang">
-                    {{-- الزر ده هيغير اللغة ويعرض اسم اللغة الأخرى --}}
                     <a href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" class="lang-toggle" title="{{ app()->getLocale() == 'ar' ? __('app.switch_to_english') : __('app.switch_to_arabic') }}">
-                        {{-- الصورة ممكن تكون ثابتة، أو تتغير حسب اللغة الحالية --}}
                         <img src="{{ asset('assets/images/en.png') }}" alt="{{ app()->getLocale() == 'ar' ? 'English' : 'العربية' }}">
                         {{ app()->getLocale() == 'ar' ? 'English' : 'عربي' }}
                     </a>
                 </div>
+
                 @auth
+                @php
+                    /*
+                     * ── Inline member header data ──────────────────────────────────────
+                     * كل الحسابات هنا مباشرة بدون اعتماد على View Composer.
+                     * لو أي حاجة بوظت، الـ catch يرجع قيم آمنة والهيدر يفضل شغال.
+                     */
+                    $__hUser         = \Illuminate\Support\Facades\Auth::user();
+                    $__hIsMember     = false;
+                    $__hCard         = [];
+                    $__hCardStatus   = 'pending';
+                    $__hShowRenewal  = false;
+                    $__hDaysLeft     = null;
+                    $__hShowDays     = false;
+                    $__hExpDate      = null;
+                    $__hExpKey       = 'active';
+                    try {
+                        $__hIsMember = (bool) $__hUser?->isMemberRole();
+                        if ($__hIsMember) {
+                            $__hApp         = $__hUser->memberApplication;
+                            $__hCard        = $__hApp?->toMembershipCardPayload() ?? [];
+                            $__hSt          = $__hApp?->membershipDisplayStatus() ?? [];
+                            $__hCardStatus  = $__hCard['status']['key'] ?? 'pending';
+                            $__hShowRenewal = in_array($__hCardStatus, ['expiring', 'expired']);
+                            $__hDaysLeft    = $__hCard['status']['days_left'] ?? null;
+                            $__hShowDays    = $__hDaysLeft !== null && in_array($__hCardStatus, ['active', 'expiring']);
+                            if (!empty($__hApp?->expiration_date) && ($__hSt['key'] ?? '') !== 'expired') {
+                                $__hExpDate = \Carbon\Carbon::parse($__hApp->expiration_date)->format('Y/m/d');
+                                $__hExpKey  = $__hSt['key'] ?? 'active';
+                            }
+                        }
+                    } catch (\Throwable $__hErr) { /* safe defaults already set above */ }
+                    // notification count: from Composer if available, else 0
+                    $__hNotifCount = $headerNotificationCount ?? 0;
+                @endphp
+
                 <div class="member-header-welcome d-flex align-items-center flex-wrap gap-1">
-                    @include('components.member-header-tools')
-                    <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
-                    @if ($headerExpiryDate ?? null)
-                        <span class="header-expiry-badge header-expiry-badge--{{ $headerExpiryStatus ?? 'active' }}">
+
+                    @if ($__hIsMember)
+                    <div class="member-header-tools d-flex align-items-center gap-2 flex-wrap" style="margin-right: 12px;">
+                        <div class="downapp">
+                            <button type="button" class="member-card-trigger" id="openMembershipCard"
+                                title="{{ __('app.membership_card') }}" aria-label="{{ __('app.membership_card') }}">
+                                <i class="fa-solid fa-id-card"></i> {{ __('app.my_card') }}
+                            </button>
+                        </div>
+                        <a href="{{ route('members.panel') }}" class="member-panel-link" style="gap: 5px !important;">
+                            <i class="fa-solid fa-table-cells-large"></i> {{ __('app.my_panel') }}
+                        </a>
+                        <div class="member-notifications-wrap">
+                            <button style="padding: 3px 8px; gap: 5px !important;" type="button"
+                                class="member-notifications-btn" id="toggleMemberNotifications"
+                                aria-expanded="false" aria-label="{{ __('app.notifications') }}">
+                                <i class="fa-solid fa-bell"></i> {{ __('app.notifications') }}
+                                @if ($__hNotifCount > 0)
+                                    <span class="member-notifications-badge">{{ $__hNotifCount > 99 ? '99+' : $__hNotifCount }}</span>
+                                @endif
+                            </button>
+                        </div>
+                        @if ($__hShowRenewal)
+                        <a href="{{ route('members.my-membership') }}" class="member-renewal-btn">
+                            <i class="fa-solid fa-rotate-right"></i> {{ __('app.renewal') }}
+                        </a>
+                        @endif
+                        @if ($__hShowDays)
+                        <span class="member-days-left member-days-left--{{ $__hCardStatus }}">
                             <i class="fa-solid fa-clock"></i>
-                         تنتهي العضوية بعد 30 يوم
+                            {{ __('app.days_left', ['days' => $__hDaysLeft]) }}
                         </span>
+                        @endif
+                    </div>
                     @endif
+
+                    <span>{{ __('app.welcome') }}.. {{ $__hUser->name }}</span>
+
+                    @if ($__hExpDate)
+                    <span class="header-expiry-badge header-expiry-badge--{{ $__hExpKey }}">
+                        <i class="fa-solid fa-clock"></i>
+                        تنتهي العضوية {{ $__hExpDate }}
+                    </span>
+                    @endif
+
                 </div>
                 @endauth
+
             </div>
         </div>
     </div>
+
     @auth
-        @include('components.membership-card-modal')
+        @if ($__hIsMember)
+            @include('components.membership-card-modal', [
+                'showMemberHeaderTools' => true,
+                'membershipCardPayload' => $__hCard,
+            ])
+        @endif
         <script src="{{ asset('assets/js/member-header.js') }}" defer></script>
     @endauth
+
     <div class="sky">
         <div class="clouds_one"></div>
         <div class="clouds_two"></div>
@@ -174,9 +253,9 @@
     </div>
 </div>
 
-{{-- Portals: خارج الهيدر تماماً لتجنب overflow:hidden --}}
+{{-- Notifications panel: خارج الهيدر تماماً لتجنب overflow:hidden --}}
 @auth
-@if ($showMemberHeaderTools ?? false)
+@if ($__hIsMember)
 <div class="notif-screen" id="memberNotificationsDropdown" hidden aria-hidden="true">
     <div class="notif-screen__backdrop" id="closeMemberNotifications"></div>
     <div class="notif-screen__panel" role="dialog" aria-label="{{ __('app.notifications') }}">
@@ -184,8 +263,8 @@
             <span class="notif-screen__title">
                 <i class="fa-solid fa-bell"></i>
                 {{ __('app.notifications') }}
-                @if (($headerNotificationCount ?? 0) > 0)
-                    <span class="notif-screen__count">{{ $headerNotificationCount > 99 ? '99+' : $headerNotificationCount }}</span>
+                @if ($__hNotifCount > 0)
+                    <span class="notif-screen__count">{{ $__hNotifCount > 99 ? '99+' : $__hNotifCount }}</span>
                 @endif
             </span>
             <button type="button" class="notif-screen__close" id="closeMemberNotificationsBtn" aria-label="{{ __('app.close') }}">
