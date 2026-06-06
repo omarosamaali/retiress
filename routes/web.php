@@ -176,6 +176,10 @@ Route::post('/members/logout', function () {
 Route::get('/members/membership-show', [MemberApplicationsController::class, 'showForm'])->name('members.membership-show');
 Route::post('/members/application', [MemberApplicationsController::class, 'store'])->name('members.application.store');
 Route::post('/members/renewal', [MemberApplicationsController::class, 'renew'])->name('members.renewal');
+Route::middleware('auth')->group(function () {
+    Route::get('/members/application/edit', [MemberApplicationsController::class, 'editApplication'])->name('members.application.edit');
+    Route::post('/members/application/update', [MemberApplicationsController::class, 'updateApplication'])->name('members.application.update');
+});
 
 Route::get('/members/membership', function () {
     $sections = Membership::all();

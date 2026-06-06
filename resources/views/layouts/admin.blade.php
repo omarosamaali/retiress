@@ -420,12 +420,6 @@
             </div>
             @endcan
 
-            @if(Auth::user()->canAccessAdminPanel())
-            <a class="nav-link" href="{{ route('admin.chat') }}">
-                <i class="fas fa-comments"></i>
-                مراسلة الأعضاء
-            </a>
-            @endif
 
             @if(Auth::user()->canAccessAdminPanel())
             <a class="nav-link" href="{{ route('admin.member-notifications.create') }}">

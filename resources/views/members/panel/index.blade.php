@@ -59,6 +59,20 @@
             </div>
         </div>
 
+        {{-- Quick actions --}}
+        @auth
+        @if(auth()->user()->isMemberRole())
+        <div style="margin-bottom:20px;">
+            <a href="{{ route('members.application.edit') }}"
+                style="display:inline-flex; align-items:center; gap:8px; background:#016330; color:#fff; border-radius:10px; padding:10px 20px; text-decoration:none; font-size:.9rem; font-weight:600; transition:background .18s;"
+                onmouseover="this.style.background='#014d25'" onmouseout="this.style.background='#016330'">
+                <i class="fa-solid fa-pen-to-square"></i>
+                تعديل بيانات طلب العضوية
+            </a>
+        </div>
+        @endif
+        @endauth
+
         {{-- Events grid --}}
         <div class="mp-grid">
 

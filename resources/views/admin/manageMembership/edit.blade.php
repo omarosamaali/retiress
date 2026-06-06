@@ -313,11 +313,14 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="gender" class="form-label font-bold">النوع</label>
-                    <input readonly type="text" class="form-control" id="gender_display" value="{{ old('gender', $member->gender == 'female' ? 'انثي' : 'ذكر') }}" required>
-
-                    <input type="hidden" name="gender" value="{{ $member->gender }}">
-
-
+                    @php
+                        $__gVal = old('gender', $member->gender);
+                        $__gIsFemale = in_array($__gVal, ['female', 'انثي', 'أنثى', 'انثى']);
+                    @endphp
+                    <select class="form-control" name="gender" id="gender" required>
+                        <option value="ذكر" {{ !$__gIsFemale ? 'selected' : '' }}>ذكر</option>
+                        <option value="انثي" {{ $__gIsFemale ? 'selected' : '' }}>انثى</option>
+                    </select>
                     @error('gender')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -326,8 +329,17 @@
 
             <div class="col-md-6">
                 <div class="mb-3">
-                    <label for="emirate" class="form-label font-bold">الاماره </label>
-                    <input type="text" class="form-control" id="emirate" name="emirate" value="{{ old('emirate', $member->emirate) }}" required>
+                    <label for="emirate" class="form-label font-bold">الإمارة</label>
+                    @php $__emirate = old('emirate', $member->emirate); @endphp
+                    <select class="form-control" name="emirate" id="emirate" required>
+                        <option value="">اختر الإمارة...</option>
+                        @foreach(['أبوظبي','دبي','الشارقة','عجمان','أم القيوين','رأس الخيمة','الفجيرة'] as $__em)
+                        <option value="{{ $__em }}" {{ $__emirate == $__em ? 'selected' : '' }}>{{ $__em }}</option>
+                        @endforeach
+                        @if($__emirate && !in_array($__emirate, ['أبوظبي','دبي','الشارقة','عجمان','أم القيوين','رأس الخيمة','الفجيرة']))
+                        <option value="{{ $__emirate }}" selected>{{ $__emirate }}</option>
+                        @endif
+                    </select>
                     @error('emirate')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -357,83 +369,59 @@
             </div>
         </div>
 
-{{-- 💡 ملاحظة: يجب أن تتحقق من كل مسار باستخدام @if قبل عرض الـ div بالكامل --}}
-
-<div class="row">
-    {{-- عرض صورة الجواز --}}
-    @if ($member->passport_photo_path)
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="passport_photo_path" class="form-label font-bold">صورة الجواز</label>
-            {{-- تحقق إضافي لتجنب أخطاء asset() إذا كان المسار فارغاً --}}
-            <img class="images-upload" src="{{ asset('storage/' . $member->passport_photo_path) }}"
-                alt="Passport Photo" />
-            @error('passport_photo_path')
-            <div class="text-black">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
-    @endif
-
-    {{-- عرض صورة الهوية --}}
-    @if ($member->national_id_photo_path)
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="national_id_photo_path" class="form-label font-bold">صورة الهوية</label>
-            <img class="images-upload" src="{{ asset('storage/' . $member->national_id_photo_path) }}"
-                alt="National ID Photo" />
-            @error('national_id_photo_path')
-            <div class="text-black">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
-    @endif
+{{-- ── قسم المستندات والصور ── --}}
+<div style="margin-top:24px; margin-bottom:8px;">
+    <h6 class="text-primary fw-bold" style="border-bottom:2px solid #0e6939; padding-bottom:6px;">
+        <i class="fas fa-images me-2"></i> المستندات والصور
+        <small class="text-muted fw-normal" style="font-size:.8rem; margin-right:8px;">اترك الحقل فارغاً للإبقاء على الصورة الحالية</small>
+    </h6>
 </div>
 
-<div class="row">
-    {{-- عرض صورة المؤهل --}}
-    @if ($member->educational_qualification_photo_path)
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="educational_qualification_photo_path" class="form-label font-bold">صورة المؤهل</label>
-            <img class="images-upload" src="{{ asset('storage/' . $member->educational_qualification_photo_path) }}"
-                alt="Educational Qualification Photo" />
-            @error('educational_qualification_photo_path')
-            <div class="text-black">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
-    @endif
+@php
+$__docs = [
+    ['field'=>'passport_photo',                   'col'=>'passport_photo_path',                   'label'=>'صورة الجواز'],
+    ['field'=>'national_id_photo',                'col'=>'national_id_photo_path',                'label'=>'صورة الهوية الوطنية'],
+    ['field'=>'personal_photo',                   'col'=>'personal_photo_path',                   'label'=>'الصورة الشخصية'],
+    ['field'=>'educational_qualification_photo',  'col'=>'educational_qualification_photo_path',  'label'=>'صورة المؤهل التعليمي'],
+    ['field'=>'retirement_card_photo',            'col'=>'retirement_card_photo_path',            'label'=>'صورة بطاقة التقاعد'],
+    ['field'=>'front_id',                         'col'=>'front_id',                              'label'=>'وجه الهوية (Front ID)'],
+    ['field'=>'back_id',                          'col'=>'back_id',                               'label'=>'ظهر الهوية (Back ID)'],
+];
+@endphp
 
-    {{-- عرض الصورة الشخصية --}}
-    @if ($member->personal_photo_path)
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="personal_photo_path" class="form-label font-bold">الصورة الشخصية</label>
-            <img class="images-upload" src="{{ asset('storage/' . $member->personal_photo_path) }}"
-                alt="Personal Photo" />
-            @error('personal_photo_path')
-            <div class="text-black">{{ $message }}</div>
-            @enderror
+<div class="row g-3" style="margin-bottom:20px;">
+@foreach($__docs as $__doc)
+<div class="col-md-6">
+    <div class="p-3 border rounded" style="background:#fafafa;">
+        <label class="form-label font-bold mb-2">{{ $__doc['label'] }}</label>
+        @php $__path = $member->{$__doc['col']}; @endphp
+        @if($__path)
+        <div class="mb-2">
+            @php $__ext = strtolower(pathinfo($__path, PATHINFO_EXTENSION)); @endphp
+            @if(in_array($__ext, ['jpg','jpeg','png','gif','webp']))
+            <a href="{{ asset('storage/' . $__path) }}" target="_blank" title="عرض الصورة بالحجم الكامل">
+                <img src="{{ asset('storage/' . $__path) }}" alt="{{ $__doc['label'] }}"
+                    style="height:130px; width:auto; max-width:100%; border-radius:6px; border:2px solid #0e6939; object-fit:cover; display:block;">
+            </a>
+            @else
+            <a href="{{ asset('storage/' . $__path) }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-file-pdf me-1"></i> عرض الملف
+            </a>
+            @endif
+            <small class="text-success d-block mt-1"><i class="fas fa-check-circle me-1"></i>صورة محفوظة — ارفع جديدة للاستبدال</small>
         </div>
+        @else
+        <div class="mb-2">
+            <span class="text-muted small"><i class="fas fa-image me-1 text-secondary"></i>لا توجد صورة</span>
+        </div>
+        @endif
+        <input type="file" class="form-control form-control-sm" name="{{ $__doc['field'] }}" accept="image/*,application/pdf">
+        @error($__doc['field'])
+        <div class="text-danger small mt-1">{{ $message }}</div>
+        @enderror
     </div>
-    @endif
 </div>
-
-<div class="row">
-    {{-- عرض صورة بطاقة التقاعد --}}
-    @if ($member->retirement_card_photo_path)
-    <div class="col-md-6">
-        <div class="mb-3">
-            <label for="retirement_card_photo_path" class="form-label font-bold">صورة بطاقة التقاعد</label>
-            <img class="images-upload" src="{{ asset('storage/' . $member->retirement_card_photo_path) }}"
-                alt="Retirement Card Photo" />
-            @error('retirement_card_photo_path')
-            <div class="text-black">{{ $message }}</div>
-            @enderror
-        </div>
-    </div>
-    @endif
+@endforeach
 </div>
 
         <div class="row">

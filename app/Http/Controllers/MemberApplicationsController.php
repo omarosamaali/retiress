@@ -212,6 +212,65 @@ class MemberApplicationsController extends Controller
         }
     }
 
+    public function editApplication()
+    {
+        $application = MemberApplication::where('user_id', Auth::id())->first();
+        if (! $application) {
+            return redirect()->route('members.membership-show')
+                ->with('error', 'لا يوجد طلب عضوية مرتبط بحسابك.');
+        }
+        return view('members.membership.edit', compact('application'));
+    }
+
+    public function updateApplication(Request $request)
+    {
+        $application = MemberApplication::where('user_id', Auth::id())->firstOrFail();
+
+        $validated = $request->validate([
+            'mobile_phone'    => 'required|string|max:20',
+            'home_phone'      => 'nullable|string|max:20',
+            'po_box'          => 'nullable|string|max:255',
+            'passport_photo'                  => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:4096',
+            'national_id_photo'               => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:4096',
+            'personal_photo'                  => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:4096',
+            'educational_qualification_photo' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:4096',
+            'retirement_card_photo'           => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:4096',
+            'front_id'                        => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:4096',
+            'back_id'                         => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:4096',
+        ]);
+
+        $data = [
+            'mobile_phone' => $validated['mobile_phone'],
+            'home_phone'   => $validated['home_phone'] ?? null,
+            'po_box'       => $validated['po_box'] ?? null,
+        ];
+
+        $fileFields = [
+            'passport_photo'                  => 'passport_photo_path',
+            'national_id_photo'               => 'national_id_photo_path',
+            'personal_photo'                  => 'personal_photo_path',
+            'educational_qualification_photo' => 'educational_qualification_photo_path',
+            'retirement_card_photo'           => 'retirement_card_photo_path',
+            'front_id'                        => 'front_id',
+            'back_id'                         => 'back_id',
+        ];
+
+        foreach ($fileFields as $field => $column) {
+            if (! $request->hasFile($field)) continue;
+            $existing = $application->{$column};
+            if ($existing && Storage::disk('public')->exists($existing)) {
+                Storage::disk('public')->delete($existing);
+            }
+            $data[$column] = $request->file($field)
+                ->store('member_applications_documents/' . Auth::id(), 'public');
+        }
+
+        $application->update($data);
+
+        return redirect()->route('members.application.edit')
+            ->with('success', 'تم تحديث بيانات طلب العضوية بنجاح.');
+    }
+
     private function generateMembershipNumber()
     {
         $maxAttempts = 10;
