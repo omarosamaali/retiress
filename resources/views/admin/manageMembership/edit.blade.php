@@ -327,7 +327,7 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="emirate" class="form-label font-bold">الاماره </label>
-                    <input readonly type="text" class="form-control" id="emirate" name="emirate" value="{{ old('emirate', $member->emirate) }}" required>
+                    <input type="text" class="form-control" id="emirate" name="emirate" value="{{ old('emirate', $member->emirate) }}" required>
                     @error('emirate')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
