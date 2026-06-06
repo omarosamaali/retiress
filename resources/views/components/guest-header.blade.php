@@ -219,7 +219,7 @@
                     </div>
                     @endif
 
-                    <span>{{ __('app.welcome') }}.. {{ $__hUser->name }}</span>
+                    <span>{{ __('app.welcome') }}.. {{ \Illuminate\Support\Str::limit($__hUser->name, 10, '...') }}</span>
 
                     @if ($__hExpDate)
                     <span class="header-expiry-badge header-expiry-badge--{{ $__hExpKey }}">
