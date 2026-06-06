@@ -9,6 +9,147 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styleU.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body { background: #f0f4f8; }
+
+        .membership-wizard-page { padding-top: 130px; padding-bottom: 50px; min-height: 100vh; }
+
+        /* ── Type toggle ── */
+        .mwiz-type-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .mwiz-type-btn {
+            border: 2px solid #e2e8f0;
+            background: #fff;
+            border-radius: 12px;
+            padding: 12px 28px;
+            font-size: .92rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: #64748b;
+            font-family: inherit;
+            transition: all .18s;
+        }
+        .mwiz-type-btn.active { border-color: #016330; background: #f0fdf4; color: #016330; }
+        .mwiz-type-btn:hover:not(.active) { border-color: #cbd5e1; background: #f8fafc; }
+
+        /* ── Steps nav ── */
+        .membership-steps-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 28px;
+            gap: 0;
+        }
+        .membership-steps-nav li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .85rem;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+        .membership-steps-nav li:not(:last-child)::after {
+            content: '';
+            display: inline-block;
+            width: 50px;
+            height: 2px;
+            background: #e2e8f0;
+            margin: 0 10px;
+        }
+        .membership-steps-nav li.active:not(:last-child)::after,
+        .membership-steps-nav li.completed:not(:last-child)::after { background: #016330; }
+        .membership-steps-nav li span {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #94a3b8;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: .82rem; font-weight: 700; flex-shrink: 0;
+        }
+        .membership-steps-nav li.active { color: #016330; }
+        .membership-steps-nav li.active span { background: #016330; color: #fff; }
+        .membership-steps-nav li.completed span { background: #10b981; color: #fff; }
+
+        /* ── Card ── */
+        .membership-wizard-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 28px rgba(0,0,0,.08);
+            padding: 32px 36px;
+        }
+        @media(max-width:600px) { .membership-wizard-card { padding: 20px 16px; } }
+
+        /* ── Step headings ── */
+        .membership-step-heading {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #016330;
+            border-bottom: 2px solid #e8f3ed;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .membership-step-subheading {
+            font-size: .92rem;
+            font-weight: 700;
+            color: #374151;
+            margin: 20px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .membership-step-subheading::before {
+            content: '';
+            display: inline-block;
+            width: 4px; height: 16px;
+            background: #016330;
+            border-radius: 2px;
+        }
+
+        /* ── Form controls ── */
+        .form-label { font-weight: 600; font-size: .84rem; color: #374151; margin-bottom: 5px; }
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1.5px solid #e2e8f0;
+            padding: 9px 12px;
+            font-size: .9rem;
+            font-family: inherit;
+            transition: border-color .18s, box-shadow .18s;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #016330;
+            box-shadow: 0 0 0 3px rgba(1,99,48,.1);
+            outline: none;
+        }
+        .form-control[type="file"] { padding: 7px 10px; }
+
+        /* ── Doc preview ── */
+        .membership-doc-preview { border-radius: 8px; border: 2px solid #016330; object-fit: cover; }
+
+        /* ── Actions ── */
+        .membership-wizard-actions { padding-top: 20px; border-top: 1px solid #f1f5f9; margin-top: 8px; }
+        .membership-wizard-actions .btn {
+            padding: 10px 28px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: .9rem;
+            font-family: inherit;
+        }
+        .btn-primary { background: #016330 !important; border-color: #016330 !important; }
+        .btn-primary:hover { background: #014d25 !important; border-color: #014d25 !important; }
+        .btn-success { background: #10b981 !important; border-color: #10b981 !important; }
+        .btn-success:hover { background: #059669 !important; }
+
+        /* ── Alerts ── */
+        .alert { border-radius: 10px; font-size: .9rem; }
+        .alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+        .alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    </style>
     @if ($turnstileSiteKey)
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     @endif
@@ -57,11 +198,17 @@
                 </div>
             @endif
 
-            <div class="membership-type-choice mb-4 text-center">
-                <h2 class="h4 mb-3">{{ __('app.membership_application_title') }}</h2>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-primary active" id="btnNewMembership">{{ __('app.new') }}</button>
-                    <button type="button" class="btn btn-outline-primary" id="btnRenewalMembership">{{ __('app.renewal') }}</button>
+            <div class="text-center mb-4">
+                <h2 style="font-size:1.4rem; font-weight:700; color:#1e293b; margin-bottom:16px;">
+                    {{ __('app.membership_application_title') }}
+                </h2>
+                <div class="mwiz-type-toggle">
+                    <button type="button" class="mwiz-type-btn active" id="btnNewMembership">
+                        <i class="fa-solid fa-user-plus me-2" style="margin-left:6px;"></i>{{ __('app.new') }}
+                    </button>
+                    <button type="button" class="mwiz-type-btn" id="btnRenewalMembership">
+                        <i class="fa-solid fa-rotate-right me-2" style="margin-left:6px;"></i>{{ __('app.renewal') }}
+                    </button>
                 </div>
             </div>
 
@@ -89,6 +236,9 @@
     </main>
 
     <x-footer-section></x-footer-section>
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
+    <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
+    <script src="{{ asset('assets/js/scriptU.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>window.membershipWizardInitialStep = {{ ($errors->any() || $errors->has('captcha_token')) ? 3 : 1 }};</script>
     <script src="{{ asset('assets/js/membership-wizard.js') }}" defer></script>

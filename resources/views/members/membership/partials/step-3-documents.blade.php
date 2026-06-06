@@ -11,9 +11,14 @@
             'retirement_card_photo' => 'retirement_card_photo_preview',
         ] as $field => $previewAlt)
             <div class="col-md-6">
-                <label class="form-label" for="{{ $field }}">{{ __('app.'.$field) }} *</label>
-                <input type="file" name="{{ $field }}" id="{{ $field }}" class="form-control" accept="image/*,.pdf" required>
-                <img id="preview_{{ $field }}" src="#" alt="{{ __('app.'.$previewAlt) }}" class="membership-doc-preview mt-2" style="display:none;max-width:180px;">
+                <div style="border:1.5px solid #e2e8f0; border-radius:10px; padding:14px; background:#fafafa;">
+                    <label class="form-label d-block mb-2" for="{{ $field }}">
+                        <i class="fa-regular fa-image text-success" style="color:#016330; margin-left:5px;"></i>
+                        {{ __('app.'.$field) }} <span style="color:#dc2626;">*</span>
+                    </label>
+                    <input type="file" name="{{ $field }}" id="{{ $field }}" class="form-control" accept="image/*,.pdf" required>
+                    <img id="preview_{{ $field }}" src="#" alt="{{ __('app.'.$previewAlt) }}" class="membership-doc-preview mt-2" style="display:none;max-width:180px;max-height:120px;">
+                </div>
             </div>
         @endforeach
     </div>

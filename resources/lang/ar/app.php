@@ -601,6 +601,7 @@ return [
     'no_magazines_featured' => 'لا يوجد مميزات حاليا.',
 
     'membership_card' => 'بطاقة العضوية',
+    'join_membership' => 'سجّل عضويتك',
     'my_card' => 'بطاقتي',
     'my_panel' => 'لوحتي',
     'notifications' => 'الإشعارات',

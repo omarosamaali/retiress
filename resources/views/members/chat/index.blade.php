@@ -26,5 +26,8 @@
     </main>
 
     <x-footer-section></x-footer-section>
+    <script src="{{ asset('assets/js/jquery.js') }}"></script>
+    <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
+    <script src="{{ asset('assets/js/scriptU.js') }}"></script>
 </body>
 </html>

@@ -7,12 +7,6 @@
 <div style="z-index: 99; position: fixed; top: 0px; width: 100%; background: linear-gradient(to bottom, rgb(184, 216, 234) 3%, rgba(204, 236, 255, 1) 37%, rgba(226, 244, 255, 0.95) 49%, rgba(240, 249, 255, 0.93) 65%, rgb(255, 255, 255) 91%);" id="header">
     <div id="headerholder">
         <div class="fixedheader" id="fixedh">
-            <div class="sky">
-                <div class="clouds_one"></div>
-                <div class="clouds_two"></div>
-                <div class="clouds_three"></div>
-                <div class="clouds_four"></div>
-            </div>
             <div class="logo">
                 <a href="{{ url('/') }}"><img src="{{ asset('assets/images/new-logo.png') }}" /></a>
             </div>
@@ -217,6 +211,16 @@
                         </span>
                         @endif
                     </div>
+                    @elseif (!$__hUser?->isStaff())
+                    {{-- مستخدم مسجّل لكن ليس عضواً فعالاً بعد --}}
+                    <div style="margin-right: 12px;">
+                        <a href="{{ route('members.membership-show') }}"
+                            style="display:inline-flex; align-items:center; gap:5px; background:#b5933a; color:#fff; border-radius:6px; padding:4px 12px; font-size:.82rem; font-weight:700; text-decoration:none; transition:background .18s;"
+                            onmouseover="this.style.background='#8a6e2a'" onmouseout="this.style.background='#b5933a'">
+                            <i class="fa-solid fa-star"></i>
+                            {{ __('app.join_membership') }}
+                        </a>
+                    </div>
                     @endif
 
                     <span>{{ __('app.welcome') }}.. {{ \Illuminate\Support\Str::limit($__hUser->name, 10, '...') }}</span>
@@ -244,13 +248,6 @@
         @endif
         <script src="{{ asset('assets/js/member-header.js') }}" defer></script>
     @endauth
-
-    <div class="sky">
-        <div class="clouds_one"></div>
-        <div class="clouds_two"></div>
-        <div class="clouds_three"></div>
-        <div class="clouds_four"></div>
-    </div>
 </div>
 
 {{-- Notifications panel: خارج الهيدر تماماً لتجنب overflow:hidden --}}

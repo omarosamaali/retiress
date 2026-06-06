@@ -70,6 +70,15 @@
                 تعديل بيانات طلب العضوية
             </a>
         </div>
+        @else
+        <div style="margin-bottom:20px;">
+            <a href="{{ route('members.membership-show') }}"
+                style="display:inline-flex; align-items:center; gap:8px; background:#b5933a; color:#fff; border-radius:10px; padding:10px 20px; text-decoration:none; font-size:.9rem; font-weight:600; transition:background .18s;"
+                onmouseover="this.style.background='#8a6e2a'" onmouseout="this.style.background='#b5933a'">
+                <i class="fa-solid fa-star"></i>
+                اشتراك في العضوية
+            </a>
+        </div>
         @endif
         @endauth
 
@@ -223,6 +232,6 @@
     <x-footer-section></x-footer-section>
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
     <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
-    <script src="{{ asset('assets/js/scriptU.js') }}" defer></script>
+    <script src="{{ asset('assets/js/scriptU.js') }}"></script>
 </body>
 </html>

@@ -9,12 +9,6 @@
     <div id="headerholder">
 
         <div class="fixedheader" id="fixedh">
-            <div class="sky">
-                <div class="clouds_one"></div>
-                <div class="clouds_two"></div>
-                <div class="clouds_three"></div>
-                <div class="clouds_four"></div>
-            </div>
             <div class="logo">
                 <a href="{{ url('/') }}"><img src="{{ asset('assets/images/new-logo.png') }}" /></a>
             </div>
@@ -105,15 +99,4 @@
         @include('components.membership-card-modal')
         <script src="{{ asset('assets/js/member-header.js') }}" defer></script>
     @endauth
-    <!--START CLOUDS -->
-    <div class="sky">
-        <div class="clouds_one"></div>
-
-        <div class="clouds_two"></div>
-
-        <div class="clouds_three"></div>
-
-        <div class="clouds_four"></div>
-    </div>
-    <!--END CLOUDS -->
 </div>
