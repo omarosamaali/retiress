@@ -204,13 +204,13 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="status" class="form-label font-bold">الحالة</label>
-                    <select name="status" id="status" class="form-control">
-                        <option value="" disabled selected>اختر...</option>
-                        <option value="0" {{ $member->status == 0 ? 'selected' : '' }}>بانتظار الدفع</option>
-                        <option value="1" {{ $member->status == 1 ? 'selected' : '' }}>بانتظار التفعيل</option>
-                        <option value="2" {{ $member->status == 2 ? 'selected' : '' }}>بانتظار الموافقة</option>
-                        <option value="3" {{ $member->status == 3 ? 'selected' : '' }}>فعال</option>
-                        <option value="3" {{ $member->status == 4 ? 'selected' : '' }}>منتهي</option>
+                    <select name="status" id="status" class="form-control" required>
+                        <option value="" disabled>اختر...</option>
+                        <option value="0" {{ old('status', $member->status) == '0' ? 'selected' : '' }}>بانتظار الدفع</option>
+                        <option value="1" {{ old('status', $member->status) == '1' ? 'selected' : '' }}>بانتظار التفعيل</option>
+                        <option value="2" {{ old('status', $member->status) == '2' ? 'selected' : '' }}>بانتظار الموافقة</option>
+                        <option value="3" {{ old('status', $member->status) == '3' ? 'selected' : '' }}>فعال</option>
+                        <option value="4" {{ old('status', $member->status) == '4' ? 'selected' : '' }}>منتهي</option>
                     </select> @error('status')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
