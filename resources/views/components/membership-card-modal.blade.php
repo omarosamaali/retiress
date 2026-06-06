@@ -20,61 +20,54 @@
                 <div class="mcard-flip__face mcard-flip__face--front">
                     <img src="{{ asset('assets/card-f.png') }}" class="mcard-flip__bg" alt="">
 
-                    {{-- Status badge (corner) --}}
                     @if (!empty($status['label']))
                         <span class="mci-status-badge membership-status-badge {{ $status['badge_class'] ?? '' }}">
                             {{ $status['label'] }}
                         </span>
                     @endif
 
-                    {{-- Photo: top-right --}}
-                    <div class="mci-photo-box">
-                        <img
-                            src="{{ !empty($card['photo_url']) ? $card['photo_url'] : asset('assets/images/default_user.jpg') }}"
-                            class="mci-photo-img"
-                            alt=""
-                            onerror="this.onerror=null;this.src='{{ asset('assets/images/default_user.jpg') }}';"
-                        >
-                    </div>
+                    {{-- Right panel: photo + all data stacked --}}
+                    <div class="mci-panel">
 
-                    {{-- Membership number: below photo --}}
-                    <div class="mci-number">
-                        <div class="mci-number__lbl">{{ __('app.membership_number') }}</div>
-                        <div class="mci-number__val">{{ $card['membership_number'] ?? '—' }}</div>
-                    </div>
-
-                    {{-- Separator 1 --}}
-                    <div class="mci-sep"></div>
-
-                    {{-- Name row --}}
-                    <div class="mci-row mci-row--name">
-                        <span class="mci-row__lbl">{{ __('app.full_name') }} :</span>
-                        <span class="mci-row__val">{{ $card['full_name'] ?? '—' }}</span>
-                    </div>
-
-                    {{-- Job row --}}
-                    <div class="mci-row mci-row--job">
-                        <span class="mci-row__lbl">{{ __('app.job_title') }} :</span>
-                        <span class="mci-row__val">
-                            {{ trim(($card['job_title'] ?? '') . ($card['employer'] ? ' — ' . $card['employer'] : '')) ?: '—' }}
-                        </span>
-                    </div>
-
-                    {{-- Separator 2 --}}
-                    <div class="mci-sep mci-sep--2"></div>
-
-                    {{-- Dates --}}
-                    <div class="mci-dates">
-                        <div class="mci-date-group">
-                            <span class="mci-date__lbl">{{ __('app.issue_date') }} :</span>
-                            <span class="mci-date__val">{{ $card['issue_date'] ?? '—' }}</span>
+                        <div class="mci-panel__photo">
+                            <img
+                                src="{{ !empty($card['photo_url']) ? $card['photo_url'] : asset('assets/images/default_user.jpg') }}"
+                                class="mci-photo-img"
+                                alt=""
+                                onerror="this.onerror=null;this.src='{{ asset('assets/images/default_user.jpg') }}';"
+                            >
                         </div>
-                        <div class="mci-date-group">
-                            <span class="mci-date__lbl">{{ __('app.membership_expiry') }} :</span>
-                            <span class="mci-date__val">{{ $card['expiration_date'] ?? '—' }}</span>
-                        </div>
-                    </div>
 
+                        <div class="mci-panel__num">
+                            <span class="mci-panel__num-lbl">{{ __('app.membership_number') }}</span>
+                            <span class="mci-panel__num-val">{{ $card['membership_number'] ?? '—' }}</span>
+                        </div>
+
+                        <div class="mci-panel__sep"></div>
+
+                        <div class="mci-panel__field">
+                            <span class="mci-panel__lbl">{{ __('app.full_name') }} :</span>
+                            <span class="mci-panel__val">{{ $card['full_name'] ?? '—' }}</span>
+                        </div>
+
+                        <div class="mci-panel__field">
+                            <span class="mci-panel__lbl">{{ __('app.job_title') }} :</span>
+                            <span class="mci-panel__val">{{ trim(($card['job_title'] ?? '') . ($card['employer'] ? ' — ' . $card['employer'] : '')) ?: '—' }}</span>
+                        </div>
+
+                        <div class="mci-panel__sep"></div>
+
+                        <div class="mci-panel__field">
+                            <span class="mci-panel__lbl">{{ __('app.issue_date') }} :</span>
+                            <span class="mci-panel__val">{{ $card['issue_date'] ?? '—' }}</span>
+                        </div>
+
+                        <div class="mci-panel__field">
+                            <span class="mci-panel__lbl">{{ __('app.membership_expiry') }} :</span>
+                            <span class="mci-panel__val">{{ $card['expiration_date'] ?? '—' }}</span>
+                        </div>
+
+                    </div>
                 </div>
 
                 {{-- ── BACK ── --}}
