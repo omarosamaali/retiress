@@ -152,25 +152,13 @@
                 @auth
                 <div class="member-header-welcome d-flex align-items-center flex-wrap gap-1">
                     @include('components.member-header-tools')
-                    <div class="d-flex align-items-center gap-2 flex-wrap">
-                        <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
-                        @php
-                            $hExpiry     = $membershipCardPayload['expiration_date'] ?? null;
-                            $hCardStatus = $membershipCardPayload['status']['key'] ?? 'pending';
-                            $hDaysLeft   = null;
-                            if ($hExpiry && $hCardStatus !== 'expired') {
-                                $diff = (int) \Carbon\Carbon::today()->diffInDays(\Carbon\Carbon::parse($hExpiry), false);
-                                $hDaysLeft = $diff >= 0 ? $diff : null;
-                            }
-                            $hBadgeClass = ($hDaysLeft !== null && $hDaysLeft <= 30) ? 'expiring' : 'active';
-                        @endphp
-                        @if ($hDaysLeft !== null)
-                            <span class="header-days-left header-days-left--{{ $hBadgeClass }}">
-                                <i class="fa-solid fa-clock"></i>
-                                {{ __('app.days_left', ['days' => $hDaysLeft]) }}
-                            </span>
-                        @endif
-                    </div>
+                    <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
+                    @if (!empty($membershipCardPayload['expiration_date']) && ($membershipCardPayload['status']['key'] ?? '') !== 'expired')
+                        <span class="header-expiry-badge header-expiry-badge--{{ ($membershipCardPayload['status']['key'] ?? '') === 'expiring' ? 'expiring' : 'active' }}">
+                            <i class="fa-solid fa-calendar-xmark"></i>
+                            {{ $membershipCardPayload['expiration_date'] }}
+                        </span>
+                    @endif
                 </div>
                 @endauth
             </div>
