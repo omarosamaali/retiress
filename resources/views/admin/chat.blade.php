@@ -1,509 +1,349 @@
 @extends('layouts.admin')
 
-@section('title', 'إدارة الرسائل')
-@section('page-title', 'إدارة الرسائل')
+@section('title', 'مراسلة الأعضاء')
+@section('page-title', 'مراسلة الأعضاء')
+
+@section('content')
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 20px auto;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    .ac-wrap {
+        display: flex;
+        height: calc(100vh - 120px);
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 4px 24px rgba(0,0,0,.08);
         overflow: hidden;
-        backdrop-filter: blur(10px);
-        height: 85vh;
     }
 
-    .row {
-        display: flex;
-        height: 100%;
-    }
-
-    .col-md-8 {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        background: #f8fafc;
-        height: 100%;
-    }
-
-    #messages {
-        flex: 1;
-        padding: 20px 30px;
-        padding-bottom: 20px;
-        overflow-y: auto;
-        background: #f1f5f9;
-        max-height: calc(85vh - 200px);
-    }
-
-    #send-message {
-        padding: 20px 30px;
-        background: white;
-        border-top: 1px solid #e2e8f0;
-        display: flex;
-        gap: 15px;
-        align-items: center;
+    /* ── Sidebar ── */
+    .ac-sidebar {
+        width: 300px;
         flex-shrink: 0;
-    }
-
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        min-height: 100vh;
-        background: #fafafa;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 20px auto;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        backdrop-filter: blur(10px);
-        height: 80vh;
-    }
-
-    .row {
-        display: flex;
-        height: 100%;
-    }
-
-    /* Users Panel */
-    .col-md-4 {
-        width: 350px;
-        background: #016330;
-
-        color: white;
         display: flex;
         flex-direction: column;
+        background: #016330;
+        border-radius: 14px 0 0 14px;
     }
-
-    .col-md-4>h3 {
-        padding: 25px 20px;
-        background: rgba(0, 0, 0, 0.1);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 0;
+    .ac-sidebar__head {
+        padding: 18px 16px 12px;
+        border-bottom: 1px solid rgba(255,255,255,.12);
     }
-
-    #users {
-        flex: 1;
-        overflow-y: auto;
-        padding: 10px 0;
-        list-style: none;
+    .ac-sidebar__title {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
-
-    #contacts {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .list-group-item {
-        display: flex !important;
-        align-items: center !important;
-        padding: 15px 20px !important;
-        cursor: pointer !important;
-        transition: all 0.3s ease;
-        border: none !important;
-        background: transparent !important;
-        color: white !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    .ac-search {
         position: relative;
     }
-
-    .list-group-item:hover {
-        background: rgba(255, 255, 255, 0.1);
-        transform: translateX(-5px);
+    .ac-search input {
+        width: 100%;
+        background: rgba(255,255,255,.15);
+        border: 1px solid rgba(255,255,255,.25);
+        border-radius: 8px;
+        color: #fff;
+        padding: 7px 34px 7px 10px;
+        font-size: .88rem;
+        outline: none;
+        transition: background .2s;
+    }
+    .ac-search input::placeholder { color: rgba(255,255,255,.6); }
+    .ac-search input:focus { background: rgba(255,255,255,.22); }
+    .ac-search__icon {
+        position: absolute;
+        left: 9px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(255,255,255,.7);
+        font-size: .8rem;
+        pointer-events: none;
     }
 
-    .list-group-item.active {
-        background: rgba(255, 255, 255, 0.15) !important;
-        border-right: 4px solid #10b981 !important;
-        border-radius: 0px;
+    .ac-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 6px 0;
     }
+    .ac-list::-webkit-scrollbar { width: 4px; }
+    .ac-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.25); border-radius: 4px; }
 
-    .list-group-item::before {
-        content: attr(data-user-id) !important;
-        width: 45px;
-        height: 45px;
+    .ac-user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(255,255,255,.06);
+        transition: background .18s;
+    }
+    .ac-user:hover { background: rgba(255,255,255,.1); }
+    .ac-user.active { background: rgba(255,255,255,.18); border-right: 3px solid #10b981; }
+    .ac-user__avatar {
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
-        background: linear-gradient(45deg, #10b981, #06d6a0) !important;
+        background: linear-gradient(135deg,#10b981,#059669);
+        color: #fff;
+        font-weight: 700;
+        font-size: .85rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
-        font-weight: bold;
-        margin-left: 15px;
-        font-size: 1.1rem;
         flex-shrink: 0;
+        text-transform: uppercase;
     }
+    .ac-user__name {
+        color: #fff;
+        font-size: .88rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .ac-user--hidden { display: none; }
 
-    /* Chat Panel */
-    .col-md-8 {
+    /* ── Chat panel ── */
+    .ac-chat {
         flex: 1;
         display: flex;
         flex-direction: column;
         background: #f8fafc;
     }
-
-    .col-md-8>h3 {
-        padding: 25px 30px;
-        background: white;
-        border-bottom: 1px solid #e2e8f0;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    .ac-chat__head {
+        padding: 16px 22px;
+        background: #fff;
+        border-bottom: 1px solid #e5e7eb;
+        font-weight: 600;
         color: #1e293b;
-        font-size: 1.4rem;
-        font-weight: 600;
-        margin: 0;
-    }
-
-    #messages {
-        flex: 1;
-        padding: 20px 30px;
-        overflow-y: auto;
-        background: #f1f5f9;
-    }
-
-    /* تنسيق الرسائل */
-    #messages p {
-        margin: 15px 0;
-        padding: 12px 18px;
-        border-radius: 20px;
-        font-size: 0.95rem;
-        line-height: 1.4;
-        max-width: 70%;
-        word-wrap: break-word;
-        animation: slideIn 0.3s ease;
-        position: relative;
-        clear: both;
-    }
-
-    /* رسائل مرسلة (من المستخدم الحالي) */
-    #messages p.sent {
-        background: #016330;
-
-        color: white;
-        float: right;
-        margin-left: auto;
-        margin-right: 0;
-        border-bottom-right-radius: 5px;
-        box-shadow: 0 2px 8px #016330;
-
-    }
-
-    /* رسائل مستقبلة (من الشخص الآخر) */
-    #messages p.received {
-        background: white;
-        color: #334155;
-        float: left;
-        margin-right: auto;
-        margin-left: 0;
-        border-bottom-left-radius: 5px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* رسائل افتراضية (للتوافق مع الكود القديم) */
-    #messages p:not(.sent):not(.received) {
-        background: white;
-        color: #334155;
-        float: left;
-        margin-right: auto;
-        margin-left: 0;
-        border-bottom-left-radius: 5px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Form Styling */
-    #send-message {
-        padding: 20px 30px;
-        background: white;
-        border-top: 1px solid #e2e8f0;
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        position: absolute;
-        bottom: 0px;
-        width: 67%;
-    }
-
-    .form-control {
-        flex: 1;
-        padding: 15px 20px;
-        border: 2px solid #e2e8f0;
-        border-radius: 25px;
-        font-size: 1rem;
-        outline: none;
-        transition: all 0.3s ease;
-        background: #f8fafc;
-    }
-
-    .form-control:focus {
-        border-color: #4f46e5;
-        background: white;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    }
-
-    .btn {
-        padding: 15px 25px;
-        border: none;
-        border-radius: 25px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s ease;
+        font-size: .95rem;
         display: flex;
         align-items: center;
         gap: 8px;
-        text-decoration: none;
-        font-size: 1rem;
+        min-height: 60px;
     }
-
-    .btn-primary {
-        background: #016330;
-        color: white;
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
-    }
-
-    .btn-primary:active {
-        transform: translateY(0);
-    }
-
-    .mt-2 {
-        margin-top: 0 !important;
-    }
-
-    /* Custom Scrollbar */
-    #users::-webkit-scrollbar,
-    #messages::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    #users::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    #users::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 3px;
-    }
-
-    #messages::-webkit-scrollbar-track {
-        background: #e2e8f0;
-    }
-
-    #messages::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 3px;
-    }
-
-    /* Animations */
-    @keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .container {
-            height: 90vh;
-            margin: 10px;
-            border-radius: 15px;
-        }
-
-        .col-md-4 {
-            width: 280px;
-        }
-
-        #messages p {
-            max-width: 85%;
-        }
-    }
-
-    /* Online indicator simulation */
-    .list-group-item:nth-child(odd)::after {
-        content: '';
-        width: 12px;
-        height: 12px;
-        background: #10b981;
+    .ac-chat__head-avatar {
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        border: 2px solid white;
-        animation: pulse 2s infinite;
+        background: linear-gradient(135deg,#10b981,#059669);
+        color: #fff;
+        font-weight: 700;
+        font-size: .8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        display: none;
     }
-
-
-
-    @keyframes pulse {
-
-        0%,
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        50% {
-            transform: scale(1.1);
-            opacity: 0.8;
-        }
+    .ac-messages {
+        flex: 1;
+        padding: 18px 22px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
+    .ac-messages::-webkit-scrollbar { width: 5px; }
+    .ac-messages::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+    .ac-msg {
+        max-width: 68%;
+        padding: 10px 14px;
+        border-radius: 14px;
+        font-size: .9rem;
+        line-height: 1.45;
+        word-break: break-word;
+        animation: msgIn .2s ease;
+    }
+    @keyframes msgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+    .ac-msg.sent { background:#016330; color:#fff; border-bottom-right-radius:3px; align-self:flex-end; }
+    .ac-msg.received { background:#fff; color:#334155; border-bottom-left-radius:3px; align-self:flex-start; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+
+    .ac-empty {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #94a3b8;
+        gap: 8px;
+        font-size: .9rem;
+    }
+    .ac-empty i { font-size: 2.2rem; }
+
+    .ac-form {
+        padding: 14px 18px;
+        background: #fff;
+        border-top: 1px solid #e5e7eb;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    .ac-form input {
+        flex: 1;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 22px;
+        padding: 9px 16px;
+        font-size: .9rem;
+        outline: none;
+        background: #f8fafc;
+        transition: border-color .2s;
+        font-family: inherit;
+    }
+    .ac-form input:focus { border-color: #016330; background: #fff; }
+    .ac-form button {
+        background: #016330;
+        color: #fff;
+        border: none;
+        border-radius: 22px;
+        padding: 9px 18px;
+        font-size: .88rem;
+        font-family: inherit;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: background .18s;
+    }
+    .ac-form button:hover { background: #014d25; }
 </style>
 
-@section( 'content')
+<div class="ac-wrap">
 
-<body>
-    <div id="app">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h3>
-                        @if(Auth::user()->role === 'مدير')
-                        جميع المستخدمين
-                        @else
-                        المديرين
-                        @endif
-                    </h3>
-                    <ul id="users" class="list-group">
-                        <ul id="contacts" class="list-group">
-                            @if(Auth::user()->role === 'مدير' && isset($users))
-                            @foreach($users as $user)
-                            <li class="list-group-item" data-user-id="{{ $user->id }}">{{ $user->name }}</li>
-                            @endforeach
-                            @else
-                            @foreach($contacts as $contact)
-                            <li class="list-group-item" data-user-id="{{ $contact->id }}">{{ $contact->name }}</li>
-                            @endforeach
-                            @endif
-                        </ul>
-                    </ul>
-                </div>
-                <div class="col-md-8">
-                    <h3>الرسائل</h3>
-                    <div id="messages"></div>
-                    <form id="send-message">
-                        <input type="hidden" id="to_user_id">
-                        <input type="text" id="message-input" class="form-control" placeholder="إرسال رسالة">
-                        <button type="submit" class="btn btn-primary mt-2">إرسال</button>
-                    </form>
-                </div>
+    {{-- ── Sidebar ── --}}
+    <div class="ac-sidebar">
+        <div class="ac-sidebar__head">
+            <div class="ac-sidebar__title">
+                <i class="fa-solid fa-users"></i>
+                @if(Auth::user()->role === 'مدير') الأعضاء المسجلون @else المديرون @endif
             </div>
+            <div class="ac-search">
+                <input type="text" id="ac-search-input" placeholder="ابحث باسم العضو...">
+                <i class="fa-solid fa-magnifying-glass ac-search__icon"></i>
+            </div>
+        </div>
+
+        <div class="ac-list" id="ac-list">
+            @php
+                $listItems = (Auth::user()->role === 'مدير' && isset($users)) ? $users : $contacts;
+            @endphp
+            @foreach($listItems as $item)
+            @php
+                $words = explode(' ', trim($item->name));
+                $initials = mb_substr($words[0] ?? '?', 0, 1) . (isset($words[1]) ? mb_substr($words[1], 0, 1) : '');
+            @endphp
+            <div class="ac-user" data-user-id="{{ $item->id }}" data-name="{{ $item->name }}">
+                <div class="ac-user__avatar">{{ $initials }}</div>
+                <span class="ac-user__name">{{ $item->name }}</span>
+            </div>
+            @endforeach
         </div>
     </div>
 
+    {{-- ── Chat ── --}}
+    <div class="ac-chat">
+        <div class="ac-chat__head" id="ac-chat-head">
+            <div class="ac-chat__head-avatar" id="ac-head-avatar"></div>
+            <span id="ac-chat-title">اختر عضواً للمحادثة</span>
+        </div>
 
-    <script>
-        document.querySelectorAll('#users li').forEach(user => {
-                user.addEventListener('click', function() {
-                // إضافة active class للتصميم
-                document.querySelectorAll('#users li').forEach(u => u.classList.remove('active'));
-                this.classList.add('active');
+        <div class="ac-messages" id="ac-messages">
+            <div class="ac-empty" id="ac-empty">
+                <i class="fa-regular fa-comments"></i>
+                <span>اختر عضواً من القائمة لبدء المحادثة</span>
+            </div>
+        </div>
 
-                currentUserId = this.getAttribute('data-user-id');
-                document.getElementById('to_user_id').value = currentUserId;
-                loadMessages(currentUserId);
-                });
-                });
+        <form class="ac-form" id="ac-send-form">
+            <input type="hidden" id="to_user_id">
+            <input type="text" id="ac-msg-input" placeholder="اكتب رسالة..." autocomplete="off">
+            <button type="submit">
+                <i class="fa-solid fa-paper-plane"></i> إرسال
+            </button>
+        </form>
+    </div>
 
-        let currentUserId = null;
+</div>
 
-        // تحميل الرسائل عند اختيار مستخدم
-        document.querySelectorAll('#users li').forEach(user => {
-            user.addEventListener('click', function() {
-                currentUserId = this.getAttribute('data-user-id');
-                document.getElementById('to_user_id').value = currentUserId;
-                loadMessages(currentUserId);
-            });
-        });
+<script>
+const ME = {{ Auth::id() }};
+let currentUserId = null;
 
+// ── Search ──
+document.getElementById('ac-search-input').addEventListener('input', function () {
+    const q = this.value.trim().toLowerCase();
+    document.querySelectorAll('.ac-user').forEach(el => {
+        const name = el.dataset.name.toLowerCase();
+        el.classList.toggle('ac-user--hidden', q && !name.includes(q));
+    });
+});
+
+// ── Select user ──
+document.querySelectorAll('.ac-user').forEach(el => {
+    el.addEventListener('click', function () {
+        document.querySelectorAll('.ac-user').forEach(u => u.classList.remove('active'));
+        this.classList.add('active');
+
+        currentUserId = this.dataset.userId;
+        document.getElementById('to_user_id').value = currentUserId;
+
+        const name    = this.dataset.name;
+        const initials = [...name.trim().split(' ')].slice(0,2).map(w => w[0] || '').join('').toUpperCase();
+
+        const headAvatar = document.getElementById('ac-head-avatar');
+        headAvatar.textContent = initials;
+        headAvatar.style.display = 'flex';
+        document.getElementById('ac-chat-title').textContent = name;
+
+        loadMessages(currentUserId);
+    });
+});
+
+// ── Load messages ──
 function loadMessages(userId) {
-fetch(`/messages/${userId}`)
-.then(response => response.json())
-.then(messages => {
-let messagesDiv = document.getElementById('messages');
-messagesDiv.innerHTML = '';
-messages.forEach(message => {
-let p = document.createElement('p');
+    fetch(`/messages/${userId}`)
+        .then(r => r.json())
+        .then(messages => {
+            const box = document.getElementById('ac-messages');
+            document.getElementById('ac-empty').style.display = 'none';
+            box.innerHTML = '';
 
-// تحديد إذا كانت الرسالة مرسلة أم مستقبلة
-const currentUserId = {{ Auth::id() }}; // معرف المستخدم الحالي
-
-if (message.from_user_id == currentUserId) {
-// رسالة مرسلة من المستخدم الحالي - تظهر على اليمين
-p.classList.add('sent');
-p.textContent = message.message;
-} else {
-// رسالة مستقبلة - تظهر على الشمال
-p.classList.add('received');
-p.textContent = message.message;
-}
-
-messagesDiv.appendChild(p);
-});
-messagesDiv.scrollTop = messagesDiv.scrollHeight;
-});
-}
-
-
-        // إرسال رسالة
-        document.getElementById('send-message').addEventListener('submit', function(e) {
-            e.preventDefault();
-            let toUserId = document.getElementById('to_user_id').value;
-            let messageInput = document.getElementById('message-input');
-            let message = messageInput.value;
-
-            if (!toUserId || !message) return;
-
-            fetch('/send-message', {
-                    method: 'POST'
-                    , headers: {
-                        'Content-Type': 'application/json'
-                        , 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                    , body: JSON.stringify({
-                        to_user_id: toUserId
-                        , message: message
-                    })
-                }).then(response => response.json())
-                .then(data => {
-                    messageInput.value = '';
-                    loadMessages(toUserId);
-                });
-        });
-
-        // استقبال الرسائل في الوقت الفعلي
-        window.Echo.private(`chat.{{ Auth::id() }}`)
-            .listen('MessageSent', (e) => {
-                if (currentUserId == e.message.from_user_id || currentUserId == e.message.to_user_id) {
-                    let p = document.createElement('p');
-                    p.textContent = `${e.user.name} to ${e.message.receiver.name}: ${e.message.message}`;
-                    document.getElementById('messages').appendChild(p);
-                    document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-                }
+            messages.forEach(msg => {
+                const p = document.createElement('p');
+                p.className = 'ac-msg ' + (msg.from_user_id == ME ? 'sent' : 'received');
+                p.textContent = msg.message;
+                box.appendChild(p);
             });
+            box.scrollTop = box.scrollHeight;
+        });
+}
 
-    </script>
-</body>
+// ── Send ──
+document.getElementById('ac-send-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const toId = document.getElementById('to_user_id').value;
+    const input = document.getElementById('ac-msg-input');
+    const text  = input.value.trim();
+    if (!toId || !text) return;
 
-</html>
+    fetch('/send-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+        body: JSON.stringify({ to_user_id: toId, message: text })
+    }).then(r => r.json()).then(() => {
+        input.value = '';
+        loadMessages(toId);
+    });
+});
 
-
+// ── Realtime ──
+window.Echo.private(`chat.{{ Auth::id() }}`)
+    .listen('MessageSent', (e) => {
+        if (currentUserId == e.message.from_user_id || currentUserId == e.message.to_user_id) {
+            loadMessages(currentUserId);
+        }
+    });
+</script>
 @endsection
