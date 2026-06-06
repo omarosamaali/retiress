@@ -3663,8 +3663,6 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    right: 7px;    border-radius: 17px;
-
 }
 
 .mci-photo-img {
@@ -3683,11 +3681,9 @@ p {
     position: absolute;
     top: 43%;
     inset-inline-end: 1%;
-    width: 30.3%;
+    width: 19.3%;
     text-align: center;
     line-height: 1.5;
-    right: 14px;
-    text-align: right;
 }
 
 .mci-number__lbl {
@@ -3705,6 +3701,16 @@ p {
     margin-top: 2px;
 }
 
+/* Separator lines */
+.mci-sep {
+    position: absolute;
+    top: 55%;
+    inset-inline-start: 27%;
+    inset-inline-end: 1%;
+    height: 1px;
+    background: #ccc;
+}
+
 .mci-sep--2 {
     top: 81%;
 }
@@ -3720,9 +3726,8 @@ p {
     padding: 0 1%;
 }
 
-.mci-row--name {     top: 55%;
-    right: 7px; }
-.mci-row--job  { top: 61%; right: 7px; }
+.mci-row--name { top: 62%; }
+.mci-row--job  { top: 73%; }
 
 .mci-row__lbl {
     flex-shrink: 0;
@@ -3742,14 +3747,13 @@ p {
 /* Dates row: top=86% */
 .mci-dates {
     position: absolute;
-    top: 75%;
+    top: 85%;
     inset-inline-start: 27%;
     inset-inline-end: 1%;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     padding: 0 1%;
-    right: 7px;
 }
 
 .mci-date-group {
@@ -3775,13 +3779,11 @@ p {
 /* Status badge: bottom-left of data area */
 .mci-status-badge {
     position: absolute;
-    bottom: 7%;
+    bottom: 3%;
     inset-inline-start: 28%;
     font-size: clamp(6px, 1.2vw, 10px) !important;
     padding: 2px 7px !important;
     z-index: 2;
-        right: 12px;
-
 }
 
 /* keep status badges */
@@ -3949,30 +3951,6 @@ p {
 .member-days-left--expiring {
     background: rgba(255, 193, 7, 0.2);
     color: #ffc107;
-    border: 1px solid rgba(255, 193, 7, 0.5);
-}
-
-/* Days-left badge next to username in header */
-.header-days-left {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-}
-
-.header-days-left--active {
-    background: rgba(110, 76, 62, 0.12);
-    color: #6e4c3e;
-    border: 1px solid rgba(110, 76, 62, 0.3);
-}
-
-.header-days-left--expiring {
-    background: rgba(255, 193, 7, 0.15);
-    color: #b8860b;
     border: 1px solid rgba(255, 193, 7, 0.5);
 }
 
