@@ -155,11 +155,17 @@
                     <div class="d-flex align-items-center gap-2 flex-wrap">
                         <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
                         @php
-                            $hDaysLeft  = $membershipCardPayload['status']['days_left'] ?? null;
+                            $hExpiry     = $membershipCardPayload['expiration_date'] ?? null;
                             $hCardStatus = $membershipCardPayload['status']['key'] ?? 'pending';
+                            $hDaysLeft   = null;
+                            if ($hExpiry && $hCardStatus !== 'expired') {
+                                $diff = (int) \Carbon\Carbon::today()->diffInDays(\Carbon\Carbon::parse($hExpiry), false);
+                                $hDaysLeft = $diff >= 0 ? $diff : null;
+                            }
+                            $hBadgeClass = ($hDaysLeft !== null && $hDaysLeft <= 30) ? 'expiring' : 'active';
                         @endphp
-                        @if ($hDaysLeft !== null && in_array($hCardStatus, ['active', 'expiring']))
-                            <span class="header-days-left header-days-left--{{ $hCardStatus }}">
+                        @if ($hDaysLeft !== null)
+                            <span class="header-days-left header-days-left--{{ $hBadgeClass }}">
                                 <i class="fa-solid fa-clock"></i>
                                 {{ __('app.days_left', ['days' => $hDaysLeft]) }}
                             </span>
