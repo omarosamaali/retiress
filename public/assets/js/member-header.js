@@ -37,7 +37,11 @@
         if (!sheet) return;
         sheet.classList.add('is-open');
         sheet.setAttribute('aria-hidden', 'false');
-        if (flipCard) flipCard.classList.remove('is-flipped');
+        if (!flipCard) return;
+        flipCard.classList.remove('is-flipped');
+        // auto-flip: front → back → front
+        setTimeout(function () { flipCard.classList.add('is-flipped'); }, 600);
+        setTimeout(function () { flipCard.classList.remove('is-flipped'); }, 1800);
     }
 
     function closeSheet() {
