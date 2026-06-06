@@ -147,9 +147,17 @@ class Event extends Model
         });
     }
 
+    public function scopeNotExpired(Builder $query): Builder
+    {
+        return $query->where(function (Builder $q) {
+            $q->whereNull('ends_at')
+              ->orWhere('ends_at', '>=', now());
+        });
+    }
+
     public function scopePubliclyListed(Builder $query, ?User $user = null): Builder
     {
-        return $query->published()->visibleToAudience($user);
+        return $query->published()->visibleToAudience($user)->notExpired();
     }
 
     public function transactions()
