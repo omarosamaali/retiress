@@ -29,11 +29,12 @@
 
                     {{-- Photo: top-right --}}
                     <div class="mci-photo-box">
-                        @if (!empty($card['photo_url']))
-                            <img src="{{ $card['photo_url'] }}" class="mci-photo-img" alt="">
-                        @else
-                            <div class="mci-photo-placeholder"><i class="fa-solid fa-user"></i></div>
-                        @endif
+                        <img
+                            src="{{ !empty($card['photo_url']) ? $card['photo_url'] : asset('assets/images/default_user.jpg') }}"
+                            class="mci-photo-img"
+                            alt=""
+                            onerror="this.onerror=null;this.src='{{ asset('assets/images/default_user.jpg') }}';"
+                        >
                     </div>
 
                     {{-- Membership number: below photo --}}
