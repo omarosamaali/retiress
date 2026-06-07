@@ -217,7 +217,7 @@
                     </div>
                     @endif
 
-                    <span>{{ __('app.welcome') }}.. {{ \Illuminate\Support\Str::limit($__hUser->name, 5, '.') }}</span>
+                    <span>{{ __('app.welcome') }}.. {{ \Illuminate\Support\Str::limit($__hUser->name, 20, '.') }}</span>
 
                 </div>
                 @endauth
