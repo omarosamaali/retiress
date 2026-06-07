@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Event extends Model
 {
-    public const TYPES = ['فعالية', 'دورة', 'محاضرة', 'مميزات'];
+    public const TYPES = ['فعالية', 'دورة', 'محاضرة', 'خدمات'];
 
     public const AUDIENCE_ALL = 'للجميع';
 
@@ -63,17 +63,19 @@ class Event extends Model
 
     public function getTypeLabelAttribute(): string
     {
+        // إذا كان النوع القديم "مميزات" نعرضه كـ "خدمات" بدون تعديل DB
+        if ($this->type === 'مميزات') return 'خدمات';
         return in_array($this->type, self::TYPES, true) ? $this->type : 'فعالية';
     }
 
     public function getTypeBadgeClassAttribute(): string
     {
         return match ($this->type) {
-            'دورة'    => 'event-type-badge--course',
-            'محاضرة'  => 'event-type-badge--lecture',
-            'فعالية'  => 'event-type-badge--event',
-            'مميزات'  => 'event-type-badge--feature',
-            default   => 'event-type-badge--default',
+            'دورة'              => 'event-type-badge--course',
+            'محاضرة'            => 'event-type-badge--lecture',
+            'فعالية'            => 'event-type-badge--event',
+            'خدمات', 'مميزات'  => 'event-type-badge--feature',
+            default             => 'event-type-badge--default',
         };
     }
 

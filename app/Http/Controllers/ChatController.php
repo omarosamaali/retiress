@@ -21,19 +21,19 @@ class ChatController extends Controller
             return redirect()->route('admin.chat');
         }
 
-        // الأعضاء يتواصلون مع مدخلي البيانات فقط
+        // الأعضاء يتواصلون مع الموظفين — نختار أول موظف تلقائياً
         $contacts = User::where('role', 'مدخل بيانات')
             ->orderBy('name')
             ->get();
 
-        // إذا كان يوجد مدخل بيانات واحد فقط، افتح المحادثة تلقائياً
-        $autoContact = $contacts->count() === 1 ? $contacts->first() : null;
+        // دائماً اختر أول موظف تلقائياً (لا حاجة لاختيار يدوي)
+        $autoContact = $contacts->first();
 
         return view('members.chat.index', [
-            'contacts' => $contacts,
+            'contacts'    => $contacts,
             'autoContact' => $autoContact,
-            'chatMode' => 'member',
-            'pageTitle' => __('app.chat_with_administration'),
+            'chatMode'    => 'member',
+            'pageTitle'   => __('app.chat_with_administration'),
         ]);
     }
 

@@ -11,9 +11,19 @@ class PublicEventController extends Controller
 {
     public function index(): View
     {
-        $events = Event::publiclyListed()->latest()->get();
+        $user = Auth::user();
 
-        return view('members.events.all-events', compact('events'));
+        // إعلانات فعّالة (غير منتهية)
+        $activeEvents = Event::publiclyListed($user)->latest()->get();
+
+        // إعلانات منتهية — مرئية للزوار لكن بدون رابط تفاصيل
+        $expiredEvents = Event::published()
+            ->visibleToAudience($user)
+            ->where('ends_at', '<', now())
+            ->latest()
+            ->get();
+
+        return view('members.events.all-events', compact('activeEvents', 'expiredEvents'));
     }
 
     public function show(Request $request, int $id): View

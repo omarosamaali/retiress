@@ -64,8 +64,8 @@
                     <th>اسم المشترك</th>
                     <th>البريد</th>
                     <th>نوع المعاملة</th>
-                    <th>حالة الاشتراك</th>
                     <th>الإيصال</th>
+                    <th>حالة الاشتراك</th>
                     <th>إجراءات</th>
                 </tr>
             </thead>
@@ -80,11 +80,18 @@
                         </td>
                         <td>{{ $transaction->user?->name ?? '—' }}</td>
                         <td style="direction: ltr; text-align: right;">{{ $transaction->user?->email ?? '—' }}</td>
-                        <td><span class="badge bg-info">{{ $transaction->type_label }}</span></td>
                         <td>
-                            <span class="badge {{ $transaction->status_badge_class }}">
-                                {{ $transaction->status_label }}
-                            </span>
+                            @php
+                                $__evType = $transaction->event?->type_label ?? '—';
+                                $__evBadge = match($transaction->event?->type) {
+                                    'دورة'    => 'bg-primary',
+                                    'محاضرة'  => 'bg-warning text-dark',
+                                    'فعالية'  => 'bg-success',
+                                    'خدمات','مميزات' => 'bg-danger',
+                                    default   => 'bg-secondary',
+                                };
+                            @endphp
+                            <span class="badge {{ $__evBadge }}">{{ $__evType }}</span>
                         </td>
                         <td>
                             @if ($transaction->receipt_image)
@@ -96,32 +103,49 @@
                                 <span class="text-muted small">{{ __('app.no_receipt_yet') }}</span>
                             @endif
                         </td>
-                        <td style="min-width: 180px;">
-                            @if ($transaction->status === 'pending')
-                                <form action="{{ route('admin.transactions.approve', $transaction) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-primary btn-sm">{{ __('app.approve') }}</button>
-                                </form>
-                            @elseif ($transaction->status === 'waiting_for_payment')
-                                <span class="badge bg-warning text-dark">بانتظار رفع الإيصال</span>
-                            @elseif ($transaction->status === 'waiting_for_activation')
-                                <form action="{{ route('admin.transactions.activate', $transaction) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-sm">{{ __('app.activate') }}</button>
-                                </form>
-                            @elseif ($transaction->status === 'active')
-                                <form action="{{ route('admin.transactions.deactivate', $transaction) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-warning btn-sm">{{ __('app.deactivate') }}</button>
-                                </form>
-                            @elseif ($transaction->status === 'deactivated')
-                                <form action="{{ route('admin.transactions.activate', $transaction) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-success btn-sm">{{ __('app.activate') }}</button>
-                                </form>
-                            @else
-                                <span class="text-muted small">—</span>
-                            @endif
+                        <td>
+                            <span class="badge {{ $transaction->status_badge_class }}">
+                                {{ $transaction->status_label }}
+                            </span>
+                        </td>
+                        <td style="min-width: 200px;">
+                            <div class="d-flex flex-wrap gap-1">
+                                {{-- زر الإجراء الرئيسي --}}
+                                @if ($transaction->status === 'pending')
+                                    <form action="{{ route('admin.transactions.approve', $transaction) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary btn-sm">موافقة</button>
+                                    </form>
+                                @elseif ($transaction->status === 'waiting_for_payment')
+                                    <span class="badge bg-warning text-dark" style="line-height:1.8;">بانتظار رفع الإيصال</span>
+                                @elseif ($transaction->status === 'waiting_for_activation')
+                                    <form action="{{ route('admin.transactions.activate', $transaction) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">تفعيل</button>
+                                    </form>
+                                @elseif ($transaction->status === 'active')
+                                    <form action="{{ route('admin.transactions.deactivate', $transaction) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning btn-sm">إلغاء التفعيل</button>
+                                    </form>
+                                @elseif ($transaction->status === 'deactivated')
+                                    <form action="{{ route('admin.transactions.activate', $transaction) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">تفعيل</button>
+                                    </form>
+                                @endif
+
+                                {{-- زر الرفض — يظهر لأي حالة غير مرفوض/منتهي --}}
+                                @if (!in_array($transaction->status, ['rejected', 'expired', 'deactivated']))
+                                    <form action="{{ route('admin.transactions.reject', $transaction) }}" method="POST" class="d-inline"
+                                          onsubmit="return confirm('هل تريد رفض هذا الطلب؟')">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger btn-sm">رفض</button>
+                                    </form>
+                                @else
+                                    <span class="badge bg-danger" style="line-height:1.8;">{{ $transaction->status_label }}</span>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                 @empty

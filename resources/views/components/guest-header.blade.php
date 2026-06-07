@@ -106,15 +106,6 @@
                     </form>
                     @endauth
 
-                    <div class="app">
-                        <span>{{ __('app.download_app') }}</span><br />
-                        <a href="{{ $settings?->android_url }}" class="container-btns-sidebar">Android
-                            <img style="height: 27px;" src="{{ asset('assets/images/app.png') }}" alt="">
-                        </a>
-                        <a href="{{ $settings?->ios_url }}" class="container-btns-sidebar">IOS
-                            <img style="height: 27px;" src="{{ asset('assets/images/app.png') }}" alt="">
-                        </a>
-                    </div>
                     <div class="lang-II mobile-btn">
                         <a class="container-btns-sidebar" href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" title="{{ app()->getLocale() == 'ar' ? __('app.switch_to_english') : __('app.switch_to_arabic') }}">
                             <img style="height: 27px;" src="{{ asset('assets/images/en.png') }}" alt="{{ app()->getLocale() == 'ar' ? 'English' : 'العربية' }}">

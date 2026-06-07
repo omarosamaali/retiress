@@ -87,6 +87,7 @@ Route::get('/members/committee-members/{id}', function ($id) {
 
 Route::middleware('auth')->group(function () {
     Route::get('/members/panel', [\App\Http\Controllers\MemberPanelController::class, 'index'])->name('members.panel');
+    Route::get('/members/panel/invoices', [\App\Http\Controllers\MemberPanelController::class, 'invoices'])->name('members.panel.invoices');
     Route::get('/members/notifications', [\App\Http\Controllers\MemberNotificationController::class, 'index'])->name('members.notifications.index');
     Route::post('/members/notifications/{userNotification}/dismiss', [\App\Http\Controllers\MemberNotificationController::class, 'dismiss'])->name('members.notifications.dismiss');
     Route::post('/members/notifications/{userNotification}/read', [\App\Http\Controllers\MemberNotificationController::class, 'read'])->name('members.notifications.read');

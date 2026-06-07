@@ -561,6 +561,17 @@
                     <p class="text-jli">{{ __('app.events_description') }}</p>
                 </div>
                 <div class="col-bpd">
+                    @if ($events->isEmpty())
+                        <div style="display:flex;align-items:center;justify-content:center;min-height:200px;flex-direction:column;gap:16px;color:rgba(255,255,255,.8);padding:30px 0;">
+                            <i class="fa-regular fa-calendar-xmark" style="font-size:2.5rem;"></i>
+                            <span style="font-size:1rem;font-weight:600;">لا تتوفر إعلانات فعّالة حالياً</span>
+                            <a href="{{ route('events.all-events') }}"
+                               style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.5);border-radius:24px;padding:8px 22px;font-size:.88rem;font-weight:700;text-decoration:none;transition:background .2s;"
+                               onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">
+                                <i class="fa-solid fa-list"></i> عرض الجميع
+                            </a>
+                        </div>
+                    @else
                     <div class="swiper eventsSwiper">
                         <div class="swiper-wrapper">
                             @foreach ($events as $event)
@@ -593,6 +604,7 @@
                         <i class="fas fa-eye"></i>
                         <span>{{ __('app.view_more') }}</span>
                     </a>
+                    @endif
                 </div>
             </div>
         </div>

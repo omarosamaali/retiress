@@ -48,15 +48,6 @@
                     </form>
                     @endauth
 
-                    <div class="app">
-                        <span>تحميل التطبيق</span><br />
-                        <a href="{{ $settings?->android_url }}" class="container-btns-sidebar">Android
-                            <img style="height: 27px;" src="{{ asset('assets/images/app.png') }}" alt="">
-                        </a>
-                        <a href="{{ $settings?->ios_url }}" class="container-btns-sidebar" href="index-En.html">IOS
-                            <img style="height: 27px;" src="{{ asset('assets/images/app.png') }}" alt="">
-                        </a>
-                    </div>
                     <div class="lang-II mobile-btn"><a class="container-btns-sidebar" href="index-En.html">
                             English
                             <img style="height: 27px;" src="{{ asset('assets/images/en.png') }}" alt="">
