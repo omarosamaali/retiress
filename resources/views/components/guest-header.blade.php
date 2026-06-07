@@ -158,7 +158,7 @@
                     $__hNotifCount = $headerNotificationCount ?? 0;
                 @endphp
 
-                <div class="member-header-welcome d-flex align-items-center gap-1" style="flex-wrap:nowrap;">
+                <div class="member-header-welcome d-flex align-items-center gap-1" style="display:inline-flex !important; flex-wrap:nowrap;">
 
                     @if ($__hIsMember)
                     <div class="member-header-tools d-flex align-items-center gap-2" style="flex-wrap:nowrap;">
