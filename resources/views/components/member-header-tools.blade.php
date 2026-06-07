@@ -39,13 +39,5 @@
     </a>
     @endif
     
-    {{-- عداد أيام انتهاء العضوية --}}
-    @if ($showDays)
-    <span class="member-days-left member-days-left--{{ $cardStatus }}">
-        <i class="fa-solid fa-clock"></i>
-        {{ __('app.days_left', ['days' => $daysLeft]) }}
-    </span>
-    @endif
-    
 </div>
 @endif
