@@ -116,22 +116,48 @@
                 <div class="mp-card__body">
                     @forelse ($subscribedTransactions as $transaction)
                         @if ($transaction->event)
-                            <a href="{{ route('events.show', $transaction->event) }}" class="mp-event-row">
+                        @php
+                            $__ev = $transaction->event;
+                            $__typeColors = [
+                                'دورة'   => ['bg'=>'#e8f0fe','color'=>'#1a73e8'],
+                                'محاضرة' => ['bg'=>'#fff3e0','color'=>'#f57c00'],
+                                'فعالية' => ['bg'=>'#e8f3ed','color'=>'#016330'],
+                                'مميزات' => ['bg'=>'#fce4ec','color'=>'#c2185b'],
+                            ];
+                            $__tc = $__typeColors[$__ev->type_label] ?? ['bg'=>'#f1f5f9','color'=>'#475569'];
+                        @endphp
+                            <a href="{{ route('events.show', $__ev) }}" class="mp-event-row">
                                 <div class="mp-event-row__icon">
                                     <i class="fa-regular fa-calendar-check"></i>
                                 </div>
                                 <div class="mp-event-row__info">
                                     <div class="mp-event-row__title">
-                                        {{ app()->getLocale() == 'ar' ? $transaction->event->title_ar : $transaction->event->title_en }}
+                                        <span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:5px;vertical-align:middle;background:{{ $__tc['bg'] }};color:{{ $__tc['color'] }};">{{ $__ev->type_label }}</span>
+                                        {{ app()->getLocale() == 'ar' ? $__ev->title_ar : $__ev->title_en }}
                                     </div>
-                                    @if ($transaction->event->display_starts_at)
-                                        <div class="mp-event-row__date">
-                                            <i class="fa-regular fa-clock"></i>
-                                            {{ $transaction->event->display_starts_at->translatedFormat('d M Y') }}
-                                        </div>
-                                    @endif
+                                    <div class="mp-event-row__meta">
+                                        @if ($__ev->display_starts_at)
+                                            <span><i class="fa-regular fa-clock"></i> {{ $__ev->display_starts_at->format('d/m/Y — H:i') }}</span>
+                                        @endif
+                                        @if ($__ev->display_ends_at)
+                                            <span style="color:#e57373;"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $__ev->display_ends_at->format('d/m/Y') }}</span>
+                                        @endif
+                                    </div>
+                                    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;">
+                                        <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;background:{{ $__ev->isFree() ? '#e8f3ed' : '#fff3e0' }};color:{{ $__ev->isFree() ? '#016330' : '#b45309' }};">
+                                            <i class="fa-solid fa-tag"></i>
+                                            @if ($__ev->isFree()) {{ __('app.free_event') }}
+                                            @else {{ number_format((float) $__ev->price, 0) }} <img src="{{ asset('assets/images/drhm.svg') }}" style="height:13px;width:auto;vertical-align:middle;margin-right:1px;">
+                                            @endif
+                                        </span>
+                                        <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;background:{{ $__ev->isForMembersOnly() ? '#ede9fe' : '#f0f9ff' }};color:{{ $__ev->isForMembersOnly() ? '#6d28d9' : '#0369a1' }};">
+                                            <i class="fa-solid fa-{{ $__ev->isForMembersOnly() ? 'id-card' : 'users' }}"></i>
+                                            {{ $__ev->isForMembersOnly() ? 'للأعضاء فقط' : 'للجميع' }}
+                                        </span>
+                                        <span class="mp-badge mp-badge--{{ $transaction->status }}" style="font-size:11px;padding:3px 8px;">{{ $transaction->status_label }}</span>
+                                    </div>
                                 </div>
-                                <span class="mp-badge mp-badge--{{ $transaction->status }}">{{ $transaction->status_label }}</span>
+                                <i class="fa-solid fa-chevron-left mp-event-row__arrow"></i>
                             </a>
                         @endif
                     @empty
@@ -171,17 +197,17 @@
                                 </div>
                                 <div class="mp-event-row__meta">
                                     @if ($event->display_starts_at)
-                                        <span><i class="fa-regular fa-clock"></i> {{ $event->display_starts_at->translatedFormat('d M Y') }}</span>
+                                        <span><i class="fa-regular fa-clock"></i> {{ $event->display_starts_at->format('d/m/Y — H:i') }}</span>
                                     @endif
                                     @if ($event->display_ends_at)
-                                        <span style="color:#e57373;"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $event->display_ends_at->translatedFormat('d M Y') }}</span>
+                                        <span style="color:#e57373;"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $event->display_ends_at->format('d/m/Y') }}</span>
                                     @endif
                                 </div>
                                 <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;">
                                     <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;background:{{ $event->isFree() ? '#e8f3ed' : '#fff3e0' }};color:{{ $event->isFree() ? '#016330' : '#b45309' }};">
                                         <i class="fa-solid fa-tag"></i>
                                         @if ($event->isFree()) {{ __('app.free_event') }}
-                                        @else {{ number_format((float) $event->price, 0) }} {{ __('app.aed') }}
+                                        @else {{ number_format((float) $event->price, 0) }} <img src="{{ asset('assets/images/drhm.svg') }}" style="height:13px;width:auto;vertical-align:middle;margin-right:1px;">
                                         @endif
                                     </span>
                                     <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;background:{{ $event->isForMembersOnly() ? '#ede9fe' : '#f0f9ff' }};color:{{ $event->isForMembersOnly() ? '#6d28d9' : '#0369a1' }};">
