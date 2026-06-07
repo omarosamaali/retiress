@@ -223,4 +223,120 @@
             });
         });
     });
+
+    // ── Toast container ─────────────────────────────────────────────────────
+    var toastContainer = document.createElement('div');
+    toastContainer.id = 'notif-toast-container';
+    toastContainer.style.cssText = [
+        'position:fixed', 'top:90px', 'right:20px', 'z-index:99999',
+        'display:flex', 'flex-direction:column', 'gap:10px',
+        'max-width:320px', 'width:calc(100vw - 40px)', 'pointer-events:none',
+    ].join(';');
+    document.body.appendChild(toastContainer);
+
+    function showToast(title, body, id) {
+        var toast = document.createElement('div');
+        toast.style.cssText = [
+            'background:#fff', 'border-radius:12px',
+            'box-shadow:0 4px 24px rgba(0,0,0,.18)', 'padding:14px 16px',
+            'direction:rtl', 'text-align:right', 'pointer-events:all',
+            'border-right:4px solid #b68a35',
+            'animation:toastIn .3s ease',
+            'font-family:"Cairo",sans-serif',
+            'position:relative', 'overflow:hidden',
+        ].join(';');
+
+        toast.innerHTML =
+            '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">' +
+                '<div style="flex:1;min-width:0;">' +
+                    '<div style="font-weight:700;font-size:.88rem;color:#1e293b;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+                        '<i class="fa-solid fa-bell" style="color:#b68a35;margin-left:5px;font-size:.8rem;"></i>' + (title || 'إشعار جديد') +
+                    '</div>' +
+                    (body ? '<div style="font-size:.78rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + body + '</div>' : '') +
+                '</div>' +
+                '<button style="flex-shrink:0;background:none;border:none;cursor:pointer;color:#94a3b8;font-size:.85rem;padding:0 0 0 4px;line-height:1;" class="toast-close-btn"><i class="fa-solid fa-xmark"></i></button>' +
+            '</div>' +
+            '<div class="toast-progress" style="position:absolute;bottom:0;right:0;left:0;height:3px;background:#b68a35;transform-origin:right;animation:toastProgress 5s linear forwards;"></div>';
+
+        toastContainer.prepend(toast);
+
+        toast.querySelector('.toast-close-btn').addEventListener('click', function () {
+            dismissToast(toast);
+        });
+
+        var timer = setTimeout(function () { dismissToast(toast); }, 5000);
+        toast.dataset.timer = timer;
+    }
+
+    function dismissToast(toast) {
+        clearTimeout(parseInt(toast.dataset.timer));
+        toast.style.animation = 'toastOut .25s ease forwards';
+        setTimeout(function () { toast.remove(); }, 260);
+    }
+
+    // إضافة CSS للأنيميشن
+    if (!document.getElementById('toast-keyframes')) {
+        var style = document.createElement('style');
+        style.id = 'toast-keyframes';
+        style.textContent =
+            '@keyframes toastIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:translateX(0)}}' +
+            '@keyframes toastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(60px)}}' +
+            '@keyframes toastProgress{from{transform:scaleX(1)}to{transform:scaleX(0)}}';
+        document.head.appendChild(style);
+    }
+
+    // ── Polling لإشعارات جديدة كل 20 ثانية ──────────────────────────────────
+    var notifPollUrl = '/members/notifications';
+    var lastSeenKey  = 'notif_last_seen_id';
+
+    function getLastSeen() {
+        return parseInt(localStorage.getItem(lastSeenKey) || '0');
+    }
+
+    function setLastSeen(id) {
+        localStorage.setItem(lastSeenKey, String(id));
+    }
+
+    function pollNotifications() {
+        fetch(notifPollUrl, {
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            credentials: 'same-origin',
+        })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+            if (!data || !Array.isArray(data.notifications)) return;
+
+            var lastSeen = getLastSeen();
+            var newItems = data.notifications.filter(function (n) {
+                return n.id > lastSeen && !n.read_at;
+            });
+
+            // أعلى ID جديد
+            var maxId = data.notifications.reduce(function (m, n) { return Math.max(m, n.id); }, lastSeen);
+            if (maxId > lastSeen) setLastSeen(maxId);
+
+            // عرض toast لكل إشعار جديد (بحد أقصى 3)
+            newItems.slice(0, 3).forEach(function (n) {
+                showToast(n.title, n.body, n.id);
+            });
+
+            // تحديث badge العداد في الهيدر
+            var badge = document.querySelector('.member-notifications-badge');
+            if (data.total_badge > 0) {
+                if (badge) {
+                    badge.textContent = data.total_badge > 99 ? '99+' : data.total_badge;
+                }
+            } else if (badge) {
+                badge.remove();
+            }
+        })
+        .catch(function () { /* silent fail */ });
+    }
+
+    // أول تشغيل بعد 3 ثواني من تحميل الصفحة، ثم كل 20 ثانية
+    setTimeout(function () {
+        pollNotifications();
+        setInterval(pollNotifications, 20000);
+    }, 3000);
+
 })();

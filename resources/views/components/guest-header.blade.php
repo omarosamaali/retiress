@@ -201,12 +201,12 @@
 
                     {{-- زر الخروج — على شمال الاسم --}}
                     <span>{{ __('app.welcome') }}.. {{ \Illuminate\Support\Str::limit($__hUser->name, 30, '.') }}</span>
-                    <form action="{{ route('members.logout') }}" method="POST" style="margin:0;display:inline-flex;align-items:center;">
+                    <form action="{{ route('members.logout') }}" method="POST" style="margin:0 !important;padding:0 !important;display:inline-flex !important;align-items:center !important;background:none !important;border:none !important;">
                         @csrf
-                        <button type="submit"
-                            style="display:inline-flex;align-items:center;gap:4px;background:transparent;border:1.5px solid rgba(180,60,60,.45);color:#c0392b;border-radius:6px;padding:3px 9px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:inherit;line-height:1.4;white-space:nowrap;"
-                            onmouseover="this.style.background='#c0392b';this.style.color='#fff';this.style.borderColor='#c0392b'"
-                            onmouseout="this.style.background='transparent';this.style.color='#c0392b';this.style.borderColor='rgba(180,60,60,.45)'">
+                        <button type="submit" class="header-logout-btn"
+                            style="display:inline-flex !important;align-items:center !important;gap:4px !important;background:transparent !important;border:1.5px solid rgba(180,60,60,.45) !important;color:#c0392b !important;border-radius:6px !important;padding:3px 9px !important;font-size:.78rem !important;font-weight:700 !important;cursor:pointer !important;font-family:inherit !important;line-height:1.4 !important;white-space:nowrap !important;text-decoration:none !important;box-shadow:none !important;outline:none !important;transition:background .18s,color .18s,border-color .18s !important;"
+                            onmouseover="this.style.setProperty('background','#c0392b','important');this.style.setProperty('color','#fff','important');this.style.setProperty('border-color','#c0392b','important')"
+                            onmouseout="this.style.setProperty('background','transparent','important');this.style.setProperty('color','#c0392b','important');this.style.setProperty('border-color','rgba(180,60,60,.45)','important')">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i> {{ __('app.logout') }}
                         </button>
                     </form>

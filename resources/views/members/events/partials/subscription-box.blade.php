@@ -1,110 +1,167 @@
 @php
     $event = $events;
+
+    $typeBadgeColor = match($event->type) {
+        'دورة'    => ['bg'=>'#dbeafe','color'=>'#1d4ed8'],
+        'محاضرة'  => ['bg'=>'#fef9c3','color'=>'#854d0e'],
+        'خدمات','مميزات' => ['bg'=>'#fce7f3','color'=>'#9d174d'],
+        default   => ['bg'=>'#dcfce7','color'=>'#166534'],
+    };
+    $audienceBadge = $event->isForMembersOnly()
+        ? ['bg'=>'#e0f2fe','color'=>'#0369a1']
+        : ['bg'=>'#f0fdf4','color'=>'#166534'];
 @endphp
 
-<div class="event-subscription-box mb-3">
-    <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-        <span class="text-muted small">{{ __('app.announcement_audience') }}:</span>
-        <span class="badge {{ $event->isForMembersOnly() ? 'bg-info' : 'bg-dark' }}">
-            {{ $event->audience_label }}
-        </span>
-        <span class="badge bg-secondary">{{ $event->type_label }}</span>
+{{-- شريط النوع والفئة --}}
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:18px;">
+    <span style="background:{{ $typeBadgeColor['bg'] }};color:{{ $typeBadgeColor['color'] }};padding:3px 12px;border-radius:20px;font-size:.78rem;font-weight:700;">
+        <i class="fa-solid fa-tag" style="margin-left:4px;"></i>{{ $event->type_label }}
+    </span>
+    <span style="background:{{ $audienceBadge['bg'] }};color:{{ $audienceBadge['color'] }};padding:3px 12px;border-radius:20px;font-size:.78rem;font-weight:700;">
+        <i class="fa-solid fa-users" style="margin-left:4px;"></i>{{ $event->audience_label }}
+    </span>
+</div>
+
+{{-- رسالة نجاح الاشتراك --}}
+@if (session('success'))
+<div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:16px 18px;margin-bottom:16px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <i class="fa-solid fa-circle-check" style="color:#16a34a;font-size:1.1rem;"></i>
+        <span style="font-weight:700;color:#15803d;font-size:.95rem;">{{ session('success') }}</span>
+    </div>
+    <div style="font-size:.82rem;color:#166534;margin-bottom:4px;">{{ __('app.event_subscription_success_detail') }}</div>
+    @if (session('subscription_registered_at'))
+    <div style="font-size:.82rem;color:#374151;">
+        <i class="fa-regular fa-calendar" style="margin-left:4px;color:#16a34a;"></i>
+        {{ __('app.subscription_date') }}: <strong>{{ session('subscription_registered_at') }}</strong>
+    </div>
+    @endif
+    @if (session('subscription_status_label'))
+    <div style="font-size:.82rem;color:#374151;margin-top:2px;">
+        <i class="fa-solid fa-circle-dot" style="margin-left:4px;color:#16a34a;"></i>
+        {{ __('app.subscription_status') }}: <strong>{{ session('subscription_status_label') }}</strong>
+    </div>
+    @endif
+    <a href="{{ route('members.record') }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:.82rem;color:#16a34a;font-weight:600;text-decoration:none;">
+        <i class="fa-solid fa-list"></i> {{ __('app.view_transaction_record') }}
+    </a>
+</div>
+@endif
+
+{{-- رسالة خطأ --}}
+@if (session('error'))
+<div style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:14px 16px;margin-bottom:16px;color:#b91c1c;font-size:.88rem;">
+    <i class="fa-solid fa-circle-exclamation" style="margin-left:6px;"></i>{{ session('error') }}
+</div>
+@endif
+
+{{-- غير مسجل --}}
+@guest
+<div style="background:#fffbeb;border:1.5px dashed #fcd34d;border-radius:10px;padding:18px;text-align:center;margin-bottom:8px;">
+    <i class="fa-solid fa-lock" style="font-size:1.5rem;color:#d97706;margin-bottom:8px;display:block;"></i>
+    <p style="margin:0 0 10px;font-size:.9rem;color:#92400e;font-weight:600;">{{ __('app.request_to_join_please') }}</p>
+    <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">
+        <a href="{{ route('login') }}" style="background:#b68a35;color:#fff;padding:7px 20px;border-radius:8px;font-size:.85rem;font-weight:700;text-decoration:none;">
+            <i class="fa-solid fa-right-to-bracket" style="margin-left:5px;"></i>{{ __('app.login') }}
+        </a>
+        <a href="{{ route('members.register') }}" style="background:#f3f4f6;color:#374151;padding:7px 20px;border-radius:8px;font-size:.85rem;font-weight:700;text-decoration:none;border:1px solid #d1d5db;">
+            {{ __('app.create_new_account') }}
+        </a>
+    </div>
+</div>
+@endguest
+
+@auth
+    {{-- بيانات اشتراك قائم --}}
+    @if ($userSubscription)
+    @php
+        $isExpired = $userSubscription->isExpiredSubscription();
+        $cardBg    = $isExpired ? '#fffbeb' : '#f0f9ff';
+        $cardBorder = $isExpired ? '#fcd34d' : '#7dd3fc';
+        $iconColor  = $isExpired ? '#d97706' : '#0284c7';
+    @endphp
+    <div style="background:{{ $cardBg }};border:1.5px solid {{ $cardBorder }};border-radius:12px;padding:18px 20px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;border-bottom:1px solid {{ $cardBorder }};padding-bottom:10px;">
+            <i class="fa-solid fa-id-card" style="color:{{ $iconColor }};font-size:1.1rem;"></i>
+            <span style="font-weight:700;font-size:.95rem;color:#1e293b;">{{ __('app.your_subscription_for_this_event') }}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:.87rem;color:#374151;">
+                <i class="fa-regular fa-calendar" style="color:{{ $iconColor }};width:16px;text-align:center;"></i>
+                <span style="color:#6b7280;">{{ __('app.subscription_date') }}:</span>
+                <strong>{{ \Carbon\Carbon::parse($userSubscription->subscribed_at)->translatedFormat('d/m/Y - h:i A') }}</strong>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:.87rem;color:#374151;">
+                <i class="fa-solid fa-circle-dot" style="color:{{ $iconColor }};width:16px;text-align:center;"></i>
+                <span style="color:#6b7280;">{{ __('app.subscription_status') }}:</span>
+                <span style="background:{{ $isExpired ? '#fef3c7' : '#dbeafe' }};color:{{ $isExpired ? '#92400e' : '#1d4ed8' }};padding:2px 10px;border-radius:20px;font-size:.78rem;font-weight:700;">
+                    {{ $userSubscription->status_label }}
+                </span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:.87rem;color:#374151;">
+                <i class="fa-solid fa-users" style="color:{{ $iconColor }};width:16px;text-align:center;"></i>
+                <span style="color:#6b7280;">{{ __('app.announcement_audience') }}:</span>
+                <strong>{{ $event->audience_label }}</strong>
+            </div>
+        </div>
+        @if ($isExpired)
+        <p style="margin:12px 0 0;font-size:.8rem;color:#92400e;background:#fef9c3;border-radius:6px;padding:6px 10px;">
+            <i class="fa-solid fa-rotate-right" style="margin-left:4px;"></i>{{ __('app.subscription_expired_can_resubscribe') }}
+        </p>
+        @endif
+        <div style="margin-top:14px;border-top:1px solid {{ $cardBorder }};padding-top:10px;">
+            <a href="{{ route('members.record') }}" style="display:inline-flex;align-items:center;gap:6px;font-size:.83rem;font-weight:600;color:{{ $iconColor }};text-decoration:none;">
+                <i class="fa-solid fa-list"></i>{{ __('app.view_transaction_record') }}
+            </a>
+        </div>
+    </div>
+    @endif
+
+    {{-- زر الاشتراك --}}
+    @if ($canSubscribe ?? false)
+    <div style="background:#fffbeb;border:1.5px dashed #fcd34d;border-radius:12px;padding:18px 20px;text-align:center;">
+        <p style="margin:0 0 6px;font-size:.83rem;color:#92400e;">{{ __('app.event_subscribe_active_membership_hint') }}</p>
+        <p style="margin:0 0 14px;font-size:.83rem;color:#92400e;">
+            @if ($event->isForMembersOnly())
+                {{ __('app.event_subscribe_members_only_hint') }}
+            @else
+                {{ __('app.event_subscribe_public_hint') }}
+            @endif
+        </p>
+        <form action="{{ route('events.subscribe', $event->id) }}" method="POST" style="display:inline;">
+            @csrf
+            <input type="hidden" name="type" value="event">
+            <button type="submit" style="background:#b68a35;color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:.93rem;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;display:inline-flex;align-items:center;gap:7px;transition:background .18s;"
+                onmouseover="this.style.background='#8a6520'" onmouseout="this.style.background='#b68a35'">
+                <i class="fa-solid fa-circle-plus"></i> {{ __('app.subscribe_to_service') }}
+            </button>
+        </form>
     </div>
 
-    @if (session('success'))
-        <div class="alert alert-success" role="alert">
-            <strong>{{ session('success') }}</strong>
-            <div class="small">{{ __('app.event_subscription_success_detail') }}</div>
-            @if (session('subscription_registered_at'))
-                <div class="mt-2 small">
-                    {{ __('app.subscription_date') }}:
-                    <strong>{{ session('subscription_registered_at') }}</strong>
+    {{-- سبب الحجب --}}
+    @elseif (! ($userSubscription && $userSubscription->isOpenSubscription()) && ($subscribeBlockReason ?? null))
+    <div style="background:#fff7ed;border:1.5px solid #fdba74;border-radius:10px;padding:14px 16px;">
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+            <i class="fa-solid fa-triangle-exclamation" style="color:#ea580c;margin-top:2px;"></i>
+            <div>
+                <div style="font-size:.88rem;color:#9a3412;font-weight:600;margin-bottom:4px;">
+                    {{ __('app.event_subscribe_blocked_'.$subscribeBlockReason) }}
                 </div>
-            @endif
-            @if (session('subscription_status_label'))
-                <div class="small">
-                    {{ __('app.subscription_status') }}:
-                    <strong>{{ session('subscription_status_label') }}</strong>
-                </div>
-            @endif
-            <div class="small mt-1">
-                {{ __('app.announcement_audience') }}: <strong>{{ $event->audience_label }}</strong>
-            </div>
-            <div class="mt-2">
-                <a href="{{ route('members.record') }}" class="alert-link">{{ __('app.view_transaction_record') }}</a>
-            </div>
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="alert alert-danger" role="alert">{{ session('error') }}</div>
-    @endif
-
-    @guest
-        <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h">
-            {{ __('app.request_to_join_please') }}
-            <a href="{{ route('login') }}">{{ __('app.login') }}</a>
-            {{ __('app.or') }}
-            <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
-        </div>
-    @endguest
-
-    @auth
-        @if ($userSubscription)
-            <div class="alert {{ $userSubscription->isExpiredSubscription() ? 'alert-warning' : 'alert-info' }}" role="alert">
-                <strong>{{ __('app.your_subscription_for_this_event') }}</strong>
-                <ul class="mb-0 mt-2 ps-3">
-                    <li>{{ __('app.subscription_date') }}:
-                        <strong>{{ \Carbon\Carbon::parse($userSubscription->subscribed_at)->translatedFormat('d/m/Y - h:i A') }}</strong>
-                    </li>
-                    <li>{{ __('app.subscription_status') }}:
-                        <span class="badge {{ $userSubscription->status_badge_class }}">{{ $userSubscription->status_label }}</span>
-                    </li>
-                    <li>{{ __('app.announcement_audience') }}: <strong>{{ $event->audience_label }}</strong></li>
-                </ul>
-                @if ($userSubscription->isExpiredSubscription())
-                    <p class="mb-0 mt-2 small">{{ __('app.subscription_expired_can_resubscribe') }}</p>
-                @endif
-                <div class="mt-2">
-                    <a href="{{ route('members.record') }}">{{ __('app.view_transaction_record') }}</a>
-                </div>
-            </div>
-        @endif
-
-        @if ($canSubscribe ?? false)
-            <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h">
-                <p class="mb-2 small">{{ __('app.event_subscribe_active_membership_hint') }}</p>
-                @if ($event->isForMembersOnly())
-                    <p class="mb-2 small">{{ __('app.event_subscribe_members_only_hint') }}</p>
-                @else
-                    <p class="mb-2 small">{{ __('app.event_subscribe_public_hint') }}</p>
-                @endif
-                {{ __('app.subscribe_to_service') }}
-                <form action="{{ route('events.subscribe', $event->id) }}" method="POST" style="display: inline;">
-                    @csrf
-                    <input type="hidden" name="type" value="event">
-                    <button type="submit" class="text-7zo" style="font-size: 16px; font-weight: bold; color: #b68a35 !important; border: none; background: none; font-family: 'Cairo', sans-serif;">
-                        {{ __('app.click_here') }}
-                    </button>
-                </form>
-            </div>
-        @elseif (! ($userSubscription && $userSubscription->isOpenSubscription()) && ($subscribeBlockReason ?? null))
-            <div class="alert alert-warning" role="alert">
-                {{ __('app.event_subscribe_blocked_'.$subscribeBlockReason) }}
                 @if ($subscribeBlockReason === 'membership_inactive' && auth()->user()->memberApplication)
-                    <p class="mb-0 mt-2 small">
-                        {{ __('app.subscription_status') }}:
-                        <span class="badge {{ auth()->user()->membership_status_badge_class }}">
-                            {{ auth()->user()->membership_status_text }}
-                        </span>
-                    </p>
+                <div style="font-size:.8rem;color:#7c2d12;margin-top:4px;">
+                    {{ __('app.subscription_status') }}:
+                    <span style="background:#fee2e2;color:#991b1b;padding:2px 8px;border-radius:10px;font-size:.76rem;font-weight:700;">
+                        {{ auth()->user()->membership_status_text }}
+                    </span>
+                </div>
                 @endif
-                @if (in_array($subscribeBlockReason, ['members_only_audience', 'membership_required', 'membership_inactive', 'member_role_required'], true))
-                    <div class="mt-2">
-                        <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
-                    </div>
+                @if (in_array($subscribeBlockReason, ['members_only_audience','membership_required','membership_inactive','member_role_required'], true))
+                <a href="{{ route('members.register') }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:.82rem;color:#ea580c;font-weight:600;text-decoration:none;">
+                    <i class="fa-solid fa-arrow-left"></i>{{ __('app.create_new_account') }}
+                </a>
                 @endif
             </div>
-        @endif
-    @endauth
-</div>
+        </div>
+    </div>
+    @endif
+@endauth
