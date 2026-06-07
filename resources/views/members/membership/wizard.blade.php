@@ -34,7 +34,8 @@
         .mwiz-row {
             display: grid;
             gap: 14px;
-            margin-bottom: 0;
+            margin-bottom: 16px;
+            align-items: start;
         }
         .mwiz-row--2 { grid-template-columns: 1fr 1fr; }
         .mwiz-row--3 { grid-template-columns: 1fr 1fr 1fr; }
@@ -42,6 +43,10 @@
         @media(max-width: 640px) {
             .mwiz-row--2, .mwiz-row--3 { grid-template-columns: 1fr; }
         }
+        .mwiz-req { color: #dc2626; }
+        .form-control, .form-select { display: block; width: 100%; box-sizing: border-box; }
+        /* Required for wizard step toggling (replaces Bootstrap d-none) */
+        .d-none { display: none !important; }
 
         /* ── Type toggle ── */
         .mwiz-type-toggle {
