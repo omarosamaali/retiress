@@ -18,14 +18,22 @@ class MemberPanelController extends Controller
 
         abort_unless($user->isMemberRole(), 403);
 
-        $subscribedTransactions = Transaction::with('event')
+        $allMyTransactions = Transaction::with('event')
             ->where('user_id', $user->id)
             ->whereNotNull('event_id')
-            ->whereIn('status', Transaction::OPEN_STATUSES)
             ->orderByDesc('subscribed_at')
             ->get();
 
-        $subscribedEventIds = $subscribedTransactions->pluck('event_id')->filter()->unique();
+        // فعال فقط
+        $subscribedTransactions = $allMyTransactions->whereIn('status', ['active']);
+
+        // قيد الانتظار
+        $pendingTransactions = $allMyTransactions->whereIn('status', ['pending', 'waiting_for_payment', 'waiting_for_activation']);
+
+        // مرفوض / منتهي
+        $rejectedTransactions = $allMyTransactions->whereIn('status', ['rejected', 'expired', 'deactivated']);
+
+        $subscribedEventIds = $allMyTransactions->pluck('event_id')->filter()->unique();
 
         $availableEvents = Event::publiclyListed($user)
             ->whereNotIn('id', $subscribedEventIds)
@@ -51,6 +59,8 @@ class MemberPanelController extends Controller
 
         return view('members.panel.index', compact(
             'subscribedTransactions',
+            'pendingTransactions',
+            'rejectedTransactions',
             'availableEvents',
             'recentMessages',
             'panelNotifications'
