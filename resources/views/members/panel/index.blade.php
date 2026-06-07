@@ -137,7 +137,7 @@
                                     </div>
                                     <div class="mp-event-row__meta">
                                         @if ($__ev->display_starts_at)
-                                            <span><i class="fa-regular fa-clock"></i> {{ $__ev->display_starts_at->format('d/m/Y — H:i') }}</span>
+                                            <span><i class="fa-regular fa-clock"></i> {{ $__ev->display_starts_at->format('d/m/Y — h:i A') }}</span>
                                         @endif
                                         @if ($__ev->display_ends_at)
                                             <span style="color:#e57373;"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $__ev->display_ends_at->format('d/m/Y') }}</span>
@@ -197,7 +197,7 @@
                                 </div>
                                 <div class="mp-event-row__meta">
                                     @if ($event->display_starts_at)
-                                        <span><i class="fa-regular fa-clock"></i> {{ $event->display_starts_at->format('d/m/Y — H:i') }}</span>
+                                        <span><i class="fa-regular fa-clock"></i> {{ $event->display_starts_at->format('d/m/Y — h:i A') }}</span>
                                     @endif
                                     @if ($event->display_ends_at)
                                         <span style="color:#e57373;"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $event->display_ends_at->format('d/m/Y') }}</span>
