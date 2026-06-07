@@ -97,15 +97,6 @@
                         @endauth
                     </li>
 
-                    @auth
-                    <form action="{{ route('members.logout') }}" method="POST" style="margin-top: 1rem;">
-                        @csrf
-                        <button id="submit" style="margin: unset !important; padding-right: 17px;" type="submit">
-                            <i style="padding-left: 5px;" class="fa-solid fa-arrow-right-from-bracket"></i>{{ __('app.logout') }}
-                        </button>
-                    </form>
-                    @endauth
-
                     <div class="lang-II mobile-btn">
                         <a class="container-btns-sidebar" href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" title="{{ app()->getLocale() == 'ar' ? __('app.switch_to_english') : __('app.switch_to_arabic') }}">
                             <img style="height: 27px;" src="{{ asset('assets/images/en.png') }}" alt="{{ app()->getLocale() == 'ar' ? 'English' : 'العربية' }}">
@@ -167,10 +158,10 @@
                     $__hNotifCount = $headerNotificationCount ?? 0;
                 @endphp
 
-                <div class="member-header-welcome d-flex align-items-center flex-wrap gap-1">
+                <div class="member-header-welcome d-flex align-items-center gap-1" style="flex-wrap:nowrap;">
 
                     @if ($__hIsMember)
-                    <div class="member-header-tools d-flex align-items-center gap-2 flex-wrap">
+                    <div class="member-header-tools d-flex align-items-center gap-2" style="flex-wrap:nowrap;">
                         <div class="downapp">
                             <button type="button" class="member-card-trigger" id="openMembershipCard"
                                 title="{{ __('app.membership_card') }}" aria-label="{{ __('app.membership_card') }}">
@@ -210,12 +201,13 @@
 
                     <span>{{ __('app.welcome') }}.. {{ \Illuminate\Support\Str::limit($__hUser->name, 30, '.') }}</span>
 
+                    {{-- زر الخروج — بعد الاسم على الشمال --}}
                     <form action="{{ route('members.logout') }}" method="POST" style="margin:0;">
                         @csrf
                         <button type="submit"
-                            style="display:inline-flex;align-items:center;gap:5px;background:transparent;border:1.5px solid rgba(180,80,80,.5);color:#c0392b;border-radius:6px;padding:3px 10px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:inherit;"
-                            onmouseover="this.style.background='#c0392b';this.style.color='#fff'"
-                            onmouseout="this.style.background='transparent';this.style.color='#c0392b'">
+                            style="display:inline-flex;align-items:center;gap:4px;background:transparent;border:1.5px solid rgba(180,60,60,.45);color:#c0392b;border-radius:6px;padding:3px 9px;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:inherit;line-height:1.4;"
+                            onmouseover="this.style.background='#c0392b';this.style.color='#fff';this.style.borderColor='#c0392b'"
+                            onmouseout="this.style.background='transparent';this.style.color='#c0392b';this.style.borderColor='rgba(180,60,60,.45)'">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i> {{ __('app.logout') }}
                         </button>
                     </form>

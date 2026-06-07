@@ -1486,9 +1486,10 @@ li.menutitle {
 }
 
 .btns div {
-    display: inline-block;
+    display: inline-flex;
     background-size: 17px;
     direction: rtl;
+    gap: 7px;
 }
 
 .btns a {
