@@ -613,7 +613,7 @@ return [
     'unread_messages_count' => ':count رسالة غير مقروءة',
     'tap_to_flip_card' => 'اضغط لقلب البطاقة',
     'membership_number' => 'رقم العضوية',
-    'membership_expiry' => 'تاريخ نهاية العضوية',
+    'membership_expiry' => 'تاريخ الانتهاء',
     'membership_not_active' => 'العضوية غير فعالة',
     'membership_status_active' => 'العضوية فعالة',
     'membership_status_expired' => 'العضوية منتهية',

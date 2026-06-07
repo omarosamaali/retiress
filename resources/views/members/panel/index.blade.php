@@ -157,18 +157,30 @@
                             </div>
                             <div class="mp-event-row__info">
                                 <div class="mp-event-row__title">
+                                    {{-- نوع الفعالية قبل الاسم --}}
+                                    <span class="mp-event-type mp-event-type--{{ $event->type_badge_class }}">{{ $event->type_label }}</span>
                                     {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
                                 </div>
                                 <div class="mp-event-row__meta">
                                     @if ($event->display_starts_at)
                                         <span><i class="fa-regular fa-clock"></i> {{ $event->display_starts_at->translatedFormat('d M Y') }}</span>
                                     @endif
-                                    <span class="mp-price">
+                                    @if ($event->display_ends_at)
+                                        <span class="mp-event-ends"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $event->display_ends_at->translatedFormat('d M Y') }}</span>
+                                    @endif
+                                </div>
+                                <div class="mp-event-row__tags">
+                                    <span class="mp-tag mp-tag--{{ $event->isFree() ? 'free' : 'paid' }}">
+                                        <i class="fa-solid fa-tag"></i>
                                         @if ($event->isFree())
-                                            <i class="fa-solid fa-tag"></i> {{ __('app.free_event') }}
+                                            {{ __('app.free_event') }}
                                         @else
-                                            <i class="fa-solid fa-tag"></i> {{ number_format((float) $event->price, 0) }} {{ __('app.aed') }}
+                                            {{ number_format((float) $event->price, 0) }} {{ __('app.aed') }}
                                         @endif
+                                    </span>
+                                    <span class="mp-tag mp-tag--{{ $event->isForMembersOnly() ? 'members' : 'all' }}">
+                                        <i class="fa-solid fa-{{ $event->isForMembersOnly() ? 'id-card' : 'users' }}"></i>
+                                        {{ $event->isForMembersOnly() ? 'للأعضاء فقط' : 'للجميع' }}
                                     </span>
                                 </div>
                             </div>

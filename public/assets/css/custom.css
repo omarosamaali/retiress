@@ -4213,6 +4213,47 @@ p {
     font-weight: 600;
 }
 
+/* Event type badge */
+.mp-event-type {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 5px;
+    vertical-align: middle;
+    background: #e8f3ed;
+    color: #016330;
+}
+.mp-event-type--event-type-badge--course   { background: #e8f0fe; color: #1a73e8; }
+.mp-event-type--event-type-badge--lecture  { background: #fff3e0; color: #f57c00; }
+.mp-event-type--event-type-badge--event    { background: #e8f3ed; color: #016330; }
+.mp-event-type--event-type-badge--feature  { background: #fce4ec; color: #c2185b; }
+
+/* End date label */
+.mp-event-ends { color: #e57373; }
+
+/* Tags row */
+.mp-event-row__tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+.mp-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+.mp-tag--free    { background: #e8f3ed; color: #016330; }
+.mp-tag--paid    { background: #fff3e0; color: #b45309; }
+.mp-tag--members { background: #ede9fe; color: #6d28d9; }
+.mp-tag--all     { background: #f0f9ff; color: #0369a1; }
+
 .mp-event-row__arrow {
     color: #ccc;
     font-size: 12px;
