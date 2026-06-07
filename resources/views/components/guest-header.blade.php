@@ -266,13 +266,16 @@
             <div class="notif-screen__section-title">{{ __('app.system_notifications') }}</div>
 
             @forelse ($headerNotifications ?? [] as $userNotification)
-                <div class="notif-screen__item" data-id="{{ $userNotification->id }}">
+                <div class="notif-screen__item" data-id="{{ $userNotification->id }}"
+                    data-body="{{ e($userNotification->broadcast?->body) }}"
+                    data-title="{{ e($userNotification->broadcast?->title) }}"
+                    style="cursor:pointer;">
                     <div class="notif-screen__item-icon notif-screen__item-icon--bell">
                         <i class="fa-solid fa-circle-info"></i>
                     </div>
                     <div class="notif-screen__item-content">
                         <div class="notif-screen__item-title">{{ $userNotification->broadcast?->title }}</div>
-                        <div class="notif-screen__item-body">{{ \Illuminate\Support\Str::limit($userNotification->broadcast?->body, 120) }}</div>
+                        <div class="notif-screen__item-body">{{ \Illuminate\Support\Str::limit($userNotification->broadcast?->body, 80) }}</div>
                         <div class="notif-screen__item-time">{{ $userNotification->created_at?->diffForHumans() }}</div>
                     </div>
                     <button type="button" class="notif-screen__dismiss member-notification-dismiss"

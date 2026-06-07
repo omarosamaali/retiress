@@ -104,10 +104,7 @@ class MemberPanelController extends Controller
         $invoiceTransactions = Transaction::with('event')
             ->where('user_id', $user->id)
             ->whereNotNull('event_id')
-            ->where(function ($q) {
-                $q->whereNotNull('receipt_image')
-                  ->orWhereHas('event', fn($eq) => $eq->where('price', '>', 0));
-            })
+            ->whereHas('event', fn($q) => $q->where('price', '>', 0))
             ->orderByDesc('subscribed_at')
             ->get();
 

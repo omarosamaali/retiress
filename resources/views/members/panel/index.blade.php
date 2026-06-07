@@ -552,7 +552,7 @@
                 <i class="fa-solid fa-bell"></i>
                 <span>إشعارات لم أراها</span>
                 @if($unreadNotifications->count())
-                    <span style="margin-right:auto;background:#fde68a;color:#ca8a04;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;">{{ $unreadNotifications->count() }}</span>
+                    <span class="notif-count-badge" style="margin-right:auto;background:#fde68a;color:#ca8a04;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;">{{ $unreadNotifications->count() }}</span>
                 @endif
             </div>
             <div class="mp-card__body">
@@ -587,7 +587,7 @@
                 <i class="fa-regular fa-bell-slash"></i>
                 <span>إشعارات رأيتها</span>
                 @if($readNotifications->count())
-                    <span style="margin-right:auto;background:#e2e8f0;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;">{{ $readNotifications->count() }}</span>
+                    <span class="notif-count-badge" style="margin-right:auto;background:#e2e8f0;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;">{{ $readNotifications->count() }}</span>
                 @endif
             </div>
             <div class="mp-card__body">
