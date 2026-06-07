@@ -140,7 +140,7 @@
                                             <span><i class="fa-regular fa-clock"></i> {{ $__ev->display_starts_at->format('d/m/Y — h:i A') }}</span>
                                         @endif
                                         @if ($__ev->display_ends_at)
-                                            <span style="color:#e57373;"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $__ev->display_ends_at->format('d/m/Y') }}</span>
+                                            <span style="color:#e57373;"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $__ev->display_ends_at->format('d/m/Y — h:i A') }}</span>
                                         @endif
                                     </div>
                                     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;">
@@ -200,7 +200,7 @@
                                         <span><i class="fa-regular fa-clock"></i> {{ $event->display_starts_at->format('d/m/Y — h:i A') }}</span>
                                     @endif
                                     @if ($event->display_ends_at)
-                                        <span style="color:#e57373;"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $event->display_ends_at->format('d/m/Y') }}</span>
+                                        <span style="color:#e57373;"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $event->display_ends_at->format('d/m/Y — h:i A') }}</span>
                                     @endif
                                 </div>
                                 <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;">
