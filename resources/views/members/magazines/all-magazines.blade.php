@@ -5137,24 +5137,29 @@
             <div class="container-rni" style="flex-wrap: wrap;">
                 @forelse($magazines as $magazine)
                 <div class="col-oaq col-2yx mt-am8 my-eeo" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                    <a href="{{ url('magazines/show/'.$magazine->id) }}" style="text-decoration:none;display:block;height:100%;">
                     <div class="d-log flex-mb4 item-zsg content-85f text-if3 bg-ptb shadow-h9k shadow-3d-7n5 transition-all-ease-qd6 transition-hover-36d rou-xnf container-8q9 h-5rt overlay-xkz overlay-1yx">
-                        <div class="position-f8s text-tfh w-d98 z-index-leq m-kot item-lgy">
-                            <a href="{{ url('magazines/show/'.$magazine->id) }}" class="btn-fca bg-ptb shadow-as8 btn-a7p rounded-8o3 m-3p5">
-                                <i style="font-size:15px !important;" class="fa fa-eye"></i>
-                            </a>
-                        </div>
                         <figure class="m-d29 text-tfh rou-xnf overflow-g44">
                             <img class="img-5ia" src="{{ asset('storage/' . $magazine->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($magazine->name_ar ?? __('app.magazine_image_alt_fallback')) : ($magazine->name_en ?? __('app.magazine_image_alt_fallback')) }}">
-                         
                             <h2 class="magazine-title">
                                 <div style="font-size: 15px; line-height: 17px; margin-top: 11px; padding: 0px 5px;">
                                     {{ Str::limit(app()->getLocale() == 'ar' ? $magazine->title_ar : $magazine->title_en, 30) }}
                                 </div>
                             </h2>
-
+                            @if($magazine->name)
+                            <div style="display:flex;align-items:center;gap:6px;padding:4px 8px 6px;">
+                                @if($magazine->image)
+                                <img src="{{ asset('storage/' . $magazine->image) }}"
+                                     style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:1.5px solid #b68a35;flex-shrink:0;"
+                                     alt="{{ $magazine->name }}">
+                                @endif
+                                <span style="font-size:12px;color:#5a4a00;font-weight:600;">بقلم: {{ $magazine->name }}</span>
+                            </div>
+                            @endif
                             <span style="font-size: 15px;">{{ __('app.publication_date_short') }} : {{ \Carbon\Carbon::parse($magazine->created_at)->translatedFormat('d/m/Y') }}</span>
                         </figure>
                     </div>
+                    </a>
                 </div>
                 @empty
                 <div class="text-center w-100">

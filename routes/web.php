@@ -302,7 +302,9 @@ Route::get('/', function () {
         ->first();
 
     $news = News::latest()->limit(3)->get();
-    $events = Event::publiclyListed()->latest()->get();
+    $allEvents       = Event::publiclyListed()->latest()->get();
+    $events          = $allEvents->whereNotIn('type', ['خدمات', 'مميزات'])->values();
+    $serviceEvents   = $allEvents->where('type', 'خدمات')->values();
     $services = Service::latest()->limit(3)->get();
     // $magazines = Magazine::latest()->get();
     $magazinesCount = Magazine::count();
@@ -310,15 +312,12 @@ Route::get('/', function () {
 
     if ($magazinesCount > 0) {
         $dayOfMonth = now()->day;
-        // The modulo operator (%) will cycle through the magazines
-        // based on the day of the month.
         $offset = ($dayOfMonth - 1) % $magazinesCount;
         $magazines = Magazine::latest()->offset($offset)->first();
     }
 
-
     $settings = Settings::getActiveContactInfo();
-    return view('welcome', compact('banner', 'news', 'events', 'services', 'magazines', 'settings'));
+    return view('welcome', compact('banner', 'news', 'events', 'serviceEvents', 'services', 'magazines', 'settings'));
 })->name('/');
 
 require __DIR__ . '/auth.php';

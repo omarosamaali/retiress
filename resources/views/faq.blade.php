@@ -629,6 +629,9 @@
         }
 
     </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+    <script src="{{ asset('assets/js/scriptU.js') }}"></script>
 </body>
 
 </html>

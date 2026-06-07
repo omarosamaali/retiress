@@ -5145,39 +5145,64 @@
         <section class="py-hp3">
             <div class="container-rni">
                 @if($events)
-                <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-                    <div style="flex-direction: column;" class="row-cwp py-hp3">
-                        <div class="col-igy col-cvg" style="margin: auto;">
-                            <div class="bg-xf5 shadow-primary-sxe position-1lp">
-                                <div class="block-osq text-b1x">
-                                    <figure class="m-38w text-m1o overflow-khm">
-                                        <img class="img-odq rou-m3b" src="{{ asset('storage/' . $events->main_image) }}"
-                                            alt="{{ app()->getLocale() == 'ar' ? ($events->title_ar ?? __('app.event_image_alt_fallback')) : ($events->title_en ?? __('app.event_image_alt_fallback')) }}">
-                                    </figure>
-                                </div>
-                            </div>
+                <div style="max-width:860px;margin:30px auto 40px;background:#fff;border-radius:16px;box-shadow:0 4px 30px rgba(0,0,0,.08);overflow:hidden;direction:rtl;">
+
+                    {{-- الصورة الرئيسية --}}
+                    <div style="width:100%;max-height:420px;overflow:hidden;">
+                        <img src="{{ asset('storage/' . $events->main_image) }}"
+                             alt="{{ app()->getLocale() == 'ar' ? ($events->title_ar ?? '') : ($events->title_en ?? '') }}"
+                             style="width:100%;max-height:420px;object-fit:cover;display:block;">
+                    </div>
+
+                    <div style="padding:28px 32px 32px;">
+
+                        {{-- العنوان --}}
+                        <h1 style="font-size:1.55rem;font-weight:800;color:#1e293b;margin:0 0 16px;line-height:1.4;text-align:center;">
+                            {{ app()->getLocale() == 'ar' ? $events->title_ar : $events->title_en }}
+                        </h1>
+
+                        {{-- الـ badges --}}
+                        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+                            @php
+                                $typeBadge = match($events->type) {
+                                    'دورة'    => ['bg'=>'#dbeafe','color'=>'#1d4ed8'],
+                                    'محاضرة'  => ['bg'=>'#fef9c3','color'=>'#854d0e'],
+                                    'خدمات','مميزات' => ['bg'=>'#fce7f3','color'=>'#9d174d'],
+                                    default   => ['bg'=>'#dcfce7','color'=>'#166534'],
+                                };
+                                $audBadge = $events->isForMembersOnly()
+                                    ? ['bg'=>'#e0f2fe','color'=>'#0369a1']
+                                    : ['bg'=>'#f0fdf4','color'=>'#166534'];
+                            @endphp
+                            <span style="background:{{ $typeBadge['bg'] }};color:{{ $typeBadge['color'] }};padding:5px 16px;border-radius:20px;font-size:.82rem;font-weight:700;">
+                                <i class="fa-solid fa-tag" style="margin-left:4px;"></i>{{ $events->type_label }}
+                            </span>
+                            <span style="background:{{ $audBadge['bg'] }};color:{{ $audBadge['color'] }};padding:5px 16px;border-radius:20px;font-size:.82rem;font-weight:700;">
+                                <i class="fa-solid fa-users" style="margin-left:4px;"></i>{{ $events->audience_label }}
+                            </span>
                         </div>
-                        <div class="col-5vc col-cvg my-mpv">
-                            <a class="text-7zo text-b1x" href="{{ route('events.show', $events->id) }}">
-                                <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ?
-                                    $events->title_ar : $events->title_en }}</h2>
-                            </a>
-                            <span class="badge bg-secondary">{{ $events->type_label }}</span>
-                            <span class="badge {{ $events->isForMembersOnly() ? 'bg-info' : 'bg-dark' }}">{{ $events->audience_label }}</span>
-                            <hr>
-                            @include('members.events.partials.event-meta', ['event' => $events])
-                            <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                                <span class="text-7zo block-osq">{{ app()->getLocale() == 'ar' ? $events->description_ar : ($events->description_en ?: $events->description_ar) }}</span>
-                            </p>
-                            <hr>
-                            <div class="text-jdt">
-                                @include('members.events.partials.subscription-box')
-                            </div>
+
+                        <hr style="border:none;border-top:1.5px solid #f1f5f9;margin:0 0 18px;">
+
+                        {{-- بيانات الإعلان --}}
+                        @include('members.events.partials.event-meta', ['event' => $events])
+
+                        {{-- الوصف --}}
+                        @if(app()->getLocale() == 'ar' ? $events->description_ar : ($events->description_en ?: $events->description_ar))
+                        <hr style="border:none;border-top:1.5px solid #f1f5f9;margin:4px 0 18px;">
+                        <div style="font-size:1rem;color:#374151;line-height:1.9;text-align:justify;">
+                            {{ app()->getLocale() == 'ar' ? $events->description_ar : ($events->description_en ?: $events->description_ar) }}
                         </div>
+                        @endif
+
+                        <hr style="border:none;border-top:1.5px solid #f1f5f9;margin:20px 0 18px;">
+
+                        {{-- صندوق الاشتراك --}}
+                        @include('members.events.partials.subscription-box')
                     </div>
                 </div>
                 @else
-                <div class="text-center w-100">
+                <div style="text-align:center;padding:40px;">
                     <p>{{ __('app.no_events_available') }}</p>
                 </div>
                 @endif

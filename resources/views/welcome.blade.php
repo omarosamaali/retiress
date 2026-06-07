@@ -609,7 +609,7 @@
             </div>
         </div>
     </section>
-    <x-events-section :services="$services"></x-events-section>
+    <x-events-section :services="$services" :service-events="$serviceEvents"></x-events-section>
     <x-latest-section :magazines="$magazines"></x-latest-section>
     <x-footer-section></x-footer-section>
 

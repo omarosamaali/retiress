@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const swiperContainer = document.querySelector('.eventsSwiper');
+    if (!swiperContainer) return;
+
     const swiper = new Swiper('.eventsSwiper', {
         slidesPerView: 1,
         spaceBetween: 30,
@@ -44,8 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         direction: 'horizontal',
     });
-
-    const swiperContainer = document.querySelector('.eventsSwiper');
 
     swiperContainer.addEventListener('mouseenter', () => {
         swiper.autoplay.stop();
@@ -310,32 +311,34 @@ const kodoLink = document.getElementById('kodoLink');
 const modalOverlay = document.getElementById('modalOverlay');
 const closeBtn = document.getElementById('closeBtn');
 
-// فتح المودال
-kodoLink.addEventListener('click', function (e) {
-    e.preventDefault();
-    modalOverlay.classList.add('show');
-    document.body.style.overflow = 'hidden';
-});
+if (kodoLink && modalOverlay && closeBtn) {
+    // فتح المودال
+    kodoLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        modalOverlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    });
 
-// إغلاق المودال عند الضغط على زر الإغلاق
-closeBtn.addEventListener('click', function () {
-    modalOverlay.classList.remove('show');
-    document.body.style.overflow = 'hidden';
-});
-
-// إغلاق المودال عند الضغط خارج المحتوى
-modalOverlay.addEventListener('click', function (e) {
-    if (e.target === modalOverlay) {
+    // إغلاق المودال عند الضغط على زر الإغلاق
+    closeBtn.addEventListener('click', function () {
         modalOverlay.classList.remove('show');
         document.body.style.overflow = 'hidden';
-    }
-});
+    });
 
-// إغلاق المودال بضغط مفتاح Escape
-document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && modalOverlay.classList.contains('show')) {
-        modalOverlay.classList.remove('show');
-        document.body.style.overflow = 'auto';
-    }
-});
+    // إغلاق المودال عند الضغط خارج المحتوى
+    modalOverlay.addEventListener('click', function (e) {
+        if (e.target === modalOverlay) {
+            modalOverlay.classList.remove('show');
+            document.body.style.overflow = 'hidden';
+        }
+    });
+
+    // إغلاق المودال بضغط مفتاح Escape
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modalOverlay.classList.contains('show')) {
+            modalOverlay.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+    });
+}
 

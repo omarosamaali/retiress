@@ -3463,10 +3463,10 @@ p {
 }
 
 .notif-screen__dismiss {
-    background: transparent;
+    background: #f1f5f9;
     border: none;
-    color: #ccc;
-    font-size: 15px;
+    color: #94a3b8;
+    font-size: 13px;
     cursor: pointer;
     padding: 4px;
     border-radius: 50%;
@@ -3478,6 +3478,7 @@ p {
     flex-shrink: 0;
     align-self: flex-start;
     transition: background 0.15s, color 0.15s;
+    margin-top: 2px;
 }
 
 .notif-screen__dismiss:hover {

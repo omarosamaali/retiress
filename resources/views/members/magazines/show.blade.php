@@ -52,10 +52,38 @@
                                 <img src="{{ asset('images/default-magazine.jpg') }}" alt="صورة المجلة الافتراضية">
                                 @endif
                             </div>
+                            {{-- الصور الفرعية تحت الصورة الرئيسية --}}
+                            @if($magazines->sub_image)
+                            @php $subImages = json_decode($magazines->sub_image, true); @endphp
+                            @if(is_array($subImages) && count($subImages) > 0)
+                            <div style="margin-top:14px;">
+                                <p style="font-size:.82rem;font-weight:700;color:#6b7280;margin-bottom:8px;"><i class="fa-solid fa-images" style="color:#b68a35;margin-left:5px;"></i>صور إضافية</p>
+                                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;">
+                                    @foreach($subImages as $subImage)
+                                    <img src="{{ asset('storage/' . $subImage) }}"
+                                         style="width:100%;height:80px;object-fit:cover;border-radius:8px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.12);transition:transform .2s;"
+                                         onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+                                         onclick="openImage('{{ asset('storage/' . $subImage) }}')"
+                                         alt="صورة إضافية">
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
+                            @endif
                         </div>
-                        <div style="margin-top: 30px">
-                            <img style="width: 80px; height: 80px; border-radius: 50%;" src="{{ asset('storage/' . $magazines->image) }}" alt="">
-                            <span style="margin-right: 8px">{{ $magazines->name }}</span>
+                        <div style="margin-top:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;direction:rtl;">
+                            @if($magazines->image)
+                            <img style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid #b68a35;flex-shrink:0;" src="{{ asset('storage/' . $magazines->image) }}" alt="{{ $magazines->name }}">
+                            @endif
+                            <div style="display:flex;flex-direction:column;gap:3px;">
+                                @if($magazines->name)
+                                <span style="font-weight:700;font-size:.95rem;color:#1e293b;">{{ $magazines->name }}</span>
+                                @endif
+                                <span style="font-size:.8rem;color:#6b7280;display:flex;align-items:center;gap:4px;">
+                                    <i class="fa-regular fa-calendar" style="color:#b68a35;"></i>
+                                    {{ \Carbon\Carbon::parse($magazines->event_date ?? $magazines->created_at)->translatedFormat('d F Y') }}
+                                </span>
+                            </div>
                         </div>
                         <div class="col-md-6 magazine-info">
                             <h2 class="magazine-title">
@@ -86,24 +114,6 @@
                             <p class="magazine-description">
                                 {{ app()->getLocale() == 'ar' ? $magazines->description_ar : $magazines->description_en }}
                             </p>
-                            @if($magazines->sub_image)
-                            @php
-                            $subImages = json_decode($magazines->sub_image, true);
-                            @endphp
-                            @if(is_array($subImages) && count($subImages) > 0)
-                            <div class="sub-images-gallery">
-                                <h5>مزيد من الصور</h5>
-                                <div class="gallery-grid">
-                                    @foreach($subImages as $subImage)
-                                    <div class="gallery-item">
-                                        <img src="{{ asset('storage/' . $subImage) }}" alt="صورة من المعرض" 
-                                        onclick="openImage('{{ asset('storage/' . $subImage) }}')">
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                            @endif
-                            @endif
                         </div>
                     </div>
                 </div>

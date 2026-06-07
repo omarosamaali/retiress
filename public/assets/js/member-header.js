@@ -234,11 +234,21 @@
     ].join(';');
     document.body.appendChild(toastContainer);
 
+    var logoUrl = (function () {
+        var scripts = document.getElementsByTagName('script');
+        for (var i = 0; i < scripts.length; i++) {
+            var src = scripts[i].src || '';
+            var m = src.match(/(https?:\/\/[^/]+)/);
+            if (m) return m[1] + '/assets/images/new-logo.png';
+        }
+        return '/assets/images/new-logo.png';
+    })();
+
     function showToast(title, body, id) {
         var toast = document.createElement('div');
         toast.style.cssText = [
             'background:#fff', 'border-radius:12px',
-            'box-shadow:0 4px 24px rgba(0,0,0,.18)', 'padding:14px 16px',
+            'box-shadow:0 4px 24px rgba(0,0,0,.2)', 'padding:12px 14px',
             'direction:rtl', 'text-align:right', 'pointer-events:all',
             'border-right:4px solid #b68a35',
             'animation:toastIn .3s ease',
@@ -247,14 +257,18 @@
         ].join(';');
 
         toast.innerHTML =
-            '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">' +
+            '<div style="display:flex;align-items:flex-start;gap:10px;">' +
+                '<img src="' + logoUrl + '" style="width:38px;height:38px;object-fit:contain;flex-shrink:0;border-radius:6px;background:#f8f8f8;padding:2px;" alt="" onerror="this.style.display=\'none\'">' +
                 '<div style="flex:1;min-width:0;">' +
-                    '<div style="font-weight:700;font-size:.88rem;color:#1e293b;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
-                        '<i class="fa-solid fa-bell" style="color:#b68a35;margin-left:5px;font-size:.8rem;"></i>' + (title || 'إشعار جديد') +
+                    '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:3px;">' +
+                        '<div style="font-weight:700;font-size:.87rem;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+                            (title || 'إشعار جديد') +
+                        '</div>' +
+                        '<button style="flex-shrink:0;background:none;border:none;cursor:pointer;color:#94a3b8;font-size:.85rem;padding:0;line-height:1;margin-top:1px;" class="toast-close-btn"><i class="fa-solid fa-xmark"></i></button>' +
                     '</div>' +
                     (body ? '<div style="font-size:.78rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + body + '</div>' : '') +
+                    '<div style="font-size:.72rem;color:#b68a35;font-weight:600;margin-top:4px;">الاتحاد الإماراتي للمتقاعدين</div>' +
                 '</div>' +
-                '<button style="flex-shrink:0;background:none;border:none;cursor:pointer;color:#94a3b8;font-size:.85rem;padding:0 0 0 4px;line-height:1;" class="toast-close-btn"><i class="fa-solid fa-xmark"></i></button>' +
             '</div>' +
             '<div class="toast-progress" style="position:absolute;bottom:0;right:0;left:0;height:3px;background:#b68a35;transform-origin:right;animation:toastProgress 5s linear forwards;"></div>';
 
@@ -285,21 +299,42 @@
         document.head.appendChild(style);
     }
 
-    // ── Polling لإشعارات جديدة ────────────────────────────────────────────────
-    var notifPollUrl = '/members/notifications';
-    var lastSeenKey  = 'notif_last_seen_id';
-    var initializedKey = 'notif_session_init_' + (document.cookie.match(/laravel_session=([^;]+)/)?.[1]?.slice(-8) || 'x');
+    // ── Polling للإشعارات الجديدة كل 8 ثواني ────────────────────────────────
+    var shownKey = 'shown_notif_ids';
 
-    function getLastSeen() {
-        return parseInt(localStorage.getItem(lastSeenKey) || '0');
+    function getShown() {
+        try { return JSON.parse(sessionStorage.getItem(shownKey) || '[]'); } catch(e) { return []; }
     }
 
-    function setLastSeen(id) {
-        localStorage.setItem(lastSeenKey, String(id));
+    function markShown(id) {
+        var arr = getShown();
+        if (arr.indexOf(id) === -1) {
+            arr.push(id);
+            // احتفظ بآخر 50 فقط
+            if (arr.length > 50) arr = arr.slice(-50);
+            sessionStorage.setItem(shownKey, JSON.stringify(arr));
+        }
     }
 
-    function pollNotifications(isInit) {
-        fetch(notifPollUrl, {
+    function updateBadge(count) {
+        var badge = document.querySelector('.member-notifications-badge');
+        var btn   = document.getElementById('toggleMemberNotifications');
+        if (count > 0) {
+            var txt = count > 99 ? '99+' : count;
+            if (badge) { badge.textContent = txt; }
+            else if (btn) {
+                var b = document.createElement('span');
+                b.className = 'member-notifications-badge';
+                b.textContent = txt;
+                btn.appendChild(b);
+            }
+        } else if (badge) {
+            badge.remove();
+        }
+    }
+
+    function pollNotifications() {
+        fetch('/members/notifications', {
             headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
             credentials: 'same-origin',
         })
@@ -307,48 +342,39 @@
         .then(function (data) {
             if (!data || !Array.isArray(data.notifications)) return;
 
-            var lastSeen = getLastSeen();
-            var maxId = data.notifications.reduce(function (m, n) { return Math.max(m, n.id); }, lastSeen);
+            var shown = getShown();
 
-            if (isInit) {
-                // أول تشغيل: فقط احفظ الـ ID الحالي، لا تظهر toasts للقديم
-                if (maxId > lastSeen) setLastSeen(maxId);
-                sessionStorage.setItem(initializedKey, '1');
-            } else {
-                // تشغيلات بعدين: اعرض toasts للجديد فقط
-                var newItems = data.notifications.filter(function (n) {
-                    return n.id > lastSeen && !n.read_at;
-                });
-                if (maxId > lastSeen) setLastSeen(maxId);
-                newItems.slice(0, 3).forEach(function (n) {
-                    showToast(n.title, n.body, n.id);
-                });
-            }
+            // إشعارات غير مقروءة ولم تُظهر toast بعد
+            var toShow = data.notifications.filter(function (n) {
+                return !n.read_at && shown.indexOf(n.id) === -1;
+            });
 
-            // تحديث badge العداد في الهيدر
-            var badge = document.querySelector('.member-notifications-badge');
-            if (data.total_badge > 0) {
-                if (badge) {
-                    badge.textContent = data.total_badge > 99 ? '99+' : data.total_badge;
-                } else {
-                    var btn = document.getElementById('toggleMemberNotifications');
-                    if (btn) {
-                        var b = document.createElement('span');
-                        b.className = 'member-notifications-badge';
-                        b.textContent = data.total_badge > 99 ? '99+' : data.total_badge;
-                        btn.appendChild(b);
-                    }
-                }
-            } else if (badge) {
-                badge.remove();
-            }
+            toShow.slice(0, 3).forEach(function (n) {
+                showToast(n.title, n.body, n.id);
+                markShown(n.id);
+            });
+
+            updateBadge(data.total_badge);
         })
-        .catch(function () { /* silent fail */ });
+        .catch(function () {});
     }
 
-    // أول تشغيل: init فوراً، ثم كل 8 ثواني
-    var isFirstRun = !sessionStorage.getItem(initializedKey);
-    pollNotifications(isFirstRun);
-    setInterval(function () { pollNotifications(false); }, 8000);
+    // أول تشغيل: اعلم كل الإشعارات الموجودة بدون toast، ثم ابدأ الـ polling
+    fetch('/members/notifications', {
+        headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        credentials: 'same-origin',
+    })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+        if (!data || !Array.isArray(data.notifications)) return;
+        // حفظ الإشعارات الحالية كـ "مرئية" بدون إظهار toast
+        data.notifications.forEach(function (n) { markShown(n.id); });
+        updateBadge(data.total_badge);
+    })
+    .catch(function () {})
+    .finally(function () {
+        // ابدأ الـ polling بعد كده
+        setInterval(pollNotifications, 8000);
+    });
 
 })();
