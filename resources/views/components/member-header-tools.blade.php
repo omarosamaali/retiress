@@ -5,10 +5,8 @@
     $daysLeft   = $membershipCardPayload['status']['days_left'] ?? null;
     $showDays   = $daysLeft !== null && in_array($cardStatus, ['active', 'expiring']);
 @endphp
-{{-- <div>
-    باقي علي انتهاء العضوية {{ $daysLeft }} يوم
-</div> --}}
-<div class="member-header-tools d-flex align-items-center gap-2 flex-wrap" style="margin-right: 12px;">
+
+<div class="member-header-tools d-flex align-items-center gap-2 flex-wrap">
 
     <div class="downapp">
         <button type="button" class="member-card-trigger" id="openMembershipCard"

@@ -15,6 +15,15 @@
     <div class="mp-page">
 
         {{-- Welcome bar --}}
+        @php
+            $__panelApp    = auth()->user()->memberApplication;
+            $__panelExpiry = $__panelApp?->expiration_date
+                ? \Carbon\Carbon::parse($__panelApp->expiration_date)
+                : null;
+            $__panelExpStr = $__panelExpiry?->format('Y/m/d');
+            $__panelDays   = $__panelExpiry ? max(0, (int) now()->diffInDays($__panelExpiry, false)) : null;
+            $__panelIsExp  = $__panelExpiry && $__panelExpiry->isPast();
+        @endphp
         <div class="mp-welcome">
             <div class="mp-welcome__inner">
                 <div class="mp-welcome__avatar">
@@ -25,6 +34,19 @@
                     <div class="mp-welcome__name">{{ auth()->user()->name }}</div>
                 </div>
             </div>
+            @if ($__panelExpStr)
+            <div class="mp-expiry-badge mp-expiry-badge--{{ $__panelIsExp ? 'expired' : ($__panelDays <= 30 ? 'expiring' : 'active') }}">
+                <i class="fa-solid fa-calendar-xmark"></i>
+                @if ($__panelIsExp)
+                    انتهت العضوية {{ $__panelExpStr }}
+                @else
+                    تنتهي العضوية {{ $__panelExpStr }}
+                    @if ($__panelDays !== null)
+                        <span class="mp-expiry-days">({{ $__panelDays }} يوم)</span>
+                    @endif
+                @endif
+            </div>
+            @endif
         </div>
 
         {{-- Stats row --}}

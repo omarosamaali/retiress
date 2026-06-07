@@ -3870,6 +3870,33 @@ p {
     font-weight: 700;
 }
 
+.mp-expiry-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+}
+.mp-expiry-badge--expiring {
+    background: rgba(245,158,11,0.25);
+    border-color: rgba(245,158,11,0.5);
+    color: #fde68a;
+}
+.mp-expiry-badge--expired {
+    background: rgba(220,38,38,0.25);
+    border-color: rgba(220,38,38,0.5);
+    color: #fca5a5;
+}
+.mp-expiry-days {
+    opacity: 0.75;
+    font-size: 12px;
+}
+
 /* Stats row (white cards) */
 .mp-stats-row {
     display: grid;

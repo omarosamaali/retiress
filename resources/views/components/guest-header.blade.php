@@ -179,7 +179,7 @@
                 <div class="member-header-welcome d-flex align-items-center flex-wrap gap-1">
 
                     @if ($__hIsMember)
-                    <div class="member-header-tools d-flex align-items-center gap-2 flex-wrap" style="margin-right: 12px;">
+                    <div class="member-header-tools d-flex align-items-center gap-2 flex-wrap">
                         <div class="downapp">
                             <button type="button" class="member-card-trigger" id="openMembershipCard"
                                 title="{{ __('app.membership_card') }}" aria-label="{{ __('app.membership_card') }}">
@@ -204,16 +204,10 @@
                             <i class="fa-solid fa-rotate-right"></i> {{ __('app.renewal') }}
                         </a>
                         @endif
-                        @if ($__hShowDays)
-                        <span class="member-days-left member-days-left--{{ $__hCardStatus }}">
-                            <i class="fa-solid fa-clock"></i>
-                            {{ __('app.days_left', ['days' => $__hDaysLeft]) }}
-                        </span>
-                        @endif
                     </div>
                     @elseif (!$__hUser?->isStaff())
                     {{-- مستخدم مسجّل لكن ليس عضواً فعالاً بعد --}}
-                    <div style="margin-right: 12px;">
+                    <div>
                         <a href="{{ route('members.membership-show') }}"
                             style="display:inline-flex; align-items:center; gap:5px; background:#b5933a; color:#fff; border-radius:6px; padding:4px 12px; font-size:.82rem; font-weight:700; text-decoration:none; transition:background .18s;"
                             onmouseover="this.style.background='#8a6e2a'" onmouseout="this.style.background='#b5933a'">
@@ -224,13 +218,6 @@
                     @endif
 
                     <span>{{ __('app.welcome') }}.. {{ \Illuminate\Support\Str::limit($__hUser->name, 5, '.') }}</span>
-
-                    @if ($__hExpDate)
-                    <span class="header-expiry-badge header-expiry-badge--{{ $__hExpKey }}">
-                        <i class="fa-solid fa-clock"></i>
-                        تنتهي العضوية {{ $__hExpDate }}
-                    </span>
-                    @endif
 
                 </div>
                 @endauth

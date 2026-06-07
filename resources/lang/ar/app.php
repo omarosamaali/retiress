@@ -147,7 +147,6 @@ return [
     'required_field_indicator' => '*', // The asterisk for required fields
     'new' => 'جديد',
     'renewal' => 'تجديد',
-    'days_left' => 'باقي :days يوم',
     'contact_details' => 'بيانات التواصل',
     'mobile_phone' => 'الهاتف المتحرك',
     'home_phone' => 'هاتف المنزل',
