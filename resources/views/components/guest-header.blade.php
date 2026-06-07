@@ -210,6 +210,16 @@
 
                     <span>{{ __('app.welcome') }}.. {{ \Illuminate\Support\Str::limit($__hUser->name, 30, '.') }}</span>
 
+                    <form action="{{ route('members.logout') }}" method="POST" style="margin:0;">
+                        @csrf
+                        <button type="submit"
+                            style="display:inline-flex;align-items:center;gap:5px;background:transparent;border:1.5px solid rgba(180,80,80,.5);color:#c0392b;border-radius:6px;padding:3px 10px;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:inherit;"
+                            onmouseover="this.style.background='#c0392b';this.style.color='#fff'"
+                            onmouseout="this.style.background='transparent';this.style.color='#c0392b'">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i> {{ __('app.logout') }}
+                        </button>
+                    </form>
+
                 </div>
                 @endauth
 
