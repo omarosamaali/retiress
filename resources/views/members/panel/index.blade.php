@@ -151,14 +151,22 @@
                 </div>
                 <div class="mp-card__body">
                     @forelse ($availableEvents as $event)
+                        @php
+                            $__typeColors = [
+                                'دورة'   => ['bg'=>'#e8f0fe','color'=>'#1a73e8'],
+                                'محاضرة' => ['bg'=>'#fff3e0','color'=>'#f57c00'],
+                                'فعالية' => ['bg'=>'#e8f3ed','color'=>'#016330'],
+                                'مميزات' => ['bg'=>'#fce4ec','color'=>'#c2185b'],
+                            ];
+                            $__tc = $__typeColors[$event->type_label] ?? ['bg'=>'#f1f5f9','color'=>'#475569'];
+                        @endphp
                         <a href="{{ route('events.show', $event) }}" class="mp-event-row">
                             <div class="mp-event-row__icon mp-event-row__icon--green">
                                 <i class="fa-regular fa-calendar"></i>
                             </div>
                             <div class="mp-event-row__info">
                                 <div class="mp-event-row__title">
-                                    {{-- نوع الفعالية قبل الاسم --}}
-                                    <span class="mp-event-type mp-event-type--{{ $event->type_badge_class }}">{{ $event->type_label }}</span>
+                                    <span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:5px;vertical-align:middle;background:{{ $__tc['bg'] }};color:{{ $__tc['color'] }};">{{ $event->type_label }}</span>
                                     {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
                                 </div>
                                 <div class="mp-event-row__meta">
@@ -166,19 +174,17 @@
                                         <span><i class="fa-regular fa-clock"></i> {{ $event->display_starts_at->translatedFormat('d M Y') }}</span>
                                     @endif
                                     @if ($event->display_ends_at)
-                                        <span class="mp-event-ends"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $event->display_ends_at->translatedFormat('d M Y') }}</span>
+                                        <span style="color:#e57373;"><i class="fa-regular fa-calendar-xmark"></i> ينتهي {{ $event->display_ends_at->translatedFormat('d M Y') }}</span>
                                     @endif
                                 </div>
-                                <div class="mp-event-row__tags">
-                                    <span class="mp-tag mp-tag--{{ $event->isFree() ? 'free' : 'paid' }}">
+                                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;">
+                                    <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;background:{{ $event->isFree() ? '#e8f3ed' : '#fff3e0' }};color:{{ $event->isFree() ? '#016330' : '#b45309' }};">
                                         <i class="fa-solid fa-tag"></i>
-                                        @if ($event->isFree())
-                                            {{ __('app.free_event') }}
-                                        @else
-                                            {{ number_format((float) $event->price, 0) }} {{ __('app.aed') }}
+                                        @if ($event->isFree()) {{ __('app.free_event') }}
+                                        @else {{ number_format((float) $event->price, 0) }} {{ __('app.aed') }}
                                         @endif
                                     </span>
-                                    <span class="mp-tag mp-tag--{{ $event->isForMembersOnly() ? 'members' : 'all' }}">
+                                    <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;background:{{ $event->isForMembersOnly() ? '#ede9fe' : '#f0f9ff' }};color:{{ $event->isForMembersOnly() ? '#6d28d9' : '#0369a1' }};">
                                         <i class="fa-solid fa-{{ $event->isForMembersOnly() ? 'id-card' : 'users' }}"></i>
                                         {{ $event->isForMembersOnly() ? 'للأعضاء فقط' : 'للجميع' }}
                                     </span>
