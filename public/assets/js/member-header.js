@@ -285,9 +285,10 @@
         document.head.appendChild(style);
     }
 
-    // ── Polling لإشعارات جديدة كل 20 ثانية ──────────────────────────────────
+    // ── Polling لإشعارات جديدة ────────────────────────────────────────────────
     var notifPollUrl = '/members/notifications';
     var lastSeenKey  = 'notif_last_seen_id';
+    var initializedKey = 'notif_session_init_' + (document.cookie.match(/laravel_session=([^;]+)/)?.[1]?.slice(-8) || 'x');
 
     function getLastSeen() {
         return parseInt(localStorage.getItem(lastSeenKey) || '0');
@@ -297,7 +298,7 @@
         localStorage.setItem(lastSeenKey, String(id));
     }
 
-    function pollNotifications() {
+    function pollNotifications(isInit) {
         fetch(notifPollUrl, {
             headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
             credentials: 'same-origin',
@@ -307,24 +308,36 @@
             if (!data || !Array.isArray(data.notifications)) return;
 
             var lastSeen = getLastSeen();
-            var newItems = data.notifications.filter(function (n) {
-                return n.id > lastSeen && !n.read_at;
-            });
-
-            // أعلى ID جديد
             var maxId = data.notifications.reduce(function (m, n) { return Math.max(m, n.id); }, lastSeen);
-            if (maxId > lastSeen) setLastSeen(maxId);
 
-            // عرض toast لكل إشعار جديد (بحد أقصى 3)
-            newItems.slice(0, 3).forEach(function (n) {
-                showToast(n.title, n.body, n.id);
-            });
+            if (isInit) {
+                // أول تشغيل: فقط احفظ الـ ID الحالي، لا تظهر toasts للقديم
+                if (maxId > lastSeen) setLastSeen(maxId);
+                sessionStorage.setItem(initializedKey, '1');
+            } else {
+                // تشغيلات بعدين: اعرض toasts للجديد فقط
+                var newItems = data.notifications.filter(function (n) {
+                    return n.id > lastSeen && !n.read_at;
+                });
+                if (maxId > lastSeen) setLastSeen(maxId);
+                newItems.slice(0, 3).forEach(function (n) {
+                    showToast(n.title, n.body, n.id);
+                });
+            }
 
             // تحديث badge العداد في الهيدر
             var badge = document.querySelector('.member-notifications-badge');
             if (data.total_badge > 0) {
                 if (badge) {
                     badge.textContent = data.total_badge > 99 ? '99+' : data.total_badge;
+                } else {
+                    var btn = document.getElementById('toggleMemberNotifications');
+                    if (btn) {
+                        var b = document.createElement('span');
+                        b.className = 'member-notifications-badge';
+                        b.textContent = data.total_badge > 99 ? '99+' : data.total_badge;
+                        btn.appendChild(b);
+                    }
                 }
             } else if (badge) {
                 badge.remove();
@@ -333,10 +346,9 @@
         .catch(function () { /* silent fail */ });
     }
 
-    // أول تشغيل بعد 3 ثواني من تحميل الصفحة، ثم كل 20 ثانية
-    setTimeout(function () {
-        pollNotifications();
-        setInterval(pollNotifications, 20000);
-    }, 3000);
+    // أول تشغيل: init فوراً، ثم كل 8 ثواني
+    var isFirstRun = !sessionStorage.getItem(initializedKey);
+    pollNotifications(isFirstRun);
+    setInterval(function () { pollNotifications(false); }, 8000);
 
 })();
