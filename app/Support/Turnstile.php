@@ -11,7 +11,12 @@ class Turnstile
         $secret = (string) config('services.turnstile.secret');
         $verifyUrl = (string) config('services.turnstile.verify_url');
 
-        if ($secret === '' || $token === '') {
+        // لو المفتاح مش متحدد → تخطَّ التحقق
+        if ($secret === '') {
+            return true;
+        }
+
+        if ($token === '') {
             return false;
         }
 

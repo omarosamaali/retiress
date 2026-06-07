@@ -226,6 +226,14 @@
                 'membershipCardPayload' => $__hCard,
             ])
         @endif
+        @if ($__hIsMember)
+        <script>
+            window.__PUSHER_KEY__    = '{{ config('broadcasting.connections.pusher.key') }}';
+            window.__PUSHER_CLUSTER__= '{{ config('broadcasting.connections.pusher.options.cluster', 'mt1') }}';
+            window.__AUTH_USER_ID__  = {{ Auth::id() }};
+        </script>
+        <script src="https://js.pusher.com/8.4/pusher.min.js"></script>
+        @endif
         <script src="{{ asset('assets/js/member-header.js') }}" defer></script>
     @endauth
 </div>

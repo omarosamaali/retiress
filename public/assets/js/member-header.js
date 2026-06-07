@@ -16,6 +16,7 @@
                 'Accept': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest',
             },
+            credentials: 'same-origin',
         });
     }
 
@@ -28,11 +29,11 @@
     });
 
     // ── Membership Card ─────────────────────────────────────────────────────
-    const sheet     = document.getElementById('membershipCardSheet');
+    const sheet       = document.getElementById('membershipCardSheet');
     const openCardBtn = document.getElementById('openMembershipCard');
-    const closeCardBtn = document.getElementById('closeMembershipCard');
-    const backdrop  = document.getElementById('membershipCardBackdrop');
-    const flipCard  = document.getElementById('membershipFlipCard');
+    const closeCardBtn= document.getElementById('closeMembershipCard');
+    const backdrop    = document.getElementById('membershipCardBackdrop');
+    const flipCard    = document.getElementById('membershipFlipCard');
 
     function openSheet() {
         if (!sheet) return;
@@ -97,68 +98,103 @@
         }
     });
 
-    // ── Click on header notification item → show detail overlay ────────────
-    document.querySelectorAll('.notif-screen__item[data-id]').forEach(function (item) {
+    // ── Show notification detail overlay + mark as read ────────────────────
+    function showNotifDetail(item) {
+        const title = item.dataset.title || item.querySelector('.notif-screen__item-title')?.textContent?.trim() || '';
+        const body  = item.dataset.body  || item.querySelector('.notif-screen__item-body')?.textContent?.trim()  || '';
+        const time  = item.querySelector('.notif-screen__item-time')?.textContent?.trim() || '';
+        const id    = item.dataset.id;
+
+        const panel = document.querySelector('.notif-screen__panel');
+        if (!panel) return;
+
+        panel.querySelector('.notif-detail-overlay')?.remove();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'notif-detail-overlay';
+        overlay.style.cssText = [
+            'position:absolute', 'inset:0', 'background:#fff', 'z-index:20',
+            'padding:20px', 'overflow-y:auto', 'display:flex',
+            'flex-direction:column', 'gap:14px', 'direction:rtl',
+        ].join(';');
+
+        overlay.innerHTML =
+            '<div style="display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding-bottom:12px;gap:8px;">' +
+                '<span style="font-weight:700;font-size:1rem;color:#1e293b;line-height:1.5;">' + title + '</span>' +
+                '<button class="notif-detail-close" style="flex-shrink:0;background:#f1f5f9;border:1.5px solid #e5e7eb;border-radius:6px;cursor:pointer;padding:4px 10px;color:#6b7280;font-size:.85rem;line-height:1;" title="إغلاق">' +
+                    '<i class="fa-solid fa-xmark"></i>' +
+                '</button>' +
+            '</div>' +
+            '<div style="font-size:.9rem;color:#374151;line-height:1.8;white-space:pre-wrap;">' + body + '</div>' +
+            '<div style="font-size:.75rem;color:#9ca3af;">' + time + '</div>';
+
+        panel.style.position = 'relative';
+        panel.appendChild(overlay);
+
+        overlay.querySelector('.notif-detail-close')?.addEventListener('click', function () {
+            overlay.remove();
+        });
+
+        // Mark as read
+        if (id) {
+            const readUrl = '/members/notifications/' + id + '/read';
+            post(readUrl).then(function () {
+                item.style.opacity = '0.65';
+                item.dataset.read = '1';
+                updateBadge(Math.max(0, currentBadge() - 1));
+            }).catch(function () {});
+        }
+    }
+
+    // ── Attach click handlers to notification items (supports dynamic items) ─
+    function bindNotifItem(item) {
+        if (item.dataset.bound) return;
+        item.dataset.bound = '1';
+
         item.addEventListener('click', function (e) {
             if (e.target.closest('.notif-screen__dismiss')) return;
-
-            const title = item.dataset.title || item.querySelector('.notif-screen__item-title')?.textContent?.trim() || '';
-            const body  = item.dataset.body  || item.querySelector('.notif-screen__item-body')?.textContent?.trim()  || '';
-            const time  = item.querySelector('.notif-screen__item-time')?.textContent?.trim() || '';
-
-            const panel = document.querySelector('.notif-screen__panel');
-            if (!panel) return;
-
-            panel.querySelector('.notif-detail-overlay')?.remove();
-
-            const overlay = document.createElement('div');
-            overlay.className = 'notif-detail-overlay';
-            overlay.style.cssText = [
-                'position:absolute', 'inset:0', 'background:#fff', 'z-index:20',
-                'padding:20px', 'overflow-y:auto', 'display:flex',
-                'flex-direction:column', 'gap:14px', 'direction:rtl',
-            ].join(';');
-
-            overlay.innerHTML =
-                '<div style="display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding-bottom:12px;gap:8px;">' +
-                    '<span style="font-weight:700;font-size:1rem;color:#1e293b;line-height:1.5;">' + title + '</span>' +
-                    '<button class="notif-detail-close" style="flex-shrink:0;background:none;border:1.5px solid #e5e7eb;border-radius:6px;cursor:pointer;padding:4px 8px;color:#6b7280;font-size:.85rem;line-height:1;" title="إغلاق">' +
-                        '<i class="fa-solid fa-xmark"></i>' +
-                    '</button>' +
-                '</div>' +
-                '<div style="font-size:.9rem;color:#374151;line-height:1.8;white-space:pre-wrap;">' + body + '</div>' +
-                '<div style="font-size:.75rem;color:#9ca3af;">' + time + '</div>';
-
-            panel.style.position = 'relative';
-            panel.appendChild(overlay);
-
-            overlay.querySelector('.notif-detail-close')?.addEventListener('click', function () {
-                overlay.remove();
-            });
+            showNotifDetail(item);
         });
-    });
+    }
 
-    // ── Dismiss notification in header dropdown ─────────────────────────────
-    document.querySelectorAll('.notif-screen__item .member-notification-dismiss').forEach(function (btn) {
+    function bindAllNotifItems() {
+        document.querySelectorAll('.notif-screen__item[data-id]').forEach(bindNotifItem);
+    }
+
+    bindAllNotifItems();
+
+    // ── Dismiss in header panel ─────────────────────────────────────────────
+    function bindDismissBtn(btn) {
+        if (btn.dataset.bound) return;
+        btn.dataset.bound = '1';
+
         btn.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
             const url = btn.getAttribute('data-dismiss-url');
             if (!url) return;
-            post(url).then(function () {
-                btn.closest('.notif-screen__item')?.remove();
-                // update header badge
-                const badge = document.querySelector('.member-notifications-badge');
-                if (badge) {
-                    const n = parseInt(badge.textContent) - 1;
-                    if (n <= 0) badge.remove();
-                    else badge.textContent = n > 99 ? '99+' : n;
-                }
-            });
-        });
-    });
 
-    // ── Dismiss notification on panel page → move to "رأيتها" ───────────────
+            btn.disabled = true;
+            post(url).then(function () {
+                const item = btn.closest('.notif-screen__item');
+                if (item) {
+                    item.style.transition = 'opacity .2s,transform .2s';
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateX(20px)';
+                    setTimeout(function () { item.remove(); }, 200);
+                }
+                updateBadge(Math.max(0, currentBadge() - 1));
+            }).catch(function () { btn.disabled = false; });
+        });
+    }
+
+    function bindAllDismissBtns() {
+        document.querySelectorAll('.notif-screen__item .notif-screen__dismiss').forEach(bindDismissBtn);
+    }
+
+    bindAllDismissBtns();
+
+    // ── Dismiss on member panel page ────────────────────────────────────────
     document.querySelectorAll('.mp-notif-row .member-notification-dismiss').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
             e.preventDefault();
@@ -168,12 +204,9 @@
             const row = btn.closest('.mp-notif-row');
             post(url).then(function () {
                 if (!row) return;
-
                 const readBody = document.querySelector('#section-notif-read .mp-card__body');
-
                 if (readBody) {
                     readBody.querySelector('.mp-empty')?.remove();
-
                     const contentHtml = row.querySelector('.mp-notif-row__content')?.innerHTML || '';
                     const readRow = document.createElement('div');
                     readRow.className = 'mp-notif-row';
@@ -183,7 +216,6 @@
                         '<div class="mp-notif-row__content">' + contentHtml + '</div>';
                     readBody.prepend(readRow);
 
-                    // update read count badge
                     const readHead = document.querySelector('#section-notif-read .mp-card__head');
                     if (readHead) {
                         let badge = readHead.querySelector('.notif-count-badge');
@@ -198,18 +230,14 @@
                         }
                     }
                 }
-
                 row.remove();
 
-                // update unread count badge
                 const remaining = document.querySelectorAll('#section-notif-unread .mp-notif-row').length;
-                const unreadHead = document.querySelector('#section-notif-unread .mp-card__head span:not(.notif-count-badge)');
                 const unreadBadge = document.querySelector('#section-notif-unread .mp-card__head span');
                 if (unreadBadge) {
                     if (remaining <= 0) unreadBadge.remove();
                     else unreadBadge.textContent = remaining;
                 }
-
                 if (remaining <= 0) {
                     const unreadBody = document.querySelector('#section-notif-unread .mp-card__body');
                     if (unreadBody) {
@@ -224,7 +252,7 @@
         });
     });
 
-    // ── Toast container ─────────────────────────────────────────────────────
+    // ── Toast ────────────────────────────────────────────────────────────────
     var toastContainer = document.createElement('div');
     toastContainer.id = 'notif-toast-container';
     toastContainer.style.cssText = [
@@ -254,6 +282,7 @@
             'animation:toastIn .3s ease',
             'font-family:"Cairo",sans-serif',
             'position:relative', 'overflow:hidden',
+            'cursor:pointer',
         ].join(';');
 
         toast.innerHTML =
@@ -274,7 +303,8 @@
 
         toastContainer.prepend(toast);
 
-        toast.querySelector('.toast-close-btn').addEventListener('click', function () {
+        toast.querySelector('.toast-close-btn').addEventListener('click', function (e) {
+            e.stopPropagation();
             dismissToast(toast);
         });
 
@@ -288,7 +318,6 @@
         setTimeout(function () { toast.remove(); }, 260);
     }
 
-    // إضافة CSS للأنيميشن
     if (!document.getElementById('toast-keyframes')) {
         var style = document.createElement('style');
         style.id = 'toast-keyframes';
@@ -299,21 +328,10 @@
         document.head.appendChild(style);
     }
 
-    // ── Polling للإشعارات الجديدة كل 8 ثواني ────────────────────────────────
-    var shownKey = 'shown_notif_ids';
-
-    function getShown() {
-        try { return JSON.parse(sessionStorage.getItem(shownKey) || '[]'); } catch(e) { return []; }
-    }
-
-    function markShown(id) {
-        var arr = getShown();
-        if (arr.indexOf(id) === -1) {
-            arr.push(id);
-            // احتفظ بآخر 50 فقط
-            if (arr.length > 50) arr = arr.slice(-50);
-            sessionStorage.setItem(shownKey, JSON.stringify(arr));
-        }
+    // ── Badge helpers ─────────────────────────────────────────────────────────
+    function currentBadge() {
+        const badge = document.querySelector('.member-notifications-badge');
+        return badge ? parseInt(badge.textContent) || 0 : 0;
     }
 
     function updateBadge(count) {
@@ -333,6 +351,60 @@
         }
     }
 
+    // ── Add notification item to the panel dynamically ───────────────────────
+    function addNotifToPanel(id, title, body) {
+        const notifBody = document.querySelector('.notif-screen__body');
+        if (!notifBody) return;
+
+        notifBody.querySelector('.notif-screen__empty')?.remove();
+
+        const sectionTitle = notifBody.querySelector('.notif-screen__section-title:last-of-type');
+
+        const item = document.createElement('div');
+        item.className = 'notif-screen__item notif-screen__item--new';
+        item.setAttribute('data-id', id);
+        item.setAttribute('data-title', title || '');
+        item.setAttribute('data-body', body || '');
+        item.style.cssText = 'cursor:pointer;animation:toastIn .3s ease;';
+        item.innerHTML =
+            '<div class="notif-screen__item-icon notif-screen__item-icon--bell">' +
+                '<i class="fa-solid fa-circle-info"></i>' +
+            '</div>' +
+            '<div class="notif-screen__item-content">' +
+                '<div class="notif-screen__item-title">' + (title || '') + '</div>' +
+                '<div class="notif-screen__item-body">' + (body || '').substring(0, 80) + '</div>' +
+                '<div class="notif-screen__item-time">الآن</div>' +
+            '</div>' +
+            '<button type="button" class="notif-screen__dismiss" title="تجاهل">' +
+                '<i class="fa-solid fa-xmark"></i>' +
+            '</button>';
+
+        if (sectionTitle) {
+            sectionTitle.after(item);
+        } else {
+            notifBody.prepend(item);
+        }
+
+        bindNotifItem(item);
+        bindDismissBtn(item.querySelector('.notif-screen__dismiss'));
+    }
+
+    // ── Polling (fallback) ────────────────────────────────────────────────────
+    var shownKey = 'shown_notif_ids';
+
+    function getShown() {
+        try { return JSON.parse(sessionStorage.getItem(shownKey) || '[]'); } catch(e) { return []; }
+    }
+
+    function markShown(id) {
+        var arr = getShown();
+        if (arr.indexOf(id) === -1) {
+            arr.push(id);
+            if (arr.length > 100) arr = arr.slice(-100);
+            sessionStorage.setItem(shownKey, JSON.stringify(arr));
+        }
+    }
+
     function pollNotifications() {
         fetch('/members/notifications', {
             headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
@@ -343,8 +415,6 @@
             if (!data || !Array.isArray(data.notifications)) return;
 
             var shown = getShown();
-
-            // إشعارات غير مقروءة ولم تُظهر toast بعد
             var toShow = data.notifications.filter(function (n) {
                 return !n.read_at && shown.indexOf(n.id) === -1;
             });
@@ -359,7 +429,62 @@
         .catch(function () {});
     }
 
-    // أول تشغيل: اعلم كل الإشعارات الموجودة بدون toast، ثم ابدأ الـ polling
+    // ── Pusher real-time ──────────────────────────────────────────────────────
+    var pusherKey     = window.__PUSHER_KEY__     || '';
+    var pusherCluster = window.__PUSHER_CLUSTER__ || 'mt1';
+    var authUserId    = window.__AUTH_USER_ID__   || 0;
+    var usePusher     = false;
+
+    if (pusherKey && authUserId && typeof Pusher !== 'undefined') {
+        try {
+            var pusher = new Pusher(pusherKey, {
+                cluster:       pusherCluster,
+                forceTLS:      true,
+                authEndpoint:  '/broadcasting/auth',
+                auth: {
+                    headers: {
+                        'X-CSRF-TOKEN': csrf,
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                },
+            });
+
+            var channel = pusher.subscribe('private-member-notifications.' + authUserId);
+
+            channel.bind('new-notification', function (data) {
+                var id    = data.notificationId || data.notification_id;
+                var title = data.title || '';
+                var body  = data.body  || '';
+
+                if (id) markShown(id);
+
+                showToast(title, body, id);
+                addNotifToPanel(id, title, body);
+                updateBadge(currentBadge() + 1);
+            });
+
+            channel.bind('pusher:subscription_succeeded', function () {
+                usePusher = true;
+            });
+
+            channel.bind('pusher:subscription_error', function () {
+                usePusher = false;
+            });
+
+            pusher.connection.bind('connected', function () {
+                usePusher = true;
+            });
+
+            pusher.connection.bind('disconnected', function () {
+                usePusher = false;
+            });
+
+        } catch (err) {
+            usePusher = false;
+        }
+    }
+
+    // Init: mark all current notifications as seen (no toast on page load)
     fetch('/members/notifications', {
         headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
         credentials: 'same-origin',
@@ -367,14 +492,17 @@
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (data) {
         if (!data || !Array.isArray(data.notifications)) return;
-        // حفظ الإشعارات الحالية كـ "مرئية" بدون إظهار toast
         data.notifications.forEach(function (n) { markShown(n.id); });
         updateBadge(data.total_badge);
     })
     .catch(function () {})
     .finally(function () {
-        // ابدأ الـ polling بعد كده
-        setInterval(pollNotifications, 8000);
+        // Polling: every 5s when Pusher disconnected, every 30s when connected
+        setInterval(function () {
+            if (!usePusher) pollNotifications();
+        }, 5000);
+
+        setInterval(pollNotifications, 30000);
     });
 
 })();

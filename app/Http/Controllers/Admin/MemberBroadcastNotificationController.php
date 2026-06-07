@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\NewMemberNotification;
 use App\Http\Controllers\Controller;
 use App\Models\MemberBroadcastNotification;
 use App\Models\User;
@@ -47,10 +48,21 @@ class MemberBroadcastNotificationController extends Controller
                 : collect($validated['user_ids'] ?? []);
 
             foreach ($userIds as $userId) {
-                UserNotification::create([
+                $userNotif = UserNotification::create([
                     'member_broadcast_notification_id' => $broadcast->id,
                     'user_id' => $userId,
                 ]);
+
+                try {
+                    broadcast(new NewMemberNotification(
+                        userId:         (int) $userId,
+                        notificationId: $userNotif->id,
+                        title:          $broadcast->title,
+                        body:           $broadcast->body,
+                    ));
+                } catch (\Throwable) {
+                    // لو Pusher مش متاح، الـ polling يكمّل
+                }
             }
         });
 

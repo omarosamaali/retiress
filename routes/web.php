@@ -29,6 +29,9 @@ use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\PublicEventController;
 use App\Http\Middleware\CheckUserStatus;
 
+// Broadcasting auth (required for private channels)
+\Illuminate\Support\Facades\Broadcast::routes(['middleware' => ['auth']]);
+
 Route::get('contact-us', [ContactMessageController::class, 'index'])->name('contact-us');
 Route::post('contact-us', [ContactMessageController::class, 'store'])->name('contact-us.store');
 

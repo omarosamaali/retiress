@@ -135,7 +135,7 @@
                 <td>{{ $member->nationality ?? 'لا توجد جنسية' }}</td>
                 <td>{{ $member->emirate ?? 'لا توجد إمارة' }}</td>
                 <td>{{ $member->mobile_phone ?? 'غير محدد' }}</td>
-                <td>{{ $member->gender == 'male' ? 'ذكر' : 'أنثى' }}</td>
+                <td>{{ in_array($member->gender, ['male', 'ذكر']) ? 'ذكر' : 'أنثى' }}</td>
                 <td>
                     @if ($member->personal_photo_path)
                     <img style="height: 50px;" src="{{ asset('storage/' . $member->personal_photo_path) }}" alt="{{ $member->full_name }}" class="about-img">
