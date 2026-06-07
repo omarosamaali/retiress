@@ -55,7 +55,8 @@
                     {{-- Job row --}}
                     <div class="mci-row mci-row--job">
                         <span class="mci-row__lbl">{{ __('app.job_title') }} :</span>
-                        <span class="mci-row__val">
+                        <span class="mci-row__val" style="right: -52px;
+    position: relative;">
                             {{ trim(($card['job_title'] ?? '') . (($card['employer'] ?? '') ? ' — ' . $card['employer'] : '')) ?: '—' }}
                         </span>
                     </div>
@@ -69,7 +70,8 @@
                             <span class="mci-date__lbl">{{ __('app.issue_date') }} :</span>
                             <span class="mci-date__val">{{ $card['issue_date'] ?? '—' }}</span>
                         </div>
-                        <div class="mci-date-group">
+                        <div class="mci-date-group" style="right: -108px;
+    position: relative;">
                             <span class="mci-date__lbl">{{ __('app.membership_expiry') }} :</span>
                             <span class="mci-date__val">{{ $card['expiration_date'] ?? '—' }}</span>
                         </div>

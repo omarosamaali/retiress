@@ -50,7 +50,7 @@
         </div>
         <div class="col-md-4">
             <div class="detail-item">
-                <span class="detail-label">تاريخ انتهاء العضوية:</span>
+                <span class="detail-label">تاريخ الانتهاء:</span>
                 <input type="date" class="form-control" name="expiration_date"
                     value="{{ old('expiration_date', $memberData->expiration_date ? \Carbon\Carbon::parse($memberData->expiration_date)->format('Y-m-d') : '') }}">
                 @error('expiration_date')

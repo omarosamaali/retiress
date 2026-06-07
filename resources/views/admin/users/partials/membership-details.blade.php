@@ -38,7 +38,7 @@
         </div>
         <div class="col-md-4">
             <div class="detail-item">
-                <span class="detail-label">تاريخ انتهاء العضوية:</span>
+                <span class="detail-label">تاريخ الانتهاء:</span>
                 <div class="detail-value">
                     {{ $application->expiration_date ? \Carbon\Carbon::parse($application->expiration_date)->format('d/m/Y') : '—' }}
                 </div>
