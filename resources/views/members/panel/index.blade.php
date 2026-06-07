@@ -37,11 +37,10 @@
             @if ($__panelExpStr)
             <div class="mp-expiry-badge mp-expiry-badge--{{ $__panelIsExp ? 'expired' : ($__panelDays <= 30 ? 'expiring' : 'active') }}">
                 <i class="fa-solid fa-calendar-xmark"></i>
-                -
                 @if ($__panelIsExp)
                     انتهت العضوية {{ $__panelExpStr }}
                 @else
-                    تنتهي العضوية {{ $__panelExpStr }} بعد
+                    تنتهي العضوية {{ $__panelExpStr }} بعد - 
                     @if ($__panelDays !== null)
                         <span class="mp-expiry-days" style="color:white;">({{ $__panelDays }} يوم)</span>
                     @endif
