@@ -200,6 +200,7 @@
                     @endif
 
                     {{-- زر الخروج — على شمال الاسم --}}
+                    <span>{{ __('app.welcome') }}.. {{ \Illuminate\Support\Str::limit($__hUser->name, 30, '.') }}</span>
                     <form action="{{ route('members.logout') }}" method="POST" style="margin:0;display:inline-flex;align-items:center;">
                         @csrf
                         <button type="submit"
@@ -210,7 +211,6 @@
                         </button>
                     </form>
 
-                    <span>{{ __('app.welcome') }}.. {{ \Illuminate\Support\Str::limit($__hUser->name, 30, '.') }}</span>
 
                 </div>
                 @endauth
