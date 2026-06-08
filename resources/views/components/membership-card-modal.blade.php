@@ -55,7 +55,7 @@
                     {{-- Job row --}}
                     <div class="mci-row mci-row--job">
                         <span class="mci-row__lbl" style="position: relative;right: 50px;">{{ __('app.job_title') }} :</span>
-                        <span class="mci-row__val" style="right: -52px;
+                        <span class="mci-row__val" style="right: 22px;
     position: relative;">
                             {{ trim(($card['job_title'] ?? '') . (($card['employer'] ?? '') ? ' — ' . $card['employer'] : '')) ?: '—' }}
                         </span>
