@@ -499,19 +499,19 @@
 
 <div class="row">
     <div class="col-6">
-        <x-services-table :services="$services" />
+        <x-services-table :services="$activeServices" />
     </div>
     <div class="col-6">
-        <x-events-table :events="$events" />
+        <x-events-table :events="$activeEvents" />
     </div>
 </div>
 
 <div class="row">
     <div class="col-6">
-        <x-services-cricle :services="$services" />
+        <x-services-cricle :services="$activeServices" />
     </div>
     <div class="col-6">
-        <x-events-cricle :events="$events" />
+        <x-events-cricle :events="$activeEvents" />
     </div>
 </div>
 
