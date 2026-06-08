@@ -48,13 +48,13 @@
 
                     {{-- Name row --}}
                     <div class="mci-row mci-row--name">
-                        <span class="mci-row__lbl">{{ __('app.full_name') }} :</span>
+                        <span class="mci-row__lbl" style="position: relative;right: -50px;">{{ __('app.full_name') }} :</span>
                         <span class="mci-row__val">{{ $card['full_name'] ?? '—' }}</span>
                     </div>
 
                     {{-- Job row --}}
                     <div class="mci-row mci-row--job">
-                        <span class="mci-row__lbl">{{ __('app.job_title') }} :</span>
+                        <span class="mci-row__lbl" style="position: relative;right: -50px;">{{ __('app.job_title') }} :</span>
                         <span class="mci-row__val" style="right: -52px;
     position: relative;">
                             {{ trim(($card['job_title'] ?? '') . (($card['employer'] ?? '') ? ' — ' . $card['employer'] : '')) ?: '—' }}
@@ -66,7 +66,7 @@
 
                     {{-- Dates --}}
                     <div class="mci-dates">
-                        <div class="mci-date-group">
+                        <div class="mci-date-group" style="position: relative;right: -50px;">
                             <span class="mci-date__lbl">{{ __('app.issue_date') }} :</span>
                             <span class="mci-date__val">{{ $card['issue_date'] ?? '—' }}</span>
                         </div>
