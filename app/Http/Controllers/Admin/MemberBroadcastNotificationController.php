@@ -17,10 +17,29 @@ class MemberBroadcastNotificationController extends Controller
 {
     public function create(): View
     {
-        $recent  = MemberBroadcastNotification::with('creator')->latest()->limit(10)->get();
+        // oldest first so newest appears at the bottom
+        $recent  = MemberBroadcastNotification::with('creator')->oldest()->limit(20)->get();
         $members = User::where('role', 'عضو')->orderBy('name')->get(['id', 'name']);
 
         return view('admin.notifications.create', compact('recent', 'members'));
+    }
+
+    public function show(int $id): View
+    {
+        $notification = MemberBroadcastNotification::with('creator')->findOrFail($id);
+
+        $readRecords = UserNotification::with('user')
+            ->where('member_broadcast_notification_id', $id)
+            ->whereNotNull('read_at')
+            ->latest('read_at')
+            ->get();
+
+        $unreadRecords = UserNotification::with('user')
+            ->where('member_broadcast_notification_id', $id)
+            ->whereNull('read_at')
+            ->get();
+
+        return view('admin.notifications.show', compact('notification', 'readRecords', 'unreadRecords'));
     }
 
     public function store(Request $request): RedirectResponse

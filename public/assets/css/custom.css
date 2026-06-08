@@ -3083,6 +3083,10 @@ p {
     background: rgba(111, 66, 193, 0.92);
 }
 
+.event-type-badge--meeting {
+    background: rgba(14, 116, 144, 0.92);
+}
+
 .event-type-badge--default {
     background: rgba(52, 58, 64, 0.92);
 }
@@ -4230,6 +4234,7 @@ p {
 .mp-event-type--event-type-badge--lecture  { background: #fff3e0; color: #f57c00; }
 .mp-event-type--event-type-badge--event    { background: #e8f3ed; color: #016330; }
 .mp-event-type--event-type-badge--feature  { background: #fce4ec; color: #c2185b; }
+.mp-event-type--event-type-badge--meeting  { background: #e0f7fa; color: #0e7490; }
 
 /* End date label */
 .mp-event-ends { color: #e57373; }

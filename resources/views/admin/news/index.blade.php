@@ -154,6 +154,16 @@
         </div>
     @endif
 
+    <form method="GET" action="{{ route('admin.news.index') }}" class="mb-3">
+        <div class="input-group" style="max-width:420px;">
+            <input type="text" name="search" class="form-control" placeholder="بحث بعنوان الخبر..." value="{{ request('search') }}">
+            <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+            @if(request('search'))
+                <a href="{{ route('admin.news.index') }}" class="btn btn-outline-danger" title="مسح البحث"><i class="fas fa-times"></i></a>
+            @endif
+        </div>
+    </form>
+
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>

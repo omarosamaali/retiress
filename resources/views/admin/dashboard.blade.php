@@ -110,22 +110,13 @@
 
 @section('content')
 {{-- إشعارات الداشبورد --}}
-@if ($newMembershipRequests > 0 || $unreadMessages > 0)
+@if ($newMembershipRequests > 0)
 <div class="dash-alerts">
-    @if ($newMembershipRequests > 0)
     <a href="{{ route('admin.manageMembership.index') }}" class="dash-alert dash-alert--membership">
         <i class="fa-solid fa-user-clock"></i>
         <span>{{ $newMembershipRequests }} طلب عضوية جديد بانتظار الموافقة</span>
         <i class="fa-solid fa-chevron-left dash-alert__arrow"></i>
     </a>
-    @endif
-    @if ($unreadMessages > 0)
-    <a href="{{ route('admin.chat') }}" class="dash-alert dash-alert--messages">
-        <i class="fa-solid fa-envelope"></i>
-        <span>{{ $unreadMessages }} رسالة غير مقروءة من الأعضاء</span>
-        <i class="fa-solid fa-chevron-left dash-alert__arrow"></i>
-    </a>
-    @endif
 </div>
 @endif
 
@@ -138,67 +129,214 @@
 </div>
 
 <div class="container">
-    <div class="row g-3">
-        <div class="col-12 col-md">
+
+    {{-- ── قسم العضويات ── --}}
+    <p class="fw-bold mb-2" style="color:#6c757d;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;">إحصائيات العضويات</p>
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md">
             <div class="stats-card">
                 <div class="icon first container-top">
                     <i class="fas fa-users"></i>
-                    <div class="label">عدد العضوية الفعالة</div>
+                    <div class="label">عضويات فعالة</div>
                 </div>
                 <div class="number" data-count="{{ $activeMembersCount }}">0</div>
                 <p class="text-muted">آخر انضمام:
-                    {{ $activeMembersApplications->first() ? $activeMembersApplications->first()->created_at->diffForHumans() : 'غير متوفر' }}
+                    {{ $activeMembersApplications->first()?->created_at->diffForHumans() ?? 'غير متوفر' }}
                 </p>
             </div>
         </div>
-        <div class="col-12 col-md">
-            <div class="stats-card">
-                <div class="icon second container-top">
-                    <i class="fas fa-user-slash"></i>
-                    <div class="label">عدد العضوية المنتهية</div>
-                </div>
-                <div class="number" data-count="{{ $inActiveMembersCount }}">0</div>
-                <p class="text-muted">آخر انضمام:
-                    {{ $inActiveMembersApplications->first() ? $inActiveMembersApplications->first()->created_at->diffForHumans() : 'غير متوفر' }}
-                </p>
-            </div>
-        </div>
-        <div class="col-12 col-md">
-            <div class="stats-card">
-                <div class="icon third container-top">
-                    <i class="fas fa-calendar-check"></i>
-                    <div class="label">عدد الإعلانات الفعالة</div>
-                </div>
-                <div class="number" data-count="{{ $activeEventsCount }}">0</div>
-                <p class="text-muted">آخر انضمام:
-                    {{ $activeEvents->first() ? $activeEvents->first()->created_at->diffForHumans() : 'غير متوفر' }}</p>
-            </div>
-        </div>
-        <div class="col-12 col-md">
+        <div class="col-6 col-md">
             <div class="stats-card">
                 <div class="icon fourth container-top">
-                    <i class="fas fa-calendar-times"></i>
-                    <div class="label">عدد الإعلانات المنتهية</div>
+                    <i class="fas fa-user-slash"></i>
+                    <div class="label">عضويات منتهية</div>
                 </div>
-                <div class="number" data-count="{{ $inActiveEventsCount }}">0</div>
-                <p class="text-muted">آخر انضمام:
-                    {{ $inActiveEvents->first() ? $inActiveEvents->first()->created_at->diffForHumans() : 'غير متوفر' }}
-                </p>
+                <div class="number" data-count="{{ $expiredMembersCount }}">0</div>
+                <p class="text-muted">المنتهية يدوياً أو بالتاريخ</p>
             </div>
         </div>
-        <div class="col-12 col-md">
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon second container-top">
+                    <i class="fas fa-clock"></i>
+                    <div class="label">بانتظار الموافقة</div>
+                </div>
+                <div class="number" data-count="{{ $membersPendingApproval }}">0</div>
+                <p class="text-muted">طلبات تحتاج مراجعة</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon third container-top">
+                    <i class="fas fa-credit-card"></i>
+                    <div class="label">بانتظار الدفع</div>
+                </div>
+                <div class="number" data-count="{{ $membersPendingPayment }}">0</div>
+                <p class="text-muted">لم يتم الدفع بعد</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
             <div class="stats-card">
                 <div class="icon first container-top">
-                    <i class="fas fa-concierge-bell"></i>
-                    <div class="label">عدد الخدمات الفعالة</div>
+                    <i class="fas fa-user-check"></i>
+                    <div class="label">بانتظار التفعيل</div>
                 </div>
-                <div class="number" data-count="{{ $activeServicesCount }}">0</div>
-                <p class="text-muted">آخر انضمام:
-                    {{ $activeServices->first() ? $activeServices->first()->created_at->diffForHumans() : 'غير متوفر' }}
-                </p>
+                <div class="number" data-count="{{ $membersPendingActivation }}">0</div>
+                <p class="text-muted">تم الدفع، انتظار التفعيل</p>
             </div>
         </div>
     </div>
+
+    {{-- ── قسم الإعلانات ── --}}
+    <p class="fw-bold mb-2" style="color:#6c757d;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;">إحصائيات الإعلانات</p>
+    <div class="row g-3 mb-2">
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon third container-top">
+                    <i class="fas fa-calendar-check"></i>
+                    <div class="label">إعلانات فعالة</div>
+                </div>
+                <div class="number" data-count="{{ $activeEventsCount }}">0</div>
+                <p class="text-muted">آخر إضافة: {{ $activeEvents->first()?->created_at->diffForHumans() ?? 'غير متوفر' }}</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon fourth container-top">
+                    <i class="fas fa-calendar-times"></i>
+                    <div class="label">إعلانات معطّلة</div>
+                </div>
+                <div class="number" data-count="{{ $inActiveEventsCount }}">0</div>
+                <p class="text-muted">آخر إضافة: {{ $inActiveEvents->first()?->created_at->diffForHumans() ?? 'غير متوفر' }}</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon second container-top">
+                    <i class="fas fa-hourglass-half"></i>
+                    <div class="label">اشتراكات بانتظار الموافقة</div>
+                </div>
+                <div class="number" data-count="{{ $subPending }}">0</div>
+                <p class="text-muted">تحتاج إجراء</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon third container-top">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <div class="label">اشتراكات بانتظار الدفع</div>
+                </div>
+                <div class="number" data-count="{{ $subWaitingPayment }}">0</div>
+                <p class="text-muted">لم يرفع الإيصال</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon first container-top">
+                    <i class="fas fa-spinner"></i>
+                    <div class="label">بانتظار التفعيل</div>
+                </div>
+                <div class="number" data-count="{{ $subWaitingActivation }}">0</div>
+                <p class="text-muted">تم الدفع، انتظار التفعيل</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon second container-top">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="label">اشتراكات فعالة</div>
+                </div>
+                <div class="number" data-count="{{ $subActive }}">0</div>
+                <p class="text-muted">نشطة حالياً</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon fourth container-top">
+                    <i class="fas fa-times-circle"></i>
+                    <div class="label">اشتراكات مرفوضة</div>
+                </div>
+                <div class="number" data-count="{{ $subRejected }}">0</div>
+                <p class="text-muted">تم الرفض</p>
+            </div>
+        </div>
+    </div>
+
+    {{-- ── قسم الخدمات ── --}}
+    <p class="fw-bold mb-2 mt-4" style="color:#6c757d;font-size:.82rem;letter-spacing:.04em;text-transform:uppercase;">إحصائيات الخدمات</p>
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon first container-top">
+                    <i class="fas fa-concierge-bell"></i>
+                    <div class="label">خدمات فعالة</div>
+                </div>
+                <div class="number" data-count="{{ $activeServicesCount }}">0</div>
+                <p class="text-muted">آخر إضافة: {{ $activeServices->first()?->created_at->diffForHumans() ?? 'غير متوفر' }}</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon fourth container-top">
+                    <i class="fas fa-ban"></i>
+                    <div class="label">خدمات معطّلة</div>
+                </div>
+                <div class="number" data-count="{{ $inActiveServicesCount }}">0</div>
+                <p class="text-muted">آخر إضافة: {{ $inActiveServices->first()?->created_at->diffForHumans() ?? 'غير متوفر' }}</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon second container-top">
+                    <i class="fas fa-hourglass-half"></i>
+                    <div class="label">اشتراكات بانتظار الموافقة</div>
+                </div>
+                <div class="number" data-count="{{ $svcSubPending }}">0</div>
+                <p class="text-muted">تحتاج إجراء</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon third container-top">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <div class="label">اشتراكات بانتظار الدفع</div>
+                </div>
+                <div class="number" data-count="{{ $svcSubWaitingPayment }}">0</div>
+                <p class="text-muted">لم يرفع الإيصال</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon first container-top">
+                    <i class="fas fa-spinner"></i>
+                    <div class="label">بانتظار التفعيل</div>
+                </div>
+                <div class="number" data-count="{{ $svcSubWaitingActivation }}">0</div>
+                <p class="text-muted">تم الدفع، انتظار التفعيل</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon second container-top">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="label">اشتراكات فعالة</div>
+                </div>
+                <div class="number" data-count="{{ $svcSubActive }}">0</div>
+                <p class="text-muted">نشطة حالياً</p>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="stats-card">
+                <div class="icon fourth container-top">
+                    <i class="fas fa-times-circle"></i>
+                    <div class="label">اشتراكات مرفوضة</div>
+                </div>
+                <div class="number" data-count="{{ $svcSubRejected }}">0</div>
+                <p class="text-muted">تم الرفض</p>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <div class="row" style="margin-bottom: 20px;">

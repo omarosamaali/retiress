@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\MemberApplication;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth; // Don't forget this!
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage; // Don't forget this for file operations!
-use Illuminate\Validation\Rule; // Needed for unique validation on update
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use App\Services\MemberApplicationUpdater;
 
@@ -56,6 +57,19 @@ class ManageMembershipController extends Controller
         $membership = $query->paginate(50);
 
         return view('admin.manageMembership.index', compact('membership'));
+    }
+
+    public function activity($id)
+    {
+        $application = MemberApplication::findOrFail($id);
+        $user        = $application->user_id ? User::find($application->user_id) : null;
+
+        $transactions = Transaction::with(['event', 'service'])
+            ->where('user_id', $application->user_id ?? 0)
+            ->latest()
+            ->paginate(20);
+
+        return view('admin.manageMembership.activity', compact('application', 'user', 'transactions'));
     }
 
     public function edit(Request $request , $id)

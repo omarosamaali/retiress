@@ -11,7 +11,8 @@
             @forelse ($serviceEvents as $event)
             <div class="service pe">
                 <img class="service-img" src="{{ asset('storage/' . $event->main_image) }}"
-                 alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}">
+                 alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
+                 style="width:90px;height:90px;object-fit:cover;border-radius:8px;">
                 <h4 class="servicetitle">{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}</h4>
                 <p class="servicedesc">{{ \Illuminate\Support\Str::limit(app()->getLocale() == 'ar' ? $event->description_ar : $event->description_en, 100) }}</p>
                 <a href="{{ url('/events/show/' . $event->id) }}" class="servicelink">
@@ -22,7 +23,8 @@
             @foreach ($services as $service)
             <div class="service pe">
                 <img class="service-img" src="{{ asset('storage/' . $service->image) }}"
-                 alt="{{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}">
+                 alt="{{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}"
+                 style="width:90px;height:90px;object-fit:cover;border-radius:8px;">
                 <h4 class="servicetitle">{{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}</h4>
                 <p class="servicedesc">{{ app()->getLocale() == 'ar' ? $service->description_ar : $service->description_en }}</p>
                 <a href="{{ route('services.show', $service) }}" class="servicelink">

@@ -56,29 +56,8 @@
                                 {{ __('app.who_we_are') }}</a></li>
                         <li><a href="{{ route('members.members-list') }}"> {{-- Assuming this links to board members --}}
                                 {{ __('app.board_members_footer') }}</a></li>
-                        <li><a href="{{ route('services.all-services') }}"> {{-- Assuming this links to all services --}}
-                                {{ __('app.services_footer') }}
-                            </a></li>
                         <li><a href="{{ route('members.committees') }}"> {{-- Assuming this links to committees --}}
                                 {{ __('app.committees_and_councils') }}</a></li>
-                    </ul>
-                </div>
-            </aside>
-            <aside class="wid-6bk footer-8vj">
-                <div class="title-opx">
-                    <h4>{{ __('app.read_more') }}</h4>
-                </div>
-                <div>
-                    <ul id="men-54n">
-                        <li><a href="{{ route('services.show', ['id'=>1]) }}"> {{-- Assuming this links to Es'ad card service --}}
-                                {{ __('app.esaad_card_footer') }}</a></li>
-                        <li><a href="{{ route('services.show', ['id'=>2]) }}"> {{-- Assuming this links to Zakat Fund service --}}
-                                {{ __('app.zakat_fund_footer') }}
-                            </a></li>
-                        <li><a href="{{ route('services.show', ['id'=>3]) }}"> {{-- Assuming this links to Volunteering service --}}
-                                {{ __('app.volunteering_footer') }}
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </aside>

@@ -26,7 +26,6 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\Admin\MemberBroadcastNotificationController;
-use App\Http\Controllers\ChatController;
 
 Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->group(function () {
     Route::get('/sliders', [SliderController::class, 'index'])->name('sliders.index');
@@ -61,14 +60,13 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::post('/messages/{message}/update-status-and-reply', [MessageController::class, 'adminUpdateStatusAndReply'])->name('messages.update-status-and-reply');
 
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
-    Route::get('/chat', [ChatController::class, 'adminChat'])->name('chat');
-    Route::get('/messages/{userId}', [ChatController::class, 'getMessages'])->name('chat.messages');
-    Route::post('/send-message', [ChatController::class, 'sendMessage'])->name('chat.send');
     Route::get('/member-notifications', [MemberBroadcastNotificationController::class, 'create'])->name('member-notifications.create');
     Route::post('/member-notifications', [MemberBroadcastNotificationController::class, 'store'])->name('member-notifications.store');
+    Route::get('/member-notifications/{id}', [MemberBroadcastNotificationController::class, 'show'])->name('member-notifications.show');
     Route::resource('users', UserController::class);
     Route::resource('membership', MembershipController::class);
     Route::resource('manageMembership', ManageMembershipController::class);
+    Route::get('/manageMembership/{id}/activity', [ManageMembershipController::class, 'activity'])->name('manageMembership.activity');
     Route::resource('packages', PackageController::class);
     Route::resource('plans', PlanController::class);
     Route::resource('event', EventController::class);

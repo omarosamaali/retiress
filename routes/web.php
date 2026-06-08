@@ -271,6 +271,7 @@ Route::get('/services/all-services', function () {
 Route::get('/events/show/{id}', [PublicEventController::class, 'show'])->name('events.show');
 
 Route::get('/events/all-events', [PublicEventController::class, 'index'])->name('events.all-events');
+Route::get('/events/services', [PublicEventController::class, 'services'])->name('events.services');
 
 Route::get('/news/show/{id}', function ($id) {
     $news = News::find($id);
@@ -291,9 +292,8 @@ Route::get('/dashboard', function () {
 
     $news = News::latest()->limit(3)->get();
     $events = Event::publiclyListed()->latest()->get();
-    $services = Service::latest()->limit(3)->get();
     $magazines = Magazine::latest()->first();
-    return view('dashboard', compact('banner', 'news', 'events', 'services', 'magazines'));
+    return view('dashboard', compact('banner', 'news', 'events', 'magazines'));
 })->name('dashboard');
 
 Route::get('/', function () {

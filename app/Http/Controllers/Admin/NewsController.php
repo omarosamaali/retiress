@@ -13,9 +13,19 @@ use Illuminate\Support\Facades\Mail;
 
 class NewsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $news = News::latest()->paginate(10);
+        $query = News::latest();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title_ar', 'like', "%{$search}%")
+                  ->orWhere('title_en', 'like', "%{$search}%");
+            });
+        }
+
+        $news = $query->paginate(10)->withQueryString();
         return view('admin.news.index', compact('news'));
     }
 

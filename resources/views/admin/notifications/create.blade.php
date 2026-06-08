@@ -191,14 +191,20 @@
             @if($recent->isNotEmpty())
             <div>
                 @foreach($recent as $item)
-                <div class="recent-item">
-                    <div class="recent-item__title">{{ $item->title }}</div>
-                    <div class="recent-item__body">{{ Str::limit($item->body, 80) }}</div>
-                    <div class="recent-item__meta">
-                        <i class="fa-regular fa-clock"></i>
-                        {{ $item->sent_at?->format('d/m/Y H:i') }}
-                        @if($item->creator) &mdash; {{ $item->creator->name }} @endif
+                <div class="recent-item" style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+                    <div style="flex:1;min-width:0;">
+                        <div class="recent-item__title">{{ $item->title }}</div>
+                        <div class="recent-item__body">{{ Str::limit($item->body, 80) }}</div>
+                        <div class="recent-item__meta">
+                            <i class="fa-regular fa-clock"></i>
+                            {{ $item->sent_at?->format('d/m/Y H:i') }}
+                            @if($item->creator) &mdash; {{ $item->creator->name }} @endif
+                        </div>
                     </div>
+                    <a href="{{ route('admin.member-notifications.show', $item->id) }}"
+                       class="btn btn-sm btn-outline-primary flex-shrink-0" style="font-size:.75rem;padding:3px 10px;" title="عرض التفاصيل">
+                        <i class="fas fa-eye"></i>
+                    </a>
                 </div>
                 @endforeach
             </div>

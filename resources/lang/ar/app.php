@@ -43,7 +43,7 @@ return [
     'issue_date' => 'تاريخ الإصدار',
     'no_magazines_available' => 'لا توجد المنبر متاحة حالياً.',
     'quick_links' => 'روابط سريعة',
-    'magazine_pulse' => 'المقال نبض',
+    'magazine_pulse' => 'منبر الخبراء',
     'who_we_are' => 'من نحن',
     'board_members_footer' => 'أعضاء مجلس الإدارة', // تم تغيير المفتاح لتجنب التكرار مع "board_members" السابق
     'services_footer' => 'الخدمات', // تم تغيير المفتاح لتجنب التكرار مع "services" السابق
@@ -93,6 +93,7 @@ return [
     'request_to_join_please' => 'لطلب الانضمام .. يرجى',
     'or' => 'أو',
     'create_new_account' => 'إنشاء حساب جديد',
+    'register_membership' => 'تسجيل عضوية',
     'no_councils_available' => 'لا توجد مجالس متاحة حالياً.', // Assuming you might need a message for empty councils
     'no_committees_available' => 'لا توجد لجان متاحة حالياً.', // Assuming you might need a message for empty committees
     'events_page_title' => 'الإعلانات',

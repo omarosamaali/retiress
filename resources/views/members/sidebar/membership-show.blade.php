@@ -1921,8 +1921,7 @@
                                                                         <select name="nationality" id="ff_3_nationality"
                                                                             class="form-control-27x" required>
 
-                                                                            <option value="">{{ __('app.select') }}
-                                                                            </option>
+                                                                            <option value="">{{ __('app.select') }}</option>
                                                                             <option value="أفغانستان">{{
                                                                                 __('app.afghanistan') }}</option>
                                                                             <option value="ألبانيا">{{ __('app.albania')
@@ -2300,7 +2299,7 @@
                                                                                 }}</option>
                                                                             <option value="أوكرانيا">{{
                                                                                 __('app.ukraine') }}</option>
-                                                                            <option value="الإمارات العربية المتحدة">{{
+                                                                            <option value="الإمارات العربية المتحدة" selected>{{
                                                                                 __('app.united_arab_emirates') }}
                                                                             </option>
                                                                             <option value="المملكة المتحدة">{{

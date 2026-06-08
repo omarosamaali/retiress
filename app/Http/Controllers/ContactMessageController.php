@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ContactMessage;
+use App\Support\Turnstile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -18,6 +19,14 @@ class ContactMessageController extends Controller
 
     public function store(Request $request)
     {
+        // Turnstile verification
+        $token = $request->input('cf-turnstile-response', '');
+        if (! Turnstile::verify($token, $request->ip())) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['cf-turnstile-response' => 'يرجى إكمال التحقق الأمني (Cloudflare Turnstile).']);
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',

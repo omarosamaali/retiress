@@ -65,7 +65,7 @@
             <i class="fa-solid fa-right-to-bracket" style="margin-left:5px;"></i>{{ __('app.login') }}
         </a>
         <a href="{{ route('members.register') }}" style="background:#f3f4f6;color:#374151;padding:7px 20px;border-radius:8px;font-size:.85rem;font-weight:700;text-decoration:none;border:1px solid #d1d5db;">
-            {{ __('app.create_new_account') }}
+            {{ __('app.register_membership') }}
         </a>
     </div>
 </div>
@@ -156,8 +156,8 @@
                 </div>
                 @endif
                 @if (in_array($subscribeBlockReason, ['members_only_audience','membership_required','membership_inactive','member_role_required'], true))
-                <a href="{{ route('members.register') }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:.82rem;color:#ea580c;font-weight:600;text-decoration:none;">
-                    <i class="fa-solid fa-arrow-left"></i>{{ __('app.create_new_account') }}
+                <a href="{{ route('members.membership-show') }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:.82rem;color:#ea580c;font-weight:600;text-decoration:none;">
+                    <i class="fa-solid fa-id-card"></i>{{ __('app.register_membership') }}
                 </a>
                 @endif
             </div>

@@ -144,27 +144,39 @@
                     @endif
                 </td>
                 <td>
-                    <span style="color: white; border-radius: 5px; padding: 0px 3px; {{ $member->status == '0' ? 'background: red' : ($member->status == '1' ? 'background: purple' : ($member->status == '2' ? 'background: blue' : ($member->status == '3' ? 'background: green' : 'background: orange'))) }}">
-                        @switch($member->status)
-                        @case('0') بإنتظار الدفع @break
-                        @case('1') بإنتظار التفعيل @break
-                        @case('2') بإنتظار الموافقة @break
-                        @case('3') فعال @break
-                        @case('4') منتهي @break
-                        @default حالة غير معروفة @endswitch
+                    @php
+                        $isExpired = $member->isExpiredByDate() || (string)$member->status === '4';
+                        $statusBg  = $isExpired ? 'background:#6c757d' : match((string)$member->status) {
+                            '0' => 'background:red',
+                            '1' => 'background:purple',
+                            '2' => 'background:blue',
+                            '3' => 'background:green',
+                            default => 'background:orange',
+                        };
+                        $statusLabel = $isExpired ? 'منتهي' : match((string)$member->status) {
+                            '0' => 'بإنتظار الدفع',
+                            '1' => 'بإنتظار التفعيل',
+                            '2' => 'بإنتظار الموافقة',
+                            '3' => 'فعال',
+                            default => 'حالة غير معروفة',
+                        };
+                    @endphp
+                    <span style="color:white;border-radius:5px;padding:0px 3px;{{ $statusBg }}">
+                        {{ $statusLabel }}
                     </span>
                 </td>
                 <td>
                     <div class="action-buttons">
-                        {{-- <a href="{{ route('admin.manageMembership.show', $member->id) }}" class="btn btn-info btn-sm" title="عرض">
-                            <i class="fas fa-eye"></i>
-                        </a> --}}
+                        <a href="{{ route('admin.manageMembership.activity', $member->id) }}" class="btn btn-info btn-sm" title="نشاطات العضو">
+                            <i class="fas fa-history"></i>
+                        </a>
                         <a href="{{ route('admin.manageMembership.edit', $member->id) }}" class="btn btn-warning btn-sm" title="تعديل">
                             <i class="fas fa-edit"></i>
                         </a>
-<button class="btn btn-danger btn-sm" title="حذف" onclick="confirmDeleteModal('manageMembership', {{ $member->id }})">
-    <i class="fas fa-trash"></i>
-</button> </div>
+                        <button class="btn btn-danger btn-sm" title="حذف" onclick="confirmDeleteModal('manageMembership', {{ $member->id }})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
 
                 </td>
             </tr>

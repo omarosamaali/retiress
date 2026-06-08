@@ -5132,169 +5132,324 @@
 
 </head>
 
+<style>
+.news-article {
+    max-width: 860px;
+    margin: 30px auto 60px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 32px rgba(0,0,0,.08);
+    overflow: hidden;
+    direction: rtl;
+}
+
+.news-article__hero {
+    position: relative;
+    width: 100%;
+    max-height: 440px;
+    overflow: hidden;
+    background: #f1f5f9;
+}
+
+.news-article__hero img {
+    width: 100%;
+    max-height: 440px;
+    object-fit: cover;
+    display: block;
+    transition: transform .4s;
+}
+
+.news-article__hero img:hover { transform: scale(1.02); }
+
+.news-article__body {
+    padding: 32px 36px 36px;
+}
+
+.news-article__title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1.6;
+    margin: 0 0 16px;
+    text-align: right;
+}
+
+.news-article__meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    direction: rtl;
+}
+
+.news-article__meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .82rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.news-article__meta-item i { color: #b68a35; }
+
+.news-article__divider {
+    height: 3px;
+    background: linear-gradient(90deg, #b68a35 0%, #f5e6c0 100%);
+    border-radius: 2px;
+    margin-bottom: 24px;
+}
+
+.news-article__content {
+    font-size: .97rem;
+    color: #334155;
+    line-height: 1.95;
+    text-align: right;
+}
+
+.news-article__content p { margin-bottom: 1.1em; }
+
+.news-article__gallery {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.news-article__gallery-title {
+    font-size: .82rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.news-article__gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 10px;
+}
+
+.news-article__gallery-grid img {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 2px 6px rgba(0,0,0,.1);
+}
+
+.news-article__gallery-grid img:hover {
+    transform: scale(1.06);
+    box-shadow: 0 4px 12px rgba(0,0,0,.18);
+}
+
+.news-article__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f5f9;
+    color: #475569;
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-size: .82rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background .18s, color .18s;
+    margin-bottom: 20px;
+}
+
+.news-article__back:hover {
+    background: #b68a35;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Lightbox */
+#newsLightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,.92);
+    justify-content: center;
+    align-items: center;
+}
+
+#newsLightbox.active { display: flex; }
+
+#newsLightbox img {
+    max-width: 90vw;
+    max-height: 88vh;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.5);
+}
+
+#newsLightboxClose {
+    position: absolute;
+    top: 18px;
+    right: 24px;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    background: rgba(255,255,255,.12);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .18s;
+}
+
+#newsLightboxClose:hover { background: rgba(255,255,255,.25); }
+
+@media (max-width: 640px) {
+    .news-article__body { padding: 20px 18px 24px; }
+    .news-article__title { font-size: 1.1rem; }
+    .news-article__gallery-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+}
+</style>
+
 <body>
     <x-guest-header></x-guest-header>
-  <div id="in-cont">
-      <div class="inn-title" style="padding-top: 150px">
-          <h2>
-              <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
-              {{ __('app.news_details_page_title') }}
-          </h2>
-      </div>
+    <div id="in-cont">
+        <div class="inn-title" style="padding-top:150px;">
+            <h2>
+                <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
+                <span><a href="{{ route('news.all-news') }}">{{ __('app.news_page_title') }}</a> &raquo;</span>
+                {{ __('app.news_details_page_title') }}
+            </h2>
+        </div>
 
-      <section class="py-hp3">
-          <div class="container-rni">
-              <div dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}"> {{-- Apply text direction to the main content container --}}
-                  @if($news)
-                  <h1 class="ixrdh form-zwx stm-jdl">{{ app()->getLocale() == 'ar' ? $news->title_ar : $news->title_en }}</h1>
-                  <p>{{ __('app.publication_date') }} : {{ \Carbon\Carbon::parse($news->created_at)->translatedFormat('d F Y') }}</p>
-                  <div class="stm-kf1">
-                      <section class="content-xio">
-                          <div class="container-alf container-ebx">
-                              <div class="row-pbh" style="flex-direction: row; display: flex; gap: 2rem;">
-                                  <div class="container-jor col-fo2">
-                                      <div class="column-l9n">
-                                          <div>
-                                              <div class="image-7bl content-vi3 vc_-vb8">
-                                                  <figure class="vc_-6d1">
-                                                      <div class="wrapper-4kq">
-                                                          {{-- Main Image --}}
-                                                          <img class="clickable-image" style="cursor: pointer !important;" width="736" height="1096" src="{{ asset('storage/' . $news->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? ($news->title_ar ?? __('app.news_image_alt_fallback')) : ($news->title_en ?? __('app.news_image_alt_fallback')) }}">
-                                                      </div>
-                                                  </figure>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
+        <section class="py-hp3">
+            <div class="container-rni">
 
-                                  <div class="container-jor col-fo2">
-                                      <div class="column-l9n">
-                                          <div>
-                                              <div class="column-9kr content-vi3">
-                                                  <div>
-                                                      {{-- News Description/Content --}}
-                                                      {!! app()->getLocale() == 'ar' ? $news->description_ar : $news->description_en !!}
+                @if($news)
 
-                                                      @if($news->author_name)
-                                                      <p>{{ __('app.author') }} : {{ $news->author_name }}</p>
-                                                      @endif
-                                                      <div class="sub-images-gallery" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                                                          @if(isset($news->sub_image) && is_array($news->sub_image) && count($news->sub_image) > 0)
-                                                          @foreach($news->sub_image as $subImage)
-                                                          <figure class="vc_-6d1" style="cursor: pointer;">
-                                                              <div>
-                                                                  {{-- Sub-images --}}
-                                                                  <img class="clickable-image" style="height: 100px; width: 100px; margin-top: 26px; object-fit: cover;" src="{{ asset('storage/' . $subImage) }}" alt="{{ app()->getLocale() == 'ar' ? ($news->title_ar ?? __('app.sub_image_alt_fallback')) : ($news->title_en ?? __('app.sub_image_alt_fallback')) }}">
-                                                              </div>
-                                                          </figure>
-                                                          @endforeach
-                                                          @else
-                                                          <p>{{ __('app.no_sub_images_available') }}</p>
-                                                          @endif
-                                                      </div>
+                {{-- زرار الرجوع --}}
+                <a href="{{ route('news.all-news') }}" class="news-article__back">
+                    <i class="fa-solid fa-arrow-right"></i> العودة للأخبار
+                </a>
 
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      </section>
-                  </div>
-                  {{-- Social Share Icons (these links need actual social sharing URLs, not just #) --}}
-                  <div class="stm-45i stm-o74 stm-934">
-                      <div class="stm-lrm">
-                          <a href="#" class="icon-ho3 icon-8ec fa-wpo"><i class="fa-s7k fa-95q"></i></a>
-                          <a href="#" class="icon-ho3 icon-8ec stm-d1o"><i class="fa-s7k fa-9lz"></i></a>
-                          <a href="#" class="icon-ho3 icon-8ec link-i7o"><i class="fa-s7k link-yno"></i></a>
-                          <a href="#" class="icon-ho3 icon-8ec stm-jj7"><i class="fa-s7k fa-h7a"></i></a>
-                      </div>
-                  </div>
-                  @else
-                  {{-- Message displayed if news item is not found (e.g., wrong ID) --}}
-                  <p>{{ __('app.news_not_found') }}</p>
-                  @endif
-              </div>
-          </div>
-      </section>
+                <article class="news-article">
 
-      <div id="imageModal" style="
-    display: none; /* Initially hidden */
-    position: fixed; /* Stay in place even when scrolling */
-    z-index: 1000; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-">
-          <span id="closeModal" style="
-        position: absolute;
-        top: 15px;
-        right: 35px;
-        color: #f1f1f1;
-        font-size: 40px;
-        font-weight: bold;
-        transition: 0.3s;
-        cursor: pointer;
-    ">&times;</span>
-          <img id="modalImage" src="" alt="Zoomed Image" style="
-        margin: auto;
-        display: block;
-        max-width: 90%;
-        max-height: 90%;
-        object-fit: contain; /* Ensure the image fits within the modal */
-    ">
-      </div>
+                    {{-- الصورة الرئيسية --}}
+                    @if($news->main_image)
+                    <div class="news-article__hero">
+                        <img src="{{ asset('storage/' . $news->main_image) }}"
+                             alt="{{ app()->getLocale() == 'ar' ? ($news->title_ar ?? '') : ($news->title_en ?? '') }}"
+                             class="news-lightbox-trigger"
+                             data-src="{{ asset('storage/' . $news->main_image) }}"
+                             style="cursor:zoom-in;">
+                    </div>
+                    @endif
 
-      {{-- JavaScript Section (No changes needed for localization here) --}}
-      <script>
-          document.addEventListener('DOMContentLoaded', function() {
-              const modal = document.getElementById('imageModal');
-              const modalImage = document.getElementById('modalImage');
-              const closeModal = document.getElementById('closeModal');
-              const clickableImages = document.querySelectorAll('.clickable-image');
+                    <div class="news-article__body">
 
-              clickableImages.forEach(image => {
-                  image.addEventListener('click', function() {
-                      modal.style.display = 'flex'; // Use flex to center the image
-                      modalImage.src = this.src; // Set the clicked image as the modal's source
-                  });
-              });
+                        {{-- العنوان --}}
+                        <h1 class="news-article__title">
+                            {{ app()->getLocale() == 'ar' ? $news->title_ar : $news->title_en }}
+                        </h1>
 
-              // Close modal when clicking on the close button
-              closeModal.addEventListener('click', function() {
-                  modal.style.display = 'none';
-              });
+                        {{-- الميتا --}}
+                        <div class="news-article__meta">
+                            <span class="news-article__meta-item">
+                                <i class="fa-regular fa-calendar"></i>
+                                {{ \Carbon\Carbon::parse($news->created_at)->translatedFormat('d F Y') }}
+                            </span>
+                            @if($news->author_name)
+                            <span class="news-article__meta-item">
+                                <i class="fa-regular fa-user"></i>
+                                {{ $news->author_name }}
+                            </span>
+                            @endif
+                            <span class="news-article__meta-item">
+                                <i class="fa-regular fa-newspaper"></i>
+                                أخبار الجمعية
+                            </span>
+                        </div>
 
-              // Close modal when clicking outside the image (on the overlay)
-              modal.addEventListener('click', function(event) {
-                  // Check if the click occurred directly on the modal background, not the image itself
-                  if (event.target === modal) {
-                      modal.style.display = 'none';
-                  }
-              });
+                        <div class="news-article__divider"></div>
 
-              // Optional: Close modal with Escape key
-              document.addEventListener('keydown', function(event) {
-                  if (event.key === 'Escape' || event.key === 'Esc') {
-                      if (modal.style.display === 'flex') {
-                          modal.style.display = 'none';
-                      }
-                  }
-              });
-          });
+                        {{-- المحتوى --}}
+                        <div class="news-article__content">
+                            {!! app()->getLocale() == 'ar' ? $news->description_ar : $news->description_en !!}
+                        </div>
 
-      </script>
+                        {{-- الصور الفرعية --}}
+                        @if(isset($news->sub_image) && is_array($news->sub_image) && count($news->sub_image) > 0)
+                        <div class="news-article__gallery">
+                            <p class="news-article__gallery-title">
+                                <i class="fa-solid fa-images" style="color:#b68a35;"></i>
+                                صور إضافية
+                            </p>
+                            <div class="news-article__gallery-grid">
+                                @foreach($news->sub_image as $subImage)
+                                <img src="{{ asset('storage/' . $subImage) }}"
+                                     alt="صورة إضافية"
+                                     class="news-lightbox-trigger"
+                                     data-src="{{ asset('storage/' . $subImage) }}">
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
 
-      <x-footer-section></x-footer-section>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
-      <script src="{{ asset('assets/js/scriptU.js') }}"></script>
-  </div>
+                    </div>
+                </article>
+
+                @else
+                <div class="text-center" style="padding:60px 0;">
+                    <p style="color:#64748b;">{{ __('app.news_not_found') }}</p>
+                </div>
+                @endif
+
+            </div>
+        </section>
+
+        {{-- Lightbox --}}
+        <div id="newsLightbox">
+            <span id="newsLightboxClose"><i class="fa-solid fa-xmark"></i></span>
+            <img id="newsLightboxImg" src="" alt="">
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const lb      = document.getElementById('newsLightbox');
+                const lbImg   = document.getElementById('newsLightboxImg');
+                const lbClose = document.getElementById('newsLightboxClose');
+
+                document.querySelectorAll('.news-lightbox-trigger').forEach(function (img) {
+                    img.addEventListener('click', function () {
+                        lbImg.src = this.dataset.src || this.src;
+                        lb.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    });
+                });
+
+                function closeLb() {
+                    lb.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+
+                lbClose.addEventListener('click', closeLb);
+                lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+                document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLb(); });
+            });
+        </script>
+
+        <x-footer-section></x-footer-section>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
+        <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+    </div>
 
 </body>
 

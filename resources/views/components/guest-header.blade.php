@@ -67,20 +67,6 @@
                         </ul>
                     </li>
 
-                    <li>
-                        <a href="#">{{ __('app.services') }}</a>
-                        <ul class="dl-submenu">
-                            <li>
-                                <a href="{{ route('services.show', ['id'=>1]) }}">{{ __('app.esaad_card') }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('services.show', ['id'=>2]) }}">{{ __('app.zakat_fund') }}</a>
-                            </li>
-                            <li>
-                                <a href="{{ route('services.show', ['id'=>3]) }}">{{ __('app.volunteering') }}</a>
-                            </li>
-                        </ul>
-                    </li>
 
                     <li>
                         <a href="{{ route('members.membership') }}">{{ __('app.membership') }}</a>
@@ -140,6 +126,7 @@
                     $__hExpKey       = 'active';
                     try {
                         $__hIsMember = (bool) $__hUser?->isMemberRole();
+                        $__hHasActiveCard = $__hIsMember && (bool) $__hUser?->hasActiveMembership();
                         if ($__hIsMember) {
                             $__hApp         = $__hUser->memberApplication;
                             $__hCard        = $__hApp?->toMembershipCardPayload() ?? [];
@@ -162,12 +149,14 @@
 
                     @if ($__hIsMember)
                     <div class="member-header-tools d-flex align-items-center gap-2" style="flex-wrap:nowrap;">
+                        @if ($__hHasActiveCard)
                         <div class="downapp">
                             <button type="button" class="member-card-trigger" id="openMembershipCard"
                                 title="{{ __('app.membership_card') }}" aria-label="{{ __('app.membership_card') }}">
                                 <i class="fa-solid fa-id-card"></i> {{ __('app.my_card') }}
                             </button>
                         </div>
+                        @endif
                         <a href="{{ route('members.panel') }}" class="member-panel-link" style="gap: 5px !important;">
                             <i class="fa-solid fa-table-cells-large"></i> {{ __('app.my_panel') }}
                         </a>

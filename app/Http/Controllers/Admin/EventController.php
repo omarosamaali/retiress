@@ -15,9 +15,19 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\MemberApplication;
 class EventController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::latest()->paginate(10);
+        $query = Event::latest();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title_ar', 'like', "%{$search}%")
+                  ->orWhere('title_en', 'like', "%{$search}%");
+            });
+        }
+
+        $events = $query->paginate(10)->withQueryString();
         $transactions = Transaction::with('user', 'event')->where('type', 'event')->latest()->paginate(10);
 
         return view('admin.events.index', compact('events', 'transactions'));

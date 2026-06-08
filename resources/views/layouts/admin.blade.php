@@ -259,12 +259,90 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
+
+        /* Admin alert toasts */
+        #admin-toast-stack {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            pointer-events: none;
+        }
+        .admin-toast {
+            pointer-events: all;
+            min-width: 320px;
+            max-width: 420px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            padding: 14px 18px 14px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            border-right: 5px solid #b68a35;
+            opacity: 0;
+            transform: translateY(-18px);
+            transition: opacity .35s ease, transform .35s ease;
+            font-family: 'Cairo', sans-serif;
+        }
+        .admin-toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .admin-toast.hide {
+            opacity: 0;
+            transform: translateY(-18px);
+        }
+        .admin-toast.toast-blue  { border-right-color: #0284c7; }
+        .admin-toast.toast-green { border-right-color: #16a34a; }
+        .admin-toast.toast-red   { border-right-color: #dc2626; }
+        .admin-toast__icon {
+            font-size: 1.3rem;
+            margin-top: 1px;
+            flex-shrink: 0;
+            color: #b68a35;
+        }
+        .admin-toast.toast-blue  .admin-toast__icon { color: #0284c7; }
+        .admin-toast.toast-green .admin-toast__icon { color: #16a34a; }
+        .admin-toast.toast-red   .admin-toast__icon { color: #dc2626; }
+        .admin-toast__body { flex: 1; }
+        .admin-toast__title {
+            font-weight: 700;
+            font-size: .88rem;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+        .admin-toast__msg {
+            font-size: .81rem;
+            color: #475569;
+            line-height: 1.45;
+        }
+        .admin-toast__close {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .admin-toast__close:hover { color: #475569; }
     </style>
 
     @stack('styles')
 </head>
 
 <body>
+    <!-- Admin alert toasts container -->
+    <div id="admin-toast-stack"></div>
+
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">
@@ -328,12 +406,6 @@
                     <li>
                         <a class="dropdown-item" href="{{ route('admin.event.index') }}">
                             <i class="fas fa-newspaper"></i> الإعلانات
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{{ route('admin.services.index') }}">
-                            <i class="fas fa-users"></i>
-                            الخدمات
                         </a>
                     </li>
 
@@ -468,6 +540,107 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     @stack('scripts')
+
+    @php
+        use App\Models\Transaction;
+        use App\Models\MemberApplication;
+        $since = now()->subHours(24);
+
+        $pendingSubscriptions = Transaction::with(['user','event'])
+            ->where('status', 'pending')
+            ->where('created_at', '>=', $since)
+            ->latest()
+            ->get();
+
+        $pendingMemberships = MemberApplication::with('user')
+            ->where('status', '0')
+            ->where('created_at', '>=', $since)
+            ->latest()
+            ->get();
+
+        $adminToasts = collect();
+
+        foreach ($pendingSubscriptions as $tr) {
+            $userName  = $tr->user?->name_ar ?? $tr->user?->name ?? 'عضو';
+            $eventName = $tr->event?->title_ar ?? $tr->event?->title_en ?? 'إعلان';
+            $adminToasts->push([
+                'id'    => 'sub_' . $tr->id,
+                'type'  => 'blue',
+                'icon'  => 'fa-solid fa-calendar-check',
+                'title' => 'طلب اشتراك جديد',
+                'msg'   => $userName . ' سجّل في "' . $eventName . '"',
+            ]);
+        }
+
+        foreach ($pendingMemberships as $app) {
+            $userName = $app->user?->name_ar ?? $app->user?->name ?? 'مستخدم';
+            $adminToasts->push([
+                'id'    => 'mem_' . $app->id,
+                'type'  => 'green',
+                'icon'  => 'fa-solid fa-id-card',
+                'title' => 'طلب عضوية جديد',
+                'msg'   => $userName . ' قدّم طلب عضوية جديدة',
+            ]);
+        }
+    @endphp
+
+    <script>
+    (function () {
+        var toasts = @json($adminToasts->values());
+        if (!toasts.length) return;
+
+        var stack   = document.getElementById('admin-toast-stack');
+        var DELAY   = 600;   // ms between each toast appearing
+        var LIFE    = 6000;  // ms before auto-hide
+        var SS_KEY  = 'admin_toasts_seen';
+
+        var seen = JSON.parse(sessionStorage.getItem(SS_KEY) || '[]');
+        var unseen = toasts.filter(function(t){ return seen.indexOf(t.id) === -1; });
+        if (!unseen.length) return;
+
+        function makeToast(item) {
+            var el = document.createElement('div');
+            el.className = 'admin-toast toast-' + item.type;
+            el.dataset.id = item.id;
+            el.innerHTML =
+                '<i class="' + item.icon + ' admin-toast__icon"></i>' +
+                '<div class="admin-toast__body">' +
+                    '<div class="admin-toast__title">' + item.title + '</div>' +
+                    '<div class="admin-toast__msg">' + item.msg + '</div>' +
+                '</div>' +
+                '<button class="admin-toast__close" aria-label="إغلاق"><i class="fa-solid fa-xmark"></i></button>';
+            return el;
+        }
+
+        function dismissToast(el) {
+            el.classList.remove('show');
+            el.classList.add('hide');
+            setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 380);
+        }
+
+        unseen.forEach(function(item, idx) {
+            setTimeout(function() {
+                var el = makeToast(item);
+                stack.appendChild(el);
+                requestAnimationFrame(function(){
+                    requestAnimationFrame(function(){ el.classList.add('show'); });
+                });
+
+                // mark seen
+                seen.push(item.id);
+                sessionStorage.setItem(SS_KEY, JSON.stringify(seen));
+
+                // close button
+                el.querySelector('.admin-toast__close').addEventListener('click', function(){
+                    dismissToast(el);
+                });
+
+                // auto-hide
+                setTimeout(function(){ if (el.parentNode) dismissToast(el); }, LIFE);
+            }, idx * DELAY);
+        });
+    })();
+    </script>
 </body>
 
 </html>

@@ -13,17 +13,42 @@ class PublicEventController extends Controller
     {
         $user = Auth::user();
 
-        // إعلانات فعّالة (غير منتهية)
-        $activeEvents = Event::publiclyListed($user)->latest()->get();
+        // إعلانات فعّالة بدون خدمات
+        $activeEvents = Event::publiclyListed($user)
+            ->whereNotIn('type', ['خدمات', 'مميزات'])
+            ->latest()
+            ->get();
 
-        // إعلانات منتهية — مرئية للزوار لكن بدون رابط تفاصيل
+        // إعلانات منتهية بدون خدمات — مع رابط التفاصيل
         $expiredEvents = Event::published()
             ->visibleToAudience($user)
+            ->whereNotIn('type', ['خدمات', 'مميزات'])
             ->where('ends_at', '<', now())
             ->latest()
             ->get();
 
         return view('members.events.all-events', compact('activeEvents', 'expiredEvents'));
+    }
+
+    public function services(): View
+    {
+        $user = Auth::user();
+
+        // خدمات فعّالة
+        $activeServices = Event::publiclyListed($user)
+            ->whereIn('type', ['خدمات', 'مميزات'])
+            ->latest()
+            ->get();
+
+        // خدمات منتهية
+        $expiredServices = Event::published()
+            ->visibleToAudience($user)
+            ->whereIn('type', ['خدمات', 'مميزات'])
+            ->where('ends_at', '<', now())
+            ->latest()
+            ->get();
+
+        return view('members.events.services-events', compact('activeServices', 'expiredServices'));
     }
 
     public function show(Request $request, int $id): View

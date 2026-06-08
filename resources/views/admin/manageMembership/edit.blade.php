@@ -503,205 +503,93 @@ $__docs = [
         @endif
 
         <div class="section">
-            <div class="section-header mb-4">
+            <div class="section-header mb-4 d-flex align-items-center justify-content-between">
                 <h5 class="text-primary mb-0">
                     <i class="fas fa-briefcase me-2"></i>
-                    البيانات المهنية السابقة </h5>
-
+                    البيانات المهنية السابقة
+                </h5>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addExperienceRow('prof-exp-container', 'professional_experiences')">
+                    <i class="fas fa-plus me-1"></i> إضافة خبرة
+                </button>
             </div>
 
-            @if ($member && !empty($member->professional_experiences) && is_array($member->professional_experiences))
-            <div class="experiences-container">
-                @foreach ($member->professional_experiences as $index => $experience)
-                <div class="experience-card mb-4 p-4 border rounded-lg shadow-sm bg-white position-relative">
-                    <div class="experience-number">
-                        {{-- <span class="badge bg-primary rounded-circle p-2">{{ $index + 1 }}</span> --}}
-                        <span class="badge bg-primary rounded-circle p-2">{{ (int)$index + 1 }}</span>
-                    </div>
-                    <div class="experience-content">
-                        <div class="row g-3">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label text-muted small fw-bold">
-                                        <i class="fas fa-calendar-alt me-1"></i>
-                                        السنة
-                                    </label>
-                                    <div class="form-control-plaintext bg-light rounded p-2 border">
-                                        <strong class="text-dark">{{ $experience['year'] ?? 'غير محدد' }}</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label text-muted small fw-bold">
-                                        <i class="fas fa-user-tie me-1"></i>
-                                        المسمى الوظيفي
-                                    </label>
-                                    <div class="form-control-plaintext bg-light rounded p-2 border">
-                                        <strong class="text-dark">{{ $experience['job_title'] ?? 'غير محدد' }}</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label text-muted small fw-bold">
-                                        <i class="fas fa-building me-1"></i>
-                                        جهة العمل
-                                    </label>
-                                    <div class="form-control-plaintext bg-light rounded p-2 border">
-                                        <strong class="text-dark">{{ $experience['employer'] ?? 'غير محدد' }}</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label text-muted small fw-bold">
-                                        <i class="fas fa-clock me-1"></i>
-                                        سنوات الخبرة
-                                    </label>
-                                    <div class="form-control-plaintext bg-light rounded p-2 border">
-                                        <strong class="text-primary">{{ $experience['years_of_experience'] ?? 'غير محدد' }} سنة</strong>
-                                    </div>
-                                </div>
-                            </div>
+            <div id="prof-exp-container">
+                @php $profExps = (!empty($member->professional_experiences) && is_array($member->professional_experiences)) ? $member->professional_experiences : []; @endphp
+                @forelse ($profExps as $index => $experience)
+                <div class="experience-card mb-3 p-3 border rounded bg-white position-relative">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted"><i class="fas fa-calendar-alt me-1"></i>السنة</label>
+                            <input type="text" class="form-control form-control-sm" name="professional_experiences[{{ $index }}][year]" value="{{ $experience['year'] ?? '' }}" placeholder="مثال: 2015">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted"><i class="fas fa-user-tie me-1"></i>المسمى الوظيفي</label>
+                            <input type="text" class="form-control form-control-sm" name="professional_experiences[{{ $index }}][job_title]" value="{{ $experience['job_title'] ?? '' }}" placeholder="المسمى الوظيفي">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted"><i class="fas fa-building me-1"></i>جهة العمل</label>
+                            <input type="text" class="form-control form-control-sm" name="professional_experiences[{{ $index }}][employer]" value="{{ $experience['employer'] ?? '' }}" placeholder="جهة العمل">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small fw-bold text-muted"><i class="fas fa-clock me-1"></i>سنوات الخبرة</label>
+                            <input type="text" class="form-control form-control-sm" name="professional_experiences[{{ $index }}][years_of_experience]" value="{{ $experience['years_of_experience'] ?? '' }}" placeholder="عدد السنوات">
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <button type="button" class="btn btn-sm btn-outline-danger mt-1" onclick="removeRow(this)" title="حذف">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     </div>
-                    @if (!$loop->last)
-                    <div class="experience-separator mt-3">
-                        <hr class="border-primary opacity-25">
-                    </div>
-                    @endif
                 </div>
-                @endforeach
+                @empty
+                <p class="text-muted small" id="prof-exp-empty">لا توجد خبرات مهنية — اضغط "إضافة خبرة" لإضافة واحدة.</p>
+                @endforelse
             </div>
-            <div class="total-experience-summary mt-4 p-3 bg-primary bg-opacity-10 rounded-lg border border-primary border-opacity-25">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <h6 class="text-primary mb-1">
-                            <i class="fas fa-chart-line me-2"></i>
-                            إجمالي الخبراء المهنية
-                        </h6>
-                        <small class="text-muted">عدد الخبراء المسجلة</small>
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <span class="badge bg-primary fs-6 p-2">
-                            {{ count($member->professional_experiences) }} خبرة
-                        </span>
-                    </div>
-                </div>
-            </div>
-            @else
-            <div class="no-data-container text-center py-5">
-                <div class="no-data-icon mb-3">
-                    <i class="fas fa-briefcase text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
-                </div>
-                <h6 class="text-muted mb-2">لا توجد خبرات مهنية</h6>
-                <p class="text-muted small mb-0">لم يتم إضافة أي خبرات مهنية بعد</p>
-            </div>
-            @endif
         </div>
 
         <div class="section">
-            <div class="section-header mb-4">
-                <h5 class="text-primary mb-0" style="margin-top: 15px;">
+            <div class="section-header mb-4 d-flex align-items-center justify-content-between" style="margin-top:15px;">
+                <h5 class="text-primary mb-0">
                     <i class="fas fa-history me-2"></i>
-                    الخبراء السابقة
+                    الخبرات السابقة
                 </h5>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addExperienceRow('prev-exp-container', 'previous_experience')">
+                    <i class="fas fa-plus me-1"></i> إضافة خبرة
+                </button>
             </div>
 
-            @if ($member && !empty($member->previous_experience))
-            <div class="experiences-container">
-                @foreach ($member->previous_experience as $index => $experience)
-                <div class="experience-card mb-4 p-4 border rounded-lg shadow-sm bg-white position-relative">
-                    <div class="experience-number">
-                        {{-- <span class="badge bg-primary rounded-circle p-2">{{ $index + 1 }}</span> --}}
-                        <span class="badge bg-primary rounded-circle p-2">{{ (int)$index + 1 }}</span>
-                    </div>
-                    <div class="experience-content">
-                        <div class="row g-3">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label text-muted small fw-bold">
-                                        <i class="fas fa-calendar-alt me-1"></i>
-                                        السنة
-                                    </label>
-                                    <div class="form-control-plaintext bg-light rounded p-2 border">
-                                        <strong class="text-dark">{{ $experience['year'] ?? 'غير محدد' }}</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label text-muted small fw-bold">
-                                        <i class="fas fa-user-tie me-1"></i>
-                                        المسمى الوظيفي
-                                    </label>
-                                    <div class="form-control-plaintext bg-light rounded p-2 border">
-                                        <strong class="text-dark">{{ $experience['job_title'] ?? 'غير محدد' }}</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label text-muted small fw-bold">
-                                        <i class="fas fa-building me-1"></i>
-                                        جهة العمل
-                                    </label>
-                                    <div class="form-control-plaintext bg-light rounded p-2 border">
-                                        <strong class="text-dark">{{ $experience['employer'] ?? 'غير محدد' }}</strong>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="form-label text-muted small fw-bold">
-                                        <i class="fas fa-clock me-1"></i>
-                                        سنوات الخبرة
-                                    </label>
-                                    <div class="form-control-plaintext bg-light rounded p-2 border">
-                                        <strong class="text-primary">{{ $experience['years_of_experience'] ?? 'غير محدد' }} سنة</strong>
-                                    </div>
-                                </div>
-                            </div>
+            <div id="prev-exp-container">
+                @php $prevExps = (!empty($member->previous_experience) && is_array($member->previous_experience)) ? $member->previous_experience : []; @endphp
+                @forelse ($prevExps as $index => $experience)
+                <div class="experience-card mb-3 p-3 border rounded bg-white position-relative">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted"><i class="fas fa-calendar-alt me-1"></i>السنة</label>
+                            <input type="text" class="form-control form-control-sm" name="previous_experience[{{ $index }}][year]" value="{{ $experience['year'] ?? '' }}" placeholder="مثال: 2015">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted"><i class="fas fa-user-tie me-1"></i>المسمى الوظيفي</label>
+                            <input type="text" class="form-control form-control-sm" name="previous_experience[{{ $index }}][job_title]" value="{{ $experience['job_title'] ?? '' }}" placeholder="المسمى الوظيفي">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-muted"><i class="fas fa-building me-1"></i>جهة العمل</label>
+                            <input type="text" class="form-control form-control-sm" name="previous_experience[{{ $index }}][employer]" value="{{ $experience['employer'] ?? '' }}" placeholder="جهة العمل">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label small fw-bold text-muted"><i class="fas fa-clock me-1"></i>سنوات الخبرة</label>
+                            <input type="text" class="form-control form-control-sm" name="previous_experience[{{ $index }}][years_of_experience]" value="{{ $experience['years_of_experience'] ?? '' }}" placeholder="عدد السنوات">
+                        </div>
+                        <div class="col-md-1 text-center">
+                            <button type="button" class="btn btn-sm btn-outline-danger mt-1" onclick="removeRow(this)" title="حذف">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     </div>
-                    @if (!$loop->last)
-                    <div class="experience-separator mt-3">
-                        <hr class="border-primary opacity-25">
-                    </div>
-                    @endif
                 </div>
-                @endforeach
+                @empty
+                <p class="text-muted small" id="prev-exp-empty">لا توجد خبرات سابقة — اضغط "إضافة خبرة" لإضافة واحدة.</p>
+                @endforelse
             </div>
-
-            <!-- إجمالي سنوات الخبرة -->
-            <div class="total-experience-summary mt-4 p-3 bg-primary bg-opacity-10 rounded-lg border border-primary border-opacity-25">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <h6 class="text-primary mb-1">
-                            <i class="fas fa-chart-line me-2"></i>
-                            إجمالي الخبراء السابقة
-                        </h6>
-                        <small class="text-muted">عدد الخبراء المسجلة سابقاً</small>
-                    </div>
-                    <div class="col-md-4 text-end">
-                        <span class="badge bg-primary fs-6 p-2">
-                            {{ count($member->previous_experience) }} خبرة
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            @else
-            <!-- حالة عدم وجود بيانات -->
-            <div class="no-data-container text-center py-5">
-                <div class="no-data-icon mb-3">
-                    <i class="fas fa-history text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
-                </div>
-                <h6 class="text-muted mb-2">لا توجد خبرات سابقة</h6>
-                <p class="text-muted small mb-0">لم يتم إضافة أي خبرات سابقة بعد</p>
-            </div>
-            @endif
         </div>
 
         <div class="btn-section text-center">
@@ -843,5 +731,58 @@ $__docs = [
             });
         }
     });
+
+    // ── Dynamic experience rows ───────────────────────────────────
+    function addExperienceRow(containerId, fieldName) {
+        var container = document.getElementById(containerId);
+        // remove empty-state paragraph if present
+        var empty = container.querySelector('p.text-muted');
+        if (empty) empty.remove();
+
+        var index = container.querySelectorAll('.experience-card').length;
+        var html =
+            '<div class="experience-card mb-3 p-3 border rounded bg-white position-relative">' +
+            '  <div class="row g-2 align-items-end">' +
+            '    <div class="col-md-3">' +
+            '      <label class="form-label small fw-bold text-muted"><i class="fas fa-calendar-alt me-1"></i>السنة</label>' +
+            '      <input type="text" class="form-control form-control-sm" name="' + fieldName + '[' + index + '][year]" placeholder="مثال: 2015">' +
+            '    </div>' +
+            '    <div class="col-md-3">' +
+            '      <label class="form-label small fw-bold text-muted"><i class="fas fa-user-tie me-1"></i>المسمى الوظيفي</label>' +
+            '      <input type="text" class="form-control form-control-sm" name="' + fieldName + '[' + index + '][job_title]" placeholder="المسمى الوظيفي">' +
+            '    </div>' +
+            '    <div class="col-md-3">' +
+            '      <label class="form-label small fw-bold text-muted"><i class="fas fa-building me-1"></i>جهة العمل</label>' +
+            '      <input type="text" class="form-control form-control-sm" name="' + fieldName + '[' + index + '][employer]" placeholder="جهة العمل">' +
+            '    </div>' +
+            '    <div class="col-md-2">' +
+            '      <label class="form-label small fw-bold text-muted"><i class="fas fa-clock me-1"></i>سنوات الخبرة</label>' +
+            '      <input type="text" class="form-control form-control-sm" name="' + fieldName + '[' + index + '][years_of_experience]" placeholder="عدد السنوات">' +
+            '    </div>' +
+            '    <div class="col-md-1 text-center">' +
+            '      <button type="button" class="btn btn-sm btn-outline-danger mt-1" onclick="removeRow(this)" title="حذف"><i class="fas fa-trash"></i></button>' +
+            '    </div>' +
+            '  </div>' +
+            '</div>';
+
+        container.insertAdjacentHTML('beforeend', html);
+        renumberRows(container, fieldName);
+    }
+
+    function removeRow(btn) {
+        var card = btn.closest('.experience-card');
+        var container = card.parentElement;
+        var fieldName = container.querySelector('input') ? container.querySelector('input').name.split('[')[0] : '';
+        card.remove();
+        renumberRows(container, fieldName);
+    }
+
+    function renumberRows(container, fieldName) {
+        container.querySelectorAll('.experience-card').forEach(function(card, i) {
+            card.querySelectorAll('input').forEach(function(input) {
+                input.name = input.name.replace(/\[\d+\]/, '[' + i + ']');
+            });
+        });
+    }
 
 </script>

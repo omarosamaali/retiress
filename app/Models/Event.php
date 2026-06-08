@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Event extends Model
 {
-    public const TYPES = ['فعالية', 'دورة', 'محاضرة', 'خدمات'];
+    public const TYPES = ['فعالية', 'دورة', 'محاضرة', 'خدمات', 'اجتماعات'];
 
     public const AUDIENCE_ALL = 'للجميع';
 
@@ -75,6 +75,7 @@ class Event extends Model
             'محاضرة'            => 'event-type-badge--lecture',
             'فعالية'            => 'event-type-badge--event',
             'خدمات', 'مميزات'  => 'event-type-badge--feature',
+            'اجتماعات'          => 'event-type-badge--meeting',
             default             => 'event-type-badge--default',
         };
     }

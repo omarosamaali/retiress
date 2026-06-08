@@ -171,6 +171,9 @@ Route::post('contact-us', function(Request $request){
             }
         }
     </style>
+    @if(config('services.turnstile.key'))
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endif
 </head>
 
 <body ng-app="myApp">
@@ -249,6 +252,16 @@ Route::post('contact-us', function(Request $request){
                 <textarea class="form-control" id="message" name="message" placeholder="اكتب رسالتك هنا..."
                     required>{{ old('message') }}</textarea>
             </div>
+            {{-- Turnstile --}}
+            @if(config('services.turnstile.key'))
+            <div class="cf-turnstile mb-3" data-sitekey="{{ config('services.turnstile.key') }}"></div>
+            @else
+            <input type="hidden" name="cf-turnstile-response" value="">
+            @endif
+            @error('cf-turnstile-response')
+            <div style="color:#dc2626;font-size:.85rem;margin-bottom:8px;">{{ $message }}</div>
+            @enderror
+
             {{-- Send Message --}}
             <button type="submit" class="btn-submit">
                 إرسال الرسالة
