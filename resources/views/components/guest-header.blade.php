@@ -76,11 +76,7 @@
                     </li>
 
                     <li>
-                        @auth
-                            <a href="{{ Auth::user()->isStaff() ? route('admin.chat') : route('chat') }}">{{ __('app.contact_us') }}</a>
-                        @else
-                            <a href="{{ route('members.login') }}">{{ __('app.contact_us') }}</a>
-                        @endauth
+                        <a href="{{ route('contact-us') }}">{{ __('app.contact_us') }}</a>
                     </li>
 
                     <div class="lang-II mobile-btn">
