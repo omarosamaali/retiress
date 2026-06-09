@@ -81,14 +81,37 @@
     <div class="membership" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
         <div style="margin-bottom: 20px;">
             @auth
-            @if($membership)
-            <a href="{{ route('members.my-membership') }}" id="reg" class="btn-qhr btn-primary-t6n">
-                إضغط لتجديد العضوية
-            </a>
+            @php
+                $__memApp    = $membership; // MemberApplication or null
+                $__isActive  = $__memApp && (int)$__memApp->status === 3 && !$__memApp->isExpiredByDate();
+                $__expDate   = $__memApp?->expiration_date ? \Carbon\Carbon::parse($__memApp->expiration_date) : null;
+                $__monthsLeft = $__expDate ? (int) now()->diffInMonths($__expDate, false) : null;
+                $__moreThan3  = $__isActive && $__monthsLeft !== null && $__monthsLeft > 3;
+            @endphp
+
+            @if($__moreThan3)
+                {{-- عضوية فعالة وباقي أكثر من 3 أشهر — أظهر رسالة فقط --}}
+                <button type="button" id="reg" class="btn-qhr btn-primary-t6n" onclick="showMembershipActiveMsg()">
+                    إضغط لتجديد العضوية
+                </button>
+                <script>
+                function showMembershipActiveMsg() {
+                    var daysLeft = {{ (int) now()->diffInDays($__expDate, false) }};
+                    var expStr   = '{{ $__expDate->format('Y/m/d') }}';
+                    var msg = 'عضويتك فعالة حتى ' + expStr + '.\nلا يمكن التجديد إلا قبل 3 أشهر من انتهاء العضوية.';
+                    alert(msg);
+                }
+                </script>
+            @elseif($__memApp)
+                {{-- لديه عضوية لكن منتهية أو ستنتهي قريباً — توجيه للتجديد --}}
+                <a href="{{ route('members.my-membership') }}" id="reg" class="btn-qhr btn-primary-t6n">
+                    إضغط لتجديد العضوية
+                </a>
             @else
-            <a href="{{ route('members.membership-show') }}" id="reg" class="btn-qhr btn-primary-t6n">
-                إضغط للتسجيل
-            </a>
+                {{-- لا يملك عضوية — توجيه للتسجيل الجديد --}}
+                <a href="{{ route('members.membership-show') }}" id="reg" class="btn-qhr btn-primary-t6n">
+                    إضغط للتسجيل
+                </a>
             @endif
             @else
             <a href="#" id="reg" class="btn-qhr btn-primary-t6n">{{ __('app.register') }}</a>

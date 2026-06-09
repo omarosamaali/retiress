@@ -117,8 +117,15 @@
     </div>
     @endif
 
+    {{-- إعلان منتهٍ --}}
+    @if ($events->isExpired() && ! ($userSubscription && $userSubscription->isOpenSubscription()))
+    <div style="background:#f9fafb;border:1.5px solid #d1d5db;border-radius:10px;padding:14px 16px;text-align:center;">
+        <i class="fa-solid fa-clock" style="color:#9ca3af;font-size:1.3rem;margin-bottom:6px;display:block;"></i>
+        <p style="margin:0;font-size:.88rem;color:#6b7280;font-weight:600;">{{ __('app.event_expired_notice') }}</p>
+    </div>
+
     {{-- زر الاشتراك --}}
-    @if ($canSubscribe ?? false)
+    @elseif ($canSubscribe ?? false)
     <div style="background:#fffbeb;border:1.5px dashed #fcd34d;border-radius:12px;padding:18px 20px;text-align:center;">
         <p style="margin:0 0 6px;font-size:.83rem;color:#92400e;">{{ __('app.event_subscribe_active_membership_hint') }}</p>
         <p style="margin:0 0 14px;font-size:.83rem;color:#92400e;">

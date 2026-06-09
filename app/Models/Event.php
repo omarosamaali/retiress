@@ -108,6 +108,11 @@ class Event extends Model
         return $this->ends_at !== null;
     }
 
+    public function isExpired(): bool
+    {
+        return $this->ends_at !== null && \Carbon\Carbon::parse($this->ends_at)->isPast();
+    }
+
     public function isFree(): bool
     {
         return $this->price === null || (int) $this->price === 0;

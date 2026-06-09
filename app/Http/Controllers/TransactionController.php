@@ -96,6 +96,12 @@ class TransactionController extends Controller
                 ->with('error', __('app.event_subscribe_blocked_'.$blockReason));
         }
 
+        if ($event->isExpired()) {
+            return redirect()
+                ->route('events.show', $event->id)
+                ->with('error', __('app.event_expired'));
+        }
+
         if ($event->userHasOpenSubscription($user)) {
             return redirect()
                 ->route('events.show', $event->id)

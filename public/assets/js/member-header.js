@@ -98,47 +98,55 @@
         }
     });
 
-    // ── Show notification detail overlay + mark as read ────────────────────
+    // ── Show notification detail dialog (centered modal) + mark as read ──────
     function showNotifDetail(item) {
         const title = item.dataset.title || item.querySelector('.notif-screen__item-title')?.textContent?.trim() || '';
         const body  = item.dataset.body  || item.querySelector('.notif-screen__item-body')?.textContent?.trim()  || '';
         const time  = item.querySelector('.notif-screen__item-time')?.textContent?.trim() || '';
         const id    = item.dataset.id;
 
-        const panel = document.querySelector('.notif-screen__panel');
-        if (!panel) return;
+        document.querySelector('.notif-global-dialog')?.remove();
 
-        panel.querySelector('.notif-detail-overlay')?.remove();
-
-        const overlay = document.createElement('div');
-        overlay.className = 'notif-detail-overlay';
-        overlay.style.cssText = [
-            'position:absolute', 'inset:0', 'background:#fff', 'z-index:20',
-            'padding:20px', 'overflow-y:auto', 'display:flex',
-            'flex-direction:column', 'gap:14px', 'direction:rtl',
+        const dialog = document.createElement('div');
+        dialog.className = 'notif-global-dialog';
+        dialog.style.cssText = [
+            'position:fixed', 'inset:0', 'z-index:999999',
+            'display:flex', 'align-items:center', 'justify-content:center',
+            'background:rgba(0,0,0,0.45)', 'direction:rtl', 'padding:16px',
         ].join(';');
 
-        overlay.innerHTML =
-            '<div style="display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #e5e7eb;padding-bottom:12px;gap:8px;">' +
-                '<span style="font-weight:700;font-size:1rem;color:#1e293b;line-height:1.5;">' + title + '</span>' +
-                '<button class="notif-detail-close" style="flex-shrink:0;background:#f1f5f9;border:1.5px solid #e5e7eb;border-radius:6px;cursor:pointer;padding:4px 10px;color:#6b7280;font-size:.85rem;line-height:1;" title="إغلاق">' +
-                    '<i class="fa-solid fa-xmark"></i>' +
-                '</button>' +
-            '</div>' +
-            '<div style="font-size:.9rem;color:#374151;line-height:1.8;white-space:pre-wrap;">' + body + '</div>' +
-            '<div style="font-size:.75rem;color:#9ca3af;">' + time + '</div>';
+        dialog.innerHTML =
+            '<div style="background:#fff;border-radius:14px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.25);padding:24px 20px;display:flex;flex-direction:column;gap:16px;">' +
+                '<div style="display:flex;align-items:flex-start;justify-content:space-between;border-bottom:2px solid #f0f0f0;padding-bottom:14px;gap:10px;">' +
+                    '<div style="display:flex;align-items:center;gap:10px;">' +
+                        '<div style="width:38px;height:38px;border-radius:50%;background:#fef9c3;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+                            '<i class="fa-solid fa-bell" style="color:#ca8a04;font-size:1rem;"></i>' +
+                        '</div>' +
+                        '<span style="font-weight:700;font-size:1.05rem;color:#1e293b;line-height:1.5;">' + title + '</span>' +
+                    '</div>' +
+                    '<button class="notif-dialog-close" style="flex-shrink:0;background:#f1f5f9;border:none;border-radius:8px;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:1rem;" title="إغلاق">' +
+                        '<i class="fa-solid fa-xmark"></i>' +
+                    '</button>' +
+                '</div>' +
+                '<div style="font-size:.95rem;color:#374151;line-height:2;white-space:pre-wrap;">' + body + '</div>' +
+                (time ? '<div style="font-size:.75rem;color:#9ca3af;border-top:1px solid #f0f0f0;padding-top:10px;">' + time + '</div>' : '') +
+            '</div>';
 
-        panel.style.position = 'relative';
-        panel.appendChild(overlay);
+        document.body.appendChild(dialog);
 
-        overlay.querySelector('.notif-detail-close')?.addEventListener('click', function () {
-            overlay.remove();
+        function closeDialog() { dialog.remove(); }
+
+        dialog.querySelector('.notif-dialog-close').addEventListener('click', closeDialog);
+        dialog.addEventListener('click', function (e) {
+            if (e.target === dialog) closeDialog();
+        });
+        document.addEventListener('keydown', function onKey(e) {
+            if (e.key === 'Escape') { closeDialog(); document.removeEventListener('keydown', onKey); }
         });
 
         // Mark as read
         if (id) {
-            const readUrl = '/members/notifications/' + id + '/read';
-            post(readUrl).then(function () {
+            post('/members/notifications/' + id + '/read').then(function () {
                 item.style.opacity = '0.65';
                 item.dataset.read = '1';
                 updateBadge(Math.max(0, currentBadge() - 1));
@@ -433,8 +441,6 @@
     var pusherKey     = window.__PUSHER_KEY__     || '';
     var pusherCluster = window.__PUSHER_CLUSTER__ || 'mt1';
     var authUserId    = window.__AUTH_USER_ID__   || 0;
-    var usePusher     = false;
-
     if (pusherKey && authUserId && typeof Pusher !== 'undefined') {
         try {
             var pusher = new Pusher(pusherKey, {
@@ -463,22 +469,6 @@
                 updateBadge(currentBadge() + 1);
             });
 
-            channel.bind('pusher:subscription_succeeded', function () {
-                usePusher = true;
-            });
-
-            channel.bind('pusher:subscription_error', function () {
-                usePusher = false;
-            });
-
-            pusher.connection.bind('connected', function () {
-                usePusher = true;
-            });
-
-            pusher.connection.bind('disconnected', function () {
-                usePusher = false;
-            });
-
         } catch (err) {
             usePusher = false;
         }
@@ -497,12 +487,8 @@
     })
     .catch(function () {})
     .finally(function () {
-        // Polling: every 5s when Pusher disconnected, every 30s when connected
-        setInterval(function () {
-            if (!usePusher) pollNotifications();
-        }, 5000);
-
-        setInterval(pollNotifications, 30000);
+        // Poll every 10s always (Pusher is a bonus on top)
+        setInterval(pollNotifications, 10000);
     });
 
 })();

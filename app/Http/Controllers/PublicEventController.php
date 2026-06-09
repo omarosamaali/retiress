@@ -62,7 +62,7 @@ class PublicEventController extends Controller
         $user = Auth::user();
         $userSubscription = $events->latestSubscriptionFor($user);
         $subscribeBlockReason = $user?->getSubscribeToEventBlockReason($events);
-        $canSubscribe = $user && $subscribeBlockReason === null && ! $events->userHasOpenSubscription($user);
+        $canSubscribe = $user && $subscribeBlockReason === null && ! $events->userHasOpenSubscription($user) && ! $events->isExpired();
 
         return view('members.events.show', compact(
             'events',

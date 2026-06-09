@@ -501,6 +501,8 @@ return [
     'announcement_audience_members' => 'Active members only',
     'announcement_members_only' => 'This announcement is only available to members with active accounts.',
     'login_required_to_subscribe' => 'You must be logged in to subscribe to this announcement.',
+    'event_expired' => 'This announcement has ended and is no longer accepting subscriptions.',
+    'event_expired_notice' => 'This announcement has expired and is not accepting new subscriptions.',
     'event_subscribe_blocked_account_inactive' => 'Your account is not active. You cannot subscribe at this time.',
     'event_subscribe_blocked_not_visible' => 'This announcement is not available to you.',
     'event_subscribe_blocked_members_only_audience' => 'This announcement is for members only. An active member account is required.',

@@ -499,6 +499,8 @@ return [
     'announcement_audience_members' => 'للأعضاء فقط',
     'announcement_members_only' => 'هذا الإعلان متاح للأعضاء ذوي الحسابات الفعالة فقط.',
     'login_required_to_subscribe' => 'يجب تسجيل الدخول للاشتراك في هذا الإعلان.',
+    'event_expired' => 'انتهت مدة هذا الإعلان ولا يمكن الاشتراك به.',
+    'event_expired_notice' => 'هذا الإعلان منتهٍ ولا يقبل اشتراكات جديدة.',
     'event_subscribe_blocked_account_inactive' => 'حسابك غير فعال. لا يمكن الاشتراك حالياً.',
     'event_subscribe_blocked_not_visible' => 'هذا الإعلان غير متاح لك.',
     'event_subscribe_blocked_members_only_audience' => 'هذا الإعلان للأعضاء فقط. يلزم حساب عضو فعال في الجمعية.',
