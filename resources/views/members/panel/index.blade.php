@@ -143,7 +143,7 @@
             {{-- 9 --}}
             <a href="#section-notif-unread" class="mp-sc" style="border-color:#ddd6fe;">
                 <div class="mp-sc__icon" style="background:#ede9fe;color:#6d28d9;"><i class="fa-solid fa-bell-concierge"></i></div>
-                <div class="mp-sc__num" style="color:#6d28d9;">{{ $stats['notif_total'] }}</div>
+                <div class="mp-sc__num" style="color:#6d28d9;">{{ $stats['notif_unread'] }}</div>
                 <div class="mp-sc__label">إشعارات جديدة</div>
             </a>
             {{-- 10 --}}
@@ -154,28 +154,6 @@
             </a>
         </div>
 
-        {{-- Quick actions --}}
-        @auth
-        @if(auth()->user()->isMemberRole())
-        <div style="margin-bottom:20px;">
-            <a href="{{ route('members.application.edit') }}"
-                style="display:inline-flex; align-items:center; gap:8px; background:#016330; color:#fff; border-radius:10px; padding:10px 20px; text-decoration:none; font-size:.9rem; font-weight:600; transition:background .18s;"
-                onmouseover="this.style.background='#014d25'" onmouseout="this.style.background='#016330'">
-                <i class="fa-solid fa-pen-to-square"></i>
-                تعديل بيانات طلب العضوية
-            </a>
-        </div>
-        @else
-        <div style="margin-bottom:20px;">
-            <a href="{{ route('members.membership-show') }}"
-                style="display:inline-flex; align-items:center; gap:8px; background:#b5933a; color:#fff; border-radius:10px; padding:10px 20px; text-decoration:none; font-size:.9rem; font-weight:600; transition:background .18s;"
-                onmouseover="this.style.background='#8a6e2a'" onmouseout="this.style.background='#b5933a'">
-                <i class="fa-solid fa-star"></i>
-                اشتراك في العضوية
-            </a>
-        </div>
-        @endif
-        @endauth
 
         {{-- Events grid --}}
         <div class="mp-grid">
@@ -427,93 +405,6 @@
 
         </div>{{-- /mp-grid pending+rejected --}}
 
-        {{-- Expired + Missed grid --}}
-        <div class="mp-grid">
-
-            {{-- Expired transactions --}}
-            <div class="mp-card" id="section-expired">
-                <div class="mp-card__head" style="background:#f1f5f9;color:#475569;border-bottom:2px solid #e2e8f0;">
-                    <i class="fa-solid fa-calendar-minus"></i>
-                    <span>إعلانات منتهية</span>
-                    @if($expiredTransactions->count())
-                        <span style="margin-right:auto;background:#e2e8f0;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;">{{ $expiredTransactions->count() }}</span>
-                    @endif
-                </div>
-                <div class="mp-card__body">
-                    @forelse ($expiredTransactions as $transaction)
-                        @if ($transaction->event)
-                        @php $__ev = $transaction->event; $__tc2 = $__txTypeColors[$__ev->type_label] ?? ['bg'=>'#f1f5f9','color'=>'#475569']; @endphp
-                        <a href="{{ route('events.show', $__ev) }}" class="mp-event-row" style="opacity:0.7;">
-                            <div class="mp-event-row__icon" style="background:#f1f5f9;color:#64748b;">
-                                <i class="fa-regular fa-calendar-minus"></i>
-                            </div>
-                            <div class="mp-event-row__info">
-                                <div class="mp-event-row__title">
-                                    <span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:5px;vertical-align:middle;background:{{ $__tc2['bg'] }};color:{{ $__tc2['color'] }};">{{ $__ev->type_label }}</span>
-                                    {{ app()->getLocale() == 'ar' ? $__ev->title_ar : $__ev->title_en }}
-                                </div>
-                                <div class="mp-event-row__meta">
-                                    @if ($__ev->display_ends_at)
-                                        <span style="color:#94a3b8;"><i class="fa-regular fa-calendar-xmark"></i> انتهى {{ $__ev->display_ends_at->format('d/m/Y') }}</span>
-                                    @endif
-                                </div>
-                                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;">
-                                    <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;background:#f1f5f9;color:#64748b;">
-                                        <i class="fa-solid fa-calendar-minus"></i> {{ $transaction->status_label }}
-                                    </span>
-                                </div>
-                            </div>
-                            <i class="fa-solid fa-chevron-left mp-event-row__arrow"></i>
-                        </a>
-                        @endif
-                    @empty
-                        <div class="mp-empty">
-                            <i class="fa-regular fa-calendar"></i>
-                            <span>لا توجد إعلانات منتهية</span>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-            {{-- Missed events (ended without subscribing) --}}
-            <div class="mp-card" id="section-missed">
-                <div class="mp-card__head" style="background:#fff7ed;color:#c2410c;border-bottom:2px solid #fed7aa;">
-                    <i class="fa-solid fa-calendar-xmark"></i>
-                    <span>إعلانات لم أشترك بها</span>
-                    @if($missedEvents->count())
-                        <span style="margin-right:auto;background:#fed7aa;color:#c2410c;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;">{{ $missedEvents->count() }}</span>
-                    @endif
-                </div>
-                <div class="mp-card__body">
-                    @forelse ($missedEvents as $event)
-                        @php $__tc3 = $__txTypeColors[$event->type_label] ?? ['bg'=>'#f1f5f9','color'=>'#475569']; @endphp
-                        <div class="mp-event-row" style="opacity:0.75;cursor:default;">
-                            <div class="mp-event-row__icon" style="background:#fff7ed;color:#c2410c;">
-                                <i class="fa-regular fa-calendar-xmark"></i>
-                            </div>
-                            <div class="mp-event-row__info">
-                                <div class="mp-event-row__title">
-                                    <span style="display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:5px;vertical-align:middle;background:{{ $__tc3['bg'] }};color:{{ $__tc3['color'] }};">{{ $event->type_label }}</span>
-                                    {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
-                                </div>
-                                <div class="mp-event-row__meta">
-                                    @if ($event->display_ends_at)
-                                        <span style="color:#f97316;"><i class="fa-regular fa-calendar-xmark"></i> انتهى {{ $event->display_ends_at->format('d/m/Y') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="mp-empty">
-                            <i class="fa-regular fa-calendar"></i>
-                            <span>لا توجد إعلانات فائتة</span>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-        </div>{{-- /mp-grid expired+missed --}}
-
         {{-- Messages --}}
         <div class="mp-card mp-card--full">
             <div class="mp-card__head">
@@ -566,9 +457,9 @@
                             <div class="mp-notif-row__body">{{ $userNotification->broadcast?->body }}</div>
                             <div class="mp-notif-row__time">{{ $userNotification->created_at?->diffForHumans() }}</div>
                         </div>
-                        <button type="button" class="mp-dismiss member-notification-dismiss"
-                            data-dismiss-url="{{ route('members.notifications.dismiss', $userNotification) }}"
-                            title="{{ __('app.dismiss') }}">
+                        <button type="button" class="mp-dismiss mp-mark-read"
+                            data-read-url="{{ route('members.notifications.read', $userNotification) }}"
+                            title="تعليم كمقروء">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </div>
@@ -618,29 +509,71 @@
     <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
     <script>
-    document.querySelectorAll('.mp-dismiss.member-notification-dismiss').forEach(function(btn) {
+    var csrf = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+    document.querySelectorAll('.mp-mark-read').forEach(function(btn) {
         btn.addEventListener('click', function() {
-            var url  = btn.dataset.dismissUrl;
+            var url  = btn.dataset.readUrl;
             var row  = btn.closest('.mp-notif-row');
-            var card = btn.closest('.mp-card__body');
+
             fetch(url, {
                 method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                }
+                headers: { 'X-CSRF-TOKEN': csrf, 'Accept': 'application/json' },
+                credentials: 'same-origin'
             }).then(function(res) {
-                if (res.ok) {
-                    row.style.transition = 'opacity .3s';
-                    row.style.opacity = '0';
-                    setTimeout(function() {
-                        row.remove();
-                        // show empty if no rows left
-                        if (!card.querySelector('.mp-notif-row')) {
-                            card.innerHTML = '<div class="mp-empty"><i class="fa-regular fa-bell-slash"></i><span>لا توجد إشعارات</span></div>';
+                if (!res.ok) return;
+
+                // انقل الإشعار لـ "رأيتها"
+                var title = row.querySelector('.mp-notif-row__title')?.textContent || '';
+                var body  = row.querySelector('.mp-notif-row__body')?.textContent  || '';
+                var time  = row.querySelector('.mp-notif-row__time')?.textContent  || '';
+
+                var readBody = document.querySelector('#section-notif-read .mp-card__body');
+                if (readBody) {
+                    readBody.querySelector('.mp-empty')?.remove();
+                    var readRow = document.createElement('div');
+                    readRow.className = 'mp-notif-row';
+                    readRow.style.opacity = '0.7';
+                    readRow.innerHTML =
+                        '<div class="mp-notif-row__icon"><i class="fa-solid fa-circle-info" style="color:#ca8a04;"></i></div>' +
+                        '<div class="mp-notif-row__content">' +
+                            '<div class="mp-notif-row__title">' + title + '</div>' +
+                            '<div class="mp-notif-row__body">' + body + '</div>' +
+                            '<div class="mp-notif-row__time">' + time + '</div>' +
+                        '</div>';
+                    readBody.prepend(readRow);
+
+                    // حدّث العداد في الهيدر
+                    var readHead = document.querySelector('#section-notif-read .mp-card__head');
+                    if (readHead) {
+                        var badge = readHead.querySelector('.notif-count-badge');
+                        if (badge) { badge.textContent = parseInt(badge.textContent || '0') + 1; }
+                        else {
+                            badge = document.createElement('span');
+                            badge.className = 'notif-count-badge';
+                            badge.style.cssText = 'margin-right:auto;background:#e2e8f0;color:#475569;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;';
+                            badge.textContent = '1';
+                            readHead.appendChild(badge);
                         }
-                    }, 300);
+                    }
                 }
+
+                // احذف من "لم أراها"
+                row.style.transition = 'opacity .3s';
+                row.style.opacity = '0';
+                setTimeout(function() {
+                    row.remove();
+                    var unreadBody = document.querySelector('#section-notif-unread .mp-card__body');
+                    if (unreadBody && !unreadBody.querySelector('.mp-notif-row')) {
+                        unreadBody.innerHTML = '<div class="mp-empty"><i class="fa-regular fa-bell-slash"></i><span>لا توجد إشعارات غير مقروءة</span></div>';
+                    }
+                    // حدّث العداد
+                    var unreadHead = document.querySelector('#section-notif-unread .mp-card__head .notif-count-badge');
+                    if (unreadHead) {
+                        var n = parseInt(unreadHead.textContent || '0') - 1;
+                        if (n <= 0) unreadHead.remove(); else unreadHead.textContent = n;
+                    }
+                }, 300);
             });
         });
     });

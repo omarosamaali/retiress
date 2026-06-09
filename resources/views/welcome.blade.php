@@ -60,153 +60,73 @@
             filter: blur(1.5px);
         }
 
-        .cloud1 {
-            width: 120px;
-            height: 60px;
-            top: 10%;
-            animation-duration: 25s;
-            animation-delay: 0s;
-        }
+        .cloud1 { width:120px; height:60px; top:10%; animation-duration:25s; animation-delay:0s; }
+        .cloud1:before { width:80px; height:80px; top:-40px; left:20px; }
+        .cloud1:after  { width:100px; height:60px; top:-25px; left:50px; }
 
-        .cloud1:before {
-            width: 80px;
-            height: 80px;
-            top: -40px;
-            left: 20px;
-        }
+        .cloud2 { width:90px; height:45px; top:25%; animation-duration:30s; animation-delay:-8s; }
+        .cloud2:before { width:60px; height:60px; top:-30px; left:15px; }
+        .cloud2:after  { width:75px; height:45px; top:-15px; left:35px; }
 
-        .cloud1:after {
-            width: 100px;
-            height: 60px;
-            top: -25px;
-            left: 50px;
-        }
+        .cloud3 { width:150px; height:75px; top:45%; animation-duration:35s; animation-delay:-15s; }
+        .cloud3:before { width:100px; height:100px; top:-50px; left:25px; }
+        .cloud3:after  { width:125px; height:75px; top:-30px; left:60px; }
 
-        .cloud2 {
-            width: 90px;
-            height: 45px;
-            top: 25%;
-            animation-duration: 30s;
-            animation-delay: -8s;
-        }
+        .cloud4 { width:110px; height:55px; top:65%; animation-duration:28s; animation-delay:-22s; }
+        .cloud4:before { width:70px; height:70px; top:-35px; left:18px; }
+        .cloud4:after  { width:90px; height:55px; top:-20px; left:45px; }
 
-        .cloud2:before {
-            width: 60px;
-            height: 60px;
-            top: -30px;
-            left: 15px;
-        }
-
-        .cloud2:after {
-            width: 75px;
-            height: 45px;
-            top: -15px;
-            left: 35px;
-        }
-
-        .cloud3 {
-            width: 150px;
-            height: 75px;
-            top: 45%;
-            animation-duration: 35s;
-            animation-delay: -15s;
-        }
-
-        .cloud3:before {
-            width: 100px;
-            height: 100px;
-            top: -50px;
-            left: 25px;
-        }
-
-        .cloud3:after {
-            width: 125px;
-            height: 75px;
-            top: -30px;
-            left: 60px;
-        }
-
-        .cloud4 {
-            width: 110px;
-            height: 55px;
-            top: 65%;
-            animation-duration: 28s;
-            animation-delay: -22s;
-        }
-
-        .cloud4:before {
-            width: 70px;
-            height: 70px;
-            top: -35px;
-            left: 18px;
-        }
-
-        .cloud4:after {
-            width: 90px;
-            height: 55px;
-            top: -20px;
-            left: 45px;
-        }
-
-        .cloud5 {
-            width: 130px;
-            height: 65px;
-            top: 80%;
-            animation-duration: 32s;
-            animation-delay: -30s;
-        }
-
-        .cloud5:before {
-            width: 85px;
-            height: 85px;
-            top: -42px;
-            left: 22px;
-        }
-
-        .cloud5:after {
-            width: 105px;
-            height: 65px;
-            top: -25px;
-            left: 55px;
-        }
+        .cloud5 { width:130px; height:65px; top:80%; animation-duration:32s; animation-delay:-30s; }
+        .cloud5:before { width:85px; height:85px; top:-42px; left:22px; }
+        .cloud5:after  { width:105px; height:65px; top:-25px; left:55px; }
 
         @keyframes float-cloud {
-            0% {
-                transform: translateX(-200px) translateY(0px);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 0.8;
-            }
-
-            90% {
-                opacity: 0.8;
-            }
-
-            100% {
-                transform: translateX(calc(100vw + 200px)) translateY(-10px);
-                opacity: 0;
-            }
+            0%   { transform: translateX(-200px) translateY(0px); opacity: 0; }
+            10%  { opacity: 0.8; }
+            90%  { opacity: 0.8; }
+            100% { transform: translateX(calc(100vw + 200px)) translateY(-10px); opacity: 0; }
         }
 
+        /* إخفاء السحب على الموبايل فقط */
         @media (max-width: 768px) {
-            .floating-clouds {
-                width: 100vw;
-                height: 100vh;
-            }
-
-            .cloud1,
-            .cloud2,
-            .cloud3,
-            .cloud4,
-            .cloud5 {
-                transform: scale(0.7);
-            }
+            .floating-clouds { display: none !important; }
         }
 
         .swiper-slide {
             background: #cfa046c7 !important;
+        }
+
+        @media (max-width: 768px) {
+            /* تقليص ارتفاع البانر وتعديل موضع الكارت */
+            #headerholdert {
+                height: 260px !important;
+                margin-top: 58px !important;
+            }
+            .quoteSwiper {
+                top: 12px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                max-width: 88% !important;
+                min-height: 160px !important;
+                border-radius: 14px !important;
+            }
+            .quote-slide {
+                min-height: 160px !important;
+                padding: 18px 16px !important;
+            }
+
+            /* تصغير الزر الطافي "مميزات العضوية" */
+            a#reg[style*="position: fixed"],
+            a#reg[style*="position:fixed"] {
+                width: 65px !important;
+                height: 65px !important;
+                font-size: 10px !important;
+                bottom: 74px !important;
+                right: 14px !important;
+                border-radius: 50% !important;
+                line-height: 1.3 !important;
+                padding: 0 !important;
+            }
         }
     </style>
 </head>
@@ -218,9 +138,9 @@
         <div class="cloud cloud3"></div>
         <div class="cloud cloud4"></div>
         <div class="cloud cloud5"></div>
-        <div class="cloud cloud1" style="animation-delay: -40s;"></div>
-        <div class="cloud cloud2" style="animation-delay: -45s;"></div>
-        <div class="cloud cloud3" style="animation-delay: -50s;"></div>
+        <div class="cloud cloud1" style="animation-delay:-40s;"></div>
+        <div class="cloud cloud2" style="animation-delay:-45s;"></div>
+        <div class="cloud cloud3" style="animation-delay:-50s;"></div>
     </div>
 
     <div id="headerholdert"
@@ -494,6 +414,249 @@
         </style>
     </div>
     <x-guest-header></x-guest-header>
+
+    @auth
+    @php
+        $__wpUser   = auth()->user();
+        $__wpIsMem  = $__wpUser->isMemberRole();
+        $__wpApp    = $__wpIsMem ? $__wpUser->memberApplication : null;
+        $__wpCard   = $__wpApp?->toMembershipCardPayload() ?? [];
+        $__wpName   = \Illuminate\Support\Str::limit($__wpUser->name, 22, '…');
+        $__wpSt     = $__wpCard['status']['label'] ?? ($__wpApp ? 'عضو' : 'مستخدم');
+        $__wpStKey  = $__wpCard['status']['key']   ?? 'pending';
+        $__wpExp    = !empty($__wpApp?->expiration_date)
+                        ? \Carbon\Carbon::parse($__wpApp->expiration_date)->format('Y/m/d')
+                        : null;
+        $__wpHasCard = $__wpIsMem && $__wpUser->hasActiveMembership();
+
+        // إحصائيات الإعلانات
+        $__wpTx = \App\Models\Transaction::where('user_id', $__wpUser->id)
+                    ->whereNotNull('event_id')->get();
+        $__wpSubscribed = $__wpTx->whereIn('status', ['active'])->count();
+        $__wpPending    = $__wpTx->whereIn('status', ['pending','waiting_for_payment','waiting_for_activation'])->count();
+        $__wpExpiredTx  = $__wpTx->whereIn('status', ['expired','deactivated'])->count();
+        $__wpRejected   = $__wpTx->where('status', 'rejected')->count();
+        $__wpSubIds     = $__wpTx->pluck('event_id')->filter()->unique();
+        $__wpAvailable  = \App\Models\Event::published()->visibleToAudience($__wpUser)
+                            ->where(function ($q) {
+                                $q->where('ends_at', '>=', now())
+                                  ->orWhere(function ($s) {
+                                      $s->whereNull('ends_at')->where('starts_at', '>=', now());
+                                  });
+                            })
+                            ->whereNotIn('id', $__wpSubIds)->count();
+        $__wpMissed     = \App\Models\Event::published()->visibleToAudience($__wpUser)
+                            ->where('ends_at', '<', now())->whereNotIn('id', $__wpSubIds)->count();
+    @endphp
+    <div id="mob-member-card">
+        <div class="mmc-top">
+            <div class="mmc-avatar"><i class="fa-solid fa-circle-user"></i></div>
+            <div class="mmc-info">
+                <div class="mmc-name">{{ $__wpName }}</div>
+                <div class="mmc-status mmc-status--{{ $__wpStKey }}">{{ $__wpSt }}</div>
+                @if($__wpExp)
+                <div class="mmc-exp"><i class="fa-solid fa-calendar-days" style="margin-left:4px;"></i>ينتهي: {{ $__wpExp }}</div>
+                @endif
+            </div>
+        </div>
+        <div class="mmc-btns">
+            <button type="button" id="openMembershipCardHome" class="mmc-btn mmc-btn--card">
+                <i class="fa-solid fa-id-card"></i> بطاقتي
+            </button>
+            <a href="{{ route('members.panel') }}" class="mmc-btn mmc-btn--panel">
+                <i class="fa-solid fa-table-cells-large"></i> لوحة التحكم
+            </a>
+        </div>
+    </div>
+
+    {{-- إحصائيات الموبايل --}}
+    <div id="mob-stats">
+        <a href="{{ route('members.panel') }}#section-subscribed" class="mst-chip" style="--c:#16a34a;">
+            <span class="mst-num">{{ $__wpSubscribed }}</span>
+            <span class="mst-lbl">مشترك فيها</span>
+        </a>
+        <a href="{{ route('members.panel') }}#section-available" class="mst-chip" style="--c:#1a73e8;">
+            <span class="mst-num">{{ $__wpAvailable }}</span>
+            <span class="mst-lbl">متاحة للاشتراك</span>
+        </a>
+        <a href="{{ route('members.panel') }}#section-missed" class="mst-chip" style="--c:#c2410c;">
+            <span class="mst-num">{{ $__wpMissed }}</span>
+            <span class="mst-lbl">فاتتني</span>
+        </a>
+        <a href="{{ route('members.panel') }}#section-pending" class="mst-chip" style="--c:#b45309;">
+            <span class="mst-num">{{ $__wpPending }}</span>
+            <span class="mst-lbl">قيد الانتظار</span>
+        </a>
+        <a href="{{ route('members.panel') }}#section-expired" class="mst-chip" style="--c:#475569;">
+            <span class="mst-num">{{ $__wpExpiredTx }}</span>
+            <span class="mst-lbl">منتهية</span>
+        </a>
+        <a href="{{ route('members.panel') }}#section-rejected" class="mst-chip" style="--c:#b91c1c;">
+            <span class="mst-num">{{ $__wpRejected }}</span>
+            <span class="mst-lbl">مرفوضة</span>
+        </a>
+    </div>
+
+    <style>
+    @media (min-width: 769px) { #mob-member-card, #mob-stats { display: none !important; } }
+    @media (max-width: 768px) {
+        #mob-member-card {
+            margin: 14px 12px 0;
+            background: linear-gradient(135deg, #8a6520 0%, #b68a35 50%, #8a6520 100%);
+            border-radius: 16px;
+            padding: 16px;
+            direction: rtl;
+            box-shadow: 0 4px 20px rgba(182,138,53,.4);
+            border: 1px solid rgba(255,255,255,.25);
+            position: relative;
+            overflow: hidden;
+        }
+        #mob-member-card::before {
+            content: '';
+            position: absolute;
+            top: -30px; left: -30px;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.07);
+        }
+        #mob-member-card::after {
+            content: '';
+            position: absolute;
+            bottom: -20px; right: -20px;
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.05);
+        }
+        .mmc-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        .mmc-avatar {
+            font-size: 3rem;
+            color: rgba(255,255,255,.9);
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .mmc-info { flex: 1; }
+        .mmc-name {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-shadow: 0 1px 3px rgba(0,0,0,.3);
+        }
+        .mmc-status {
+            display: inline-block;
+            font-size: .72rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-bottom: 4px;
+        }
+        .mmc-status--active    { background:rgba(255,255,255,.25); color:#fff; border:1px solid rgba(255,255,255,.4); }
+        .mmc-status--expiring  { background:rgba(220,100,0,.35);   color:#ffe; border:1px solid rgba(255,160,0,.5); }
+        .mmc-status--expired   { background:rgba(180,0,0,.35);     color:#fcc; border:1px solid rgba(220,0,0,.5); }
+        .mmc-status--pending   { background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.3); }
+        .mmc-exp {
+            font-size: .72rem;
+            color: rgba(255,255,255,.8);
+            margin-top: 2px;
+        }
+        .mmc-btns {
+            display: flex;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .mmc-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 8px;
+            border-radius: 10px;
+            font-size: .82rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: opacity .15s;
+        }
+        .mmc-btn:active { opacity: .75; }
+        .mmc-btn--card  {
+            background: #fff;
+            color: #8a6520;
+            border: none;
+        }
+        .mmc-btn--panel {
+            background: rgba(255,255,255,.15);
+            color: #fff;
+            border: 1.5px solid rgba(255,255,255,.5);
+        }
+
+        /* إحصائيات */
+        #mob-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 10px 12px 0;
+            direction: rtl;
+        }
+        .mst-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 10px 6px;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            border: 2px solid color-mix(in srgb, var(--c) 20%, transparent);
+            transition: transform .12s;
+        }
+        .mst-chip:active { transform: scale(.96); }
+        .mst-num {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--c);
+            line-height: 1;
+        }
+        .mst-lbl {
+            font-size: .62rem;
+            font-weight: 600;
+            color: #64748b;
+            text-align: center;
+            line-height: 1.2;
+        }
+    }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){
+        var btn = document.getElementById('openMembershipCardHome');
+        if(!btn) return;
+        btn.addEventListener('click', function(){
+            // جرّب الزر الأصلي في الهيدر أولاً
+            var orig = document.getElementById('openMembershipCard');
+            if(orig) { orig.click(); return; }
+            // أو افتح الـ sheet مباشرة
+            var sheet = document.getElementById('membershipCardSheet');
+            if(sheet) {
+                sheet.removeAttribute('hidden');
+                sheet.setAttribute('aria-hidden','false');
+            }
+        });
+    });
+    </script>
+    @endauth
+
     <a href="{{ route('magazines.feature') }}" id="reg" style="margin-left: auto;
     margin-right: auto;
     display: flex;

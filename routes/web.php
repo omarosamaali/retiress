@@ -28,6 +28,7 @@ use App\Models\Faq;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\PublicEventController;
 use App\Http\Middleware\CheckUserStatus;
+use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
 
 // Broadcasting auth (required for private channels)
 \Illuminate\Support\Facades\Broadcast::routes(['middleware' => ['auth']]);
@@ -36,6 +37,9 @@ Route::get('contact-us', [ContactMessageController::class, 'index'])->name('cont
 Route::post('contact-us', [ContactMessageController::class, 'store'])->name('contact-us.store');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', CheckUserStatus::class])->group(function () {
+    Route::get('transactions', [AdminTransactionController::class, 'index'])->name('transactions.index');
+    Route::patch('transactions/{transaction}/status', [AdminTransactionController::class, 'updateStatus'])->name('transactions.update-status');
+
     Route::get('contact-messages', [ContactMessageController::class, 'admin'])->name('contact-messages');
     Route::get('contact-messages/{contactMessage}', [ContactMessageController::class, 'show'])->name('contact-messages.show');
     Route::delete('contact-messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');

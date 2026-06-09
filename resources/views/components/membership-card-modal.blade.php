@@ -88,4 +88,11 @@
         </div>
     </div>
 </div>
+<style>
+@media (max-width: 768px) {
+    .mci-dates .mci-date-group:last-child {
+        right: -73px !important;
+    }
+}
+</style>
 @endif

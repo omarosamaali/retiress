@@ -35,8 +35,15 @@ class MemberPanelController extends Controller
 
         $subscribedEventIds = $allMyTransactions->pluck('event_id')->filter()->unique();
 
-        // ── إعلانات متاحة للاشتراك ──
-        $availableEvents = Event::publiclyListed($user)
+        // ── إعلانات متاحة للاشتراك (لم تنتهِ بعد) ──
+        $availableEvents = Event::published()
+            ->visibleToAudience($user)
+            ->where(function ($q) {
+                $q->where('ends_at', '>=', now())
+                  ->orWhere(function ($s) {
+                      $s->whereNull('ends_at')->where('starts_at', '>=', now());
+                  });
+            })
             ->whereNotIn('id', $subscribedEventIds)
             ->latest()
             ->limit(20)
@@ -61,8 +68,10 @@ class MemberPanelController extends Controller
             ->limit(8)
             ->get();
 
-        // ── الإشعارات ──
-        $allNotifications    = UserNotification::where('user_id', $user->id)->with('broadcast')->latest()->get();
+        // ── الإشعارات — استثناء المُتجاهَلة ──
+        $allNotifications    = UserNotification::where('user_id', $user->id)
+            ->whereNull('dismissed_at')
+            ->with('broadcast')->latest()->get();
         $unreadNotifications = $allNotifications->whereNull('read_at');
         $readNotifications   = $allNotifications->whereNotNull('read_at');
         $panelNotifications  = $allNotifications->take(10);

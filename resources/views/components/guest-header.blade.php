@@ -3,8 +3,68 @@
         content: none
     }
 
+    /* ── Mobile header bar (max 768px) ── */
+    @media (max-width: 768px) {
+        /* تغيير خلفية الهيدر الثابت للذهبي */
+        #header {
+            background: #b68a35 !important;
+        }
+        /* إخفاء محتوى الهيدر الأصلي */
+        #headerholder {
+            display: none !important;
+        }
+        /* إظهار شريط الموبايل */
+        #mobile-top-bar {
+            display: flex !important;
+        }
+        /* مسافة علوية لمحتوى الصفحة تحت الهيدر الثابت */
+        #headerholder {
+            margin-top: 58px;
+        }
+        #headerholdert {
+            margin-top: 58px !important;
+        }
+    }
+    @media (min-width: 769px) {
+        #mobile-top-bar { display: none !important; }
+    }
+
+    #mobile-top-bar {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 14px;
+        width: 100%;
+        box-sizing: border-box;
+        direction: rtl;
+    }
+    #mobile-top-bar .mob-logo img {
+        height: 42px;
+        width: auto;
+        display: block;
+    }
+    #mobile-top-bar .mob-lang {
+        color: #fff;
+        font-size: .85rem;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        border: 1.5px solid rgba(255,255,255,.6);
+        border-radius: 6px;
+        padding: 3px 10px;
+    }
 </style>
+
 <div style="z-index: 99; position: fixed; top: 0px; width: 100%; background: linear-gradient(to bottom, rgb(184, 216, 234) 3%, rgba(204, 236, 255, 1) 37%, rgba(226, 244, 255, 0.95) 49%, rgba(240, 249, 255, 0.93) 65%, rgb(255, 255, 255) 91%);" id="header">
+    {{-- شريط الموبايل فقط (داخل الهيدر الثابت) --}}
+    <div id="mobile-top-bar">
+        <a href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" class="mob-lang">
+            {{ app()->getLocale() == 'ar' ? 'English' : 'عربي' }}
+        </a>
+        <a href="{{ url('/') }}" class="mob-logo">
+            <img src="{{ asset('assets/images/new-logo.png') }}" alt="logo">
+        </a>
+    </div>
     <div id="headerholder">
         <div class="fixedheader" id="fixedh">
             <div class="logo">
@@ -145,14 +205,12 @@
 
                     @if ($__hIsMember)
                     <div class="member-header-tools d-flex align-items-center gap-2" style="flex-wrap:nowrap;">
-                        @if ($__hHasActiveCard)
                         <div class="downapp">
                             <button type="button" class="member-card-trigger" id="openMembershipCard"
                                 title="{{ __('app.membership_card') }}" aria-label="{{ __('app.membership_card') }}">
                                 <i class="fa-solid fa-id-card"></i> {{ __('app.my_card') }}
                             </button>
                         </div>
-                        @endif
                         <a href="{{ route('members.panel') }}" class="member-panel-link" style="gap: 5px !important;">
                             <i class="fa-solid fa-table-cells-large"></i> {{ __('app.my_panel') }}
                         </a>
@@ -345,3 +403,95 @@
 </div>
 @endif
 @endauth
+
+{{-- ── Mobile Bottom Navigation (max 768px) ── --}}
+<style>
+@media (min-width: 769px) {
+    #mob-bottom-nav { display: none !important; }
+}
+@media (max-width: 768px) {
+    body { padding-bottom: 68px; }
+    #mob-bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        background: #fff;
+        border-top: 1.5px solid #e5e7eb;
+        height: 62px;
+        align-items: stretch;
+        direction: rtl;
+        box-shadow: 0 -2px 12px rgba(0,0,0,.10);
+    }
+    #mob-bottom-nav a,
+    #mob-bottom-nav button {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        font-size: .65rem;
+        font-weight: 600;
+        color: #6b7280;
+        text-decoration: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        padding: 0;
+        transition: color .15s;
+    }
+    #mob-bottom-nav a i,
+    #mob-bottom-nav button i {
+        font-size: 1.25rem;
+        line-height: 1;
+    }
+    #mob-bottom-nav a:hover,
+    #mob-bottom-nav button:hover,
+    #mob-bottom-nav a.mob-nav-active {
+        color: #b68a35;
+    }
+    #mob-bottom-nav .mob-nav-logout {
+        color: #dc2626;
+    }
+    #mob-bottom-nav .mob-nav-logout:hover {
+        color: #991b1b;
+    }
+}
+</style>
+
+<div id="mob-bottom-nav">
+    <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'mob-nav-active' : '' }}">
+        <i class="fa-solid fa-house"></i>
+        <span>الرئيسية</span>
+    </a>
+    <a href="{{ route('events.all-events') }}" class="{{ request()->routeIs('events.*') ? 'mob-nav-active' : '' }}">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>الإعلانات</span>
+    </a>
+    <a href="{{ route('news.all-news') }}" class="{{ request()->routeIs('news.*') ? 'mob-nav-active' : '' }}">
+        <i class="fa-solid fa-newspaper"></i>
+        <span>الأخبار</span>
+    </a>
+    <a href="{{ route('services.all-services') }}" class="{{ request()->routeIs('services.*') ? 'mob-nav-active' : '' }}">
+        <i class="fa-solid fa-briefcase"></i>
+        <span>الخدمات</span>
+    </a>
+    @auth
+    <form action="{{ route('members.logout') }}" method="POST" style="flex:1;display:flex;">
+        @csrf
+        <button type="submit" class="mob-nav-logout">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>الخروج</span>
+        </button>
+    </form>
+    @else
+    <a href="{{ route('members.login') }}">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        <span>دخول</span>
+    </a>
+    @endauth
+</div>

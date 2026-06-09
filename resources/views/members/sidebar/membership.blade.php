@@ -19,6 +19,26 @@
             text-align: left;
         }
 
+        @media (max-width: 768px) {
+            #reg {
+                position: fixed !important;
+                z-index: 99999 !important;
+                bottom: 20px !important;
+                right: 20px !important;
+                width: 100px !important;
+                height: 100px !important;
+                border-radius: 50px !important;
+                background: green !important;
+                font-size: 15px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+                padding: 0 !important;
+                line-height: 1.3 !important;
+            }
+        }
+
         .title--t5n {
             font-size: 32px;
             margin-bottom: 0px;
@@ -96,12 +116,20 @@
                 </button>
                 <script>
                 function showMembershipActiveMsg() {
-                    var daysLeft = {{ (int) now()->diffInDays($__expDate, false) }};
-                    var expStr   = '{{ $__expDate->format('Y/m/d') }}';
-                    var msg = 'عضويتك فعالة حتى ' + expStr + '.\nلا يمكن التجديد إلا قبل 3 أشهر من انتهاء العضوية.';
-                    alert(msg);
+                    var expStr = '{{ $__expDate->format('Y/m/d') }}';
+                    Swal.fire({
+                        title: 'عضويتك فعالة',
+                        html: 'عضويتك فعالة حتى <strong>' + expStr + '</strong>.<br>لا يمكن التجديد إلا قبل 3 أشهر من انتهاء العضوية.',
+                        icon: 'info',
+                        confirmButtonText: 'حسناً',
+                        confirmButtonColor: '#b28b46',
+                        customClass: { popup: 'swal-rtl' }
+                    });
                 }
                 </script>
+                <style>
+                .swal-rtl { direction: rtl; text-align: right; }
+                </style>
             @elseif($__memApp)
                 {{-- لديه عضوية لكن منتهية أو ستنتهي قريباً — توجيه للتجديد --}}
                 <a href="{{ route('members.my-membership') }}" id="reg" class="btn-qhr btn-primary-t6n">

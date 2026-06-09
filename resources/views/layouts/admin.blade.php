@@ -354,6 +354,10 @@
                 <i class="fas fa-home"></i>
                 الرئيسية
             </a>
+            <a class="nav-link {{ request()->routeIs('admin.transactions.*') ? 'active' : '' }}" href="{{ route('admin.transactions.index') }}">
+                <i class="fas fa-list-check"></i>
+                الطلبات
+            </a>
             @if(Auth::user()->role == 'مدير')
             <a class="nav-link" href="{{ route('admin.users.index') }}">
                 <i class="fas fa-users"></i>
