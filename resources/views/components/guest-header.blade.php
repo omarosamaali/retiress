@@ -263,13 +263,13 @@
                     data-id="{{ $userNotification->id }}"
                     data-body="{{ e($userNotification->broadcast?->body) }}"
                     data-title="{{ e($userNotification->broadcast?->title) }}"
+                    onclick="openNotifDialog(this)"
                     style="cursor:pointer; {{ $userNotification->read_at ? 'opacity:0.6;' : '' }}">
-                    <button type="button" class="notif-screen__open-btn"
-                        title="{{ __('app.view') }}"
-                        style="background:{{ $userNotification->read_at ? '#f1f5f9' : '#fef9c3' }};border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .2s;">
+                    <div class="notif-screen__item-icon"
+                        style="background:{{ $userNotification->read_at ? '#f1f5f9' : '#fef9c3' }};border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         <i class="fa-solid {{ $userNotification->read_at ? 'fa-check-circle' : 'fa-circle-info' }}"
                            style="color:{{ $userNotification->read_at ? '#6b7280' : '#ca8a04' }};font-size:.95rem;"></i>
-                    </button>
+                    </div>
                     <div class="notif-screen__item-content">
                         <div class="notif-screen__item-title">{{ $userNotification->broadcast?->title }}</div>
                         <div class="notif-screen__item-body">{{ \Illuminate\Support\Str::limit($userNotification->broadcast?->body, 80) }}</div>
@@ -277,6 +277,7 @@
                     </div>
                     <button type="button" class="notif-screen__dismiss member-notification-dismiss"
                         data-dismiss-url="{{ route('members.notifications.dismiss', $userNotification) }}"
+                        onclick="event.stopPropagation()"
                         title="{{ __('app.dismiss') }}">
                         <i class="fa-solid fa-xmark"></i>
                     </button>

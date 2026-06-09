@@ -98,6 +98,11 @@
         }
     });
 
+    // ── Global: called via onclick="openNotifDialog(this)" in Blade ──────────
+    window.openNotifDialog = function (item) {
+        showNotifDetail(item);
+    };
+
     // ── Show notification detail dialog (centered modal) + mark as read ──────
     function showNotifDetail(item) {
         const title = item.dataset.title || item.querySelector('.notif-screen__item-title')?.textContent?.trim() || '';
@@ -298,7 +303,7 @@
         return '/assets/images/new-logo.png';
     })();
 
-    function showToast(title, body, id) {
+    function showToast(title, body) {
         var toast = document.createElement('div');
         toast.style.cssText = [
             'background:#fff', 'border-radius:12px',
@@ -446,7 +451,7 @@
             });
 
             toShow.slice(0, 3).forEach(function (n) {
-                showToast(n.title, n.body, n.id);
+                showToast(n.title, n.body);
                 markShown(n.id);
             });
 
@@ -482,13 +487,13 @@
 
                 if (id) markShown(id);
 
-                showToast(title, body, id);
+                showToast(title, body);
                 addNotifToPanel(id, title, body);
                 updateBadge(currentBadge() + 1);
             });
 
         } catch (err) {
-            usePusher = false;
+            // Pusher init failed — polling will cover it
         }
     }
 
