@@ -296,7 +296,7 @@
                         '<button style="flex-shrink:0;background:none;border:none;cursor:pointer;color:#94a3b8;font-size:.85rem;padding:0;line-height:1;margin-top:1px;" class="toast-close-btn"><i class="fa-solid fa-xmark"></i></button>' +
                     '</div>' +
                     (body ? '<div style="font-size:.78rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">' + body + '</div>' : '') +
-                    '<div style="font-size:.72rem;color:#b68a35;font-weight:600;margin-top:4px;">الاتحاد الإماراتي للمتقاعدين</div>' +
+                    '<div style="font-size:.72rem;color:#b68a35;font-weight:600;margin-top:4px;">جمعية الامارات للمتقاعدين</div>' +
                 '</div>' +
             '</div>' +
             '<div class="toast-progress" style="position:absolute;bottom:0;right:0;left:0;height:3px;background:#b68a35;transform-origin:right;animation:toastProgress 5s linear forwards;"></div>';

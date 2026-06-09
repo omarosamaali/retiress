@@ -43,7 +43,8 @@ class MemberPanelController extends Controller
             ->get();
 
         // ── إعلانات انتهت ولم يشترك بها ──
-        $missedEvents = Event::publiclyListed($user)
+        $missedEvents = Event::published()
+            ->visibleToAudience($user)
             ->where('ends_at', '<', now())
             ->whereNotIn('id', $subscribedEventIds)
             ->latest()
@@ -60,9 +61,13 @@ class MemberPanelController extends Controller
             ->limit(8)
             ->get();
 
-        // ── الإشعارات ──
+        // ── الإشعارات — تعليم الكل كـ مقروء عند فتح الصفحة ──
+        UserNotification::where('user_id', $user->id)
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
         $allNotifications    = UserNotification::where('user_id', $user->id)->with('broadcast')->latest()->get();
-        $unreadNotifications = $allNotifications->whereNull('read_at');
+        $unreadNotifications = collect(); // all are now read
         $readNotifications   = $allNotifications->whereNotNull('read_at');
         $panelNotifications  = $allNotifications->take(10);
 

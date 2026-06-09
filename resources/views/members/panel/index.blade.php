@@ -617,5 +617,33 @@
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
     <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+    <script>
+    document.querySelectorAll('.mp-dismiss.member-notification-dismiss').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var url  = btn.dataset.dismissUrl;
+            var row  = btn.closest('.mp-notif-row');
+            var card = btn.closest('.mp-card__body');
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                }
+            }).then(function(res) {
+                if (res.ok) {
+                    row.style.transition = 'opacity .3s';
+                    row.style.opacity = '0';
+                    setTimeout(function() {
+                        row.remove();
+                        // show empty if no rows left
+                        if (!card.querySelector('.mp-notif-row')) {
+                            card.innerHTML = '<div class="mp-empty"><i class="fa-regular fa-bell-slash"></i><span>لا توجد إشعارات</span></div>';
+                        }
+                    }, 300);
+                }
+            });
+        });
+    });
+    </script>
 </body>
 </html>
