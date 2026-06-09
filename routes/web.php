@@ -246,7 +246,7 @@ Route::get('/magazines/show/{id}', function ($id) {
 Route::get('/feature/show/{id}', function ($id) {
     $magazines = Feature::find($id);
     return view('members.magazines.show', compact('magazines'));
-})->name('magazines.show');
+})->name('feature.show');
 
 Route::get('/magazines/all-magazines', function () {
     $magazines = Magazine::all();

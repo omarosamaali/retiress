@@ -5138,7 +5138,7 @@
                 <div class="col-oaq col-2yx mt-am8 my-eeo" style="max-width: 100%;" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
                     <div class="d-log flex-mb4 item-zsg content-85f text-if3 bg-ptb shadow-h9k shadow-3d-7n5 transition-all-ease-qd6 transition-hover-36d rou-xnf container-8q9 h-5rt overlay-xkz overlay-1yx">
                         <div class="position-f8s text-tfh w-d98 z-index-leq m-kot item-lgy">
-                            <a href="{{ url('feature/show/'.$magazine->id) }}" class="btn-fca bg-ptb shadow-as8 btn-a7p rounded-8o3 m-3p5">
+                            <a href="{{ route('feature.show', $magazine->id) }}" class="btn-fca bg-ptb shadow-as8 btn-a7p rounded-8o3 m-3p5">
                                 <i style="font-size:15px !important;" class="fa fa-eye"></i>
                             </a>
                         </div>
