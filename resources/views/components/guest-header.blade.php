@@ -220,6 +220,51 @@
         <script src="https://js.pusher.com/8.4/pusher.min.js"></script>
         @endif
         <script src="{{ asset('assets/js/member-header.js') }}" defer></script>
+        <script>
+        // تعريف مبكر قبل defer — يُستبدل بالنسخة الكاملة من member-header.js
+        function openNotifDialog(item) {
+            var title = item.dataset.title || '';
+            var body  = item.dataset.body  || '';
+            var id    = item.dataset.id;
+            var csrf  = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+            document.querySelector('.notif-global-dialog')?.remove();
+
+            var dialog = document.createElement('div');
+            dialog.className = 'notif-global-dialog';
+            dialog.style.cssText = 'position:fixed;inset:0;z-index:999999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);direction:rtl;padding:16px;';
+            dialog.innerHTML =
+                '<div style="background:#fff;border-radius:14px;max-width:480px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.3);padding:24px 20px;display:flex;flex-direction:column;gap:16px;">' +
+                    '<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #f0f0f0;padding-bottom:14px;gap:10px;">' +
+                        '<div style="display:flex;align-items:center;gap:10px;">' +
+                            '<div style="width:38px;height:38px;border-radius:50%;background:#fef9c3;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+                                '<i class="fa-solid fa-bell" style="color:#ca8a04;"></i>' +
+                            '</div>' +
+                            '<span style="font-weight:700;font-size:1rem;color:#1e293b;">' + title + '</span>' +
+                        '</div>' +
+                        '<button onclick="this.closest(\'.notif-global-dialog\').remove()" style="background:#f1f5f9;border:none;border-radius:8px;cursor:pointer;width:32px;height:32px;font-size:1rem;color:#6b7280;">✕</button>' +
+                    '</div>' +
+                    '<div style="font-size:.95rem;color:#374151;line-height:2;white-space:pre-wrap;">' + body + '</div>' +
+                '</div>';
+
+            document.body.appendChild(dialog);
+            dialog.addEventListener('click', function(e){ if(e.target===dialog) dialog.remove(); });
+
+            if (id) {
+                fetch('/members/notifications/' + id + '/read', {
+                    method:'POST',
+                    headers:{'X-CSRF-TOKEN':csrf,'Accept':'application/json','X-Requested-With':'XMLHttpRequest'},
+                    credentials:'same-origin'
+                }).then(function(){
+                    item.style.opacity = '0.6';
+                    var icon = item.querySelector('i');
+                    if(icon){ icon.className='fa-solid fa-check-circle'; icon.style.color='#6b7280'; }
+                    var badge = document.querySelector('.member-notifications-badge');
+                    if(badge){ var n=parseInt(badge.textContent)-1; badge.textContent=n>0?n:''; if(n<=0) badge.remove(); }
+                });
+            }
+        }
+        </script>
     @endauth
 </div>
 

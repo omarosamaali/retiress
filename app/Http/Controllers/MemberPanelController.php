@@ -61,13 +61,9 @@ class MemberPanelController extends Controller
             ->limit(8)
             ->get();
 
-        // ── الإشعارات — تعليم الكل كـ مقروء عند فتح الصفحة ──
-        UserNotification::where('user_id', $user->id)
-            ->whereNull('read_at')
-            ->update(['read_at' => now()]);
-
+        // ── الإشعارات ──
         $allNotifications    = UserNotification::where('user_id', $user->id)->with('broadcast')->latest()->get();
-        $unreadNotifications = collect(); // all are now read
+        $unreadNotifications = $allNotifications->whereNull('read_at');
         $readNotifications   = $allNotifications->whereNotNull('read_at');
         $panelNotifications  = $allNotifications->take(10);
 
