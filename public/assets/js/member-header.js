@@ -105,6 +105,8 @@
         const time  = item.querySelector('.notif-screen__item-time')?.textContent?.trim() || '';
         const id    = item.dataset.id;
 
+        // أغلق البانل الجانبي أولاً ثم أظهر الـ dialog
+        closeNotifScreen();
         document.querySelector('.notif-global-dialog')?.remove();
 
         const dialog = document.createElement('div');
@@ -165,10 +167,20 @@
         if (item.dataset.bound) return;
         item.dataset.bound = '1';
 
+        // الـ row كله قابل للضغط
         item.addEventListener('click', function (e) {
             if (e.target.closest('.notif-screen__dismiss')) return;
             showNotifDetail(item);
         });
+
+        // الـ open-btn صريح برضو
+        var openBtn = item.querySelector('.notif-screen__open-btn');
+        if (openBtn) {
+            openBtn.addEventListener('click', function (e) {
+                e.stopPropagation(); // منع double-trigger مع الـ row
+                showNotifDetail(item);
+            });
+        }
     }
 
     function bindAllNotifItems() {
