@@ -144,11 +144,17 @@
             if (e.key === 'Escape') { closeDialog(); document.removeEventListener('keydown', onKey); }
         });
 
-        // Mark as read
-        if (id) {
+        // Mark as read + update icon visually
+        if (id && !item.dataset.read) {
             post('/members/notifications/' + id + '/read').then(function () {
-                item.style.opacity = '0.65';
                 item.dataset.read = '1';
+                item.style.opacity = '0.6';
+                item.classList.add('notif-screen__item--read');
+                var iconBtn = item.querySelector('.notif-screen__open-btn');
+                if (iconBtn) {
+                    iconBtn.style.background = '#f1f5f9';
+                    iconBtn.innerHTML = '<i class="fa-solid fa-check-circle" style="color:#6b7280;font-size:.95rem;"></i>';
+                }
                 updateBadge(Math.max(0, currentBadge() - 1));
             }).catch(function () {});
         }
@@ -375,9 +381,9 @@
         item.setAttribute('data-body', body || '');
         item.style.cssText = 'cursor:pointer;animation:toastIn .3s ease;';
         item.innerHTML =
-            '<div class="notif-screen__item-icon notif-screen__item-icon--bell">' +
-                '<i class="fa-solid fa-circle-info"></i>' +
-            '</div>' +
+            '<button type="button" class="notif-screen__open-btn" title="عرض" style="background:#fef9c3;border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">' +
+                '<i class="fa-solid fa-circle-info" style="color:#ca8a04;font-size:.95rem;"></i>' +
+            '</button>' +
             '<div class="notif-screen__item-content">' +
                 '<div class="notif-screen__item-title">' + (title || '') + '</div>' +
                 '<div class="notif-screen__item-body">' + (body || '').substring(0, 80) + '</div>' +

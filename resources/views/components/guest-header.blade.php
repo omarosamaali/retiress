@@ -259,13 +259,17 @@
             <div class="notif-screen__section-title">{{ __('app.system_notifications') }}</div>
 
             @forelse ($headerNotifications ?? [] as $userNotification)
-                <div class="notif-screen__item" data-id="{{ $userNotification->id }}"
+                <div class="notif-screen__item {{ $userNotification->read_at ? 'notif-screen__item--read' : '' }}"
+                    data-id="{{ $userNotification->id }}"
                     data-body="{{ e($userNotification->broadcast?->body) }}"
                     data-title="{{ e($userNotification->broadcast?->title) }}"
-                    style="cursor:pointer;">
-                    <div class="notif-screen__item-icon notif-screen__item-icon--bell">
-                        <i class="fa-solid fa-circle-info"></i>
-                    </div>
+                    style="cursor:pointer; {{ $userNotification->read_at ? 'opacity:0.6;' : '' }}">
+                    <button type="button" class="notif-screen__open-btn"
+                        title="{{ __('app.view') }}"
+                        style="background:{{ $userNotification->read_at ? '#f1f5f9' : '#fef9c3' }};border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .2s;">
+                        <i class="fa-solid {{ $userNotification->read_at ? 'fa-check-circle' : 'fa-circle-info' }}"
+                           style="color:{{ $userNotification->read_at ? '#6b7280' : '#ca8a04' }};font-size:.95rem;"></i>
+                    </button>
                     <div class="notif-screen__item-content">
                         <div class="notif-screen__item-title">{{ $userNotification->broadcast?->title }}</div>
                         <div class="notif-screen__item-body">{{ \Illuminate\Support\Str::limit($userNotification->broadcast?->body, 80) }}</div>
