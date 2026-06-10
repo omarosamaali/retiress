@@ -849,34 +849,49 @@
                         </div>
                     @elseif ($events->count() === 1)
                     @php $event = $events->first(); @endphp
-                    <a href="{{ url('/events/show/' . $event->id) }}" class="slide-content" style="text-decoration:none;display:block;">
-                        <x-event-type-badge :event="$event" />
-                        <img src="{{ asset('storage/' . $event->main_image) }}"
-                            alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
-                            class="slide-image">
-                        <div class="slide-title">
-                            {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
+                    <a href="{{ url('/events/show/' . $event->id) }}" style="text-decoration:none;display:block;border-radius:12px;overflow:hidden;">
+                        <div style="position:relative;">
+                            <x-event-type-badge :event="$event" />
+                            <img src="{{ asset('storage/' . $event->main_image) }}"
+                                alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
+                                class="slide-image">
+                            <div class="slide-title">
+                                {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
+                            </div>
                         </div>
-                        <p style="padding-top: 20px; padding-right: 20px; margin-bottom: 15px;">{{
-                            __('app.date') }} : {{
-                            \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}</p>
+                        <div style="background:rgba(1,99,48,.85);padding:10px 16px;">
+                            <p style="margin:0;color:#fff;font-size:.85rem;">
+                                <i class="fa-regular fa-calendar" style="margin-left:6px;"></i>
+                                {{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}
+                            </p>
+                        </div>
+                    </a>
+                    <a href="{{ route('events.all-events') }}" class="btn-dwo block-qlo"
+                        style="display: block; text-align: center; margin-top: 20px;">
+                        <i class="fas fa-eye"></i>
+                        <span>{{ __('app.view_more') }}</span>
                     </a>
                     @else
                     <div class="swiper eventsSwiper">
                         <div class="swiper-wrapper">
                             @foreach ($events as $event)
                             <div class="swiper-slide">
-                                <a href="{{ url('/events/show/' . $event->id) }}" class="slide-content">
-                                    <x-event-type-badge :event="$event" />
-                                    <img src="{{ asset('storage/' . $event->main_image) }}"
-                                        alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
-                                        class="slide-image">
-                                    <div class="slide-title">
-                                        {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
+                                <a href="{{ url('/events/show/' . $event->id) }}" style="text-decoration:none;display:block;border-radius:12px;overflow:hidden;">
+                                    <div style="position:relative;">
+                                        <x-event-type-badge :event="$event" />
+                                        <img src="{{ asset('storage/' . $event->main_image) }}"
+                                            alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
+                                            class="slide-image">
+                                        <div class="slide-title">
+                                            {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
+                                        </div>
                                     </div>
-                                    <p style="padding-top: 20px; padding-right: 20px; margin-bottom: 15px;">{{
-                                        __('app.date') }} : {{
-                                        \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}</p>
+                                    <div style="background:rgba(1,99,48,.85);padding:10px 16px;">
+                                        <p style="margin:0;color:#fff;font-size:.85rem;">
+                                            <i class="fa-regular fa-calendar" style="margin-left:6px;"></i>
+                                            {{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}
+                                        </p>
+                                    </div>
                                 </a>
                             </div>
                             @endforeach
