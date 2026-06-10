@@ -76,7 +76,7 @@
         font-weight: 700;
         color: #1e293b;
         line-height: 1.3;
-        max-width: 120px;
+        max-width: 140px;
     }
     .mob-membership-btn {
         display: flex;
@@ -258,30 +258,36 @@
         <div class="mob-top-row2">
             <a href="{{ url('/') }}" class="mob-logo-group">
                 <img src="{{ asset('assets/images/new-logo.png') }}" alt="logo" class="mob-logo" style="height:36px;width:auto;">
-                <span class="mob-site-name">جمعية الإمارات<br>للمتقاعدين</span>
+                <span class="mob-site-name">جمعية الإمارات للمتقاعدين</span>
             </a>
             <div class="mob-row2-actions">
                 <a href="{{ route('magazines.feature') }}" class="mob-membership-btn">
                     <i class="fas fa-star"></i>
-                    مميزات العضوية
+                    المميزات 
                 </a>
-                @auth
-                <form action="{{ route('members.logout') }}" method="POST" style="margin:0;">
-                    @csrf
-                    <button type="submit" class="mob-auth-btn mob-auth-btn--logout">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                        خروج
-                    </button>
-                </form>
-                @else
-                <a href="{{ route('members.login') }}" class="mob-auth-btn mob-auth-btn--login">
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                    دخول
-                </a>
-                @endauth
             </div>
         </div>
     </div>
+    @auth
+    <form action="{{ route('members.logout') }}" method="POST" 
+    style="position: fixed;
+    left: 13px;
+    top: 118px; margin:0;">
+        @csrf
+        <button type="submit" class="mob-auth-btn mob-auth-btn--logout">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            خروج
+        </button>
+    </form>
+    @else
+    <a href="{{ route('members.login') }}" style="position: fixed;
+    left: 13px;
+    top: 118px;"
+    class="mob-auth-btn mob-auth-btn--login">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        دخول
+    </a>
+    @endauth
     <div id="headerholder">
         <div class="fixedheader" id="fixedh">
             <div class="logo">

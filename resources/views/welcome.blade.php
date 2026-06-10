@@ -24,7 +24,7 @@
     <script src="{{ asset('assets/js/amazingslider.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/amazingslider-2.css') }}">
     <script src="{{ asset('assets/js/initslider-2.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset(path: 'assets/css/custom.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom.css') }}?v={{ filemtime(public_path('assets/css/custom.css')) }}">
     <link rel="icon" href="http://127.0.0.1:8000/assets/img/Group.png" type="image/x-icon">
 
     <style>
@@ -601,158 +601,6 @@
         </a>
     </div>
 
-    <style>
-    @media (min-width: 769px) { #mob-member-card, #mob-stats { display: none !important; } }
-    /* الإحصائيات مخفية من الصفحة — تظهر فقط داخل شيت البطاقة */
-    #mob-stats { display: none !important; }
-    @media (max-width: 768px) {
-        #mob-member-card {
-            display: block !important;
-            margin: 110px 12px 0;
-            background: linear-gradient(135deg, #8a6520 0%, #b68a35 50%, #8a6520 100%);
-            border-radius: 16px;
-            padding: 7px;
-            direction: rtl;
-            box-shadow: 0 4px 20px rgba(182,138,53,.4);
-            border: 1px solid rgba(255,255,255,.25);
-            position: relative;
-            overflow: hidden;
-        }
-        #mob-member-card::before {
-            content: '';
-            position: absolute;
-            top: -30px; left: -30px;
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.07);
-        }
-        #mob-member-card::after {
-            content: '';
-            position: absolute;
-            bottom: -20px; right: -20px;
-            width: 90px; height: 90px;
-            border-radius: 50%;
-            background: rgba(255,255,255,.05);
-        }
-        .mmc-top {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-            z-index: 1;
-        }
-        .mmc-avatar {
-            font-size: 3rem;
-            color: rgba(255,255,255,.9);
-            line-height: 1;
-            flex-shrink: 0;
-        }
-        .mmc-avatar-img {
-            width: 54px;
-            height: 54px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,.7);
-            display: block;
-        }
-        .mmc-info { flex: 1; }
-        .mmc-name {
-            color: #fff;
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-            text-shadow: 0 1px 3px rgba(0,0,0,.3);
-        }
-        .mmc-status {
-            display: inline-block;
-            font-size: .72rem;
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 20px;
-            margin-bottom: 4px;
-        }
-        .mmc-status--active    { background:rgba(255,255,255,.25); color:#fff; border:1px solid rgba(255,255,255,.4); }
-        .mmc-status--expiring  { background:rgba(220,100,0,.35);   color:#ffe; border:1px solid rgba(255,160,0,.5); }
-        .mmc-status--expired   { background:rgba(180,0,0,.35);     color:#fcc; border:1px solid rgba(220,0,0,.5); }
-        .mmc-status--pending   { background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.3); }
-        .mmc-exp {
-            font-size: .72rem;
-            color: rgba(255,255,255,.8);
-            margin-top: 2px;
-        }
-        .mmc-btns {
-            display: flex;
-            gap: 10px;
-            position: relative;
-            z-index: 1;
-        }
-        .mmc-btn {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            max-width: 94px;
-            width: 40px;
-            padding: 0px 2px;
-            border-radius: 10px;
-            font-size: .82rem;
-            font-weight: 700;
-            text-decoration: none;
-            cursor: pointer;
-            font-family: inherit;
-            transition: opacity .15s;
-        }
-        .mmc-btn:active { opacity: .75; }
-        .mmc-btn--card  {
-            background: #fff;
-            color: #8a6520;
-            border: none;
-        }
-        .mmc-btn--panel {
-            background: rgba(255,255,255,.15);
-            color: #fff;
-            border: 1.5px solid rgba(255,255,255,.5);
-        }
-
-        /* إحصائيات */
-        #mob-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin: 10px 12px 0;
-            direction: rtl;
-        }
-        .mst-chip {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 3px;
-            background: #fff;
-            border-radius: 12px;
-            padding: 10px 6px;
-            text-decoration: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,.08);
-            border: 2px solid color-mix(in srgb, var(--c) 20%, transparent);
-            transition: transform .12s;
-        }
-        .mst-chip:active { transform: scale(.96); }
-        .mst-num {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: var(--c);
-            line-height: 1;
-        }
-        .mst-lbl {
-            font-size: .62rem;
-            font-weight: 600;
-            color: #64748b;
-            text-align: center;
-            line-height: 1.2;
-        }
-    }
-    </style>
 
     <script>
     document.addEventListener('DOMContentLoaded', function(){
@@ -841,21 +689,160 @@
     @endif
     @endauth
 
+    {{-- CSS كارت العضو — يُحمَّل دائماً للمسجلين والزوار --}}
+    <style>
+    @media (min-width: 769px) { #mob-member-card, #mob-stats { display: none !important; } }
+    #mob-stats { display: none !important; }
+    @media (max-width: 768px) {
+        #mob-member-card {
+            display: block !important;
+            margin: 110px 12px 0;
+            background: #fff;
+            border-radius: 16px;
+            padding: 7px;
+            direction: rtl;
+            box-shadow: 0 4px 20px rgba(182,138,53,.25);
+            border: 2px solid #b68a35;
+            position: relative;
+            overflow: hidden;
+        }
+        #mob-member-card::before {
+            content: '';
+            position: absolute;
+            top: -30px; left: -30px;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: rgba(182,138,53,.06);
+        }
+        #mob-member-card::after {
+            content: '';
+            position: absolute;
+            bottom: -20px; right: -20px;
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            background: rgba(182,138,53,.04);
+        }
+        .mmc-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .mmc-avatar {
+            font-size: 3rem;
+            color: #b68a35;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .mmc-avatar-img {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #b68a35;
+            display: block;
+        }
+        .mmc-info { flex: 1; }
+        .mmc-name {
+            color: #8a6520;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        .mmc-status {
+            display: inline-block;
+            font-size: .72rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-bottom: 4px;
+        }
+        .mmc-status--active    { background:rgba(182,138,53,.12); color:#8a6520; border:1px solid rgba(182,138,53,.4); }
+        .mmc-status--expiring  { background:rgba(220,100,0,.1);   color:#b45309; border:1px solid rgba(220,100,0,.4); }
+        .mmc-status--expired   { background:rgba(180,0,0,.08);    color:#b91c1c; border:1px solid rgba(180,0,0,.3); }
+        .mmc-status--pending   { background:rgba(182,138,53,.08); color:#b68a35; border:1px solid rgba(182,138,53,.3); }
+        .mmc-exp { font-size:.72rem; color:#b68a35; margin-top:2px; }
+        .mmc-btns {
+            display: flex;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .mmc-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            max-width: 110px;
+            width: 40px;
+            padding: 0px 2px;
+            border-radius: 10px;
+            font-size: .82rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: opacity .15s;
+        }
+        .mmc-btn:active { opacity: .75; }
+        .mmc-btn--card  { background:#b68a35; color:#fff !important; border:none; }
+        .mmc-btn--panel { background:#fff; color:#b68a35 !important; border:1.5px solid #b68a35; }
+        .mmc-card-title {
+            font-size: .78rem;
+            font-weight: 700;
+            color: #b68a35;
+            text-align: center;
+            letter-spacing: .5px;
+            margin-bottom: 10px;
+        }
+        .mmc-name--empty { color:rgba(182,138,53,.35) !important; letter-spacing:3px; }
+        /* إحصائيات */
+        #mob-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 10px 12px 0;
+            direction: rtl;
+        }
+        .mst-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 10px 6px;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            border: 2px solid color-mix(in srgb, var(--c) 20%, transparent);
+            transition: transform .12s;
+        }
+        .mst-chip:active { transform: scale(.96); }
+        .mst-num { font-size:1.35rem; font-weight:800; color:var(--c); line-height:1; }
+        .mst-lbl { font-size:.62rem; font-weight:600; color:#64748b; text-align:center; line-height:1.2; }
+    }
+    </style>
+
     {{-- كارت بطاقة العضوية للزوار غير المسجلين --}}
     @guest
     <div id="mob-member-card">
-        <div class="mmc-card-title">بطاقة عضوية الكترونية</div>
         <div class="mmc-top">
             <div class="mmc-avatar">
                 <i class="fa-solid fa-circle-user"></i>
             </div>
             <div class="mmc-info">
-                <div class="mmc-name mmc-name--empty">— — —</div>
-                <div class="mmc-status mmc-status--pending">—</div>
+                <div class="mmc-name">— — —</div>
+                <div class="mmc-status mmc-status--pending">بطاقة عضوية الكترونية</div>
+                <div class="mmc-exp">
+                    <i class="fa-solid fa-calendar-days" style="margin-left:4px;"></i>سجّل لعرض بياناتك
+                </div>
             </div>
         </div>
         <div class="mmc-btns">
-            <a href="{{ route('login') }}" class="mmc-btn mmc-btn--card">
+            <a href="{{ route('members.login') }}" class="mmc-btn mmc-btn--card">
                 <i class="fa-solid fa-right-to-bracket"></i> تسجيل دخول
             </a>
             <a href="{{ route('register') }}" class="mmc-btn mmc-btn--panel">
@@ -887,7 +874,7 @@
 
         /* ── كارت العضو ── */
         #mob-member-card {
-            margin: 135px 12px 0 !important;
+            margin: 112px 12px 0 !important;
         }
 
         /* ── هيدر الأقسام المشترك ── */
@@ -916,19 +903,6 @@
         #mob-ads-section {
             display: block !important;
             padding: 2px 0 0;
-        }
-        /* عنوان الكارت للزوار */
-        .mmc-card-title {
-            font-size: .78rem;
-            font-weight: 700;
-            color: rgba(255,255,255,.75);
-            text-align: center;
-            letter-spacing: .5px;
-            margin-bottom: 10px;
-        }
-        .mmc-name--empty {
-            color: rgba(255,255,255,.4) !important;
-            letter-spacing: 3px;
         }
         .mob-news-swiper,
         .mob-ads-swiper {
