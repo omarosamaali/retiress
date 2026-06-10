@@ -198,6 +198,12 @@
 <script>
     (function() {
         var splash = document.getElementById('pwa-splash');
+        var isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                        || window.navigator.standalone === true;
+        if (!isStandalone) {
+            splash.style.display = 'none';
+            return;
+        }
         setTimeout(function() {
             splash.classList.add('hidden');
             setTimeout(function() { splash.style.display = 'none'; }, 500);
@@ -817,21 +823,20 @@
 </br>
                 العضوية
             </a>
-    <section style="background: #704e40; margin-top: 100px;">
+    <section style="background: #fff; margin-top: 100px;">
         <div class="container-e3z">
             <div class="row-sy7">
                 <div class="col-w5q">
-                    <h1 class="font-weight-5zk text-jli" style="margin-top: 25px;">{{ __('app.latest_events') }}</h1>
-                    <p class="text-jli">{{ __('app.events_description') }}</p>
+                    <h1 class="font-weight-5zk" style="margin-top: 25px; color: #1e293b !important;">{{ __('app.latest_events') }}</h1>
+                    <p style="color: #64748b !important;">{{ __('app.events_description') }}</p>
                 </div>
                 <div class="col-bpd">
                     @if ($events->isEmpty())
-                        <div style="display:flex;align-items:center;justify-content:center;min-height:200px;flex-direction:column;gap:16px;color:rgba(255,255,255,.8);padding:30px 0;">
+                        <div style="display:flex;align-items:center;justify-content:center;min-height:200px;flex-direction:column;gap:16px;color:#64748b;padding:30px 0;">
                             <i class="fa-regular fa-calendar-xmark" style="font-size:2.5rem;"></i>
                             <span style="font-size:1rem;font-weight:600;">لا تتوفر إعلانات فعّالة حالياً</span>
                             <a href="{{ route('events.all-events') }}"
-                               style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.5);border-radius:24px;padding:8px 22px;font-size:.88rem;font-weight:700;text-decoration:none;transition:background .2s;"
-                               onmouseover="this.style.background='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.15)'">
+                               style="display:inline-flex;align-items:center;gap:7px;background:#b68a35;color:#fff;border:1.5px solid #b68a35;border-radius:24px;padding:8px 22px;font-size:.88rem;font-weight:700;text-decoration:none;transition:background .2s;">
                                 <i class="fa-solid fa-list"></i> عرض الجميع
                             </a>
                         </div>
