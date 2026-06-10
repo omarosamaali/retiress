@@ -66,6 +66,41 @@
         border-radius: 6px;
         padding: 3px 10px;
     }
+    .mob-bell-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        padding: 4px;
+        color: #fff;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
+    }
+    .mob-bell-btn i {
+        font-size: 1.3rem;
+    }
+    .mob-bell-badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: #dc2626;
+        color: #fff;
+        border-radius: 50%;
+        font-size: .55rem;
+        min-width: 15px;
+        height: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 2px;
+        font-weight: 700;
+        line-height: 1;
+    }
 </style>
 
 @auth
@@ -89,21 +124,24 @@
         {{-- الصف الأول: الاشعارات يمين + اللغة شمال --}}
         <div class="mob-top-row1">
             @auth
-            @if(isset($__hIsMember) && $__hIsMember)
-            <button type="button" id="toggleMemberNotifications"
-                class="member-notifications-btn mob-notif-btn"
-                aria-expanded="false" aria-label="{{ __('app.notifications') }}"
-                style="background:none;border:none;cursor:pointer;position:relative;padding:0;color:#fff;line-height:1;">
-                <i class="fa-solid fa-bell" style="font-size:1.3rem;"></i>
-                @if (isset($__hNotifCount) && $__hNotifCount > 0)
-                    <span class="member-notifications-badge" style="position:absolute;top:-6px;left:-6px;background:#dc2626;color:#fff;border-radius:50%;font-size:.6rem;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 3px;font-weight:700;">{{ $__hNotifCount > 99 ? '99+' : $__hNotifCount }}</span>
+                @if(isset($__hIsMember) && $__hIsMember)
+                <button type="button" id="toggleMemberNotifications"
+                    class="member-notifications-btn mob-bell-btn"
+                    aria-expanded="false" aria-label="{{ __('app.notifications') }}">
+                    <i class="fa-solid fa-bell"></i>
+                    @if (isset($__hNotifCount) && $__hNotifCount > 0)
+                        <span class="mob-bell-badge">{{ $__hNotifCount > 99 ? '99+' : $__hNotifCount }}</span>
+                    @endif
+                </button>
+                @else
+                <a href="{{ route('members.login') }}" class="mob-bell-btn" style="text-decoration:none;">
+                    <i class="fa-solid fa-bell"></i>
+                </a>
                 @endif
-            </button>
             @else
-            <span style="width:28px;display:block;"></span>
-            @endif
-            @else
-            <span style="width:28px;display:block;"></span>
+            <a href="{{ route('members.login') }}" class="mob-bell-btn" style="text-decoration:none;">
+                <i class="fa-solid fa-bell"></i>
+            </a>
             @endauth
             <a href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" class="mob-lang">
                 {{ app()->getLocale() == 'ar' ? 'English' : 'عربي' }}
