@@ -253,7 +253,7 @@ Route::get('/feature/show/{id}', function ($id) {
 })->name('feature.show');
 
 Route::get('/magazines/all-magazines', function () {
-    $magazines = Magazine::all();
+    $magazines = Magazine::latest()->get();
     return view('members.magazines.all-magazines', compact('magazines'));
 })->name('magazines.all-magazines');
 
@@ -313,15 +313,7 @@ Route::get('/', function () {
     $events          = $allEvents->whereNotIn('type', ['خدمات', 'مميزات'])->values();
     $serviceEvents   = $allEvents->where('type', 'خدمات')->values();
     $services = Service::latest()->limit(3)->get();
-    // $magazines = Magazine::latest()->get();
-    $magazinesCount = Magazine::count();
-    $magazines = null;
-
-    if ($magazinesCount > 0) {
-        $dayOfMonth = now()->day;
-        $offset = ($dayOfMonth - 1) % $magazinesCount;
-        $magazines = Magazine::latest()->offset($offset)->first();
-    }
+    $magazines = Magazine::latest()->first();
 
     $settings = Settings::getActiveContactInfo();
     return view('welcome', compact('banner', 'news', 'events', 'serviceEvents', 'services', 'magazines', 'settings'));

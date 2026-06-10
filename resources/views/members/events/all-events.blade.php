@@ -5181,11 +5181,11 @@
                         <i class="fa-regular fa-calendar-xmark"></i> إعلانات سابقة
                     </h3>
                     @foreach($expiredEvents as $event)
-                    <div class="my-kck p-7p2 bg-xf5 shadow-t3k" style="position:relative; opacity:0.75; border-right:4px solid #94a3b8 !important;" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                    <div class="my-kck p-7p2 bg-xf5 shadow-t3k" style="position:relative;" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
                         {{-- زرار اقرأ المزيد فوق اليمين للمنتهية --}}
                         <a href="{{ route('events.show', $event) }}"
-                           style="position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:5px;background:#64748b;color:#fff;border-radius:8px;padding:6px 14px;font-size:.8rem;font-weight:700;text-decoration:none;z-index:2;transition:background .18s;"
-                           onmouseover="this.style.background='#475569'" onmouseout="this.style.background='#64748b'">
+                           style="position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:5px;background:#b68a35;color:#fff;border-radius:8px;padding:6px 14px;font-size:.8rem;font-weight:700;text-decoration:none;z-index:2;transition:background .18s;"
+                           onmouseover="this.style.background='#8a6e2a'" onmouseout="this.style.background='#b68a35'">
                             <i class="fa-solid fa-arrow-left"></i> {{ __('app.read_more') }}
                         </a>
                         <div class="row-cwp py-hp3" style="padding-top:44px;">
@@ -5194,25 +5194,24 @@
                                     <a href="{{ route('events.show', $event) }}" class="block-osq text-b1x">
                                         <figure class="m-38w text-m1o overflow-khm">
                                             <img class="img-odq rou-m3b" src="{{ asset('storage/' . $event->main_image) }}"
-                                                alt="{{ app()->getLocale() == 'ar' ? ($event->title_ar ?? '') : ($event->title_en ?? '') }}"
-                                                style="filter:grayscale(50%);">
+                                                alt="{{ app()->getLocale() == 'ar' ? ($event->title_ar ?? '') : ($event->title_en ?? '') }}">
                                         </figure>
                                     </a>
-                                    <span style="position:absolute;top:10px;right:10px;background:#64748b;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;pointer-events:none;">
+                                    <span style="position:absolute;top:10px;right:10px;background:#dc2626;color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;pointer-events:none;">
                                         <i class="fa-solid fa-calendar-xmark"></i> منتهي
                                     </span>
                                 </div>
                             </div>
                             <div class="col-5vc col-cvg my-mpv">
-                                <a class="text-b1x" href="{{ route('events.show', $event) }}" style="text-decoration:none;">
-                                    <h2 class="qvtmx font-weight-s3h" style="color:#64748b;">{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}</h2>
+                                <a class="text-7zo text-b1x" href="{{ route('events.show', $event) }}">
+                                    <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}</h2>
                                 </a>
                                 <span class="badge bg-secondary">{{ $event->type_label }}</span>
                                 @if ($event->isForMembersOnly())
                                     <span class="badge bg-info">{{ $event->audience_label }}</span>
                                 @endif
                                 @if($event->display_ends_at)
-                                    <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#94a3b8;margin-right:6px;">
+                                    <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#dc2626;margin-right:6px;">
                                         <i class="fa-regular fa-calendar-xmark"></i> انتهى {{ $event->display_ends_at->format('d/m/Y') }}
                                     </span>
                                 @endif
@@ -5220,7 +5219,7 @@
                                 @include('members.events.partials.event-meta', ['event' => $event])
                             </div>
                             <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                                <span style="color:#64748b;" class="block-osq">{{ app()->getLocale() == 'ar' ? $event->description_ar : $event->description_en }}</span>
+                                <span class="text-7zo block-osq">{{ app()->getLocale() == 'ar' ? $event->description_ar : $event->description_en }}</span>
                             </p>
                         </div>
                     </div>

@@ -2,15 +2,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const swiperContainer = document.querySelector('.eventsSwiper');
     if (!swiperContainer) return;
 
+    const slideCount = swiperContainer.querySelectorAll('.swiper-slide').length;
+
     const swiper = new Swiper('.eventsSwiper', {
         slidesPerView: 1,
         spaceBetween: 30,
-        loop: true,
-        autoplay: {
+        loop: slideCount > 1,
+        autoplay: slideCount > 1 ? {
             delay: 3000,
             disableOnInteraction: false,
             pauseOnMouseEnter: true
-        },
+        } : false,
 
         navigation: {
             nextEl: '.swiper-button-next',

@@ -3,6 +3,12 @@
 
 <head>
     <link rel="icon" type="image/png" href="images/fav.png" />
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#b68a35">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="المتقاعدين">
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/new-logo.png') }}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width; initial-scale=1;" />
     <title>جمعية الإمارات للمتقاعدين</title>
@@ -657,6 +663,34 @@
     </script>
     @endauth
 
+    <style>
+    @media (max-width: 768px) {
+        /* ── إخفاء الأخبار بعد الأول ── */
+        .list-l88.list-vja .list-2nx:not(:first-child) {
+            display: none !important;
+        }
+        /* ── تحسين كارد الخبر الأول موبايل ── */
+        .list-l88.list-vja {
+            display: block !important;
+            margin: 0 12px !important;
+        }
+        .list-l88.list-vja .list-2nx:first-child {
+            display: block !important;
+            width: 100% !important;
+            height: 220px !important;
+            border-radius: 14px !important;
+            overflow: hidden;
+        }
+        /* ── تصغير عنوان الأخبار موبايل ── */
+        #latest-news h3 {
+            font-size: 1.3rem !important;
+        }
+        #latest-news {
+            margin-top: 24px !important;
+            padding: 0 12px;
+        }
+    }
+    </style>
     <a href="{{ route('magazines.feature') }}" id="reg" style="margin-left: auto;
     margin-right: auto;
     display: flex;

@@ -58,12 +58,27 @@
 <div style="z-index: 99; position: fixed; top: 0px; width: 100%; background: linear-gradient(to bottom, rgb(184, 216, 234) 3%, rgba(204, 236, 255, 1) 37%, rgba(226, 244, 255, 0.95) 49%, rgba(240, 249, 255, 0.93) 65%, rgb(255, 255, 255) 91%);" id="header">
     {{-- شريط الموبايل فقط (داخل الهيدر الثابت) --}}
     <div id="mobile-top-bar">
-        <a href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" class="mob-lang">
-            {{ app()->getLocale() == 'ar' ? 'English' : 'عربي' }}
-        </a>
         <a href="{{ url('/') }}" class="mob-logo">
             <img src="{{ asset('assets/images/new-logo.png') }}" alt="logo">
         </a>
+        <div style="display:flex;align-items:center;gap:8px;">
+            @auth
+            @if($__hIsMember)
+            <button type="button" id="toggleMemberNotifications"
+                class="member-notifications-btn mob-notif-btn"
+                aria-expanded="false" aria-label="{{ __('app.notifications') }}"
+                style="background:none;border:none;cursor:pointer;position:relative;padding:0;color:#fff;line-height:1;">
+                <i class="fa-solid fa-bell" style="font-size:1.2rem;"></i>
+                @if ($__hNotifCount > 0)
+                    <span class="member-notifications-badge" style="position:absolute;top:-6px;left:-6px;background:#dc2626;color:#fff;border-radius:50%;font-size:.6rem;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 3px;font-weight:700;">{{ $__hNotifCount > 99 ? '99+' : $__hNotifCount }}</span>
+                @endif
+            </button>
+            @endif
+            @endauth
+            <a href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" class="mob-lang">
+                {{ app()->getLocale() == 'ar' ? 'English' : 'عربي' }}
+            </a>
+        </div>
     </div>
     <div id="headerholder">
         <div class="fixedheader" id="fixedh">
@@ -410,55 +425,73 @@
     #mob-bottom-nav { display: none !important; }
 }
 @media (max-width: 768px) {
-    body { padding-bottom: 68px; }
+    body { padding-bottom: 68px !important; }
     #mob-bottom-nav {
-        display: flex;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 9999;
-        background: #fff;
-        border-top: 1.5px solid #e5e7eb;
-        height: 62px;
-        align-items: stretch;
-        direction: rtl;
-        box-shadow: 0 -2px 12px rgba(0,0,0,.10);
+        display: flex !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 99999 !important;
+        background: #fff !important;
+        border-top: 1.5px solid #e5e7eb !important;
+        height: 62px !important;
+        align-items: stretch !important;
+        direction: rtl !important;
+        box-shadow: 0 -2px 12px rgba(0,0,0,.10) !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        transform: none !important;
     }
     #mob-bottom-nav a,
     #mob-bottom-nav button {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 3px;
-        font-size: .65rem;
-        font-weight: 600;
-        color: #6b7280;
-        text-decoration: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-family: inherit;
-        padding: 0;
-        transition: color .15s;
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 3px !important;
+        font-size: .65rem !important;
+        font-weight: 600 !important;
+        color: #6b7280 !important;
+        text-decoration: none !important;
+        background: none !important;
+        border: none !important;
+        cursor: pointer !important;
+        font-family: "Cairo", sans-serif !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        transition: color .15s !important;
+        line-height: 1 !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    #mob-bottom-nav a span,
+    #mob-bottom-nav button span {
+        font-size: .65rem !important;
+        line-height: 1.2 !important;
+        color: inherit !important;
+        display: block !important;
+        font-family: "Cairo", sans-serif !important;
     }
     #mob-bottom-nav a i,
     #mob-bottom-nav button i {
-        font-size: 1.25rem;
-        line-height: 1;
+        font-size: 1.25rem !important;
+        line-height: 1 !important;
+        color: inherit !important;
     }
     #mob-bottom-nav a:hover,
     #mob-bottom-nav button:hover,
     #mob-bottom-nav a.mob-nav-active {
-        color: #b68a35;
+        color: #b68a35 !important;
+        text-decoration: none !important;
     }
     #mob-bottom-nav .mob-nav-logout {
-        color: #dc2626;
+        color: #dc2626 !important;
     }
     #mob-bottom-nav .mob-nav-logout:hover {
-        color: #991b1b;
+        color: #991b1b !important;
     }
 }
 </style>
@@ -495,3 +528,188 @@
     </a>
     @endauth
 </div>
+
+{{-- ── PWA Install Banner (mobile only) ── --}}
+<div id="pwa-banner" style="display:none;" aria-modal="true" role="dialog" aria-label="تثبيت التطبيق">
+    <div id="pwa-banner__backdrop"></div>
+    <div id="pwa-banner__card">
+        <img src="{{ asset('assets/images/new-logo.png') }}" alt="شعار الجمعية" id="pwa-banner__logo">
+        <h2 id="pwa-banner__title">ثبّت تطبيق الجمعية</h2>
+        <p id="pwa-banner__desc">استمتع بتجربة أفضل — يعمل بدون إنترنت ويفتح مباشرة من الشاشة الرئيسية!</p>
+        <div id="pwa-banner__features">
+            <div class="pwa-feat">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+                <span>تطبيق كامل</span>
+            </div>
+            <div class="pwa-feat">
+                <i class="fa-solid fa-bolt"></i>
+                <span>سريع</span>
+            </div>
+        </div>
+        <button id="pwa-banner__install">
+            <i class="fa-solid fa-download"></i>
+            ثبّت التطبيق الآن
+        </button>
+        <button id="pwa-banner__dismiss">ليس الآن</button>
+    </div>
+</div>
+
+<style>
+@media (max-width: 768px) {
+    #pwa-banner {
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        display: flex !important;
+        align-items: flex-end;
+        justify-content: center;
+    }
+    #pwa-banner__backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.65);
+    }
+    #pwa-banner__card {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 480px;
+        background: linear-gradient(160deg, #8a6520 0%, #b68a35 45%, #8a6520 100%);
+        border-radius: 22px 22px 0 0;
+        padding: 28px 24px 32px;
+        text-align: center;
+        direction: rtl;
+        color: #fff;
+        box-shadow: 0 -8px 40px rgba(138,101,32,0.5);
+    }
+    #pwa-banner__logo {
+        width: 72px;
+        height: 72px;
+        object-fit: contain;
+        margin: 0 auto 14px;
+        display: block;
+        filter: drop-shadow(0 2px 10px rgba(0,0,0,0.3));
+        background: rgba(255,255,255,0.15);
+        border-radius: 50%;
+        padding: 6px;
+    }
+    #pwa-banner__title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #fff;
+        margin: 0 0 8px;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    }
+    #pwa-banner__desc {
+        font-size: 0.88rem;
+        color: rgba(255,255,255,0.85);
+        line-height: 1.7;
+        margin: 0 0 18px;
+    }
+    #pwa-banner__features {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .pwa-feat {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #fff;
+        flex: 1;
+        justify-content: center;
+        font-weight: 600;
+    }
+    .pwa-feat i {
+        font-size: 1rem;
+        color: #fff3cc;
+    }
+    #pwa-banner__install {
+        width: 100%;
+        padding: 14px;
+        background: #fff;
+        border: none;
+        border-radius: 12px;
+        color: #8a6520;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    #pwa-banner__install:active {
+        opacity: 0.85;
+    }
+    #pwa-banner__dismiss {
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.6);
+        font-size: 0.85rem;
+        cursor: pointer;
+        padding: 4px;
+    }
+}
+@media (min-width: 769px) {
+    #pwa-banner { display: none !important; }
+}
+</style>
+
+<script>
+(function() {
+    var STORAGE_KEY = 'pwa_banner_dismissed';
+    var deferredPrompt = null;
+    var banner = document.getElementById('pwa-banner');
+
+    if (!banner) return;
+    if (localStorage.getItem(STORAGE_KEY)) return;
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(function(){});
+    }
+
+    window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (window.innerWidth <= 768) {
+            banner.style.display = 'flex';
+        }
+    });
+
+    document.getElementById('pwa-banner__install').addEventListener('click', function() {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(choice) {
+            deferredPrompt = null;
+            banner.style.display = 'none';
+            if (choice.outcome === 'accepted') {
+                localStorage.setItem(STORAGE_KEY, '1');
+            }
+        });
+    });
+
+    document.getElementById('pwa-banner__dismiss').addEventListener('click', function() {
+        banner.style.display = 'none';
+        localStorage.setItem(STORAGE_KEY, '1');
+    });
+
+    document.getElementById('pwa-banner__backdrop').addEventListener('click', function() {
+        banner.style.display = 'none';
+        localStorage.setItem(STORAGE_KEY, '1');
+    });
+
+    window.addEventListener('appinstalled', function() {
+        banner.style.display = 'none';
+        localStorage.setItem(STORAGE_KEY, '1');
+    });
+})();
+</script>
