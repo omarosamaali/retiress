@@ -738,15 +738,14 @@
             <input placeholder="{{ __('app.email_placeholder') }}" id="email" name="email" type="email" class="form-control-k7o fsbsy" required>
             <div class="error-message" id="email-error"></div>
         </div>
-        <div class="input-3ob">
-            <div class="label-dav input-fja">
-                <div class="input-f96">
-                    <span class="input-fo3"><i class="fa-evk fa-pp5"></i></span>
-                </div>
-                <input placeholder="{{ __('app.password_placeholder') }}" id="password" name="password" type="password"
-                 class="form-control-k7o fsbsy" required>
-                <div class="error-message" id="password-error"></div>
-            </div>
+        <div class="input-3ob" style="position:relative;">
+            <input placeholder="{{ __('app.password_placeholder') }}" id="password" name="password" type="password"
+             class="form-control-k7o fsbsy" required style="padding-left:44px;">
+            <button type="button" id="togglePassword"
+                style="position:absolute;top:50%;left:12px;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#95a4af;padding:0;line-height:1;z-index:2;">
+                <i class="fa-solid fa-eye" id="eyeIcon"></i>
+            </button>
+            <div class="error-message" id="password-error"></div>
         </div>
         <div class="text-a3b mb-os5">
             <a href="{{ route('members.forgetpassword') }}" class="fs--n1f">{{ __('app.forgetpassword') }}</a>
@@ -766,7 +765,9 @@
         </section>
 
     </div>
-    <x-footer-section></x-footer-section>
+    <style>
+        #mob-bottom-nav { display: none !important; }
+    </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
     <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
@@ -833,6 +834,15 @@
                             console.error('Error:', error);
                         }
                     });
+            });
+
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            togglePassword.addEventListener('click', function() {
+                const isHidden = passwordInput.type === 'password';
+                passwordInput.type = isHidden ? 'text' : 'password';
+                eyeIcon.className = isHidden ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
             });
 
             const inputs = form.querySelectorAll('input');

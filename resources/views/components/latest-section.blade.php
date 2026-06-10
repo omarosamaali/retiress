@@ -84,19 +84,7 @@
         </div>
     </div>
 </section>
-@props(['magazines']) <style>
-    @media (max-width: 500px) {
-        .all-version {
-            flex-direction: column;
-        }
-
-        .container-sls {
-            width: 100% !important;
-        }
-    }
-
-</style>
-
+@auth
 <a href="{{ route('contact-us') }}">
     <section style="background: rgb(182, 138, 53) !important; margin-top: 0px !important; padding: 18px 0 !important;">
         <div style="text-align: center; justify-content: center;">
@@ -105,3 +93,4 @@
         </div>
     </section>
 </a>
+@endauth

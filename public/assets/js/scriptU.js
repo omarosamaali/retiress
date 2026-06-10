@@ -1,62 +1,38 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const swiperContainer = document.querySelector('.eventsSwiper');
-    if (!swiperContainer) return;
+function initSwiper(selector) {
+    const container = document.querySelector(selector);
+    if (!container) return;
 
-    const slideCount = swiperContainer.querySelectorAll('.swiper-slide').length;
-
-    const swiper = new Swiper('.eventsSwiper', {
+    const slideCount = container.querySelectorAll('.swiper-slide').length;
+    const swiperConfig = {
         slidesPerView: 1,
         spaceBetween: 30,
         loop: slideCount > 1,
-        autoplay: slideCount > 1 ? {
-            delay: 3000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true
-        } : false,
-
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-            dynamicBullets: true
-        },
-
+        autoplay: slideCount > 1 ? { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true } : false,
+        navigation: { nextEl: container.querySelector('.swiper-button-next'), prevEl: container.querySelector('.swiper-button-prev') },
+        pagination: { el: container.querySelector('.swiper-pagination'), clickable: true, dynamicBullets: true },
         breakpoints: {
-            640: {
-                slidesPerView: 1,
-                spaceBetween: 20,
-            },
-            768: {
-                slidesPerView: 2,
-                spaceBetween: 30,
-            },
-            1024: {
-                slidesPerView: 2,
-                spaceBetween: 30,
-            },
+            768: { slidesPerView: 2, spaceBetween: 30 },
+            1024: { slidesPerView: 2, spaceBetween: 30 },
         },
-
         effect: 'slide',
         speed: 600,
-
         touchRatio: 1,
         touchAngle: 45,
         grabCursor: true,
-
         direction: 'horizontal',
-    });
+    };
 
-    swiperContainer.addEventListener('mouseenter', () => {
-        swiper.autoplay.stop();
-    });
+    const swiper = new Swiper(selector, swiperConfig);
 
-    swiperContainer.addEventListener('mouseleave', () => {
-        swiper.autoplay.start();
-    });
+    if (slideCount > 1) {
+        container.addEventListener('mouseenter', () => swiper.autoplay.stop());
+        container.addEventListener('mouseleave', () => swiper.autoplay.start());
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    initSwiper('.eventsSwiper');
+    initSwiper('.servicesSwiper');
 });
 
 (function ($, window, undefined) {

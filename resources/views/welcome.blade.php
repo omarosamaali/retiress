@@ -98,13 +98,15 @@
             .floating-clouds { display: none !important; }
         }
 
-        .swiper-slide {
-            background: #cfa046c7 !important;
+        @media (min-width: 769px) {
+            .swiper-slide {
+                background: #cfa046c7 !important;
+            }
         }
 
         @media (max-width: 768px) {
             .swiper-slide {
-                background: transparent !important;
+                background: none !important;
                 box-shadow: none !important;
                 border-radius: 0 !important;
             }
@@ -118,6 +120,9 @@
             .quote-slide {
                 background: transparent !important;
             }
+            .quote-slide::before {
+                display: none !important;
+            }
             .quote-text blockquote {
                 color: #b68a35 !important;
             }
@@ -125,41 +130,81 @@
                 color: rgba(182, 138, 53, 0.3) !important;
             }
 
-            /* تقليص ارتفاع البانر وتعديل موضع الكارت */
+            /* البانر وموضع السلايدر */
             #headerholdert {
                 height: 260px !important;
-                margin-top: 58px !important;
+                margin-top: 100px !important;
             }
             .quoteSwiper {
-                top: 12px !important;
+                top: 8px !important;
                 left: 50% !important;
                 transform: translateX(-50%) !important;
-                max-width: 88% !important;
-                min-height: 160px !important;
+                max-width: 90% !important;
+                min-height: 150px !important;
                 border-radius: 14px !important;
             }
             .quote-slide {
-                min-height: 160px !important;
-                padding: 18px 16px !important;
+                min-height: 150px !important;
+                padding: 16px 14px !important;
             }
 
-            /* تصغير الزر الطافي "مميزات العضوية" */
+            /* إخفاء الزر الطافي "مميزات العضوية" */
             a#reg[style*="position: fixed"],
             a#reg[style*="position:fixed"] {
-                width: 65px !important;
-                height: 65px !important;
-                font-size: 10px !important;
-                bottom: 74px !important;
-                right: 14px !important;
-                border-radius: 50% !important;
-                line-height: 1.3 !important;
-                padding: 0 !important;
+                display: none !important;
             }
         }
     </style>
 </head>
 
 <body ng-app="myApp">
+
+{{-- ── PWA Splash Screen ── --}}
+<div id="pwa-splash">
+    <img src="{{ asset('assets/evorq.jpeg') }}" alt="Evorq" id="pwa-splash__logo">
+    <p id="pwa-splash__text">By Evorq Technology</p>
+</div>
+<style>
+    #pwa-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        background: #000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        transition: opacity .5s ease;
+    }
+    #pwa-splash.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+    #pwa-splash__logo {
+        width: 160px;
+        height: auto;
+        border-radius: 16px;
+    }
+    #pwa-splash__text {
+        color: #fff;
+        font-family: "Cairo", sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+</style>
+<script>
+    (function() {
+        var splash = document.getElementById('pwa-splash');
+        setTimeout(function() {
+            splash.classList.add('hidden');
+            setTimeout(function() { splash.style.display = 'none'; }, 500);
+        }, 2000);
+    })();
+</script>
+
     <div class="floating-clouds">
         <div class="cloud cloud1"></div>
         <div class="cloud cloud2"></div>
@@ -790,6 +835,20 @@
                                 <i class="fa-solid fa-list"></i> عرض الجميع
                             </a>
                         </div>
+                    @elseif ($events->count() === 1)
+                    @php $event = $events->first(); @endphp
+                    <a href="{{ url('/events/show/' . $event->id) }}" class="slide-content" style="text-decoration:none;display:block;">
+                        <x-event-type-badge :event="$event" />
+                        <img src="{{ asset('storage/' . $event->main_image) }}"
+                            alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
+                            class="slide-image">
+                        <div class="slide-title">
+                            {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
+                        </div>
+                        <p style="padding-top: 20px; padding-right: 20px; margin-bottom: 15px;">{{
+                            __('app.date') }} : {{
+                            \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}</p>
+                    </a>
                     @else
                     <div class="swiper eventsSwiper">
                         <div class="swiper-wrapper">

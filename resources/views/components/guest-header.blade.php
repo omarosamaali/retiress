@@ -19,10 +19,10 @@
         }
         /* مسافة علوية لمحتوى الصفحة تحت الهيدر الثابت */
         #headerholder {
-            margin-top: 58px;
+            margin-top: 100px;
         }
         #headerholdert {
-            margin-top: 58px !important;
+            margin-top: 100px !important;
         }
     }
     @media (min-width: 769px) {
@@ -31,15 +31,28 @@
 
     #mobile-top-bar {
         display: none;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        padding: 8px 14px;
+        padding: 8px 14px 10px;
         width: 100%;
         box-sizing: border-box;
+        gap: 6px;
+    }
+    .mob-top-row1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
         direction: rtl;
     }
+    .mob-top-row2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
     #mobile-top-bar .mob-logo img {
-        height: 42px;
+        height: 36px;
         width: auto;
         display: block;
     }
@@ -58,25 +71,33 @@
 <div style="z-index: 99; position: fixed; top: 0px; width: 100%; background: linear-gradient(to bottom, rgb(184, 216, 234) 3%, rgba(204, 236, 255, 1) 37%, rgba(226, 244, 255, 0.95) 49%, rgba(240, 249, 255, 0.93) 65%, rgb(255, 255, 255) 91%);" id="header">
     {{-- شريط الموبايل فقط (داخل الهيدر الثابت) --}}
     <div id="mobile-top-bar">
-        <a href="{{ url('/') }}" class="mob-logo">
-            <img src="{{ asset('assets/images/new-logo.png') }}" alt="logo">
-        </a>
-        <div style="display:flex;align-items:center;gap:8px;">
+        {{-- الصف الأول: الاشعارات يمين + اللغة شمال --}}
+        <div class="mob-top-row1">
             @auth
-            @if($__hIsMember)
+            @if(isset($__hIsMember) && $__hIsMember)
             <button type="button" id="toggleMemberNotifications"
                 class="member-notifications-btn mob-notif-btn"
                 aria-expanded="false" aria-label="{{ __('app.notifications') }}"
                 style="background:none;border:none;cursor:pointer;position:relative;padding:0;color:#fff;line-height:1;">
-                <i class="fa-solid fa-bell" style="font-size:1.2rem;"></i>
-                @if ($__hNotifCount > 0)
+                <i class="fa-solid fa-bell" style="font-size:1.3rem;"></i>
+                @if (isset($__hNotifCount) && $__hNotifCount > 0)
                     <span class="member-notifications-badge" style="position:absolute;top:-6px;left:-6px;background:#dc2626;color:#fff;border-radius:50%;font-size:.6rem;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 3px;font-weight:700;">{{ $__hNotifCount > 99 ? '99+' : $__hNotifCount }}</span>
                 @endif
             </button>
+            @else
+            <span style="width:28px;display:block;"></span>
             @endif
+            @else
+            <span style="width:28px;display:block;"></span>
             @endauth
             <a href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" class="mob-lang">
                 {{ app()->getLocale() == 'ar' ? 'English' : 'عربي' }}
+            </a>
+        </div>
+        {{-- الصف الثاني: الشعار وسط --}}
+        <div class="mob-top-row2">
+            <a href="{{ url('/') }}" class="mob-logo">
+                <img src="{{ asset('assets/images/new-logo.png') }}" alt="logo">
             </a>
         </div>
     </div>
@@ -433,12 +454,12 @@
         left: 0 !important;
         right: 0 !important;
         z-index: 99999 !important;
-        background: #fff !important;
-        border-top: 1.5px solid #e5e7eb !important;
+        background: #b68a35 !important;
+        border-top: none !important;
         height: 62px !important;
         align-items: stretch !important;
         direction: rtl !important;
-        box-shadow: 0 -2px 12px rgba(0,0,0,.10) !important;
+        box-shadow: 0 -2px 16px rgba(0,0,0,.20) !important;
         padding: 0 !important;
         margin: 0 !important;
         width: 100% !important;
@@ -454,7 +475,7 @@
         gap: 3px !important;
         font-size: 10px !important;
         font-weight: 600 !important;
-        color: #6b7280 !important;
+        color: #fff !important;
         text-decoration: none !important;
         background: none !important;
         border: none !important;
@@ -462,7 +483,7 @@
         font-family: "Cairo", sans-serif !important;
         padding: 0 !important;
         margin: 0 !important;
-        transition: color .15s !important;
+        transition: opacity .15s !important;
         line-height: 1 !important;
         outline: none !important;
         box-shadow: none !important;
@@ -471,7 +492,7 @@
     #mob-bottom-nav button span {
         font-size: 10px !important;
         line-height: 1.2 !important;
-        color: inherit !important;
+        color: #fff !important;
         display: block !important;
         font-family: "Cairo", sans-serif !important;
     }
@@ -479,19 +500,20 @@
     #mob-bottom-nav button i {
         font-size: 20px !important;
         line-height: 1 !important;
-        color: inherit !important;
+        color: #fff !important;
     }
     #mob-bottom-nav a:hover,
     #mob-bottom-nav button:hover,
     #mob-bottom-nav a.mob-nav-active {
-        color: #b68a35 !important;
+        opacity: 0.75 !important;
+        color: #fff !important;
         text-decoration: none !important;
     }
     #mob-bottom-nav .mob-nav-logout {
-        color: #dc2626 !important;
+        color: #fff !important;
     }
     #mob-bottom-nav .mob-nav-logout:hover {
-        color: #991b1b !important;
+        opacity: 0.75 !important;
     }
 }
 </style>

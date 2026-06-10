@@ -1,7 +1,8 @@
 <style>
     @media (max-width: 768px) {
-        .footer-35d .footer-9z1 aside.wid-6bk {
-            width: 100%;
+        .footer-35d,
+        .bg_-3kn {
+            display: none !important;
         }
     }
 
