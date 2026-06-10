@@ -109,7 +109,7 @@
                 display: none !important;
             }
             #headerholdert {
-                background: #b68a35;
+                background: #fff;
             }
             .swiper-slide {
                 background: none !important;
