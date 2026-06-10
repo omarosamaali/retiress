@@ -452,6 +452,7 @@
         align-items: center !important;
         justify-content: center !important;
         gap: 3px !important;
+        font-size: 10px !important;
         font-weight: 600 !important;
         color: #6b7280 !important;
         text-decoration: none !important;
@@ -468,6 +469,7 @@
     }
     #mob-bottom-nav a span,
     #mob-bottom-nav button span {
+        font-size: 10px !important;
         line-height: 1.2 !important;
         color: inherit !important;
         display: block !important;
@@ -475,7 +477,7 @@
     }
     #mob-bottom-nav a i,
     #mob-bottom-nav button i {
-        font-size: 1.25rem !important;
+        font-size: 20px !important;
         line-height: 1 !important;
         color: inherit !important;
     }

@@ -103,6 +103,16 @@
         }
 
         @media (max-width: 768px) {
+            .swiper-slide {
+                background: transparent !important;
+            }
+            .quote-text blockquote {
+                color: #b68a35 !important;
+            }
+            .quote-icon {
+                color: rgba(182, 138, 53, 0.3) !important;
+            }
+
             /* تقليص ارتفاع البانر وتعديل موضع الكارت */
             #headerholdert {
                 height: 260px !important;
