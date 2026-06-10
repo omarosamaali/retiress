@@ -830,12 +830,12 @@
 </br>
                 العضوية
             </a>
-    <section style="background: #fff; margin-top: 100px;">
+    <section style="margin-top: 100px;">
         <div class="container-e3z">
             <div class="row-sy7">
                 <div class="col-w5q">
-                    <h1 class="font-weight-5zk" style="margin-top: 25px; color: #1e293b !important;">{{ __('app.latest_events') }}</h1>
-                    <p style="color: #64748b !important;">{{ __('app.events_description') }}</p>
+                    <h1 class="font-weight-5zk text-jli" style="margin-top: 25px;">{{ __('app.latest_events') }}</h1>
+                    <p class="text-jli">{{ __('app.events_description') }}</p>
                 </div>
                 <div class="col-bpd">
                     @if ($events->isEmpty())
