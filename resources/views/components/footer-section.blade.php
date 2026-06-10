@@ -1,11 +1,4 @@
 <style>
-    @media (max-width: 768px) {
-        .footer-35d,
-        .bg_-3kn {
-            display: none !important;
-        }
-    }
-
     .footer-9z1 #men-54n li a,
     .footer-9z1 #men-er1 li a,
     .footer-35d a,
