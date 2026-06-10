@@ -756,7 +756,7 @@
     var banner = document.getElementById('pwa-banner');
 
     if (!banner) return;
-    if (localStorage.getItem(STORAGE_KEY)) return;
+    // if (localStorage.getItem(STORAGE_KEY)) return;
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(function(){});
