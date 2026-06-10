@@ -452,7 +452,6 @@
         align-items: center !important;
         justify-content: center !important;
         gap: 3px !important;
-        font-size: .65rem !important;
         font-weight: 600 !important;
         color: #6b7280 !important;
         text-decoration: none !important;
@@ -469,7 +468,6 @@
     }
     #mob-bottom-nav a span,
     #mob-bottom-nav button span {
-        font-size: .65rem !important;
         line-height: 1.2 !important;
         color: inherit !important;
         display: block !important;
@@ -530,7 +528,7 @@
 </div>
 
 {{-- ── PWA Install Banner (mobile only) ── --}}
-<div id="pwa-banner" style="display:none;" aria-modal="true" role="dialog" aria-label="تثبيت التطبيق">
+<div id="pwa-banner" aria-modal="true" role="dialog" aria-label="تثبيت التطبيق">
     <div id="pwa-banner__backdrop"></div>
     <div id="pwa-banner__card">
         <img src="{{ asset('assets/images/new-logo.png') }}" alt="شعار الجمعية" id="pwa-banner__logo">
@@ -560,9 +558,12 @@
         position: fixed;
         inset: 0;
         z-index: 999999;
-        display: flex !important;
+        display: none;
         align-items: flex-end;
         justify-content: center;
+    }
+    #pwa-banner.pwa-visible {
+        display: flex !important;
     }
     #pwa-banner__backdrop {
         position: absolute;
@@ -677,11 +678,14 @@
         navigator.serviceWorker.register('/sw.js').catch(function(){});
     }
 
+    function showBanner() { banner.classList.add('pwa-visible'); }
+    function hideBanner() { banner.classList.remove('pwa-visible'); }
+
     window.addEventListener('beforeinstallprompt', function(e) {
         e.preventDefault();
         deferredPrompt = e;
         if (window.innerWidth <= 768) {
-            banner.style.display = 'flex';
+            showBanner();
         }
     });
 
@@ -690,7 +694,7 @@
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then(function(choice) {
             deferredPrompt = null;
-            banner.style.display = 'none';
+            hideBanner();
             if (choice.outcome === 'accepted') {
                 localStorage.setItem(STORAGE_KEY, '1');
             }
@@ -698,17 +702,17 @@
     });
 
     document.getElementById('pwa-banner__dismiss').addEventListener('click', function() {
-        banner.style.display = 'none';
+        hideBanner();
         localStorage.setItem(STORAGE_KEY, '1');
     });
 
     document.getElementById('pwa-banner__backdrop').addEventListener('click', function() {
-        banner.style.display = 'none';
+        hideBanner();
         localStorage.setItem(STORAGE_KEY, '1');
     });
 
     window.addEventListener('appinstalled', function() {
-        banner.style.display = 'none';
+        hideBanner();
         localStorage.setItem(STORAGE_KEY, '1');
     });
 })();
