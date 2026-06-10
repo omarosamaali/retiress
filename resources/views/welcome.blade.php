@@ -887,7 +887,7 @@
 
         /* ── كارت العضو ── */
         #mob-member-card {
-            margin: 100px 12px 0 !important;
+            margin: 135px 12px 0 !important;
         }
 
         /* ── هيدر الأقسام المشترك ── */
@@ -895,7 +895,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 4px 14px 5px;
+            padding: 0px 14px 5px;
             direction: rtl;
         }
         .mob-news-header h3 {
@@ -954,7 +954,7 @@
             display: block;
         }
         .mob-news-card-body {
-            padding: 6px 10px 8px;
+            padding: 0px 10px 0px;
             flex: 1;
         }
         .mob-news-card-title {
@@ -1210,7 +1210,9 @@
             </div>
         </div>
     </div>
-    <x-latest-section :magazines="$magazines"></x-latest-section>
+    <div class="mob-hide-section">
+        <x-latest-section :magazines="$magazines"></x-latest-section>
+    </div>
     <x-footer-section></x-footer-section>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>
