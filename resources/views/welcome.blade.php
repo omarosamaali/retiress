@@ -906,9 +906,10 @@
         }
         .mob-news-swiper,
         .mob-ads-swiper {
-            padding: 0 14px 4px !important;
-            overflow: visible !important;
-            max-height: 110px !important;
+            padding: 0 14px 4px;
+            overflow: hidden;
+            width: 100%;
+            max-height: 130px;
         }
         .mob-news-swiper .swiper-slide,
         .mob-ads-swiper .swiper-slide {
