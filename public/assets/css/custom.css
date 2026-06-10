@@ -2988,6 +2988,13 @@ section {
     margin-top: 100px;
 }
 
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100% !important;
+    }
+}
+
 .font-weight-5zk {
     font-weight: bold;
 }
