@@ -5,9 +5,9 @@
 
     /* ── Mobile header bar (max 768px) ── */
     @media (max-width: 768px) {
-        /* تغيير خلفية الهيدر الثابت للذهبي */
+        /* خلفية الهيدر بيضاء — الذهبي فقط على الصف الأول */
         #header {
-            background: #b68a35 !important;
+            background: #fff !important;
         }
         /* إخفاء محتوى الهيدر الأصلي */
         #headerholder {
@@ -33,10 +33,10 @@
         display: none;
         flex-direction: column;
         align-items: center;
-        padding: 8px 14px 10px;
+        padding: 0;
         width: 100%;
         box-sizing: border-box;
-        gap: 6px;
+        gap: 0;
     }
     .mob-top-row1 {
         display: flex;
@@ -44,12 +44,19 @@
         justify-content: space-between;
         width: 100%;
         direction: rtl;
+        background: #b68a35;
+        padding: 7px 14px;
+        box-sizing: border-box;
     }
     .mob-top-row2 {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
+        background: #fff;
+        padding: 6px 14px;
+        box-sizing: border-box;
+        border-bottom: 1px solid #e8e0d0;
     }
     #mobile-top-bar .mob-logo img {
         height: 36px;
