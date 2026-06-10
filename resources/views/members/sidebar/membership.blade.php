@@ -48,7 +48,7 @@
         .title--t6n {
             margin: 10px 0px;
             font-size: 20px;
-            color: #6e4c3e;
+            color: #b68a35;
             padding-top: 30px;
         }
 

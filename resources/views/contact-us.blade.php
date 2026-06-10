@@ -109,7 +109,7 @@ Route::post('contact-us', function(Request $request){
         }
 
         .btn-submit {
-            background: #6e4c3e;
+            background: #b68a35;
             color: white;
             border: none;
             font-family: 'Cairo';
@@ -125,7 +125,7 @@ Route::post('contact-us', function(Request $request){
 
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px #6e4c3e;
+            box-shadow: 0 5px 15px #b68a35;
         }
 
         .alert {

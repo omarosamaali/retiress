@@ -3237,10 +3237,10 @@ p {
     font-size: 14px !important;
     padding: 13px 8px;
     border-radius: 4px !important;
-    border: 1px solid #6e4c3e !important;
+    border: 1px solid #b68a35 !important;
     line-height: 30px !important;
     text-shadow: 1px 1px 0px #43302f63;
-    background-color: #6e4c3e !important;
+    background-color: #b68a35 !important;
     text-decoration: none !important;
     cursor: pointer;
     transition: background 0.18s, border-color 0.18s;
