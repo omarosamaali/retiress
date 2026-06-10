@@ -722,6 +722,10 @@
         <i class="fa-solid fa-briefcase"></i>
         <span>الخدمات</span>
     </a>
+    <a href="{{ route('magazines.all-magazines') }}" class="{{ request()->routeIs('magazines.*') ? 'mob-nav-active' : '' }}">
+        <i class="fa-solid fa-pen-nib"></i>
+        <span>منبر الخبراء</span>
+    </a>
 </div>
 
 {{-- ── PWA Install Banner (mobile only) ── --}}
