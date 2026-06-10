@@ -105,6 +105,18 @@
         @media (max-width: 768px) {
             .swiper-slide {
                 background: transparent !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+            }
+            .quoteSwiper {
+                background: transparent !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                box-shadow: none !important;
+                border: none !important;
+            }
+            .quote-slide {
+                background: transparent !important;
             }
             .quote-text blockquote {
                 color: #b68a35 !important;
