@@ -667,7 +667,7 @@
 
 <script>
 (function() {
-    var STORAGE_KEY = 'pwa_banner_dismissed';
+    var STORAGE_KEY = 'pwa_banner_v2';
     var deferredPrompt = null;
     var banner = document.getElementById('pwa-banner');
 
