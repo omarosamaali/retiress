@@ -51,18 +51,81 @@
     .mob-top-row2 {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
+        direction: rtl;
         width: 100%;
         background: #fff;
         padding: 6px 14px;
         box-sizing: border-box;
         border-bottom: 1px solid #e8e0d0;
     }
+    .mob-logo-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+    }
     #mobile-top-bar .mob-logo img {
         height: 36px;
         width: auto;
         display: block;
+        flex-shrink: 0;
     }
+    .mob-site-name {
+        font-size: .72rem;
+        font-weight: 700;
+        color: #1e293b;
+        line-height: 1.3;
+        max-width: 120px;
+    }
+    .mob-membership-btn {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: #016330;
+        color: #fff !important;
+        border-radius: 20px;
+        padding: 5px 10px;
+        font-size: .7rem;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .mob-membership-btn i {
+        font-size: .7rem;
+    }
+    .mob-row2-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 5px;
+        flex-shrink: 0;
+    }
+    .mob-auth-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        border-radius: 20px;
+        padding: 4px 10px;
+        font-size: .68rem;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        cursor: pointer;
+        border: none;
+        font-family: "Cairo", sans-serif;
+    }
+    .mob-auth-btn--login {
+        background: #b68a35;
+        color: #fff !important;
+    }
+    .mob-auth-btn--logout {
+        background: transparent;
+        color: #c0392b !important;
+        border: 1.5px solid rgba(192,57,43,.5) !important;
+    }
+    .mob-auth-btn i { font-size: .68rem; }
     #mobile-top-bar .mob-lang {
         color: #fff;
         font-size: .85rem;
@@ -91,6 +154,32 @@
     .mob-bell-btn i {
         font-size: 1.3rem;
     }
+    .mob-icons-group {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+    .mob-icon-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        padding: 4px;
+        color: #fff;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        border-radius: 50%;
+    }
+    .mob-icon-btn i {
+        font-size: 1.15rem;
+    }
+    .mob-icon-btn--wa i { color: #25d366; }
+    .mob-icon-btn--call i { color: #fff; }
     .mob-bell-badge {
         position: absolute;
         top: 0;
@@ -130,35 +219,67 @@
     <div id="mobile-top-bar">
         {{-- الصف الأول: الاشعارات يمين + اللغة شمال --}}
         <div class="mob-top-row1">
-            @auth
-                @if(isset($__hIsMember) && $__hIsMember)
-                <button type="button" id="toggleMemberNotifications"
-                    class="member-notifications-btn mob-bell-btn"
-                    aria-expanded="false" aria-label="{{ __('app.notifications') }}">
-                    <i class="fa-solid fa-bell"></i>
-                    @if (isset($__hNotifCount) && $__hNotifCount > 0)
-                        <span class="mob-bell-badge">{{ $__hNotifCount > 99 ? '99+' : $__hNotifCount }}</span>
+            {{-- أيقونات يمين: جرس + شات + واتساب + اتصال --}}
+            <div class="mob-icons-group">
+                @auth
+                    @if(isset($__hIsMember) && $__hIsMember)
+                    <button type="button" id="toggleMemberNotifications"
+                        class="member-notifications-btn mob-bell-btn"
+                        aria-expanded="false" aria-label="{{ __('app.notifications') }}">
+                        <i class="fa-solid fa-bell"></i>
+                        @if (isset($__hNotifCount) && $__hNotifCount > 0)
+                            <span class="mob-bell-badge">{{ $__hNotifCount > 99 ? '99+' : $__hNotifCount }}</span>
+                        @endif
+                    </button>
+                    @else
+                    <a href="{{ route('members.login') }}" class="mob-bell-btn" style="text-decoration:none;">
+                        <i class="fa-solid fa-bell"></i>
+                    </a>
                     @endif
-                </button>
                 @else
                 <a href="{{ route('members.login') }}" class="mob-bell-btn" style="text-decoration:none;">
                     <i class="fa-solid fa-bell"></i>
                 </a>
-                @endif
-            @else
-            <a href="{{ route('members.login') }}" class="mob-bell-btn" style="text-decoration:none;">
-                <i class="fa-solid fa-bell"></i>
-            </a>
-            @endauth
+                @endauth
+                {{-- شات --}}
+                <a href="/chat" class="mob-icon-btn" style="text-decoration:none;" title="تواصل معنا">
+                    <i class="fa-solid fa-comment-dots"></i>
+                </a>
+                {{-- واتساب --}}
+                <a href="https://wa.me/97167044998" target="_blank" class="mob-icon-btn mob-icon-btn--wa" style="text-decoration:none;" title="واتساب">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+            </div>
             <a href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" class="mob-lang">
                 {{ app()->getLocale() == 'ar' ? 'English' : 'عربي' }}
             </a>
         </div>
-        {{-- الصف الثاني: الشعار وسط --}}
+        {{-- الصف الثاني: الشعار + الاسم يمين / مميزات العضوية + دخول/خروج شمال --}}
         <div class="mob-top-row2">
-            <a href="{{ url('/') }}" class="mob-logo">
-                <img src="{{ asset('assets/images/new-logo.png') }}" alt="logo">
+            <a href="{{ url('/') }}" class="mob-logo-group">
+                <img src="{{ asset('assets/images/new-logo.png') }}" alt="logo" class="mob-logo" style="height:36px;width:auto;">
+                <span class="mob-site-name">جمعية الإمارات<br>للمتقاعدين</span>
             </a>
+            <div class="mob-row2-actions">
+                <a href="{{ route('magazines.feature') }}" class="mob-membership-btn">
+                    <i class="fas fa-star"></i>
+                    مميزات العضوية
+                </a>
+                @auth
+                <form action="{{ route('members.logout') }}" method="POST" style="margin:0;">
+                    @csrf
+                    <button type="submit" class="mob-auth-btn mob-auth-btn--logout">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        خروج
+                    </button>
+                </form>
+                @else
+                <a href="{{ route('members.login') }}" class="mob-auth-btn mob-auth-btn--login">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    دخول
+                </a>
+                @endauth
+            </div>
         </div>
     </div>
     <div id="headerholder">
@@ -595,20 +716,6 @@
         <i class="fa-solid fa-briefcase"></i>
         <span>الخدمات</span>
     </a>
-    @auth
-    <form action="{{ route('members.logout') }}" method="POST" style="flex:1;display:flex;">
-        @csrf
-        <button type="submit" class="mob-nav-logout">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            <span>الخروج</span>
-        </button>
-    </form>
-    @else
-    <a href="{{ route('members.login') }}">
-        <i class="fa-solid fa-right-to-bracket"></i>
-        <span>دخول</span>
-    </a>
-    @endauth
 </div>
 
 {{-- ── PWA Install Banner (mobile only) ── --}}
@@ -751,12 +858,13 @@
 
 <script>
 (function() {
-    var STORAGE_KEY = 'pwa_banner_v2';
     var deferredPrompt = null;
     var banner = document.getElementById('pwa-banner');
 
     if (!banner) return;
-    // if (localStorage.getItem(STORAGE_KEY)) return;
+
+    // لا تظهر لو التطبيق مثبت بالفعل
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) return;
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(function(){});
@@ -765,39 +873,37 @@
     function showBanner() { banner.classList.add('pwa-visible'); }
     function hideBanner() { banner.classList.remove('pwa-visible'); }
 
+    // احفظ الحدث لما يكون متاح
     window.addEventListener('beforeinstallprompt', function(e) {
         e.preventDefault();
         deferredPrompt = e;
-        if (window.innerWidth <= 768) {
-            showBanner();
+    });
+
+    // اظهر البانر تلقائياً بعد 3 ثواني على الموبايل
+    if (window.innerWidth <= 768) {
+        setTimeout(showBanner, 3000);
+    }
+
+    document.getElementById('pwa-banner__install').addEventListener('click', function() {
+        hideBanner();
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(choice) {
+                deferredPrompt = null;
+                if (choice.outcome === 'accepted') {
+                    localStorage.setItem('pwa_installed', '1');
+                }
+            });
         }
     });
 
-    document.getElementById('pwa-banner__install').addEventListener('click', function() {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function(choice) {
-            deferredPrompt = null;
-            hideBanner();
-            if (choice.outcome === 'accepted') {
-                localStorage.setItem(STORAGE_KEY, '1');
-            }
-        });
-    });
-
-    document.getElementById('pwa-banner__dismiss').addEventListener('click', function() {
-        hideBanner();
-        localStorage.setItem(STORAGE_KEY, '1');
-    });
-
-    document.getElementById('pwa-banner__backdrop').addEventListener('click', function() {
-        hideBanner();
-        localStorage.setItem(STORAGE_KEY, '1');
-    });
+    // "ليس الآن" — بس يخفي البانر بدون ما يحفظ في localStorage
+    document.getElementById('pwa-banner__dismiss').addEventListener('click', hideBanner);
+    document.getElementById('pwa-banner__backdrop').addEventListener('click', hideBanner);
 
     window.addEventListener('appinstalled', function() {
         hideBanner();
-        localStorage.setItem(STORAGE_KEY, '1');
+        localStorage.setItem('pwa_installed', '1');
     });
 })();
 </script>

@@ -33,6 +33,27 @@ function initSwiper(selector) {
 document.addEventListener('DOMContentLoaded', function () {
     initSwiper('.eventsSwiper');
     initSwiper('.servicesSwiper');
+
+    if (window.innerWidth <= 768) {
+        // سلايدر أحدث الأخبار موبايل
+        if (document.querySelector('.mob-news-swiper')) {
+            new Swiper('.mob-news-swiper', {
+                slidesPerView: 'auto',
+                spaceBetween: 12,
+                freeMode: true,
+                grabCursor: true,
+            });
+        }
+        // سلايدر الإعلانات موبايل
+        if (document.querySelector('.mob-ads-swiper')) {
+            new Swiper('.mob-ads-swiper', {
+                slidesPerView: 'auto',
+                spaceBetween: 12,
+                freeMode: true,
+                grabCursor: true,
+            });
+        }
+    }
 });
 
 (function ($, window, undefined) {

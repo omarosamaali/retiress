@@ -109,7 +109,7 @@
                 display: none !important;
             }
             #headerholdert {
-                background: #fff;
+                display: none !important;
             }
             .swiper-slide {
                 background: none !important;
@@ -136,11 +136,7 @@
                 color: rgba(182, 138, 53, 0.3) !important;
             }
 
-            /* البانر وموضع السلايدر */
-            #headerholdert {
-                height: 260px !important;
-                margin-top: 100px !important;
-            }
+            /* البانر مخفي بالكامل */
             .quoteSwiper {
                 top: 8px !important;
                 left: 50% !important;
@@ -154,9 +150,8 @@
                 padding: 16px 14px !important;
             }
 
-            /* إخفاء الزر الطافي "مميزات العضوية" */
-            a#reg[style*="position: fixed"],
-            a#reg[style*="position:fixed"] {
+            /* إخفاء كل أزرار مميزات العضوية في الموبايل */
+            a#reg {
                 display: none !important;
             }
         }
@@ -167,38 +162,51 @@
 
 {{-- ── PWA Splash Screen ── --}}
 <div id="pwa-splash">
-    <img src="{{ asset('assets/evorq.jpeg') }}" alt="Evorq" id="pwa-splash__logo">
-    <p id="pwa-splash__text">By Evorq Technology</p>
+    <div id="pwa-splash__top">
+        <img src="{{ asset('assets/evorq.jpeg') }}" alt="Evorq" id="pwa-splash__logo">
+        <p id="pwa-splash__text">By Evorq Technology</p>
+    </div>
+    <img src="{{ asset('assets/arabic-logo.png') }}" alt="جمعية الإمارات للمتقاعدين" id="pwa-splash__arabic">
 </div>
 <style>
     #pwa-splash {
         position: fixed;
         inset: 0;
         z-index: 999999;
-        background: #000;
+        background: #fff;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        gap: 20px;
+        justify-content: space-between;
+        padding: 60px 30px 50px;
         transition: opacity .5s ease;
     }
     #pwa-splash.hidden {
         opacity: 0;
         pointer-events: none;
     }
+    #pwa-splash__top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+    }
     #pwa-splash__logo {
-        width: 160px;
+        width: 140px;
         height: auto;
-        border-radius: 16px;
+        border-radius: 0;
     }
     #pwa-splash__text {
-        color: #fff;
+        color: #333;
         font-family: "Cairo", sans-serif;
-        font-size: 1rem;
+        font-size: .95rem;
         font-weight: 600;
         letter-spacing: 1px;
         margin: 0;
+    }
+    #pwa-splash__arabic {
+        width: 200px;
+        height: auto;
     }
 </style>
 <script>
@@ -408,10 +416,12 @@
             /* Responsive Design */
             @media (max-width: 768px) {
                 .quoteSwiper {
-                    max-width: 90%;
-                    min-height: 200px;
-                    left: 50%;
-                    top: 70%;
+                    display: none !important;
+                }
+                .quote-slide,
+                .quote-icon,
+                .quote-text blockquote {
+                    /* مخفي مع الـ swiper */
                 }
 
                 .quote-slide {
@@ -536,7 +546,15 @@
     @endphp
     <div id="mob-member-card">
         <div class="mmc-top">
-            <div class="mmc-avatar"><i class="fa-solid fa-circle-user"></i></div>
+            <div class="mmc-avatar">
+            @if(!empty($__wpCard['photo_url']))
+                <img src="{{ $__wpCard['photo_url'] }}" alt="" class="mmc-avatar-img"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <i class="fa-solid fa-circle-user" style="display:none;"></i>
+            @else
+                <i class="fa-solid fa-circle-user"></i>
+            @endif
+        </div>
             <div class="mmc-info">
                 <div class="mmc-name">{{ $__wpName }}</div>
                 <div class="mmc-status mmc-status--{{ $__wpStKey }}">{{ $__wpSt }}</div>
@@ -550,7 +568,7 @@
                 <i class="fa-solid fa-id-card"></i> بطاقتي
             </button>
             <a href="{{ route('members.panel') }}" class="mmc-btn mmc-btn--panel">
-                <i class="fa-solid fa-table-cells-large"></i> لوحة التحكم
+                <i class="fa-solid fa-table-cells-large"></i> لوحتي
             </a>
         </div>
     </div>
@@ -585,12 +603,15 @@
 
     <style>
     @media (min-width: 769px) { #mob-member-card, #mob-stats { display: none !important; } }
+    /* الإحصائيات مخفية من الصفحة — تظهر فقط داخل شيت البطاقة */
+    #mob-stats { display: none !important; }
     @media (max-width: 768px) {
         #mob-member-card {
-            margin: 14px 12px 0;
+            display: block !important;
+            margin: 110px 12px 0;
             background: linear-gradient(135deg, #8a6520 0%, #b68a35 50%, #8a6520 100%);
             border-radius: 16px;
-            padding: 16px;
+            padding: 7px;
             direction: rtl;
             box-shadow: 0 4px 20px rgba(182,138,53,.4);
             border: 1px solid rgba(255,255,255,.25);
@@ -617,7 +638,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 14px;
             position: relative;
             z-index: 1;
         }
@@ -626,6 +646,14 @@
             color: rgba(255,255,255,.9);
             line-height: 1;
             flex-shrink: 0;
+        }
+        .mmc-avatar-img {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,.7);
+            display: block;
         }
         .mmc-info { flex: 1; }
         .mmc-name {
@@ -664,7 +692,9 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            padding: 10px 8px;
+            max-width: 94px;
+            width: 40px;
+            padding: 0px 2px;
             border-radius: 10px;
             font-size: .82rem;
             font-weight: 700;
@@ -726,51 +756,273 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function(){
-        var btn = document.getElementById('openMembershipCardHome');
-        if(!btn) return;
+        var btn    = document.getElementById('openMembershipCardHome');
+        var stats  = document.getElementById('mob-stats');
+        var sheet  = document.getElementById('membershipCardSheet');
+
+        if (!btn) return;
+
+        // انقل الإحصائيات داخل الشيت على الموبايل فقط
+        if (stats && sheet && window.innerWidth <= 768) {
+            var dialog = sheet.querySelector('.mcard-sheet__dialog');
+            if (dialog) {
+                var statsWrap = document.createElement('div');
+                statsWrap.id = 'mob-stats-wrap';
+                statsWrap.style.cssText = 'width:100%;padding-top:16px;direction:rtl;';
+                var title = document.createElement('p');
+                title.style.cssText = 'color:#64748b;font-size:.78rem;font-weight:700;margin:0 0 8px;text-align:right;';
+                title.textContent = 'إحصائيات الإعلانات';
+                statsWrap.appendChild(title);
+                stats.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:8px;direction:rtl;width:100%;';
+                statsWrap.appendChild(stats);
+                dialog.appendChild(statsWrap);
+            }
+        }
+
         btn.addEventListener('click', function(){
-            // جرّب الزر الأصلي في الهيدر أولاً
             var orig = document.getElementById('openMembershipCard');
-            if(orig) { orig.click(); return; }
-            // أو افتح الـ sheet مباشرة
-            var sheet = document.getElementById('membershipCardSheet');
-            if(sheet) {
+            if (orig) { orig.click(); return; }
+            if (sheet) {
                 sheet.removeAttribute('hidden');
                 sheet.setAttribute('aria-hidden','false');
             }
         });
     });
     </script>
+
+    {{-- طلب إذن الإشعارات --}}
+    @if('Notification' !== null)
+    <div id="notif-prompt" style="display:none;position:fixed;bottom:80px;right:0;left:0;z-index:99999;padding:0 14px;">
+        <div style="background:#fff;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.18);padding:18px 16px 14px;direction:rtl;border-top:3px solid #b68a35;">
+            <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+                <div style="background:#b68a35;border-radius:10px;padding:8px;flex-shrink:0;">
+                    <i class="fa-solid fa-bell" style="color:#fff;font-size:1.1rem;"></i>
+                </div>
+                <div>
+                    <p style="margin:0 0 4px;font-weight:700;font-size:.92rem;color:#1e293b;">فعّل الإشعارات</p>
+                    <p style="margin:0;font-size:.78rem;color:#64748b;line-height:1.5;">احصل على إشعارات فورية بأحدث الأخبار والإعلانات والخدمات</p>
+                </div>
+            </div>
+            <div style="display:flex;gap:8px;">
+                <button id="notif-allow" style="flex:1;background:#b68a35;color:#fff;border:none;border-radius:10px;padding:9px;font-size:.85rem;font-weight:700;cursor:pointer;">
+                    تفعيل الآن
+                </button>
+                <button id="notif-deny" style="flex:1;background:#f1f5f9;color:#64748b;border:none;border-radius:10px;padding:9px;font-size:.85rem;font-weight:600;cursor:pointer;">
+                    لاحقاً
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+    (function() {
+        if (!('Notification' in window)) return;
+        if (Notification.permission === 'granted' || Notification.permission === 'denied') return;
+        if (localStorage.getItem('notif_asked')) return;
+
+        var prompt = document.getElementById('notif-prompt');
+        if (!prompt) return;
+
+        setTimeout(function() {
+            prompt.style.display = 'block';
+        }, 2500);
+
+        document.getElementById('notif-allow').addEventListener('click', function() {
+            prompt.style.display = 'none';
+            localStorage.setItem('notif_asked', '1');
+            Notification.requestPermission();
+        });
+
+        document.getElementById('notif-deny').addEventListener('click', function() {
+            prompt.style.display = 'none';
+            localStorage.setItem('notif_asked', '1');
+        });
+    })();
+    </script>
+    @endif
     @endauth
 
+    {{-- كارت بطاقة العضوية للزوار غير المسجلين --}}
+    @guest
+    <div id="mob-member-card">
+        <div class="mmc-card-title">بطاقة عضوية الكترونية</div>
+        <div class="mmc-top">
+            <div class="mmc-avatar">
+                <i class="fa-solid fa-circle-user"></i>
+            </div>
+            <div class="mmc-info">
+                <div class="mmc-name mmc-name--empty">— — —</div>
+                <div class="mmc-status mmc-status--pending">—</div>
+            </div>
+        </div>
+        <div class="mmc-btns">
+            <a href="{{ route('login') }}" class="mmc-btn mmc-btn--card">
+                <i class="fa-solid fa-right-to-bracket"></i> تسجيل دخول
+            </a>
+            <a href="{{ route('register') }}" class="mmc-btn mmc-btn--panel">
+                <i class="fa-solid fa-user-plus"></i> اشتراك
+            </a>
+        </div>
+    </div>
+    @endguest
+
     <style>
+    #mob-news-section,
+    #mob-ads-section,
+    #mob-events-services { display: none; }
+
+    @media (min-width: 769px) {
+        #mob-news-section,
+        #mob-events-services,
+        #mob-ads-section { display: none !important; }
+    }
     @media (max-width: 768px) {
-        /* ── إخفاء الأخبار بعد الأول ── */
-        .list-l88.list-vja .list-2nx:not(:first-child) {
-            display: none !important;
+        /* ── إخفاء الأقسام غير المطلوبة ── */
+        #latest-news, .list-l88.list-vja,
+        .desktop-services-only,
+        #mob-events-services,
+        .mob-hide-section,
+        #headerholdert ~ section { display: none !important; }
+        /* منبر الخبراء يظهر على الموبايل */
+        #headerholdert ~ section.mob-latest-visible { display: block !important; }
+
+        /* ── كارت العضو ── */
+        #mob-member-card {
+            margin: 100px 12px 0 !important;
         }
-        /* ── تحسين كارد الخبر الأول موبايل ── */
-        .list-l88.list-vja {
-            display: block !important;
-            margin: 0 12px !important;
+
+        /* ── هيدر الأقسام المشترك ── */
+        .mob-news-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 14px 5px;
+            direction: rtl;
         }
-        .list-l88.list-vja .list-2nx:first-child {
+        .mob-news-header h3 {
+            font-size: .92rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 0;
+        }
+        .mob-news-header a {
+            font-size: .75rem;
+            font-weight: 700;
+            color: #016330;
+            text-decoration: none;
+        }
+
+        /* ── سلايدرات الأخبار والإعلانات ── */
+        #mob-news-section,
+        #mob-ads-section {
             display: block !important;
-            width: 100% !important;
-            height: 220px !important;
-            border-radius: 14px !important;
+            padding: 2px 0 0;
+        }
+        /* عنوان الكارت للزوار */
+        .mmc-card-title {
+            font-size: .78rem;
+            font-weight: 700;
+            color: rgba(255,255,255,.75);
+            text-align: center;
+            letter-spacing: .5px;
+            margin-bottom: 10px;
+        }
+        .mmc-name--empty {
+            color: rgba(255,255,255,.4) !important;
+            letter-spacing: 3px;
+        }
+        .mob-news-swiper,
+        .mob-ads-swiper {
+            padding: 0 14px 4px !important;
+            overflow: visible !important;
+            max-height: 110px !important;
+        }
+        .mob-news-swiper .swiper-slide,
+        .mob-ads-swiper .swiper-slide {
+            width: 55vw !important;
+            max-width: 200px;
+            background: #fff;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            display: flex;
+            flex-direction: column;
         }
-        /* ── تصغير عنوان الأخبار موبايل ── */
-        #latest-news h3 {
-            font-size: 1.3rem !important;
+        .mob-news-card-img {
+            width: 100%;
+            height: 85px;
+            object-fit: cover;
+            display: block;
         }
-        #latest-news {
-            margin-top: 24px !important;
-            padding: 0 12px;
+        .mob-news-card-body {
+            padding: 6px 10px 8px;
+            flex: 1;
         }
+        .mob-news-card-title {
+            font-size: .74rem;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.35;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin: 0;
+        }
+        .mob-news-card-desc { display: none !important; }
     }
     </style>
+
+    {{-- قسم أحدث الأخبار موبايل فقط --}}
+    <div id="mob-news-section">
+        <div class="mob-news-header">
+            <h3>أحدث الأخبار</h3>
+            <a href="{{ route('news.all-news') }}">عرض الكل</a>
+        </div>
+        <div class="swiper mob-news-swiper">
+            <div class="swiper-wrapper">
+                @foreach($news as $item)
+                <div class="swiper-slide">
+                    <a href="{{ url('/news/show/' . $item->id) }}" style="text-decoration:none;display:flex;flex-direction:column;height:100%;">
+                        <img src="{{ Storage::url($item->main_image) }}"
+                             alt="{{ app()->getLocale() == 'ar' ? $item->title_ar : $item->title_en }}"
+                             class="mob-news-card-img">
+                        <div class="mob-news-card-body">
+                            <p class="mob-news-card-title">
+                                {{ app()->getLocale() == 'ar' ? $item->title_ar : $item->title_en }}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    {{-- قسم الإعلانات موبايل فقط --}}
+    <div id="mob-ads-section">
+        <div class="mob-news-header">
+            <h3>الإعلانات</h3>
+            <a href="{{ route('events.all-events') }}">عرض الكل</a>
+        </div>
+        <div class="swiper mob-ads-swiper">
+            <div class="swiper-wrapper">
+                @foreach($events as $evt)
+                <div class="swiper-slide">
+                    <a href="{{ url('/events/show/' . $evt->id) }}" style="text-decoration:none;display:flex;flex-direction:column;height:100%;">
+                        <img src="{{ asset('storage/' . $evt->main_image) }}"
+                             alt="{{ app()->getLocale() == 'ar' ? $evt->title_ar : $evt->title_en }}"
+                             class="mob-news-card-img">
+                        <div class="mob-news-card-body">
+                            <p class="mob-news-card-title">
+                                {{ app()->getLocale() == 'ar' ? $evt->title_ar : $evt->title_en }}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
     <a href="{{ route('magazines.feature') }}" id="reg" style="margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -914,7 +1166,50 @@
             </div>
         </div>
     </section>
-    <x-events-section :services="$services" :service-events="$serviceEvents"></x-events-section>
+    {{-- خدمات ديسكتوب فقط --}}
+    <div class="desktop-services-only">
+        <x-events-section :services="$services" :service-events="$serviceEvents"></x-events-section>
+    </div>
+
+    {{-- إعلانات + خدمات موبايل مدمجة --}}
+    @php
+        $mobItems = collect();
+        foreach($events as $e) {
+            $mobItems->push(['type'=>'event','id'=>$e->id,'img'=>$e->main_image,'title_ar'=>$e->title_ar,'title_en'=>$e->title_en,'url'=>url('/events/show/'.$e->id)]);
+        }
+        $srvCollection = $serviceEvents->isNotEmpty() ? $serviceEvents : $services;
+        foreach($srvCollection as $s) {
+            $isEvt = $serviceEvents->isNotEmpty();
+            $mobItems->push(['type'=>'service','id'=>$s->id,'img'=>$isEvt ? $s->main_image : $s->image,'title_ar'=>$isEvt ? $s->title_ar : $s->name_ar,'title_en'=>$isEvt ? $s->title_en : $s->name_en,'url'=>$isEvt ? url('/events/show/'.$s->id) : route('services.show',$s)]);
+        }
+    @endphp
+    <div id="mob-events-services" style="display:none;">
+        <div class="mob-news-header" style="padding-top:10px;">
+            <h3>الإعلانات والخدمات</h3>
+            <a href="{{ route('events.all-events') }}">عرض الكل</a>
+        </div>
+        <div class="swiper mob-evtsrv-swiper">
+            <div class="swiper-wrapper">
+                @foreach($mobItems as $item)
+                <div class="swiper-slide" style="width:62vw;max-width:240px;">
+                    <a href="{{ $item['url'] }}" style="text-decoration:none;display:flex;flex-direction:column;height:100%;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.09);">
+                        <img src="{{ asset('storage/'.$item['img']) }}"
+                             alt="{{ app()->getLocale()=='ar' ? $item['title_ar'] : $item['title_en'] }}"
+                             style="width:100%;height:140px;object-fit:cover;display:block;">
+                        <div style="padding:10px 12px 12px;flex:1;">
+                            <div style="font-size:.82rem;font-weight:700;color:#1e293b;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                {{ app()->getLocale()=='ar' ? $item['title_ar'] : $item['title_en'] }}
+                            </div>
+                            <span style="font-size:.68rem;font-weight:600;color:#b68a35;margin-top:4px;display:block;">
+                                {{ $item['type']=='event' ? 'إعلان' : 'خدمة' }}
+                            </span>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
     <x-latest-section :magazines="$magazines"></x-latest-section>
     <x-footer-section></x-footer-section>
 

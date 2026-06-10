@@ -39,7 +39,7 @@
     }
 </style>
 
-<section style="background: #704e40; margin-top: 100px;">
+<section class="mob-latest-visible" style="background: #704e40; margin-top: 100px;">
     <div class="container-e3z latest-section-wrap" style="padding: 20px 15px;">
         <div class="row-sy7">
             <div class="col-w5q">
@@ -85,7 +85,7 @@
     </div>
 </section>
 @auth
-<a href="{{ route('contact-us') }}">
+<a href="/chat">
     <section style="background: rgb(182, 138, 53) !important; margin-top: 0px !important; padding: 18px 0 !important;">
         <div style="text-align: center; justify-content: center;">
             <h1 style="color: white; margin-top: 25px;">تواصل مع الإدارة</h1>
@@ -94,3 +94,9 @@
     </section>
 </a>
 @endauth
+<style>
+@media (max-width: 768px) {
+    a[href="/chat"] > section { display: none !important; }
+    a[href="/chat"]:has(section) { display: none !important; }
+}
+</style>

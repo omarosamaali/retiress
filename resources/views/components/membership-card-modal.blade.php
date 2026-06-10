@@ -11,6 +11,7 @@
         <button type="button" class="mcard-sheet__close" id="closeMembershipCard" aria-label="{{ __('app.close') }}">
             <i class="fa-solid fa-xmark"></i>
         </button>
+        <div class="mcard-sheet__title">بطاقة عضوية الكترونية</div>
         <p class="mcard-sheet__hint">{{ __('app.tap_to_flip_card') }}</p>
 
         <div class="mcard-flip" id="membershipFlipCard">

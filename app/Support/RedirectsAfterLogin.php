@@ -14,7 +14,7 @@ class RedirectsAfterLogin
         }
 
         if ($user->isMemberRole()) {
-            return route('members.panel', absolute: false);
+            return url('/');
         }
 
         return url('/');
