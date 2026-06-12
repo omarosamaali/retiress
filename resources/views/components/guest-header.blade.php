@@ -67,10 +67,13 @@
         text-decoration: none;
     }
     #mobile-top-bar .mob-logo img {
-        height: 36px;
-        width: auto;
-        display: block;
-        flex-shrink: 0;
+        height: 36px !important;
+        width: auto !important;
+        display: block !important;
+        flex-shrink: 0 !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+        object-fit: contain !important;
     }
     .mob-site-name {
         font-size: .72rem;
@@ -126,17 +129,7 @@
         color: #c0392b !important;
         border: 1.5px solid rgba(192,57,43,.5) !important;
     }
-    .mob-auth-btn i { font-size: .68rem; }
-    #mobile-top-bar .mob-lang {
-        color: #fff;
-        font-size: .85rem;
-        font-weight: 700;
-        text-decoration: none;
-        white-space: nowrap;
-        border: 1.5px solid rgba(255,255,255,.6);
-        border-radius: 6px;
-        padding: 3px 10px;
-    }
+    .mob-auth-btn i { font-size: .68rem !important; }
     .mob-bell-btn {
         background: none;
         border: none;
@@ -153,34 +146,84 @@
         flex-shrink: 0;
     }
     .mob-bell-btn i {
-        font-size: 1.3rem;
+        font-size: 1.3rem !important;
+        line-height: 1 !important;
     }
     .mob-icons-group {
-        display: flex;
-        align-items: center;
-        gap: 2px;
+        display: flex !important;
+        align-items: center !important;
+        gap: 2px !important;
     }
     .mob-icon-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        position: relative;
-        padding: 4px;
-        color: #fff;
-        line-height: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        flex-shrink: 0;
-        border-radius: 50%;
+        background: none !important;
+        border: none !important;
+        cursor: pointer !important;
+        position: relative !important;
+        padding: 4px !important;
+        color: #fff !important;
+        line-height: 1 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 32px !important;
+        height: 32px !important;
+        flex-shrink: 0 !important;
+        border-radius: 50% !important;
+        text-decoration: none !important;
     }
     .mob-icon-btn i {
-        font-size: 1.15rem;
+        font-size: 1.15rem !important;
+        line-height: 1 !important;
     }
-    .mob-icon-btn--wa i { color: #25d366; }
-    .mob-icon-btn--call i { color: #fff; }
+    .mob-icon-btn--wa i { color: #25d366 !important; }
+    .mob-icon-btn--call i { color: #fff !important; }
+    .mob-bell-btn {
+        background: none !important;
+        border: none !important;
+        cursor: pointer !important;
+        position: relative !important;
+        padding: 4px !important;
+        color: #fff !important;
+        line-height: 1 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 34px !important;
+        height: 34px !important;
+        flex-shrink: 0 !important;
+        text-decoration: none !important;
+    }
+    .mob-top-row1 {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        direction: rtl !important;
+        background: #b68a35 !important;
+        padding: 7px 14px !important;
+        box-sizing: border-box !important;
+    }
+    .mob-top-row2 {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        direction: rtl !important;
+        width: 100% !important;
+        background: #fff !important;
+        padding: 6px 14px !important;
+        box-sizing: border-box !important;
+        border-bottom: 1px solid #e8e0d0 !important;
+    }
+    .mob-lang {
+        color: #fff !important;
+        font-size: .85rem !important;
+        font-weight: 700 !important;
+        text-decoration: none !important;
+        white-space: nowrap !important;
+        border: 1.5px solid rgba(255,255,255,.6) !important;
+        border-radius: 6px !important;
+        padding: 3px 10px !important;
+    }
     .mob-bell-badge {
         position: absolute;
         top: 0;
@@ -269,10 +312,11 @@
             </div>
         </div>
     </div>
+    @if(request()->is('/'))
     @auth
     <form action="{{ route('members.logout') }}" method="POST"
     class="mob-auth-fixed-wrap"
-    style="position: fixed; left: 13px; top: 118px; margin:0;">
+    style="position: fixed; left: 13px; top: 118px; margin:0; z-index:9999;">
         @csrf
         <button type="submit" class="mob-auth-btn mob-auth-btn--logout">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -282,11 +326,12 @@
     @else
     <a href="{{ route('members.login') }}"
     class="mob-auth-btn mob-auth-btn--login mob-auth-fixed-wrap"
-    style="position: fixed; left: 13px; top: 118px;">
+    style="position: fixed; left: 13px; top: 118px; z-index:9999;">
         <i class="fa-solid fa-right-to-bracket"></i>
         دخول
     </a>
     @endauth
+    @endif
     <div id="headerholder">
         <div class="fixedheader" id="fixedh">
             <div class="logo">
