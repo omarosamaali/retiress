@@ -39,7 +39,7 @@
                 <div style="overflow:hidden;height:150px;">
                     <img src="{{ asset('storage/' . $img) }}"
                          alt="{{ $title }}"
-                         style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;"
+                         style="width:100%;height:100%;object-fit:fill;display:block;transition:transform .3s;"
                          onmouseover="this.style.transform='scale(1.05)'"
                          onmouseout="this.style.transform=''">
                 </div>
