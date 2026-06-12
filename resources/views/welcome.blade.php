@@ -171,35 +171,40 @@
         inset: 0;
         z-index: 999999;
         background: #fff;
-        display: flex;
+        display: none;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 40px;
-        transition: opacity .5s ease;
+        padding-bottom: 60px;
+        transition: opacity .4s ease;
     }
-    #pwa-splash.hidden { opacity: 0; pointer-events: none; }
+    #pwa-splash.visible { display: flex; }
+    #pwa-splash.hidden  { opacity: 0; pointer-events: none; }
     #pwa-splash__logo {
-        width: 160px;
+        width: 180px;
         height: auto;
         border-radius: 0;
-        background: #fff;
     }
     #pwa-splash__arabic {
-        width: 220px;
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
         height: auto;
     }
 </style>
 <script>
     (function() {
-        var splash = document.getElementById('pwa-splash');
         var isStandalone = window.matchMedia('(display-mode: standalone)').matches
                         || window.navigator.standalone === true;
-        if (!isStandalone) { splash.style.display = 'none'; return; }
+        if (!isStandalone) return;
+        var splash = document.getElementById('pwa-splash');
+        splash.classList.add('visible');
         setTimeout(function() {
             splash.classList.add('hidden');
-            setTimeout(function() { splash.style.display = 'none'; }, 500);
-        }, 2000);
+            setTimeout(function() { splash.style.display = 'none'; }, 400);
+        }, 1800);
     })();
 </script>
 
