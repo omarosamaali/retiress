@@ -5124,76 +5124,115 @@
             </h2>
         </div>
 
-        <section class="py-hp3">
+        <section style="padding:40px 0 60px;">
             <div class="container-rni">
-                @forelse($services as $service)
-                <div class="my-kck p-7p2 bg-xf5 shadow-t3k" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
-                    <div class="row-cwp py-hp3">
-                        <div class="col-igy col-cvg">
-                            <div class="bg-xf5 shadow-primary-sxe position-1lp">
-                                <a href="{{ route('services.show', $service->id) }}" class="block-osq text-b1x">
-                                    <figure class="m-38w text-m1o overflow-khm">
-                                        <img style="width: 222px;" class="service-img" 
-                                            src="{{ asset('storage/' . $service->image) }}" 
-                                            alt="{{ app()->getLocale() == 'ar' ? ($service->name_ar ?? __('app.service_image_alt_fallback')) : ($service->name_en ?? __('app.service_image_alt_fallback')) }}">
-                                    </figure>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-5vc col-cvg my-mpv">
-                            {{-- The href here is hardcoded with '?do=v&id='. It's better to use a named route like 'services.show'. --}}
-                            <a class="text-7zo text-b1x" href="{{ route('services.show', $service->id) }}">
-                                <h2 class="qvtmx font-weight-s3h text-7zo">{{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}</h2>
-                            </a>
-                            <hr>
-                            <div class="my-7z8 fs--oox">
-                                <div style="display: inline-block; margin-right: 15px;">
-                                    <i class="fa fa-calendar"></i> {{ __('app.date') }}: {{ \Carbon\Carbon::parse($service->date)->translatedFormat('Y-m-d') }}
-                                </div>
-                                <div style="display: inline-block;">
-                                    <i class="fa-vxc fa-p16 mx-8rj"></i> {{ __('app.price') }}: {{ number_format($service->price, 2) }} {{ __('app.aed') }}
-                                </div>
-                            </div>
 
-                            <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                                <span class="text-7zo block-osq"> {{ app()->getLocale() == 'ar' ? $service->description_ar : $service->description_en }} </span>
-                            </p>
-                            <div>
-                                {{-- This link is hardcoded to /events-show.html. It should link to the service details page. --}}
-                                <a href="{{ route('services.show', $service->id) }}" class="btn-o2b btn-link-6oj mb-xpg mr-i7e btn-dex">
-                                    <i class="fa-solid fa-list-ul"></i> {{ __('app.read_more') }}
-                                </a>
-                            </div>
-                            <p></p>
-                            <hr>
-                            <div>
-                                <hr>
-                            </div>
-                            <div class="text-jdt">
-                                @auth
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
-                                    {{ __('app.subscribe_to_service') }}
-                                    <a href="#" onclick="alert('{{ __('app.coming_soon') }}')">{{ __('app.click_here') }}</a>
-                                </div>
-                                @endauth
+                @php
+                    $hasServiceEvents = isset($serviceEvents) && $serviceEvents->isNotEmpty();
+                    $hasServices = $services->isNotEmpty();
+                @endphp
 
-                                @guest
-                                <div class="p-gd6 bor-kyc warning-voa border-6a9 bw--bik mb-m36 text-m1o font-weight-s3h" style="margin-bottom: 0px !important;">
-                                    {{ __('app.request_to_join_please') }}
-                                    <a href="{{ route('login') }}">{{ __('app.login') }}</a> {{ __('app.or') }} <a href="{{ route('members.register') }}">{{ __('app.create_new_account') }}</a>
-                                </div>
-                                @endguest
+                @if(!$hasServiceEvents && !$hasServices)
+                    <div style="text-align:center;padding:60px 0;color:#64748b;">
+                        <i class="fa-regular fa-briefcase" style="font-size:3rem;display:block;margin-bottom:12px;"></i>
+                        <p style="font-size:1rem;font-weight:600;">{{ __('app.no_services_available') }}</p>
+                    </div>
+                @else
+
+                {{-- إعلانات خدمات --}}
+                @if($hasServiceEvents)
+                <div style="margin-bottom:36px;">
+                    <h3 style="font-size:1.2rem;font-weight:700;color:#016330;margin:0 0 18px;padding-right:4px;border-right:4px solid #b68a35;padding-right:12px;">
+                        إعلانات الخدمات
+                    </h3>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;direction:rtl;" class="svc-grid">
+                        @foreach($serviceEvents as $event)
+                        <a href="{{ url('/events/show/' . $event->id) }}"
+                           style="text-decoration:none;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.09);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;"
+                           onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.14)'"
+                           onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.09)'">
+                            <div style="position:relative;overflow:hidden;height:160px;">
+                                <img src="{{ asset('storage/' . $event->main_image) }}"
+                                     alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
+                                     style="width:100%;height:100%;object-fit:cover;display:block;">
+                                <span style="position:absolute;top:10px;right:10px;background:#016330;color:#fff;font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:12px;">خدمات</span>
                             </div>
-                        </div>
+                            <div style="padding:14px 16px;flex:1;display:flex;flex-direction:column;gap:8px;">
+                                <p style="margin:0;font-size:.9rem;font-weight:700;color:#1e293b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                    {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
+                                </p>
+                                @if($event->description_ar)
+                                <p style="margin:0;font-size:.78rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                    {{ app()->getLocale() == 'ar' ? $event->description_ar : $event->description_en }}
+                                </p>
+                                @endif
+                                <p style="margin:0;font-size:.72rem;color:#94a3b8;">
+                                    <i class="fa-regular fa-calendar" style="margin-left:4px;"></i>
+                                    {{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d M Y') }}
+                                </p>
+                                <span style="display:inline-flex;align-items:center;gap:6px;color:#b68a35;font-size:.78rem;font-weight:700;margin-top:auto;">
+                                    <i class="fa-solid fa-arrow-left"></i> قراءة المزيد
+                                </span>
+                            </div>
+                        </a>
+                        @endforeach
                     </div>
                 </div>
-                @empty
-                <div class="text-center w-100">
-                    <p>{{ __('app.no_services_available') }}</p>
+                @endif
+
+                {{-- خدمات قديمة --}}
+                @if($hasServices)
+                <div>
+                    <h3 style="font-size:1.2rem;font-weight:700;color:#016330;margin:0 0 18px;border-right:4px solid #b68a35;padding-right:12px;">
+                        {{ __('app.services_page_title') }}
+                    </h3>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;direction:rtl;" class="svc-grid">
+                        @foreach($services as $service)
+                        <a href="{{ route('services.show', $service->id) }}"
+                           style="text-decoration:none;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.09);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;"
+                           onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.14)'"
+                           onmouseout="this.style.transform='';this.style.boxShadow='0 2px 12px rgba(0,0,0,.09)'">
+                            <div style="overflow:hidden;height:160px;">
+                                <img src="{{ asset('storage/' . $service->image) }}"
+                                     alt="{{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}"
+                                     style="width:100%;height:100%;object-fit:cover;display:block;">
+                            </div>
+                            <div style="padding:14px 16px;flex:1;display:flex;flex-direction:column;gap:8px;">
+                                <p style="margin:0;font-size:.9rem;font-weight:700;color:#1e293b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                    {{ app()->getLocale() == 'ar' ? $service->name_ar : $service->name_en }}
+                                </p>
+                                <p style="margin:0;font-size:.78rem;color:#64748b;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                    {{ app()->getLocale() == 'ar' ? $service->description_ar : $service->description_en }}
+                                </p>
+                                <p style="margin:0;font-size:.72rem;color:#94a3b8;">
+                                    <i class="fa-regular fa-calendar" style="margin-left:4px;"></i>
+                                    {{ \Carbon\Carbon::parse($service->date)->translatedFormat('d M Y') }}
+                                    &nbsp;|&nbsp;
+                                    <i class="fa-regular fa-credit-card" style="margin-left:4px;"></i>
+                                    {{ number_format($service->price, 2) }} {{ __('app.aed') }}
+                                </p>
+                                <span style="display:inline-flex;align-items:center;gap:6px;color:#b68a35;font-size:.78rem;font-weight:700;margin-top:auto;">
+                                    <i class="fa-solid fa-arrow-left"></i> {{ __('app.read_more') }}
+                                </span>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
                 </div>
-                @endforelse
+                @endif
+
+                @endif
             </div>
         </section>
+
+        <style>
+            @media (max-width: 768px) {
+                .svc-grid { grid-template-columns: repeat(2,1fr) !important; }
+            }
+            @media (max-width: 480px) {
+                .svc-grid { grid-template-columns: 1fr !important; }
+            }
+        </style>
 
         <x-footer-section></x-footer-section>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/8.4.7/swiper-bundle.min.js"></script>

@@ -269,7 +269,8 @@ Route::get('/services/show/{id}', function ($id) {
 
 Route::get('/services/all-services', function () {
     $services = Service::all();
-    return view('members.services.all-services', compact('services'));
+    $serviceEvents = \App\Models\Event::where('type', 'خدمات')->latest()->get();
+    return view('members.services.all-services', compact('services', 'serviceEvents'));
 })->name('services.all-services');
 
 Route::get('/events/show/{id}', [PublicEventController::class, 'show'])->name('events.show');
