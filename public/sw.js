@@ -1,4 +1,4 @@
-var CACHE = 'uaera-v2';
+var CACHE = 'uaera-v4';
 
 self.addEventListener('install', function(e) {
     self.skipWaiting();
@@ -15,27 +15,41 @@ self.addEventListener('fetch', function(e) {
     }));
 });
 
-// استقبال Push من السيرفر وإظهار الإشعار حتى لو التطبيق مغلق
 self.addEventListener('push', function(e) {
-    var data = {};
-    try { data = e.data ? e.data.json() : {}; } catch(err) {}
+    var title = 'جمعية الإمارات للمتقاعدين';
+    var body  = 'لديك إشعار جديد';
+    var url   = '/';
 
-    var title   = data.title || 'جمعية الإمارات للمتقاعدين';
-    var options = {
-        body:    data.body  || 'لديك إشعار جديد',
-        icon:    data.icon  || '/assets/images/new-logo.png',
-        badge:   '/assets/images/new-logo.png',
-        dir:     'rtl',
-        lang:    'ar',
-        data:    { url: data.url || '/' }
-    };
+    try {
+        if (e.data) {
+            var d = e.data.json();
+            if (d.title) title = d.title;
+            if (d.body)  body  = d.body;
+            if (d.url)   url   = d.url;
+        }
+    } catch (err) {}
 
-    e.waitUntil(self.registration.showNotification(title, options));
+    // بدون icon/badge لتفادي فشل showNotification
+    e.waitUntil(
+        self.registration.showNotification(title, {
+            body: body,
+            dir:  'rtl',
+            lang: 'ar',
+            tag:  'uaer-push',
+            data: { url: url }
+        })
+    );
 });
 
-// فتح الرابط عند الضغط على الإشعار
 self.addEventListener('notificationclick', function(e) {
     e.notification.close();
-    var url = e.notification.data && e.notification.data.url ? e.notification.data.url : '/';
-    e.waitUntil(clients.openWindow(url));
+    var url = (e.notification.data && e.notification.data.url) ? e.notification.data.url : '/';
+    e.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(list) {
+            for (var i = 0; i < list.length; i++) {
+                if ('focus' in list[i]) return list[i].focus();
+            }
+            return clients.openWindow(url);
+        })
+    );
 });
