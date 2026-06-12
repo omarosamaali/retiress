@@ -27,7 +27,11 @@ class EventController extends Controller
             });
         }
 
-        $events = $query->paginate(10)->withQueryString();
+        if ($request->filled('type')) {
+            $query->where('type', $request->input('type'));
+        }
+
+        $events = $query->paginate(9)->withQueryString();
         $transactions = Transaction::with('user', 'event')->where('type', 'event')->latest()->paginate(10);
 
         return view('admin.events.index', compact('events', 'transactions'));
