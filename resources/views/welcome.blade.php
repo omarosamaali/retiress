@@ -96,6 +96,10 @@
         /* إخفاء السحب على الموبايل فقط */
         @media (max-width: 768px) {
             .floating-clouds { display: none !important; }
+            #events-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 480px) {
+            #events-grid { grid-template-columns: 1fr !important; }
         }
 
         @media (min-width: 769px) {
@@ -1162,70 +1166,58 @@
                         <div style="display:flex;align-items:center;justify-content:center;min-height:200px;flex-direction:column;gap:16px;color:#64748b;padding:30px 0;">
                             <i class="fa-regular fa-calendar-xmark" style="font-size:2.5rem;"></i>
                             <span style="font-size:1rem;font-weight:600;">لا تتوفر إعلانات فعّالة حالياً</span>
-                            <a href="{{ route('events.all-events') }}"
-                               style="display:inline-flex;align-items:center;gap:7px;background:#b68a35;color:#fff;border:1.5px solid #b68a35;border-radius:24px;padding:8px 22px;font-size:.88rem;font-weight:700;text-decoration:none;transition:background .2s;">
+                            <a href="{{ route('events.all-events') }}" style="display:inline-flex;align-items:center;gap:7px;background:#b68a35;color:#fff;border-radius:24px;padding:8px 22px;font-size:.88rem;font-weight:700;text-decoration:none;">
                                 <i class="fa-solid fa-list"></i> عرض الجميع
                             </a>
                         </div>
-                    @elseif ($events->count() === 1)
-                    @php $event = $events->first(); @endphp
-                    <a href="{{ url('/events/show/' . $event->id) }}" style="text-decoration:none;display:block;border-radius:12px;overflow:hidden;">
-                        <div style="position:relative;">
-                            <x-event-type-badge :event="$event" />
-                            <img src="{{ asset('storage/' . $event->main_image) }}"
-                                alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
-                                class="slide-image">
-                            <div class="slide-title">
-                                {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
-                            </div>
-                        </div>
-                        <div style="background:rgba(1,99,48,.85);padding:10px 16px;">
-                            <p style="margin:0;color:#fff;font-size:.85rem;">
-                                <i class="fa-regular fa-calendar" style="margin-left:6px;"></i>
-                                {{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}
-                            </p>
-                        </div>
-                    </a>
-                    <a href="{{ route('events.all-events') }}" class="btn-dwo block-qlo"
-                        style="display: block; text-align: center; margin-top: 20px;">
-                        <i class="fas fa-eye"></i>
-                        <span>{{ __('app.view_more') }}</span>
-                    </a>
                     @else
-                    <div class="swiper eventsSwiper">
-                        <div class="swiper-wrapper">
-                            @foreach ($events as $event)
-                            <div class="swiper-slide">
-                                <a href="{{ url('/events/show/' . $event->id) }}" style="text-decoration:none;display:block;border-radius:12px;overflow:hidden;">
-                                    <div style="position:relative;">
-                                        <x-event-type-badge :event="$event" />
-                                        <img src="{{ asset('storage/' . $event->main_image) }}"
-                                            alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
-                                            class="slide-image">
-                                        <div class="slide-title">
-                                            {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
-                                        </div>
-                                    </div>
-                                    <div style="background:rgba(1,99,48,.85);padding:10px 16px;">
-                                        <p style="margin:0;color:#fff;font-size:.85rem;">
-                                            <i class="fa-regular fa-calendar" style="margin-left:6px;"></i>
-                                            {{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d F Y') }}
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                            @endforeach
-                        </div>
-                        <div class="swiper-pagination"></div>
-                        <div class="swiper-button-next">
-                            <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div class="swiper-button-prev">
-                            <i class="fas fa-chevron-right"></i>
-                        </div>
+                    @php
+                        $eventTypes = $events->pluck('type')->unique()->filter()->values();
+                    @endphp
+
+                    {{-- فيلتر النوع --}}
+                    @if($eventTypes->count() > 1)
+                    <div id="events-filter" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;direction:rtl;">
+                        <button onclick="filterEvents('all', this)"
+                            style="background:#016330;color:#fff;border:none;border-radius:20px;padding:5px 14px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;"
+                            class="ev-filter-btn active-filter">الكل</button>
+                        @foreach($eventTypes as $t)
+                        <button onclick="filterEvents('{{ $t }}', this)"
+                            style="background:#f1f5f9;color:#374151;border:1px solid #e2e8f0;border-radius:20px;padding:5px 14px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;"
+                            class="ev-filter-btn">{{ $t }}</button>
+                        @endforeach
                     </div>
-                    <a href="{{ route('events.all-events') }}" class="btn-dwo block-qlo"
-                        style="display: block; text-align: center; margin-top: 30px;">
+                    @endif
+
+                    {{-- 3 كاردز --}}
+                    <div id="events-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;direction:rtl;">
+                        @foreach($events->take(9) as $event)
+                        <a href="{{ url('/events/show/' . $event->id) }}"
+                           class="ev-card"
+                           data-type="{{ $event->type }}"
+                           style="text-decoration:none;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.1);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;"
+                           onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.15)'"
+                           onmouseout="this.style.transform='';this.style.boxShadow='0 2px 10px rgba(0,0,0,.1)'">
+                            <div style="position:relative;overflow:hidden;">
+                                <img src="{{ asset('storage/' . $event->main_image) }}"
+                                    alt="{{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}"
+                                    style="width:100%;height:120px;object-fit:cover;display:block;">
+                                <span style="position:absolute;top:8px;right:8px;background:#016330;color:#fff;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px;">{{ $event->type }}</span>
+                            </div>
+                            <div style="padding:10px;flex:1;display:flex;flex-direction:column;gap:6px;">
+                                <p style="margin:0;font-size:.78rem;font-weight:700;color:#1e293b;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+                                    {{ app()->getLocale() == 'ar' ? $event->title_ar : $event->title_en }}
+                                </p>
+                                <p style="margin:0;font-size:.68rem;color:#94a3b8;">
+                                    <i class="fa-regular fa-calendar" style="margin-left:4px;"></i>
+                                    {{ \Carbon\Carbon::parse($event->event_date)->translatedFormat('d M Y') }}
+                                </p>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
+
+                    <a href="{{ route('events.all-events') }}" class="btn-dwo block-qlo" style="display:block;text-align:center;margin-top:20px;">
                         <i class="fas fa-eye"></i>
                         <span>{{ __('app.view_more') }}</span>
                     </a>
@@ -1287,6 +1279,24 @@
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
 </body>
 <script>
+    // events type filter
+    function filterEvents(type, btn) {
+        var cards = document.querySelectorAll('.ev-card');
+        cards.forEach(function(c) {
+            c.style.display = (type === 'all' || c.dataset.type === type) ? 'flex' : 'none';
+        });
+        document.querySelectorAll('.ev-filter-btn').forEach(function(b) {
+            b.style.background = '#f1f5f9';
+            b.style.color = '#374151';
+            b.style.border = '1px solid #e2e8f0';
+        });
+        if (btn) {
+            btn.style.background = '#016330';
+            btn.style.color = '#fff';
+            btn.style.border = 'none';
+        }
+    }
+
     var quoteSwiper = new Swiper('.quoteSwiper', {
         slidesPerView: 1
         , spaceBetween: 20

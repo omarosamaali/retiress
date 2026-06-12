@@ -178,96 +178,78 @@
         </div>
     @endif
 
-    {{-- شريط البحث والفيلتر --}}
-    <form method="GET" action="{{ route('admin.event.index') }}" class="mb-4">
-        <div class="row g-2 align-items-center">
-            <div class="col-md-5">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="بحث بعنوان الإعلان..." value="{{ request('search') }}">
-                    <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <select name="type" class="form-select" onchange="this.form.submit()">
-                    <option value="">— كل الأنواع —</option>
-                    @foreach(\App\Models\Event::TYPES as $type)
-                        <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>{{ $type }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-3">
-                @if(request('search') || request('type'))
-                    <a href="{{ route('admin.event.index') }}" class="btn btn-outline-danger w-100">
-                        <i class="fas fa-times me-1"></i> مسح الفيلتر
-                    </a>
-                @endif
-            </div>
+    <form method="GET" action="{{ route('admin.event.index') }}" class="mb-3">
+        <div class="input-group" style="max-width:420px;">
+            <input type="text" name="search" class="form-control" placeholder="بحث بعنوان الإعلان..." value="{{ request('search') }}">
+            <button class="btn btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
+            @if(request('search'))
+                <a href="{{ route('admin.event.index') }}" class="btn btn-outline-danger" title="مسح البحث"><i class="fas fa-times"></i></a>
+            @endif
         </div>
     </form>
 
-    {{-- إحصائية سريعة --}}
-    <div class="d-flex gap-2 flex-wrap mb-3">
-        @foreach(\App\Models\Event::TYPES as $t)
-            @php $cnt = \App\Models\Event::where('type',$t)->count(); @endphp
-            @if($cnt > 0)
-            <a href="{{ route('admin.event.index', ['type' => $t]) }}"
-               class="badge text-decoration-none fs-6 {{ request('type') == $t ? 'bg-dark' : 'bg-secondary' }}">
-                {{ $t }} ({{ $cnt }})
-            </a>
-            @endif
-        @endforeach
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>تاريخ الإضافة</th>
+                    <th>العنوان (عربي)</th>
+                    <th>نوع الإعلان</th>
+                    <th>الفئة</th>
+                    <th>مدفوع</th>
+                    <th>السعر</th>
+                    <th>الصورة الرئيسية</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($events ?? [] as $item)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                        <td>{{ $item->title_ar }}</td>
+                        <td><span class="badge bg-secondary">{{ $item->type_label }}</span></td>
+                        <td><span class="badge {{ $item->isForMembersOnly() ? 'bg-info' : 'bg-dark' }}">{{ $item->audience_label }}</span></td>
+                        @if ($item->price)
+                            <td class="text-success">مدفوع</td>
+                            <td class="text-success">{{ $item->price }}</td>
+                        @else
+                            <td class="text-primary">مجاني</td>
+                            <td class="text-primary">0</td>
+                        @endif
+                        <td>
+                            @if ($item->main_image)
+                                <img src="{{ $item->main_image_url }}" alt="{{ $item->title_ar }}" class="news-img">
+                            @else
+                                لا توجد صورة
+                            @endif
+                        </td>
+                        <td>
+                            <span class="badge {{ $item->status_badge_class }}">{{ $item->status_text }}</span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="{{ route('admin.event.show', $item->id) }}" class="btn btn-info btn-sm" title="عرض"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('admin.event.edit', $item->id) }}" class="btn btn-warning btn-sm" title="تعديل"><i class="fas fa-edit"></i></a>
+                                <button class="btn btn-danger btn-sm" title="حذف" onclick="confirmDelete({{ $item->id }})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="10" class="text-center py-4">
+                            <i class="fas fa-newspaper text-muted" style="font-size: 3rem;"></i>
+                            <p class="text-muted mt-2">لا توجد إعلانات</p>
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 
-    {{-- كاردز الإعلانات — 3 بالصف --}}
-    <div class="row g-3">
-        @forelse($events ?? [] as $item)
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0" style="border-radius:12px;overflow:hidden;">
-                @if($item->main_image)
-                    <img src="{{ $item->main_image_url }}" class="card-img-top" style="height:160px;object-fit:cover;" alt="{{ $item->title_ar }}">
-                @else
-                    <div style="height:80px;background:#f1f5f9;display:flex;align-items:center;justify-content:center;">
-                        <i class="fas fa-image text-muted fa-2x"></i>
-                    </div>
-                @endif
-                <div class="card-body p-3">
-                    <div class="d-flex justify-content-between align-items-start mb-2 gap-1 flex-wrap">
-                        <span class="badge bg-secondary">{{ $item->type_label }}</span>
-                        <span class="badge {{ $item->status_badge_class }}">{{ $item->status_text }}</span>
-                        <span class="badge {{ $item->isForMembersOnly() ? 'bg-info' : 'bg-dark' }}">{{ $item->audience_label }}</span>
-                    </div>
-                    <h6 class="card-title mb-1" style="font-size:.9rem;line-height:1.4;">{{ $item->title_ar }}</h6>
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <small class="text-muted">{{ $item->created_at->format('d/m/Y') }}</small>
-                        <span class="{{ $item->price ? 'text-success' : 'text-primary' }}" style="font-size:.8rem;font-weight:700;">
-                            {{ $item->price ? $item->price . ' د.إ' : 'مجاني' }}
-                        </span>
-                    </div>
-                </div>
-                <div class="card-footer bg-white border-0 pt-0 pb-3 px-3">
-                    <div class="d-flex gap-1">
-                        <a href="{{ route('admin.event.show', $item->id) }}" class="btn btn-info btn-sm flex-fill" title="عرض">
-                            <i class="fas fa-eye"></i>
-                        </a>
-                        <a href="{{ route('admin.event.edit', $item->id) }}" class="btn btn-warning btn-sm flex-fill" title="تعديل">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <button class="btn btn-danger btn-sm flex-fill" title="حذف" onclick="confirmDelete({{ $item->id }})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @empty
-        <div class="col-12 text-center py-5">
-            <i class="fas fa-newspaper text-muted" style="font-size:3rem;"></i>
-            <p class="text-muted mt-2">لا توجد إعلانات</p>
-        </div>
-        @endforelse
-    </div>
-
-    @if(isset($events) && $events->hasPages())
+    @if (isset($events) && $events->hasPages())
         <div class="d-flex justify-content-center mt-4">
             {{ $events->links() }}
         </div>
