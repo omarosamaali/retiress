@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Events\NewMemberNotification;
 use App\Http\Controllers\Controller;
 use App\Models\MemberBroadcastNotification;
+use App\Models\PushSubscription;
 use App\Models\User;
 use App\Models\UserNotification;
 use Illuminate\Http\RedirectResponse;
@@ -12,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Minishlink\WebPush\WebPush;
+use Minishlink\WebPush\Subscription;
 
 class MemberBroadcastNotificationController extends Controller
 {
@@ -85,10 +88,64 @@ class MemberBroadcastNotificationController extends Controller
             }
         });
 
+        // ── Web Push (يصل حتى لو التطبيق مقفول) ──
+        $this->sendWebPush(
+            title:     $validated['title'],
+            body:      $validated['body'],
+            sendToAll: $sendToAll,
+            userIds:   $sendToAll ? [] : ($validated['user_ids'] ?? [])
+        );
+
         $msg = $sendToAll
             ? 'تم إرسال الإشعار لجميع الأعضاء بنجاح.'
             : 'تم إرسال الإشعار للأعضاء المحددين بنجاح.';
 
         return redirect()->route('admin.member-notifications.create')->with('success', $msg);
+    }
+
+    private function sendWebPush(string $title, string $body, bool $sendToAll, array $userIds = []): void
+    {
+        $vapidPublic  = config('app.vapid_public');
+        $vapidPrivate = config('app.vapid_private');
+        $vapidSubject = config('app.vapid_subject', 'mailto:admin@retirees.ae');
+
+        if (!$vapidPublic || !$vapidPrivate) return;
+
+        $webPush = new WebPush([
+            'VAPID' => [
+                'subject'    => $vapidSubject,
+                'publicKey'  => $vapidPublic,
+                'privateKey' => $vapidPrivate,
+            ],
+        ]);
+
+        $subscriptions = $sendToAll
+            ? PushSubscription::all()
+            : PushSubscription::whereIn('member_id', $userIds)->get();
+
+        if ($subscriptions->isEmpty()) return;
+
+        $payload = json_encode([
+            'title' => $title,
+            'body'  => $body,
+            'icon'  => '/assets/images/new-logo.png',
+            'url'   => '/',
+        ]);
+
+        foreach ($subscriptions as $sub) {
+            $webPush->queueNotification(
+                Subscription::create([
+                    'endpoint' => $sub->endpoint,
+                    'keys'     => ['p256dh' => $sub->p256dh_key, 'auth' => $sub->auth_token],
+                ]),
+                $payload
+            );
+        }
+
+        foreach ($webPush->flush() as $report) {
+            if (!$report->isSuccess()) {
+                PushSubscription::where('endpoint', $report->getRequest()->getUri()->__toString())->delete();
+            }
+        }
     }
 }
