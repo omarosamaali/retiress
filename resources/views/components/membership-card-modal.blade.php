@@ -8,7 +8,7 @@
     <div class="mcard-sheet__backdrop" id="membershipCardBackdrop"></div>
 
     <div class="mcard-sheet__dialog">
-        <button type="button" class="mcard-sheet__close" id="closeMembershipCard" aria-label="{{ __('app.close') }}">
+        <button type="button" class="mcard-sheet__close" style="top: 5px !important; left: 5px !important;" id="closeMembershipCard" aria-label="{{ __('app.close') }}">
             <i class="fa-solid fa-xmark"></i>
         </button>
         <div class="mcard-sheet__title">بطاقة عضوية الكترونية</div>
