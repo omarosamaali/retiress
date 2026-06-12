@@ -717,16 +717,10 @@
     @endif
     @endauth
 
-    {{-- اشتراك Push للـ PWA — يشتغل لكل المستخدمين في standalone mode --}}
+    {{-- اشتراك Push — يشتغل في كل الأحوال (browser + PWA) --}}
     <script>
     (function() {
-        var isStandalone = window.matchMedia('(display-mode: standalone)').matches
-                        || window.navigator.standalone === true;
-        if (!isStandalone) return;
         if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
-
-        var VAPID_KEY = '{{ config("app.vapid_public") }}';
-        if (!VAPID_KEY) return;
 
         function urlB64ToUint8(b) {
             var pad = '='.repeat((4 - b.length % 4) % 4);
@@ -738,47 +732,53 @@
 
         function saveSub(sub) {
             var d = sub.toJSON();
-            fetch('/push/subscribe', {
+            var csrf = (document.querySelector('meta[name="csrf-token"]') || {}).content || '';
+            return fetch('/push/subscribe', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') || {}).content || ''
-                },
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf },
                 body: JSON.stringify({ endpoint: d.endpoint, keys: { p256dh: d.keys.p256dh, auth: d.keys.auth } })
             });
         }
 
-        navigator.serviceWorker.register('/sw.js').then(function(reg) {
-            // تحديث الـ SW لو في نسخة جديدة
-            reg.update();
-
-            function trySubscribe() {
-                reg.pushManager.getSubscription().then(function(existing) {
-                    if (existing) {
-                        // حفظ الـ subscription الحالي على السيرفر (على كل ما تشتغل)
-                        saveSub(existing);
-                        return;
-                    }
-                    if (Notification.permission === 'denied') return;
-                    if (Notification.permission === 'granted') {
-                        reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8(VAPID_KEY) })
-                            .then(saveSub)
-                            .catch(function(e) { console.log('push sub error:', e); });
-                    }
+        function doSubscribe(reg, vapidKey) {
+            reg.pushManager.getSubscription().then(function(existing) {
+                if (existing) {
+                    saveSub(existing); // أعد الحفظ في كل مرة لضمان وجوده في DB
+                    return;
+                }
+                reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlB64ToUint8(vapidKey)
+                }).then(saveSub).catch(function(e) {
+                    console.warn('Push subscribe failed:', e);
                 });
-            }
+            });
+        }
 
-            if (Notification.permission === 'default') {
-                // في standalone — اطلب الإذن مباشرة بدون برومبت مخصص
-                setTimeout(function() {
-                    Notification.requestPermission().then(function(p) {
-                        if (p === 'granted') trySubscribe();
-                    });
-                }, 3000);
-            } else {
-                trySubscribe();
-            }
-        });
+        function initPush(vapidKey) {
+            navigator.serviceWorker.register('/sw.js').then(function(reg) {
+                reg.update(); // تحقق من تحديثات الـ SW
+
+                if (Notification.permission === 'granted') {
+                    doSubscribe(reg, vapidKey);
+                } else if (Notification.permission === 'default') {
+                    // انتظر 4 ثواني ثم اطلب الإذن
+                    setTimeout(function() {
+                        Notification.requestPermission().then(function(p) {
+                            if (p === 'granted') doSubscribe(reg, vapidKey);
+                        });
+                    }, 4000);
+                }
+            });
+        }
+
+        // جيب الـ VAPID key من السيرفر مباشرة (مش من config cache)
+        fetch('/push/vapid-public')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.key) initPush(data.key);
+            })
+            .catch(function(e) { console.warn('VAPID fetch failed:', e); });
     })();
     </script>
 

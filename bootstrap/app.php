@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\Localization::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'push/subscribe',
+            'push/unsubscribe',
+        ]);
     })
     ->withSchedule(function (Schedule $schedule) {
         $schedule->command('memberships:update-expired')->daily();
