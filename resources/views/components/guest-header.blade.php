@@ -27,6 +27,7 @@
     }
     @media (min-width: 769px) {
         #mobile-top-bar { display: none !important; }
+        .mob-auth-fixed-wrap { display: none !important; }
     }
 
     #mobile-top-bar {
@@ -269,10 +270,9 @@
         </div>
     </div>
     @auth
-    <form action="{{ route('members.logout') }}" method="POST" 
-    style="position: fixed;
-    left: 13px;
-    top: 118px; margin:0;">
+    <form action="{{ route('members.logout') }}" method="POST"
+    class="mob-auth-fixed-wrap"
+    style="position: fixed; left: 13px; top: 118px; margin:0;">
         @csrf
         <button type="submit" class="mob-auth-btn mob-auth-btn--logout">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -280,10 +280,9 @@
         </button>
     </form>
     @else
-    <a href="{{ route('members.login') }}" style="position: fixed;
-    left: 13px;
-    top: 118px;"
-    class="mob-auth-btn mob-auth-btn--login">
+    <a href="{{ route('members.login') }}"
+    class="mob-auth-btn mob-auth-btn--login mob-auth-fixed-wrap"
+    style="position: fixed; left: 13px; top: 118px;">
         <i class="fa-solid fa-right-to-bracket"></i>
         دخول
     </a>

@@ -1,4 +1,4 @@
-var CACHE = 'uaera-v1';
+var CACHE = 'uaera-v2';
 
 self.addEventListener('install', function(e) {
     self.skipWaiting();

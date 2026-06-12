@@ -162,10 +162,7 @@
 
 {{-- ── PWA Splash Screen ── --}}
 <div id="pwa-splash">
-    <div id="pwa-splash__top">
-        <img src="{{ asset('assets/evorq.jpeg') }}" alt="Evorq" id="pwa-splash__logo">
-        <p id="pwa-splash__text">By Evorq Technology</p>
-    </div>
+    <img src="{{ asset('assets/images/new-logo.png') }}" alt="UAER" id="pwa-splash__logo">
     <img src="{{ asset('assets/arabic-logo.png') }}" alt="جمعية الإمارات للمتقاعدين" id="pwa-splash__arabic">
 </div>
 <style>
@@ -177,35 +174,19 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        padding: 60px 30px 50px;
+        justify-content: center;
+        gap: 40px;
         transition: opacity .5s ease;
     }
-    #pwa-splash.hidden {
-        opacity: 0;
-        pointer-events: none;
-    }
-    #pwa-splash__top {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-    }
+    #pwa-splash.hidden { opacity: 0; pointer-events: none; }
     #pwa-splash__logo {
-        width: 140px;
+        width: 160px;
         height: auto;
         border-radius: 0;
-    }
-    #pwa-splash__text {
-        color: #333;
-        font-family: "Cairo", sans-serif;
-        font-size: .95rem;
-        font-weight: 600;
-        letter-spacing: 1px;
-        margin: 0;
+        background: #fff;
     }
     #pwa-splash__arabic {
-        width: 200px;
+        width: 220px;
         height: auto;
     }
 </style>
@@ -214,10 +195,7 @@
         var splash = document.getElementById('pwa-splash');
         var isStandalone = window.matchMedia('(display-mode: standalone)').matches
                         || window.navigator.standalone === true;
-        if (!isStandalone) {
-            splash.style.display = 'none';
-            return;
-        }
+        if (!isStandalone) { splash.style.display = 'none'; return; }
         setTimeout(function() {
             splash.classList.add('hidden');
             setTimeout(function() { splash.style.display = 'none'; }, 500);
@@ -695,30 +673,40 @@
         return outputArray;
     }
 
+    function doWebPushSubscribe(reg) {
+        reg.pushManager.getSubscription().then(function(existing) {
+            if (existing) return; // مشترك بالفعل
+            reg.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: urlBase64ToUint8Array('{{ config("app.vapid_public") }}')
+            }).then(function(subscription) {
+                var subData = subscription.toJSON();
+                fetch('{{ route("push.subscribe") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        endpoint: subData.endpoint,
+                        keys: { p256dh: subData.keys.p256dh, auth: subData.keys.auth }
+                    })
+                });
+            }).catch(function(err) { console.log('Push subscribe error:', err); });
+        });
+    }
+
     function subscribeToWebPush() {
         if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
         Notification.requestPermission().then(function(permission) {
             if (permission !== 'granted') return;
-            navigator.serviceWorker.ready.then(function(reg) {
-                reg.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array('{{ config("app.vapid_public") }}')
-                }).then(function(subscription) {
-                    var subData = subscription.toJSON();
-                    fetch('{{ route("push.subscribe") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            endpoint: subData.endpoint,
-                            keys: { p256dh: subData.keys.p256dh, auth: subData.keys.auth }
-                        })
-                    });
-                }).catch(function(err) { console.log('Push subscribe error:', err); });
-            });
+            navigator.serviceWorker.ready.then(function(reg) { doWebPushSubscribe(reg); });
         });
+    }
+
+    // لو الإذن موجود بالفعل من قبل — اشترك تلقائياً بدون طلب مرة ثانية
+    if ('serviceWorker' in navigator && 'PushManager' in window && Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(function(reg) { doWebPushSubscribe(reg); });
     }
     </script>
     @endif
