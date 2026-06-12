@@ -162,8 +162,8 @@
 
 {{-- ── PWA Splash Screen ── --}}
 <div id="pwa-splash">
-    <img src="{{ asset('assets/images/new-logo.png') }}" alt="UAER" id="pwa-splash__logo">
-    <img src="{{ asset('assets/arabic-logo.png') }}" alt="جمعية الإمارات للمتقاعدين" id="pwa-splash__arabic">
+    <img src="/assets/images/new-logo.png" alt="UAER" id="pwa-splash__logo">
+    <img src="/assets/arabic-logo.png" alt="جمعية الإمارات للمتقاعدين" id="pwa-splash__arabic">
 </div>
 <style>
     #pwa-splash {
@@ -716,6 +716,71 @@
     </script>
     @endif
     @endauth
+
+    {{-- اشتراك Push للـ PWA — يشتغل لكل المستخدمين في standalone mode --}}
+    <script>
+    (function() {
+        var isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                        || window.navigator.standalone === true;
+        if (!isStandalone) return;
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+
+        var VAPID_KEY = '{{ config("app.vapid_public") }}';
+        if (!VAPID_KEY) return;
+
+        function urlB64ToUint8(b) {
+            var pad = '='.repeat((4 - b.length % 4) % 4);
+            var raw = atob((b + pad).replace(/-/g, '+').replace(/_/g, '/'));
+            var out = new Uint8Array(raw.length);
+            for (var i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+            return out;
+        }
+
+        function saveSub(sub) {
+            var d = sub.toJSON();
+            fetch('/push/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') || {}).content || ''
+                },
+                body: JSON.stringify({ endpoint: d.endpoint, keys: { p256dh: d.keys.p256dh, auth: d.keys.auth } })
+            });
+        }
+
+        navigator.serviceWorker.register('/sw.js').then(function(reg) {
+            // تحديث الـ SW لو في نسخة جديدة
+            reg.update();
+
+            function trySubscribe() {
+                reg.pushManager.getSubscription().then(function(existing) {
+                    if (existing) {
+                        // حفظ الـ subscription الحالي على السيرفر (على كل ما تشتغل)
+                        saveSub(existing);
+                        return;
+                    }
+                    if (Notification.permission === 'denied') return;
+                    if (Notification.permission === 'granted') {
+                        reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: urlB64ToUint8(VAPID_KEY) })
+                            .then(saveSub)
+                            .catch(function(e) { console.log('push sub error:', e); });
+                    }
+                });
+            }
+
+            if (Notification.permission === 'default') {
+                // في standalone — اطلب الإذن مباشرة بدون برومبت مخصص
+                setTimeout(function() {
+                    Notification.requestPermission().then(function(p) {
+                        if (p === 'granted') trySubscribe();
+                    });
+                }, 3000);
+            } else {
+                trySubscribe();
+            }
+        });
+    })();
+    </script>
 
     {{-- CSS كارت العضو — يُحمَّل دائماً للمسجلين والزوار --}}
     <style>
