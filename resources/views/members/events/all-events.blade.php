@@ -5116,12 +5116,55 @@
 <body>
     <x-guest-header></x-guest-header>
     <div id="in-cont">
+        {{-- breadcrumb للديسكتوب فقط --}}
         <div class="inn-title" style="padding-top: 150px">
             <h2>
                 <span><a href="{{ url('/') }}">{{ __('app.home_breadcrumb') }}</a> &raquo;</span>
                 {{ __('app.events_page_title') }}
             </h2>
         </div>
+
+        {{-- فيلتر أنواع الإعلانات — موبايل فقط --}}
+        @php
+            $allTypes = $activeEvents->pluck('type')->merge($expiredEvents->pluck('type'))->unique()->filter()->values();
+        @endphp
+        <div id="ev-type-filter-bar" style="padding:12px 14px 0;direction:rtl;">
+            <div style="display:flex;flex-wrap:nowrap;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
+                <button onclick="filterEvType('all',this)"
+                    class="ev-type-btn active-type"
+                    style="flex-shrink:0;background:#016330;color:#fff;border:none;border-radius:20px;padding:7px 16px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">
+                    الكل
+                </button>
+                @foreach($allTypes as $t)
+                <button onclick="filterEvType('{{ $t }}',this)"
+                    class="ev-type-btn"
+                    style="flex-shrink:0;background:#f1f5f9;color:#374151;border:1px solid #e2e8f0;border-radius:20px;padding:7px 16px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">
+                    {{ $t }}
+                </button>
+                @endforeach
+            </div>
+        </div>
+        <style>
+        @media (min-width: 769px) { #ev-type-filter-bar { display: none !important; } }
+        #ev-type-filter-bar ::-webkit-scrollbar { display: none; }
+        </style>
+        <script>
+        function filterEvType(type, btn) {
+            document.querySelectorAll('[data-ev-type]').forEach(function(el) {
+                el.style.display = (type === 'all' || el.dataset.evType === type) ? '' : 'none';
+            });
+            document.querySelectorAll('.ev-type-btn').forEach(function(b) {
+                b.style.background = '#f1f5f9';
+                b.style.color = '#374151';
+                b.style.border = '1px solid #e2e8f0';
+            });
+            if (btn) {
+                btn.style.background = '#016330';
+                btn.style.color = '#fff';
+                btn.style.border = 'none';
+            }
+        }
+        </script>
 
         @if (session('error'))
             <div class="container-rni">
@@ -5134,7 +5177,7 @@
 
                 {{-- ── إعلانات فعّالة ── --}}
                 @forelse($activeEvents as $event)
-                <div class="my-kck p-7p2 bg-xf5 shadow-t3k" style="position:relative;" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                <div class="my-kck p-7p2 bg-xf5 shadow-t3k" data-ev-type="{{ $event->type }}" style="position:relative;" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
                     {{-- زرار اقرأ المزيد فوق اليمين --}}
                     <a href="{{ route('events.show', $event) }}"
                        style="position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:5px;background:#b68a35;color:#fff;border-radius:8px;padding:6px 14px;font-size:.8rem;font-weight:700;text-decoration:none;z-index:2;transition:background .18s;"
@@ -5181,7 +5224,7 @@
                         <i class="fa-regular fa-calendar-xmark"></i> إعلانات سابقة
                     </h3>
                     @foreach($expiredEvents as $event)
-                    <div class="my-kck p-7p2 bg-xf5 shadow-t3k" style="position:relative;" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+                    <div class="my-kck p-7p2 bg-xf5 shadow-t3k" data-ev-type="{{ $event->type }}" style="position:relative;" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
                         {{-- زرار اقرأ المزيد فوق اليمين للمنتهية --}}
                         <a href="{{ route('events.show', $event) }}"
                            style="position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:5px;background:#b68a35;color:#fff;border-radius:8px;padding:6px 14px;font-size:.8rem;font-weight:700;text-decoration:none;z-index:2;transition:background .18s;"

@@ -3579,8 +3579,8 @@ p {
 
 .mcard-sheet__close {
     position: absolute;
-    top: -4px;
-    inset-inline-end: 0;
+    top: 11px;
+    left: -10px;    inset-inline-end: 0;
     background: rgba(255,255,255,0.9);
     border: none;
     width: 32px;

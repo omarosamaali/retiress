@@ -50,30 +50,35 @@
             </div>
 
             <div class="col-bpd">
-                @if ($magazines)
-                <a href="{{ route('magazines.show', $magazines->id) }}" style="text-decoration:none;display:block;">
+                @php $magList = is_iterable($magazines) ? collect($magazines) : collect([$magazines])->filter(); @endphp
+                @if ($magList->isEmpty())
+                <p style="color:#fff;">لا يوجد منبر لعرضه حالياً.</p>
+                @else
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                @foreach($magList as $mag)
+                <a href="{{ route('magazines.show', $mag->id) }}" style="text-decoration:none;display:block;">
                 <div class="slide-content">
-                    <img src="{{ asset('storage/' . $magazines->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}" class="slide-image">
+                    <img src="{{ asset('storage/' . $mag->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? $mag->title_ar : $mag->title_en }}" class="slide-image">
                     <div style="background:white;padding:12px 18px;">
                         <p style="margin-bottom:8px;font-weight:700;font-size:.92rem;color:#1e293b;">
-                            {{ app()->getLocale() == 'ar' ? $magazines->title_ar : $magazines->title_en }}
+                            {{ app()->getLocale() == 'ar' ? $mag->title_ar : $mag->title_en }}
                         </p>
-                        @if($magazines->name)
+                        @if($mag->name)
                         <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                            @if($magazines->image)
-                            <img src="{{ asset('storage/' . $magazines->image) }}"
+                            @if($mag->image)
+                            <img src="{{ asset('storage/' . $mag->image) }}"
                                  style="width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #b68a35;"
-                                 alt="{{ $magazines->name }}">
+                                 alt="{{ $mag->name }}">
                             @endif
-                            <span style="font-size:.82rem;color:#5a4a00;font-weight:600;">بقلم: {{ $magazines->name }}</span>
+                            <span style="font-size:.82rem;color:#5a4a00;font-weight:600;">بقلم: {{ $mag->name }}</span>
                         </div>
                         @endif
-                        <p style="color:gray;font-size:12px;margin-bottom:0;">{{ __('app.date') }} : {{ \Carbon\Carbon::parse($magazines->event_date ?? $magazines->created_at)->translatedFormat('d F Y') }}</p>
+                        <p style="color:gray;font-size:12px;margin-bottom:0;">{{ __('app.date') }} : {{ \Carbon\Carbon::parse($mag->event_date ?? $mag->created_at)->translatedFormat('d F Y') }}</p>
                     </div>
                 </div>
                 </a>
-                @else
-                <p style="color:#fff;">لا يوجد منبر لعرضه حالياً.</p>
+                @endforeach
+                </div>
                 @endif
 
                 <a href="{{ route('magazines.all-magazines') }}" class="btn-dwo block-qlo" style="display: block; text-align: center; margin-top: 20px;">

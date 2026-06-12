@@ -597,20 +597,25 @@
 
         if (!btn) return;
 
-        // انقل الإحصائيات داخل الشيت على الموبايل فقط
+        // انقل الإحصائيات داخل الشيت على الموبايل فقط — فوق البطاقة مباشرة
         if (stats && sheet && window.innerWidth <= 768) {
             var dialog = sheet.querySelector('.mcard-sheet__dialog');
-            if (dialog) {
+            var flipCard = sheet.querySelector('.mcard-flip');
+            if (dialog && flipCard) {
                 var statsWrap = document.createElement('div');
                 statsWrap.id = 'mob-stats-wrap';
-                statsWrap.style.cssText = 'width:100%;padding-top:16px;direction:rtl;';
+                statsWrap.style.cssText = 'width:100%;margin-bottom:14px;direction:rtl;';
+
                 var title = document.createElement('p');
-                title.style.cssText = 'color:#64748b;font-size:.78rem;font-weight:700;margin:0 0 8px;text-align:right;';
-                title.textContent = 'إحصائيات الإعلانات';
+                title.style.cssText = 'color:#64748b;font-size:.75rem;font-weight:700;margin:0 0 8px;text-align:right;display:flex;align-items:center;gap:5px;';
+                title.innerHTML = '<i class="fa-solid fa-chart-bar" style="color:#b68a35;"></i> إحصائيات الإعلانات';
                 statsWrap.appendChild(title);
-                stats.style.cssText = 'display:grid;grid-template-columns:repeat(3,1fr);gap:8px;direction:rtl;width:100%;';
+
+                stats.style.cssText = 'display:grid !important;grid-template-columns:repeat(3,1fr);gap:6px;direction:rtl;width:100%;';
                 statsWrap.appendChild(stats);
-                dialog.appendChild(statsWrap);
+
+                // أدخل الإحصائيات بعد البطاقة مباشرة
+                flipCard.insertAdjacentElement('afterend', statsWrap);
             }
         }
 
@@ -798,27 +803,13 @@
             border-radius: 16px;
             padding: 7px;
             direction: rtl;
-            box-shadow: 0 4px 20px rgba(182,138,53,.25);
-            border: 2px solid #b68a35;
+            box-shadow: none;
+            border: none;
+            outline: none;
             position: relative;
             overflow: hidden;
         }
-        #mob-member-card::before {
-            content: '';
-            position: absolute;
-            top: -30px; left: -30px;
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            background: rgba(182,138,53,.06);
-        }
-        #mob-member-card::after {
-            content: '';
-            position: absolute;
-            bottom: -20px; right: -20px;
-            width: 90px; height: 90px;
-            border-radius: 50%;
-            background: rgba(182,138,53,.04);
-        }
+        #mob-member-card::before, #mob-member-card::after { content: none; }
         .mmc-top {
             display: flex;
             align-items: center;
@@ -908,17 +899,17 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 3px;
-            background: #fff;
-            border-radius: 12px;
-            padding: 10px 6px;
+            gap: 2px;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 8px 4px;
             text-decoration: none;
-            box-shadow: 0 2px 8px rgba(0,0,0,.08);
-            border: 2px solid color-mix(in srgb, var(--c) 20%, transparent);
+            box-shadow: 0 1px 4px rgba(0,0,0,.07);
+            border: 1.5px solid #e2e8f0;
             transition: transform .12s;
         }
         .mst-chip:active { transform: scale(.96); }
-        .mst-num { font-size:1.35rem; font-weight:800; color:var(--c); line-height:1; }
+        .mst-num { font-size:1.15rem; font-weight:800; color:var(--c, #016330); line-height:1; }
         .mst-lbl { font-size:.62rem; font-weight:600; color:#64748b; text-align:center; line-height:1.2; }
     }
     </style>
@@ -939,9 +930,6 @@
             </div>
         </div>
         <div class="mmc-btns">
-            <a href="{{ route('members.login') }}" class="mmc-btn mmc-btn--card">
-                <i class="fa-solid fa-right-to-bracket"></i> تسجيل دخول
-            </a>
             <a href="{{ route('register') }}" class="mmc-btn mmc-btn--panel">
                 <i class="fa-solid fa-user-plus"></i> اشتراك
             </a>
@@ -1006,40 +994,89 @@
             padding: 0 14px 4px;
             overflow: hidden;
             width: 100%;
-            max-height: 130px;
         }
-        .mob-news-swiper .swiper-slide,
-        .mob-ads-swiper .swiper-slide {
-            width: 55vw !important;
+        .mob-news-swiper { max-height: 152px; }
+        .mob-ads-swiper  { max-height: 152px; }
+
+        /* ── كروت الأخبار ── */
+        .mob-news-swiper .swiper-slide {
+            width: 58vw !important;
             max-width: 200px;
-            background: #fff;
-            border-radius: 12px;
+            border-radius: 15px !important;
+            background: #fff !important;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            box-shadow: 0 2px 10px rgb(0 0 0 / 22%) !important;
             display: flex;
             flex-direction: column;
         }
+
+        /* ── كروت الإعلانات ── */
+        .mob-ads-swiper .swiper-slide {
+            width: 58vw !important;
+            max-width: 200px;
+            border-radius: 15px !important;
+            background: #fff !important;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgb(0 0 0 / 22%) !important;
+            display: flex;
+            flex-direction: column;
+        }
+
         .mob-news-card-img {
             width: 100%;
             height: 85px;
             object-fit: cover;
             display: block;
+            border-radius: 15px !important;
         }
+        /* badge غلاف الصورة */
+        .mob-ads-img-wrap, .mob-news-img-wrap {
+            position: relative;
+        }
+        .mob-ads-type-badge, .mob-news-type-badge {
+            position: absolute;
+            top: 7px;
+            right: 7px;
+            background: #2a7d3f;
+            color: #fff;
+            font-size: .62rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            white-space: nowrap;
+            line-height: 1.6;
+            box-shadow: 0 1px 4px rgba(0,0,0,.25);
+        }
+
         .mob-news-card-body {
-            padding: 0px 10px 0px;
+            padding: 6px 10px 8px;
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
         }
+
         .mob-news-card-title {
             font-size: .74rem;
             font-weight: 700;
-            color: #1e293b;
+            color: #2a7d3f;
             line-height: 1.35;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+            white-space: nowrap;
+            display: block;
             overflow: hidden;
+            text-overflow: ellipsis;
             margin: 0;
         }
+        .mob-ads-card-date {
+            font-size: .65rem;
+            color: #8a8a8a;
+            font-weight: 400;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .mob-news-card-desc { display: none !important; }
     }
     </style>
@@ -1055,12 +1092,19 @@
                 @foreach($news as $item)
                 <div class="swiper-slide">
                     <a href="{{ url('/news/show/' . $item->id) }}" style="text-decoration:none;display:flex;flex-direction:column;height:100%;">
-                        <img src="{{ Storage::url($item->main_image) }}"
-                             alt="{{ app()->getLocale() == 'ar' ? $item->title_ar : $item->title_en }}"
-                             class="mob-news-card-img">
+                        <div class="mob-news-img-wrap">
+                            <img src="{{ Storage::url($item->main_image) }}"
+                                 alt="{{ app()->getLocale() == 'ar' ? $item->title_ar : $item->title_en }}"
+                                 class="mob-news-card-img">
+                            <span class="mob-news-type-badge">خبر</span>
+                        </div>
                         <div class="mob-news-card-body">
                             <p class="mob-news-card-title">
                                 {{ app()->getLocale() == 'ar' ? $item->title_ar : $item->title_en }}
+                            </p>
+                            <p class="mob-ads-card-date">
+                                <i class="fa-regular fa-calendar" style="margin-left:3px;color:#b68a35;"></i>
+                                {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d M Y') }}
                             </p>
                         </div>
                     </a>
@@ -1078,16 +1122,27 @@
         </div>
         <div class="swiper mob-ads-swiper">
             <div class="swiper-wrapper">
-                @foreach($events as $evt)
+                @foreach($events->take(5) as $evt)
                 <div class="swiper-slide">
                     <a href="{{ url('/events/show/' . $evt->id) }}" style="text-decoration:none;display:flex;flex-direction:column;height:100%;">
-                        <img src="{{ asset('storage/' . $evt->main_image) }}"
-                             alt="{{ app()->getLocale() == 'ar' ? $evt->title_ar : $evt->title_en }}"
-                             class="mob-news-card-img">
+                        <div class="mob-ads-img-wrap">
+                            <img src="{{ asset('storage/' . $evt->main_image) }}"
+                                 alt="{{ app()->getLocale() == 'ar' ? $evt->title_ar : $evt->title_en }}"
+                                 class="mob-news-card-img">
+                            @if(!empty($evt->type))
+                            <span class="mob-ads-type-badge">{{ $evt->type }}</span>
+                            @endif
+                        </div>
                         <div class="mob-news-card-body">
                             <p class="mob-news-card-title">
                                 {{ app()->getLocale() == 'ar' ? $evt->title_ar : $evt->title_en }}
                             </p>
+                            @if(!empty($evt->event_date))
+                            <p class="mob-ads-card-date">
+                                <i class="fa-regular fa-calendar" style="margin-left:3px;color:#b68a35;"></i>
+                                {{ \Carbon\Carbon::parse($evt->event_date)->translatedFormat('d M Y') }}
+                            </p>
+                            @endif
                         </div>
                     </a>
                 </div>

@@ -24,6 +24,10 @@
         #headerholdert {
             margin-top: 100px !important;
         }
+        /* إخفاء الـ breadcrumb على الموبايل في جميع الصفحات */
+        .inn-title {
+            display: none !important;
+        }
     }
     @media (min-width: 769px) {
         #mobile-top-bar { display: none !important; }
