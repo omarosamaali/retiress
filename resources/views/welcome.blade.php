@@ -1122,7 +1122,7 @@
         </div>
         <div class="swiper mob-ads-swiper">
             <div class="swiper-wrapper">
-                @foreach($events->take(5) as $evt)
+                @foreach($allEvents->take(10) as $evt)
                 <div class="swiper-slide">
                     <a href="{{ url('/events/show/' . $evt->id) }}" style="text-decoration:none;display:flex;flex-direction:column;height:100%;">
                         <div class="mob-ads-img-wrap">

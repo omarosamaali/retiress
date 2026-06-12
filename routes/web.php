@@ -317,7 +317,7 @@ Route::get('/', function () {
     $magazines = Magazine::latest()->limit(5)->get();
 
     $settings = Settings::getActiveContactInfo();
-    return view('welcome', compact('banner', 'news', 'events', 'serviceEvents', 'services', 'magazines', 'settings'));
+    return view('welcome', compact('banner', 'news', 'events', 'allEvents', 'serviceEvents', 'services', 'magazines', 'settings'));
 })->name('/');
 
 // Push Notifications
