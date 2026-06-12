@@ -677,7 +677,7 @@
         document.getElementById('notif-allow').addEventListener('click', function() {
             prompt.style.display = 'none';
             localStorage.setItem('notif_asked', '1');
-            Notification.requestPermission();
+            subscribeToWebPush();
         });
 
         document.getElementById('notif-deny').addEventListener('click', function() {
@@ -685,6 +685,41 @@
             localStorage.setItem('notif_asked', '1');
         });
     })();
+
+    function urlBase64ToUint8Array(base64String) {
+        var padding = '='.repeat((4 - base64String.length % 4) % 4);
+        var base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+        var rawData = atob(base64);
+        var outputArray = new Uint8Array(rawData.length);
+        for (var i = 0; i < rawData.length; ++i) { outputArray[i] = rawData.charCodeAt(i); }
+        return outputArray;
+    }
+
+    function subscribeToWebPush() {
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+        Notification.requestPermission().then(function(permission) {
+            if (permission !== 'granted') return;
+            navigator.serviceWorker.ready.then(function(reg) {
+                reg.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array('{{ config("app.vapid_public") }}')
+                }).then(function(subscription) {
+                    var subData = subscription.toJSON();
+                    fetch('{{ route("push.subscribe") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            endpoint: subData.endpoint,
+                            keys: { p256dh: subData.keys.p256dh, auth: subData.keys.auth }
+                        })
+                    });
+                }).catch(function(err) { console.log('Push subscribe error:', err); });
+            });
+        });
+    }
     </script>
     @endif
     @endauth

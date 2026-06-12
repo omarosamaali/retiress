@@ -319,5 +319,11 @@ Route::get('/', function () {
     return view('welcome', compact('banner', 'news', 'events', 'serviceEvents', 'services', 'magazines', 'settings'));
 })->name('/');
 
+// Push Notifications
+Route::post('/push/subscribe',   [App\Http\Controllers\PushController::class, 'subscribe'])->name('push.subscribe');
+Route::post('/push/unsubscribe', [App\Http\Controllers\PushController::class, 'unsubscribe'])->name('push.unsubscribe');
+Route::get('/push/vapid-public', [App\Http\Controllers\PushController::class, 'vapidPublicKey'])->name('push.vapid');
+Route::post('/push/send',        [App\Http\Controllers\PushController::class, 'send'])->middleware('auth')->name('push.send');
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin_routes.php';

@@ -127,4 +127,8 @@ return [
         'secret' => env('RECAPTCHA_SECRET_KEY'),
         'sitekey' => env('RECAPTCHA_SITE_KEY'),
     ],
+
+    'vapid_public'  => env('VAPID_PUBLIC_KEY'),
+    'vapid_private' => env('VAPID_PRIVATE_KEY'),
+    'vapid_subject' => env('VAPID_SUBJECT', 'mailto:admin@retirees.ae'),
 ];
