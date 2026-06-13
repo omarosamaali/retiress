@@ -764,14 +764,29 @@
             });
         }
 
+        function forceSwActivate(reg) {
+            if (reg.waiting) {
+                reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+            reg.addEventListener('updatefound', function() {
+                var newSW = reg.installing;
+                if (!newSW) return;
+                newSW.addEventListener('statechange', function() {
+                    if (newSW.state === 'installed') {
+                        newSW.postMessage({ type: 'SKIP_WAITING' });
+                    }
+                });
+            });
+        }
+
         function initPush(vapidKey) {
             navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then(function(reg) {
-                reg.update(); // فرض التحقق من التحديث في كل زيارة
+                reg.update();
+                forceSwActivate(reg);
 
                 if (Notification.permission === 'granted') {
                     doSubscribe(reg, vapidKey);
                 } else if (Notification.permission === 'default') {
-                    // انتظر 4 ثواني ثم اطلب الإذن
                     setTimeout(function() {
                         Notification.requestPermission().then(function(p) {
                             if (p === 'granted') doSubscribe(reg, vapidKey);

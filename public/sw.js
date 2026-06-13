@@ -1,4 +1,4 @@
-var CACHE = 'uaera-v5';
+var CACHE = 'uaera-v6';
 
 self.addEventListener('install', function(e) {
     self.skipWaiting();
@@ -6,6 +6,12 @@ self.addEventListener('install', function(e) {
 
 self.addEventListener('activate', function(e) {
     e.waitUntil(self.clients.claim());
+});
+
+self.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'SKIP_WAITING') {
+        self.skipWaiting();
+    }
 });
 
 self.addEventListener('fetch', function(e) {
