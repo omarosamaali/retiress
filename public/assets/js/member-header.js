@@ -143,6 +143,22 @@
 
         function closeDialog() { dialog.remove(); }
 
+        // دالة إزالة الإشعار من القائمة وتحريكه للمقروء
+        function removeItemFromUnread() {
+            if (!item || item.dataset.removedFromUnread) return;
+            item.dataset.removedFromUnread = '1';
+            item.style.transition = 'opacity .25s, transform .25s';
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(20px)';
+            setTimeout(function () { item.remove(); }, 250);
+            updateBadge(Math.max(0, currentBadge() - 1));
+        }
+
+        function closeDialog() {
+            dialog.remove();
+            removeItemFromUnread();
+        }
+
         dialog.querySelector('.notif-dialog-close').addEventListener('click', closeDialog);
         dialog.addEventListener('click', function (e) {
             if (e.target === dialog) closeDialog();
@@ -151,19 +167,10 @@
             if (e.key === 'Escape') { closeDialog(); document.removeEventListener('keydown', onKey); }
         });
 
-        // Mark as read + update icon visually
+        // Mark as read in DB
         if (id && !item.dataset.read) {
-            post('/members/notifications/' + id + '/read').then(function () {
-                item.dataset.read = '1';
-                item.style.opacity = '0.6';
-                item.classList.add('notif-screen__item--read');
-                var iconBtn = item.querySelector('.notif-screen__open-btn');
-                if (iconBtn) {
-                    iconBtn.style.background = '#f1f5f9';
-                    iconBtn.innerHTML = '<i class="fa-solid fa-check-circle" style="color:#6b7280;font-size:.95rem;"></i>';
-                }
-                updateBadge(Math.max(0, currentBadge() - 1));
-            }).catch(function () {});
+            item.dataset.read = '1';
+            post('/members/notifications/' + id + '/read').catch(function () {});
         }
     }
 
