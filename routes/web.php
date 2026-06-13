@@ -326,5 +326,59 @@ Route::post('/push/unsubscribe', [App\Http\Controllers\PushController::class, 'u
 Route::get('/push/vapid-public', [App\Http\Controllers\PushController::class, 'vapidPublicKey'])->name('push.vapid');
 Route::post('/push/send',        [App\Http\Controllers\PushController::class, 'send'])->middleware('auth')->name('push.send');
 
+// ── تشخيص مؤقت — احذفه بعد الاختبار ──
+Route::get('/push/debug', function () {
+    $results = [];
+
+    // 1. VAPID keys
+    $results['vapid_public']  = config('app.vapid_public')  ? 'OK (' . strlen(config('app.vapid_public'))  . ' chars)' : 'MISSING';
+    $results['vapid_private'] = config('app.vapid_private') ? 'OK (' . strlen(config('app.vapid_private')) . ' chars)' : 'MISSING';
+
+    // 2. Extensions
+    $results['ext_gmp']     = extension_loaded('gmp')     ? 'loaded' : 'MISSING';
+    $results['ext_openssl'] = extension_loaded('openssl') ? 'loaded' : 'MISSING';
+    $results['ext_curl']    = extension_loaded('curl')    ? 'loaded' : 'MISSING';
+
+    // 3. Subscriptions
+    $subs = \App\Models\PushSubscription::all();
+    $results['subscriptions_count'] = $subs->count();
+    $results['subscriptions'] = $subs->map(fn($s) => [
+        'id'        => $s->id,
+        'member_id' => $s->member_id,
+        'endpoint'  => substr($s->endpoint, 0, 50) . '...',
+        'created'   => $s->created_at,
+    ]);
+
+    // 4. Try sending a real push to first subscription
+    if ($subs->isNotEmpty()) {
+        try {
+            $sub = $subs->first();
+            $webPush = new \Minishlink\WebPush\WebPush(['VAPID' => [
+                'subject'    => config('app.vapid_subject'),
+                'publicKey'  => config('app.vapid_public'),
+                'privateKey' => config('app.vapid_private'),
+            ]]);
+            $webPush->queueNotification(
+                \Minishlink\WebPush\Subscription::create([
+                    'endpoint' => $sub->endpoint,
+                    'keys'     => ['p256dh' => $sub->p256dh_key, 'auth' => $sub->auth_token],
+                ]),
+                json_encode(['title' => 'اختبار تشخيص', 'body' => 'وصل الإشعار ✓', 'url' => '/'])
+            );
+            foreach ($webPush->flush() as $report) {
+                $results['push_send'] = $report->isSuccess()
+                    ? 'SUCCESS ✓'
+                    : 'FAILED: ' . $report->getReason();
+            }
+        } catch (\Throwable $e) {
+            $results['push_send'] = 'EXCEPTION: ' . $e->getMessage();
+        }
+    } else {
+        $results['push_send'] = 'SKIPPED (no subscriptions)';
+    }
+
+    return response()->json($results, 200, [], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+});
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin_routes.php';
