@@ -175,8 +175,17 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user->load('memberApplication');
+        $pushSubscriptions = \App\Models\PushSubscription::where('member_id', $user->id)->get();
 
-        return view('admin.users.show', compact('user'));
+        return view('admin.users.show', compact('user', 'pushSubscriptions'));
+    }
+
+    public function clearPushSubscriptions(User $user)
+    {
+        \App\Models\PushSubscription::where('member_id', $user->id)->delete();
+
+        return redirect()->route('admin.users.show', $user)
+            ->with('success', 'تم مسح اشتراكات Push للمستخدم. سيتم إعادة الاشتراك تلقائياً عند فتح التطبيق.');
     }
 
     public function edit(User $user)
