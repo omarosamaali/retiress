@@ -61,6 +61,7 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
 
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::get('/member-notifications', [MemberBroadcastNotificationController::class, 'create'])->name('member-notifications.create');
+    Route::get('/member-notifications/all', [MemberBroadcastNotificationController::class, 'index'])->name('member-notifications.index');
     Route::post('/member-notifications', [MemberBroadcastNotificationController::class, 'store'])->name('member-notifications.store');
     Route::get('/member-notifications/{id}', [MemberBroadcastNotificationController::class, 'show'])->name('member-notifications.show');
     Route::resource('users', UserController::class);

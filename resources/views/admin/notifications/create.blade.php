@@ -211,6 +211,12 @@
             @else
             <div class="card-body text-muted small">لا توجد إشعارات سابقة.</div>
             @endif
+            <div class="card-footer text-center" style="padding:10px;">
+                <a href="{{ route('admin.member-notifications.index') }}"
+                   class="btn btn-sm btn-outline-secondary w-100">
+                    <i class="fa-solid fa-list me-1"></i> عرض جميع الإشعارات
+                </a>
+            </div>
         </div>
     </div>
 

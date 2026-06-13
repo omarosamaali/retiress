@@ -18,10 +18,19 @@ use Minishlink\WebPush\Subscription;
 
 class MemberBroadcastNotificationController extends Controller
 {
+    public function index(): View
+    {
+        $notifications = MemberBroadcastNotification::with('creator')
+            ->latest()
+            ->paginate(20);
+
+        return view('admin.notifications.index', compact('notifications'));
+    }
+
     public function create(): View
     {
         // oldest first so newest appears at the bottom
-        $recent  = MemberBroadcastNotification::with('creator')->oldest()->limit(20)->get();
+        $recent  = MemberBroadcastNotification::with('creator')->latest()->limit(20)->get();
         $members = User::where('role', 'عضو')->orderBy('name')->get(['id', 'name']);
 
         return view('admin.notifications.create', compact('recent', 'members'));
