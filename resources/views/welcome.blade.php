@@ -959,7 +959,7 @@
 
         /* ── كارت العضو ── */
         #mob-member-card {
-            margin: 112px 12px 0 !important;
+            margin: 93px 12px 0 !important;
         }
 
         /* ── هيدر الأقسام المشترك ── */
@@ -995,8 +995,8 @@
             overflow: hidden;
             width: 100%;
         }
-        .mob-news-swiper { max-height: 142px; }
-        .mob-ads-swiper  { max-height: 142px; }
+        .mob-news-swiper { max-height: 138px; }
+        .mob-ads-swiper  { max-height: 138px; }
 
         /* ── كروت الأخبار ── */
         .mob-news-swiper .swiper-slide {
