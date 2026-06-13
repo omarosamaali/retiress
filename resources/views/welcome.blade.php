@@ -1224,7 +1224,7 @@
         </div>
     </div>
     <div style="max-width: 1200px; margin: auto;" class="list-l88 list-vja">
-        @foreach($news as $singleNews)
+        @foreach($news->take(3) as $singleNews)
         <a href="{{ url('/news/show/' . $singleNews->id) }}" style="border-radius: 13px !important;" class="list-2nx">
             <span class="image-dvm">
                 <img width="688" height="1024" src="{{ Storage::url($singleNews->main_image) }}"
@@ -1297,7 +1297,7 @@
 
                     {{-- 3 كاردز --}}
                     <div id="events-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;direction:rtl;">
-                        @foreach($events->take(9) as $event)
+                        @foreach($events->take(3) as $event)
                         <a href="{{ url('/events/show/' . $event->id) }}"
                            class="ev-card"
                            data-type="{{ $event->type }}"

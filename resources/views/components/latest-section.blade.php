@@ -55,7 +55,7 @@
                 <p style="color:#fff;">لا يوجد منبر لعرضه حالياً.</p>
                 @else
                 <div style="display:flex;flex-direction:column;gap:14px;">
-                @foreach($magList as $mag)
+                @foreach($magList->take(1) as $mag)
                 <a href="{{ route('magazines.show', $mag->id) }}" style="text-decoration:none;display:block;">
                 <div class="slide-content">
                     <img src="{{ asset('storage/' . $mag->main_image) }}" alt="{{ app()->getLocale() == 'ar' ? $mag->title_ar : $mag->title_en }}" class="slide-image">
