@@ -499,10 +499,10 @@
 
 <div class="row">
     <div class="col-6">
-        <x-services-table :services="$activeServices" />
+        <x-events-table :events="$serviceTypeEvents" title="أحدث إعلانات الخدمات" />
     </div>
     <div class="col-6">
-        <x-events-table :events="$activeEvents" />
+        <x-events-table :events="$otherTypeEvents" title="أحدث الإعلانات (فعاليات ودورات)" />
     </div>
 </div>
 

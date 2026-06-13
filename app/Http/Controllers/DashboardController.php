@@ -42,6 +42,15 @@ class DashboardController extends Controller
         $activeEvents        = Event::where('status', 1)->latest()->get();
         $inActiveEvents      = Event::where('status', 0)->latest()->get();
 
+        // ── Dashboard tables: خدمات vs باقي الأنواع ──────────────────
+        $serviceTypeEvents = Event::where('status', 1)
+            ->whereIn('type', ['خدمات', 'مميزات'])
+            ->latest()->limit(5)->get();
+
+        $otherTypeEvents = Event::where('status', 1)
+            ->whereNotIn('type', ['خدمات', 'مميزات'])
+            ->latest()->limit(5)->get();
+
         // ── Service stats ─────────────────────────────────────────────
         $activeServicesCount   = Service::where('status', 1)->count();
         $inActiveServicesCount = Service::where('status', 0)->count();
@@ -105,6 +114,8 @@ class DashboardController extends Controller
             'svcSubActive',
             'svcSubRejected',
             'newMembershipRequests',
+            'serviceTypeEvents',
+            'otherTypeEvents',
         ));
     }
 }
