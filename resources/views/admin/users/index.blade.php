@@ -294,23 +294,14 @@
         @if (request()->filled('membership_status'))
             <input type="hidden" name="membership_status" value="{{ request('membership_status') }}">
         @endif
-        <div>
-            <div class="relative">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                </div>
-                <input type="search" id="search" name="search" class="search-input" placeholder="إبحث بإسم العضو..."
-                    value="{{ request('search') }}" />
-                @if(request()->filled('search'))
-                <a href="{{ route('admin.users.index', request()->only(['role', 'membership_status'])) }}" class="search-button">إعادة تعيين</a>
-                @else
-                <button type="submit" class="search-button">بحث</button>
-                @endif
-            </div>
+        <div style="position:relative;">
+            <input type="search" id="search" name="search" class="search-input" placeholder="إبحث بإسم العضو..."
+                value="{{ request('search') }}" />
+            @if(request()->filled('search'))
+            <a href="{{ route('admin.users.index', request()->only(['role', 'membership_status'])) }}" class="search-button">إعادة تعيين</a>
+            @else
+            <button type="submit" class="search-button">بحث</button>
+            @endif
         </div>
     </form>
 </div>
@@ -426,8 +417,8 @@
 </div>
 
 @if (isset($users) && $users->hasPages())
-<div class="flex justify-center mt-4">
-    {{ $users->links('vendor.pagination.tailwind') }}
+<div class="d-flex justify-content-center mt-4">
+    {{ $users->links() }}
 </div>
 @endif
 
