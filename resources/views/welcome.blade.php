@@ -955,6 +955,7 @@
     <style>
     #mob-news-section,
     #mob-ads-section,
+    #mob-magazines-section,
     #mob-events-services { display: none; }
 
     @media (min-width: 769px) {
@@ -1000,7 +1001,8 @@
 
         /* ── سلايدرات الأخبار والإعلانات ── */
         #mob-news-section,
-        #mob-ads-section {
+        #mob-ads-section,
+        #mob-magazines-section {
             display: block !important;
             padding: 2px 0 0;
         }
