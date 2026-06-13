@@ -1,4 +1,4 @@
-var CACHE = 'uaera-v4';
+var CACHE = 'uaera-v5';
 
 self.addEventListener('install', function(e) {
     self.skipWaiting();
@@ -23,33 +23,19 @@ self.addEventListener('push', function(e) {
     try {
         if (e.data) {
             var d = e.data.json();
-            if (d.title) title = d.title;
-            if (d.body)  body  = d.body;
-            if (d.url)   url   = d.url;
+            title = d.title || title;
+            body  = d.body  || body;
+            url   = d.url   || url;
         }
-    } catch (err) {}
+    } catch(err) {}
 
-    // بدون icon/badge لتفادي فشل showNotification
     e.waitUntil(
-        self.registration.showNotification(title, {
-            body: body,
-            dir:  'rtl',
-            lang: 'ar',
-            tag:  'uaer-push',
-            data: { url: url }
-        })
+        self.registration.showNotification(title, { body: body, data: { url: url } })
     );
 });
 
 self.addEventListener('notificationclick', function(e) {
     e.notification.close();
-    var url = (e.notification.data && e.notification.data.url) ? e.notification.data.url : '/';
-    e.waitUntil(
-        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(list) {
-            for (var i = 0; i < list.length; i++) {
-                if ('focus' in list[i]) return list[i].focus();
-            }
-            return clients.openWindow(url);
-        })
-    );
+    var url = e.notification.data ? e.notification.data.url : '/';
+    e.waitUntil(clients.openWindow(url));
 });

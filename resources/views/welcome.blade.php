@@ -765,8 +765,8 @@
         }
 
         function initPush(vapidKey) {
-            navigator.serviceWorker.register('/sw.js').then(function(reg) {
-                reg.update(); // تحقق من تحديثات الـ SW
+            navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then(function(reg) {
+                reg.update(); // فرض التحقق من التحديث في كل زيارة
 
                 if (Notification.permission === 'granted') {
                     doSubscribe(reg, vapidKey);
@@ -1150,6 +1150,42 @@
             </div>
         </div>
     </div>
+
+    {{-- قسم منبر الخبراء موبايل فقط --}}
+    @if($magazines->isNotEmpty())
+    <div id="mob-magazines-section">
+        <div class="mob-news-header">
+            <h3>منبر الخبراء</h3>
+            <a href="{{ route('magazines.all-magazines') }}">عرض الكل</a>
+        </div>
+        <div class="swiper mob-ads-swiper">
+            <div class="swiper-wrapper">
+                @foreach($magazines as $mag)
+                <div class="swiper-slide">
+                    <a href="{{ route('magazines.show', $mag->id) }}" style="text-decoration:none;display:flex;flex-direction:column;height:100%;">
+                        <div class="mob-ads-img-wrap">
+                            <img src="{{ asset('storage/' . $mag->main_image) }}"
+                                 alt="{{ app()->getLocale() == 'ar' ? $mag->title_ar : $mag->title_en }}"
+                                 class="mob-news-card-img">
+                            <span class="mob-ads-type-badge">منبر</span>
+                        </div>
+                        <div class="mob-news-card-body">
+                            <p class="mob-news-card-title">
+                                {{ app()->getLocale() == 'ar' ? $mag->title_ar : $mag->title_en }}
+                            </p>
+                            <p class="mob-ads-card-date">
+                                <i class="fa-regular fa-calendar" style="margin-left:3px;color:#b68a35;"></i>
+                                {{ \Carbon\Carbon::parse($mag->event_date ?? $mag->created_at)->translatedFormat('d M Y') }}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    @endif
+
     <a href="{{ route('magazines.feature') }}" id="reg" style="margin-left: auto;
     margin-right: auto;
     display: flex;
