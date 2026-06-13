@@ -230,6 +230,52 @@
             </div>
         @endif
 
+        {{-- Push Subscriptions --}}
+        <div class="mt-5 p-3 border rounded" style="background:#f8f9fa;">
+            <h5 class="mb-3">
+                <i class="fas fa-bell ms-2 text-warning"></i>
+                اشتراكات الإشعارات (Push)
+            </h5>
+            @if($pushSubscriptions->isEmpty())
+                <p class="text-muted mb-2"><i class="fas fa-times-circle text-danger ms-1"></i> لا يوجد اشتراك Push نشط لهذا المستخدم.</p>
+            @else
+                <p class="text-success mb-2">
+                    <i class="fas fa-check-circle ms-1"></i>
+                    يوجد <strong>{{ $pushSubscriptions->count() }}</strong> اشتراك نشط.
+                </p>
+                <table class="table table-sm table-bordered mb-3" style="font-size:.82rem;">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Endpoint (مختصر)</th>
+                            <th>تاريخ الاشتراك</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pushSubscriptions as $i => $sub)
+                        <tr>
+                            <td>{{ $i + 1 }}</td>
+                            <td dir="ltr" style="word-break:break-all;">{{ Str::limit($sub->endpoint, 60) }}</td>
+                            <td>{{ $sub->created_at?->format('d/m/Y H:i') }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <form action="{{ route('admin.users.clear-push', $user->id) }}" method="POST"
+                      onsubmit="return confirm('هل تريد مسح اشتراكات Push لهذا المستخدم؟ سيتم إعادة الاشتراك تلقائياً عند فتح التطبيق.')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-warning btn-sm">
+                        <i class="fas fa-redo ms-1"></i>
+                        مسح الاشتراك (إعادة ضبط)
+                    </button>
+                </form>
+                <small class="text-muted d-block mt-2">
+                    بعد المسح، عند فتح المستخدم للتطبيق سيتم الاشتراك تلقائياً بالـ Service Worker الجديد وستصل الإشعارات بشكل صحيح.
+                </small>
+            @endif
+        </div>
+
         <div class="btn-section mt-4">
             <a href="{{ route('admin.users.index') }}" class="btn btn-light me-2">
                 <i class="fas fa-arrow-right ms-1"></i>

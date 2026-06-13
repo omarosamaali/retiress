@@ -65,6 +65,7 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::post('/member-notifications', [MemberBroadcastNotificationController::class, 'store'])->name('member-notifications.store');
     Route::get('/member-notifications/{id}', [MemberBroadcastNotificationController::class, 'show'])->name('member-notifications.show');
     Route::resource('users', UserController::class);
+    Route::delete('/users/{user}/push-subscriptions', [UserController::class, 'clearPushSubscriptions'])->name('users.clear-push');
     Route::resource('membership', MembershipController::class);
     Route::resource('manageMembership', ManageMembershipController::class);
     Route::get('/manageMembership/{id}/activity', [ManageMembershipController::class, 'activity'])->name('manageMembership.activity');
