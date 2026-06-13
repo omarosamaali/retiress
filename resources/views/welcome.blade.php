@@ -995,8 +995,8 @@
             overflow: hidden;
             width: 100%;
         }
-        .mob-news-swiper { max-height: 152px; }
-        .mob-ads-swiper  { max-height: 152px; }
+        .mob-news-swiper { max-height: 142px; }
+        .mob-ads-swiper  { max-height: 142px; }
 
         /* ── كروت الأخبار ── */
         .mob-news-swiper .swiper-slide {
