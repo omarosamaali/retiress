@@ -42,13 +42,15 @@ class DashboardController extends Controller
         $activeEvents        = Event::where('status', 1)->latest()->get();
         $inActiveEvents      = Event::where('status', 0)->latest()->get();
 
-        // ── Dashboard tables: خدمات vs باقي الأنواع ──────────────────
+        // ── Dashboard tables: خدمات vs باقي الأنواع (فعال + غير منتهي فقط) ──
         $serviceTypeEvents = Event::where('status', 1)
             ->whereIn('type', ['خدمات', 'مميزات'])
+            ->notExpired()
             ->latest()->limit(5)->get();
 
         $otherTypeEvents = Event::where('status', 1)
             ->whereNotIn('type', ['خدمات', 'مميزات'])
+            ->notExpired()
             ->latest()->limit(5)->get();
 
         // ── Service stats ─────────────────────────────────────────────

@@ -320,6 +320,16 @@ Route::get('/', function () {
     return view('welcome', compact('banner', 'news', 'events', 'allEvents', 'serviceEvents', 'services', 'magazines', 'settings'));
 })->name('/');
 
+// تأكد إن sw.js مش محفوظ في HTTP cache
+Route::get('/sw.js', function () {
+    $path = public_path('sw.js');
+    return response(file_get_contents($path), 200)
+        ->header('Content-Type', 'application/javascript; charset=utf-8')
+        ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+        ->header('Pragma', 'no-cache')
+        ->header('Service-Worker-Allowed', '/');
+});
+
 // Push Notifications
 Route::post('/push/subscribe',   [App\Http\Controllers\PushController::class, 'subscribe'])->name('push.subscribe');
 Route::post('/push/unsubscribe', [App\Http\Controllers\PushController::class, 'unsubscribe'])->name('push.unsubscribe');
