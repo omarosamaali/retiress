@@ -13,6 +13,26 @@ use Illuminate\Support\Facades\Storage;
 
 class TransactionController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = Transaction::with(['user', 'service', 'event'])->latest();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('user', fn($q) => $q->where('name', 'like', "%$search%")
+                ->orWhere('email', 'like', "%$search%"));
+        }
+
+        $transactions = $query->paginate(20)->withQueryString();
+        return view('admin.transactions.index', compact('transactions'));
+    }
+
     public function activate(Transaction $transaction)
     { 
         if ($transaction->status === 'deactivated') {
