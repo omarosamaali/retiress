@@ -1423,6 +1423,27 @@
         , }
     , });
 
+    new Swiper('.mob-news-swiper', {
+        slidesPerView: 'auto',
+        spaceBetween: 12,
+        freeMode: true,
+        grabCursor: true,
+    });
+
+    new Swiper('.mob-ads-swiper', {
+        slidesPerView: 'auto',
+        spaceBetween: 12,
+        freeMode: true,
+        grabCursor: true,
+    });
+
+    new Swiper('.mob-evtsrv-swiper', {
+        slidesPerView: 'auto',
+        spaceBetween: 12,
+        freeMode: true,
+        grabCursor: true,
+    });
+
 </script>
 
 
