@@ -4,7 +4,11 @@
 @section('page-title', 'إدارة الأخبار')
 
 @push('styles')
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
     <style>
+        .ql-editor { min-height: 140px; font-family: 'Cairo', sans-serif; font-size: 1rem; direction: rtl; text-align: right; background: #fff; color: #000; }
+        .ql-toolbar.ql-snow { direction: ltr; border-radius: 8px 8px 0 0; }
+        .ql-container.ql-snow { border-radius: 0 0 8px 8px; }
         .add-section {
             background: #212529;
             color: white;
@@ -124,8 +128,9 @@
 
                 <div class="col-md-12">
                     <div class="mb-3">
-                        <label for="description_ar" class="form-label">وصف الأخبار (بالعربية)</label>
-                        <textarea class="form-control" id="description_ar" name="description_ar" rows="4" required>{{ old('description_ar') }}</textarea>
+                        <label class="form-label">وصف الأخبار (بالعربية)</label>
+                        <div id="quill_description_ar"></div>
+                        <textarea id="description_ar" name="description_ar" style="display:none;" required>{{ old('description_ar') }}</textarea>
                         @error('description_ar')
                             <div class="text-white">{{ $message }}</div>
                         @enderror
@@ -250,8 +255,29 @@
 @endsection
 
 @push('scripts')
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
     <script>
-
+        document.addEventListener('DOMContentLoaded', function() {
+            var quill = new Quill('#quill_description_ar', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        [{ 'size': ['small', false, 'large', 'huge'] }],
+                        ['bold', 'italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                        [{ 'color': [] }],
+                        ['clean']
+                    ]
+                }
+            });
+            var ta = document.getElementById('description_ar');
+            if (ta.value) quill.root.innerHTML = ta.value;
+            document.querySelector('form').addEventListener('submit', function() {
+                ta.value = quill.root.innerHTML;
+            });
+        });
 
         document.addEventListener('DOMContentLoaded', function() {
             const mainImageInput = document.getElementById('main_image_input');
