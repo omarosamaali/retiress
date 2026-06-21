@@ -5207,7 +5207,7 @@
                             @include('members.events.partials.event-meta', ['event' => $event])
                         </div>
                         <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                            <span class="text-7zo block-osq">{{ app()->getLocale() == 'ar' ? $event->description_ar : $event->description_en }}</span>
+                            <span class="text-7zo block-osq">{{ \Illuminate\Support\Str::limit(strip_tags(app()->getLocale() == 'ar' ? $event->description_ar : $event->description_en), 200) }}</span>
                         </p>
                     </div>
                 </div>
@@ -5262,7 +5262,7 @@
                                 @include('members.events.partials.event-meta', ['event' => $event])
                             </div>
                             <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
-                                <span class="text-7zo block-osq">{{ app()->getLocale() == 'ar' ? $event->description_ar : $event->description_en }}</span>
+                                <span class="text-7zo block-osq">{{ \Illuminate\Support\Str::limit(strip_tags(app()->getLocale() == 'ar' ? $event->description_ar : $event->description_en), 200) }}</span>
                             </p>
                         </div>
                     </div>

@@ -88,7 +88,7 @@
                 </div>
                 <div class="detail-item">
                     <strong class="text-black">الوصف (عربي):</strong>
-                    <span>{{ $event->description_ar }}</span>
+                    <div style="line-height:1.8; padding:8px 0;">{!! $event->description_ar !!}</div>
                 </div>
                 <div class="detail-item">
                     <strong class="text-black">{{ __('app.event_starts_at') }}:</strong>

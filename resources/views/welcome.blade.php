@@ -1240,10 +1240,7 @@
                 <span class="title-n5f qhngb">
                     {{ app()->getLocale() == 'ar' ? $singleNews->title_ar : $singleNews->title_en }}
                 </span>
-                <span class="list-mzq">
-                    <p>{{ \Illuminate\Support\Str::limit(app()->getLocale() == 'ar' ? $singleNews->description_ar :
-                        $singleNews->description_en, 200) }}</p>
-                </span>
+                <span class="list-mzq"></span>
             </span>
         </a>
         @endforeach

@@ -144,7 +144,7 @@
             </div>
             <div class="detail-item">
                 <strong class="text-black">الوصف (عربي):</strong>
-                <span>{{ $magazine->description_ar }}</span>
+                <div style="line-height:1.8; padding:8px 0;">{!! $magazine->description_ar !!}</div>
             </div>
             <div class="detail-item">
                 <strong class="text-black">تاريخ الإضافة:</strong>

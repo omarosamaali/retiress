@@ -5153,7 +5153,7 @@
                         <p class="mt-1o5 fs--6nj mb-yo9 jus-6kh">
                             <span class="text-7zo block-osq">
                                 {{-- Description / Content --}}
-                                {{ \Illuminate\Support\Str::limit(app()->getLocale() == 'ar' ? $newsItem->description_ar : $newsItem->description_en, 250) }}
+                                {{ \Illuminate\Support\Str::limit(strip_tags(app()->getLocale() == 'ar' ? $newsItem->description_ar : $newsItem->description_en), 250) }}
                             </span>
                         </p>
                     </div>

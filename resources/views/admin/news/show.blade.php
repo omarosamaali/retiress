@@ -80,7 +80,7 @@
                 </div>
                 <div class="detail-item">
                     <strong class="text-black">الوصف (عربي):</strong>
-                    <span>{{ $news->description_ar }}</span>
+                    <div style="line-height:1.8; padding:8px 0;">{!! $news->description_ar !!}</div>
                 </div>
                 <div class="detail-item">
                     <strong class="text-black">تاريخ الإضافة:</strong>
