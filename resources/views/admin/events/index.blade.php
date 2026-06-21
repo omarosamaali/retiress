@@ -6,9 +6,13 @@
 @push('styles')
     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
     <style>
-        .ql-editor { min-height: 140px; font-family: 'Cairo', sans-serif; font-size: 1rem; direction: rtl; text-align: right; background: #fff; color: #000; }
-        .ql-toolbar.ql-snow { direction: ltr; border-radius: 8px 8px 0 0; }
-        .ql-container.ql-snow { border-radius: 0 0 8px 8px; }
+        .ql-wrapper { border-radius: 8px; overflow: hidden; border: 2px solid #dee2e6; background: #fff; }
+        .ql-toolbar.ql-snow { direction: ltr; background: #f8f9fa; border: none; border-bottom: 1px solid #dee2e6; padding: 8px 10px; }
+        .ql-toolbar.ql-snow .ql-picker-label, .ql-toolbar.ql-snow button { color: #212529; }
+        .ql-toolbar.ql-snow .ql-stroke { stroke: #212529; }
+        .ql-toolbar.ql-snow .ql-fill { fill: #212529; }
+        .ql-container.ql-snow { border: none; background: #fff; }
+        .ql-editor { min-height: 160px; font-family: 'Cairo', sans-serif; font-size: 1rem; direction: rtl; text-align: right; color: #212529; padding: 12px 15px; }
         .add-section {
             background: #212529;
             color: white;
@@ -153,8 +157,8 @@
                 <div class="col-md-12">
                     <div class="mb-3">
                         <label class="form-label">وصف الإعلان (بالعربية)</label>
-                        <div id="quill_description_ar"></div>
-                        <textarea id="description_ar" name="description_ar" style="display:none;" required>{{ old('description_ar') }}</textarea>
+                        <div class="ql-wrapper"><div id="quill_description_ar"></div></div>
+                        <textarea id="description_ar" name="description_ar" style="display:none;">{{ old('description_ar') }}</textarea>
                         @error('description_ar')
                             <div class="text-white">{{ $message }}</div>
                         @enderror
@@ -444,8 +448,15 @@
             });
             var ta = document.getElementById('description_ar');
             if (ta.value) quill.root.innerHTML = ta.value;
-            document.querySelector('form').addEventListener('submit', function() {
+            document.querySelector('form').addEventListener('submit', function(e) {
                 ta.value = quill.root.innerHTML;
+                if (quill.getText().trim().length === 0) {
+                    e.preventDefault();
+                    quill.root.style.border = '2px solid red';
+                    quill.focus();
+                } else {
+                    quill.root.style.border = '';
+                }
             });
         });
 
