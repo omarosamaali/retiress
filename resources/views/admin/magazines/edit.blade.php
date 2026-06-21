@@ -3,6 +3,16 @@
 @section('title', 'تعديل المقال')
 @section('page-title', 'تعديل المقال')
 
+@push('styles')
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<style>
+    .ql-editor { min-height: 160px; font-family: 'Cairo', sans-serif; font-size: 1rem; direction: rtl; text-align: right; }
+    .ql-toolbar.ql-snow { direction: ltr; }
+    .ql-container.ql-snow { border-radius: 0 0 8px 8px; }
+    .ql-toolbar.ql-snow { border-radius: 8px 8px 0 0; }
+</style>
+@endpush
+
 @section('content')
 <div class="container-fluid">
     <div class="row">
@@ -35,8 +45,9 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label for="description_ar">الوصف (عربي)</label>
-                            <textarea name="description_ar" id="description_ar" class="form-control" rows="5"
+                            <label>الوصف (عربي)</label>
+                            <div id="quill_description_ar"></div>
+                            <textarea name="description_ar" id="description_ar" style="display:none;"
                                 required>{{ old('description_ar', $magazine->description_ar) }}</textarea>
                             @error('description_ar')
                             <span class="text-danger">{{ $message }}</span>
@@ -114,3 +125,30 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var quill = new Quill('#quill_description_ar', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    [{ 'size': ['small', false, 'large', 'huge'] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    [{ 'color': [] }],
+                    ['clean']
+                ]
+            }
+        });
+        var ta = document.getElementById('description_ar');
+        quill.root.innerHTML = ta.value;
+        document.querySelector('form').addEventListener('submit', function() {
+            ta.value = quill.root.innerHTML;
+        });
+    });
+</script>
+@endpush

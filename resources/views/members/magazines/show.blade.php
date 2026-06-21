@@ -111,9 +111,9 @@
                             </div> --}}
                             <hr>
 
-                            <p class="magazine-description">
-                                {{ app()->getLocale() == 'ar' ? $magazines->description_ar : $magazines->description_en }}
-                            </p>
+                            <div class="magazine-description">
+                                {!! app()->getLocale() == 'ar' ? $magazines->description_ar : $magazines->description_en !!}
+                            </div>
                         </div>
                     </div>
                 </div>

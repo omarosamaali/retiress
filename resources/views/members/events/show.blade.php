@@ -5191,7 +5191,7 @@
                         @if(app()->getLocale() == 'ar' ? $events->description_ar : ($events->description_en ?: $events->description_ar))
                         <hr style="border:none;border-top:1.5px solid #f1f5f9;margin:4px 0 18px;">
                         <div style="font-size:1rem;color:#374151;line-height:1.9;text-align:justify;">
-                            {{ app()->getLocale() == 'ar' ? $events->description_ar : ($events->description_en ?: $events->description_ar) }}
+                            {!! app()->getLocale() == 'ar' ? $events->description_ar : ($events->description_en ?: $events->description_ar) !!}
                         </div>
                         @endif
 
