@@ -22,6 +22,7 @@ class CheckUserStatus
         'admin.contact-messages.toggle-read',
         'admin.contact-messages.filter',
         'admin.contact-stats',
+        'admin.staff-notifications',
         // المعاملات
         'admin.transactions.index',
         'admin.transactions.update-status',
