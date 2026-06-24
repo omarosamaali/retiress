@@ -210,9 +210,16 @@
                 transform: translateX(0);
             }
 
+            body {
+                overflow-x: hidden;
+            }
+
             .main-content {
-                margin-right: 0;
+                margin-right: 0 !important;
                 padding: 10px;
+                width: 100%;
+                max-width: 100vw;
+                overflow-x: hidden;
             }
 
             .header {

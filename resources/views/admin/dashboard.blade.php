@@ -105,6 +105,44 @@
         font-size: 13px;
     }
 
+    @media (max-width: 768px) {
+        .welcome-section {
+            padding: 20px 16px;
+            margin-bottom: 16px;
+        }
+
+        .welcome-section h2 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            font-size: .88rem;
+        }
+
+        .stats-card {
+            padding: 14px 12px;
+            margin-bottom: 0;
+        }
+
+        .stats-card .number {
+            font-size: 1.8rem;
+        }
+
+        .stats-card .label {
+            font-size: 13px;
+        }
+
+        .text-muted {
+            font-size: 11px !important;
+        }
+
+        .container {
+            padding-right: 8px;
+            padding-left: 8px;
+        }
+    }
+
 </style>
 @endpush
 
