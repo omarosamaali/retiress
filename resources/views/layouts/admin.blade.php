@@ -373,8 +373,8 @@
             </a>
             @endif
 
-            {{-- قائمة الجمعية --}}
-            @can('isAdmin')
+            {{-- قائمة الجمعية - للمدير والمشرف فقط --}}
+            @if(in_array(Auth::user()->role, ['مدير', 'مشرف']))
             <div class="dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -398,8 +398,6 @@
                             <i class="fas fa-info-circle"></i> من نحن
                         </a>
                     </li>
-
-
                     <li>
                         <a class="dropdown-item" href="{{ route('admin.member.index') }}">
                             <i class="fas fa-users"></i> الأعضاء
@@ -420,12 +418,18 @@
                             <i class="fas fa-newspaper"></i> الإعلانات
                         </a>
                     </li>
-
                 </ul>
             </div>
-            @endcan
+            @elseif(Auth::user()->role === 'مدخل بيانات')
+            {{-- مدخل بيانات: الإعلانات فقط --}}
+            <a class="nav-link {{ request()->routeIs('admin.event.*') ? 'active' : '' }}" href="{{ route('admin.event.index') }}">
+                <i class="fas fa-bullhorn"></i>
+                الإعلانات والفعاليات
+            </a>
+            @endif
 
-            @can('isAdmin')
+            {{-- المركز الإعلامي - للمدير والمشرف ومدخل البيانات --}}
+            @if(in_array(Auth::user()->role, ['مدير', 'مشرف', 'مدخل بيانات']))
             <div class="dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -440,13 +444,15 @@
                         <a class="dropdown-item" href="{{ route('admin.magazines.index') }}">
                             <i class="fas fa-newspaper"></i> منبر الخبراء
                         </a>
+                        @if(Auth::user()->role !== 'مدخل بيانات')
                         <a class="dropdown-item" href="{{ route('admin.feature.index') }}">
                             <i class="fas fa-newspaper"></i> مميزات العضوية
                         </a>
+                        @endif
                     </li>
                 </ul>
             </div>
-            @endcan
+            @endif
 
 
             {{-- قائمة الإعدادات --}}
