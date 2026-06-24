@@ -15,9 +15,7 @@ class MemberApplicationsController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'يجب تسجيل الدخول لتقديم طلب العضوية أو تجديدها.');
         }
-        return view('members.membership.wizard', [
-            'turnstileSiteKey' => config('services.turnstile.site_key'),
-        ]);
+        return view('members.membership.wizard');
     }
 
     /**

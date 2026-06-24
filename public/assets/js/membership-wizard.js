@@ -55,17 +55,6 @@
             e.preventDefault();
             return;
         }
-        const tokenInput = document.getElementById('captcha_token');
-        const turnstileField = form.querySelector('[name="cf-turnstile-response"]');
-        const token = turnstileField?.value || '';
-        if (tokenInput) tokenInput.value = token;
-        if (!tokenInput?.value) {
-            e.preventDefault();
-            alert(document.documentElement.lang === 'ar'
-                ? 'يرجى إكمال التحقق الأمني.'
-                : 'Please complete the security check.');
-            if (window.turnstile) window.turnstile.reset();
-        }
     });
 
     const contractType = document.getElementById('contract_type');

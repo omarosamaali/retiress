@@ -184,9 +184,6 @@
         .alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
         .alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
     </style>
-    @if ($turnstileSiteKey)
-        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-    @endif
 </head>
 <body>
     <div id="renewalModal" class="membership-renewal-modal" style="display:none;">
@@ -257,7 +254,7 @@
                     @csrf
                     @include('members.membership.partials.step-1-personal')
                     @include('members.membership.partials.step-2-details')
-                    @include('members.membership.partials.step-3-documents', ['turnstileSiteKey' => $turnstileSiteKey])
+                    @include('members.membership.partials.step-3-documents')
 
                     <div class="membership-wizard-actions mt-4 d-flex justify-content-between gap-2">
                         <button type="button" class="btn btn-secondary" id="wizardPrevBtn" style="display:none;">{{ __('app.previous') }}</button>
@@ -274,7 +271,7 @@
     <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>window.membershipWizardInitialStep = {{ ($errors->any() || $errors->has('captcha_token')) ? 3 : 1 }};</script>
+    <script>window.membershipWizardInitialStep = {{ $errors->any() ? 3 : 1 }};</script>
     <script src="{{ asset('assets/js/membership-wizard.js') }}" defer></script>
 </body>
 </html>
