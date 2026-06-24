@@ -200,8 +200,10 @@
 
         @media (max-width: 768px) {
             .sidebar {
-                transform: translateX(100%);
+                transform: translateX(110%);
                 transition: transform 0.3s ease;
+                width: 260px;
+                z-index: 1050;
             }
 
             .sidebar.show {
@@ -210,6 +212,46 @@
 
             .main-content {
                 margin-right: 0;
+                padding: 10px;
+            }
+
+            .header {
+                padding: 10px 14px;
+                margin-bottom: 15px;
+            }
+
+            .header h4 {
+                font-size: 1rem !important;
+            }
+
+            .content-card {
+                padding: 15px;
+            }
+
+            /* Hamburger button - mobile only */
+            .sidebar-toggle-btn {
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 4px 8px;
+                color: #212529;
+                font-size: 1.4rem;
+            }
+
+            /* Overlay */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,.45);
+                z-index: 1040;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
             }
         }
 
@@ -540,12 +582,21 @@
         </nav>
     </div>
 
+    <!-- Sidebar Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Main Content -->
     <div class="main-content">
         <!-- Header -->
         <div class="header">
             <div class="d-flex justify-content-between align-items-center">
-                <h4 class="mb-0" style="font-weight: 700; color: #212529;">@yield('page-title', 'لوحة التحكم')</h4>
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Hamburger (mobile only) -->
+                    <button class="sidebar-toggle-btn d-none" id="sidebarToggle" title="القائمة">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h4 class="mb-0" style="font-weight: 700; color: #212529;">@yield('page-title', 'لوحة التحكم')</h4>
+                </div>
                 <div class="d-flex align-items-center gap-3">
 
                     <!-- Staff Notifications Bell -->
@@ -829,6 +880,30 @@
         }
 
         setTimeout(function(){ poll(); setInterval(poll, POLL); }, 1000);
+    })();
+    </script>
+
+    <!-- Mobile Sidebar Toggle -->
+    <script>
+    (function() {
+        var toggle  = document.getElementById('sidebarToggle');
+        var sidebar = document.querySelector('.sidebar');
+        var overlay = document.getElementById('sidebarOverlay');
+
+        function openSidebar()  { sidebar.classList.add('show');    overlay.classList.add('show');    document.body.style.overflow = 'hidden'; }
+        function closeSidebar() { sidebar.classList.remove('show'); overlay.classList.remove('show'); document.body.style.overflow = ''; }
+
+        if (toggle)  toggle.addEventListener('click', openSidebar);
+        if (overlay) overlay.addEventListener('click', closeSidebar);
+
+        // Close sidebar when a nav link is clicked on mobile
+        if (sidebar) {
+            sidebar.querySelectorAll('.nav-link').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) closeSidebar();
+                });
+            });
+        }
     })();
     </script>
 </body>
