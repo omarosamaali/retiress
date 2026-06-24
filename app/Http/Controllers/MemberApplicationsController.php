@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\MemberApplication;
-use App\Support\Turnstile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -40,13 +39,6 @@ class MemberApplicationsController extends Controller
         $existingApplication = MemberApplication::where('user_id', $userId)->first();
         if ($existingApplication) {
             return redirect()->back()->with('error', 'لقد قمت بتقديم طلب بالفعل. لا يمكن تقديم أكثر من طلب واحد.');
-        }
-
-        $captchaToken = (string) $request->input('captcha_token', '');
-        if (! Turnstile::verify($captchaToken, $request->ip())) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(['captcha_token' => __('app.captcha_verification_failed')]);
         }
 
         $validated = $request->validate([
@@ -86,7 +78,6 @@ class MemberApplicationsController extends Controller
             'educational_qualification_photo',
             'retirement_card_photo',
             'professional_experience',
-            'captcha_token',
             'terms_accepted',
         ]);
 

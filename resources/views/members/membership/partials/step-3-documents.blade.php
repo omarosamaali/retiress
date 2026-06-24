@@ -23,19 +23,7 @@
         @endforeach
     </div>
 
-    <div class="mt-4">
-        @if ($turnstileSiteKey)
-            <div class="cf-turnstile mb-3" data-sitekey="{{ $turnstileSiteKey }}"></div>
-        @else
-            <div class="alert alert-warning small">{{ __('app.turnstile_not_configured') }}</div>
-        @endif
-        @error('captcha_token')
-            <div class="text-danger small mb-2">{{ $message }}</div>
-        @enderror
-        <input type="hidden" name="captcha_token" id="captcha_token" value="">
-    </div>
-
-    <div class="form-check mt-3">
+    <div class="form-check mt-4">
         <input class="form-check-input" type="checkbox" name="terms_accepted" id="terms_accepted" value="1" required @checked(old('terms_accepted'))>
         <label class="form-check-label" for="terms_accepted">{{ __('app.agree_terms_and_privacy') }}</label>
     </div>
