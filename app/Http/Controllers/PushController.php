@@ -93,4 +93,55 @@ class PushController extends Controller
     {
         return response()->json(['key' => config('app.vapid_public')]);
     }
+
+    /**
+     * إرسال push notification لجميع الموظفين (مدير، مشرف، موظف استقبال، مدخل بيانات)
+     */
+    public static function sendToStaff(string $title, string $body, string $url = '/admin/dashboard'): void
+    {
+        try {
+            $staffRoles = ['مدير', 'مشرف', 'موظف استقبال', 'مدخل بيانات'];
+            $staffIds = \App\Models\User::whereIn('role', $staffRoles)->pluck('id');
+            $subscriptions = PushSubscription::whereIn('member_id', $staffIds)->get();
+
+            if ($subscriptions->isEmpty()) return;
+
+            $auth = [
+                'VAPID' => [
+                    'subject'    => config('app.vapid_subject', 'mailto:admin@retirees.ae'),
+                    'publicKey'  => config('app.vapid_public'),
+                    'privateKey' => config('app.vapid_private'),
+                ],
+            ];
+
+            $webPush = new WebPush($auth);
+            $payload = json_encode([
+                'title' => $title,
+                'body'  => $body,
+                'url'   => $url,
+                'icon'  => '/assets/images/new-logo.png',
+            ]);
+
+            foreach ($subscriptions as $sub) {
+                $webPush->queueNotification(
+                    Subscription::create([
+                        'endpoint' => $sub->endpoint,
+                        'keys' => [
+                            'p256dh' => $sub->p256dh_key,
+                            'auth'   => $sub->auth_token,
+                        ],
+                    ]),
+                    $payload
+                );
+            }
+
+            foreach ($webPush->flush() as $report) {
+                if (!$report->isSuccess()) {
+                    PushSubscription::where('endpoint', $report->getRequest()->getUri()->__toString())->delete();
+                }
+            }
+        } catch (\Throwable $e) {
+            \Log::error('Staff push notification failed: ' . $e->getMessage());
+        }
+    }
 }

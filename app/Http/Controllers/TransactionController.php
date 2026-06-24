@@ -137,6 +137,13 @@ class TransactionController extends Controller
             'subscribed_at' => now(),
         ]);
 
+        // Push notification للموظفين
+        \App\Http\Controllers\PushController::sendToStaff(
+            'اشتراك جديد في إعلان',
+            $user->name . ' سجّل في "' . $event->title_ar . '"',
+            '/admin/transactions'
+        );
+
         return redirect()
             ->route('events.show', $event->id)
             ->with('success', __('app.event_subscription_success'))

@@ -112,13 +112,14 @@ class MemberApplicationsController extends Controller
         $data['previous_experience'] = [];
 
         $application = MemberApplication::create($data);
-        // Mail::raw(
-        //     'تم تقديم طلب العضوية بنجاح! رقم العضوية هو: ' . $application->membership_number,
-        //     function ($message) use ($application) {
-        //         $message->to([$application->email, 'contact@uaeretired.ae'])
-        //         ->subject('تم تقديم طلب العضوية بنجاح');
-        //     }
-        // );
+
+        // Push notification للموظفين
+        \App\Http\Controllers\PushController::sendToStaff(
+            'طلب عضوية جديد',
+            ($data['full_name'] ?? 'عضو جديد') . ' قدّم طلب عضوية جديدة',
+            '/admin/manageMembership'
+        );
+
         return redirect()->back()->with('success', 'تم تقديم طلب العضوية بنجاح! رقم العضوية هو: ' . $application->membership_number);
     }
 

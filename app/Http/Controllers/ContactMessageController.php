@@ -64,6 +64,13 @@ class ContactMessageController extends Controller
             // إرسال إيميل للإدارة (اختياري)
             // $this->sendNotificationEmail($contactMessage);
 
+            // Push notification للموظفين
+            \App\Http\Controllers\PushController::sendToStaff(
+                'رسالة جديدة من الموقع',
+                $request->name . ' أرسل رسالة جديدة',
+                '/admin/contact-messages'
+            );
+
             return redirect()->back()->with('success', 'تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.');
             
         } catch (\Exception $e) {
