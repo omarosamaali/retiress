@@ -188,10 +188,10 @@ Route::post('contact-us', function(Request $request){
         </div>
         @endif
 
-        @if($errors->any())
+        @if($errors->except('location')->any())
         <div class="alert alert-danger">
             <ul>
-                @foreach($errors->all() as $error)
+                @foreach($errors->except('location')->all() as $error)
                 <li>{{ $error }}</li>
                 @endforeach
             </ul>

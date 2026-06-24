@@ -21,20 +21,30 @@ class ContactMessageController extends Controller
     public function store(Request $request)
     {
         // UAE-only restriction
-        $country = $request->header('CF-IPCountry', '');
+        $country = strtoupper(trim($request->header('CF-IPCountry', '')));
 
         if (empty($country)) {
-            // Cloudflare header absent → use GeoIP API
             $ip = $request->header('CF-Connecting-IP') ?: $request->ip();
-            try {
-                $country = trim(Http::timeout(4)->get("https://ipinfo.io/{$ip}/country")->body());
-            } catch (\Throwable $e) {
-                Log::warning('GeoIP check failed: ' . $e->getMessage());
-                $country = '';
+            // Skip private/local IPs (dev environment)
+            $isPrivate = in_array($ip, ['127.0.0.1', '::1'])
+                || str_starts_with($ip, '192.168.')
+                || str_starts_with($ip, '10.')
+                || str_starts_with($ip, '172.');
+
+            if (!$isPrivate) {
+                try {
+                    $body = strtoupper(trim(Http::timeout(3)->get("https://ipinfo.io/{$ip}/country")->body()));
+                    // Only use if it's a valid 2-letter country code (not HTML error page)
+                    if (preg_match('/^[A-Z]{2}$/', $body)) {
+                        $country = $body;
+                    }
+                } catch (\Throwable $e) {
+                    Log::warning('GeoIP check failed: ' . $e->getMessage());
+                }
             }
         }
 
-        if ($country !== '' && strtoupper($country) !== 'AE') {
+        if (!empty($country) && $country !== 'AE') {
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['location' => 'عذراً، هذه الخدمة متاحة فقط داخل دولة الإمارات العربية المتحدة.']);
