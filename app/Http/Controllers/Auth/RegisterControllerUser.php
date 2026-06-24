@@ -36,6 +36,13 @@ class RegisterControllerUser extends Controller
                 'status' => 'بانتظار التفعيل',
             ]);
 
+            // Push notification للموظفين
+            \App\Http\Controllers\PushController::sendToStaff(
+                'عضو جديد بانتظار التفعيل',
+                $request->name . ' سجّل حساباً جديداً',
+                '/admin/users'
+            );
+
             return response()->json([
                 'success' => true,
                 'message' => 'تم تسجيل حسابك بنجاح! حسابك في انتظار مراجعة الإدارة وسيتم تفعيله قريباً.',
