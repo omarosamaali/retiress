@@ -207,12 +207,20 @@ Route::post('contact-us', function(Request $request){
             </div>
             @enderror
 
+            @php
+                $authUser = auth()->user();
+                $userPhone = $authUser?->phone_number
+                    ?: $authUser?->memberApplication?->mobile_phone
+                    ?: '';
+            @endphp
+
             <div class="form-row">
                 <div class="form-col">
                     <div class="form-group">
                         <label for="name" class="form-label">الاسم *</label>
                         <input type="text" class="form-control" id="name" name="name"
-                            value="{{ old('name', auth()->user()?->name) }}" required>
+                            value="{{ old('name', $authUser?->name) }}"
+                            {{ $authUser ? 'readonly style=background:#f5f5f5;cursor:not-allowed' : '' }} required>
                     </div>
                 </div>
 
@@ -220,7 +228,8 @@ Route::post('contact-us', function(Request $request){
                     <div class="form-group">
                         <label for="phone" class="form-label">رقم الهاتف *</label>
                         <input type="tel" class="form-control" id="phone" name="phone"
-                            value="{{ old('phone', auth()->user()?->phone_number) }}" required>
+                            value="{{ old('phone', $userPhone) }}"
+                            {{ $authUser ? 'readonly style=background:#f5f5f5;cursor:not-allowed' : '' }} required>
                     </div>
                 </div>
             </div>
@@ -230,7 +239,8 @@ Route::post('contact-us', function(Request $request){
                     <div class="form-group">
                         <label for="email" class="form-label">البريد الإلكتروني *</label>
                         <input type="email" class="form-control" id="email" name="email"
-                            value="{{ old('email', auth()->user()?->email) }}" required>
+                            value="{{ old('email', $authUser?->email) }}"
+                            {{ $authUser ? 'readonly style=background:#f5f5f5;cursor:not-allowed' : '' }} required>
                     </div>
                 </div>
 
