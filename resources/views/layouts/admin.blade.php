@@ -672,7 +672,7 @@
     <!-- New contact message polling notification -->
     <script>
     (function () {
-        var POLL_INTERVAL = 30000; // 30 seconds
+        var POLL_INTERVAL = 5000; // 5 seconds
         var LS_KEY = 'admin_last_unread_msg_count';
         var statsUrl = '{{ route("admin.contact-stats") }}';
         var messagesUrl = '{{ route("admin.contact-messages") }}';
@@ -731,11 +731,11 @@
                 .catch(function () { /* silent fail */ });
         }
 
-        // Start polling after 5s delay (let page finish loading)
+        // Start polling after 1s delay (let page finish loading)
         setTimeout(function () {
             checkNewMessages();
             setInterval(checkNewMessages, POLL_INTERVAL);
-        }, 5000);
+        }, 1000);
     })();
     </script>
 </body>
