@@ -573,7 +573,7 @@
                                 </a>
                             </li>
                             <li id="notif-memberships" style="display:none;">
-                                <a href="{{ route('admin.transactions.index') }}" class="dropdown-item d-flex align-items-center gap-2" style="padding:12px 16px;">
+                                <a href="{{ route('admin.manageMembership.index') }}" class="dropdown-item d-flex align-items-center gap-2" style="padding:12px 16px;">
                                     <i class="fas fa-user-plus" style="color:#b68a35;width:18px;"></i>
                                     <span>طلبات عضوية جديدة: <strong id="notif-memberships-count">0</strong></span>
                                 </a>
@@ -805,7 +805,7 @@
                     if (data.memberships > 0)
                         toast('fas fa-user-plus', '#b68a35', 'طلب عضوية جديد',
                             data.memberships + ' طلب عضوية جديد',
-                            '{{ route("admin.transactions.index") }}');
+                            '{{ route("admin.manageMembership.index") }}');
 
                     // Update timestamp AFTER showing notifications
                     lastTs = newTs;
