@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class Turnstile
 {
-    public static function verify(string $token, ?string $ip = null): bool
+    public static function verify(?string $token, ?string $ip = null): bool
     {
         $secret = (string) config('services.turnstile.secret');
         $verifyUrl = (string) config('services.turnstile.verify_url');
@@ -16,7 +16,7 @@ class Turnstile
             return true;
         }
 
-        if ($token === '') {
+        if (empty($token)) {
             return false;
         }
 

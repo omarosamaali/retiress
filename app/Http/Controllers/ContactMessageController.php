@@ -19,9 +19,17 @@ class ContactMessageController extends Controller
 
     public function store(Request $request)
     {
+        // UAE-only restriction via Cloudflare country header
+        $country = $request->header('CF-IPCountry', '');
+        if ($country !== '' && $country !== 'AE') {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['location' => 'عذراً، هذه الخدمة متاحة فقط داخل دولة الإمارات العربية المتحدة.']);
+        }
+
         // Turnstile verification
-        $token = $request->input('cf-turnstile-response', '');
-        if (! Turnstile::verify($token, $request->ip())) {
+        $token = (string) $request->input('cf-turnstile-response', '');
+        if (! Turnstile::verify($token ?: null, $request->ip())) {
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['cf-turnstile-response' => 'يرجى إكمال التحقق الأمني (Cloudflare Turnstile).']);

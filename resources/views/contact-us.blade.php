@@ -201,20 +201,26 @@ Route::post('contact-us', function(Request $request){
         <form action="{{ route('contact-us.store') }}" method="POST">
             @csrf
 
+            @error('location')
+            <div style="background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;border-radius:8px;padding:12px 16px;margin-bottom:16px;text-align:center;">
+                {{ $message }}
+            </div>
+            @enderror
+
             <div class="form-row">
                 <div class="form-col">
                     <div class="form-group">
                         <label for="name" class="form-label">الاسم *</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
-                            required>
+                        <input type="text" class="form-control" id="name" name="name"
+                            value="{{ old('name', auth()->user()?->name) }}" required>
                     </div>
                 </div>
 
                 <div class="form-col">
                     <div class="form-group">
                         <label for="phone" class="form-label">رقم الهاتف *</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" value="{{ old('phone') }}"
-                            required>
+                        <input type="tel" class="form-control" id="phone" name="phone"
+                            value="{{ old('phone', auth()->user()?->phone_number) }}" required>
                     </div>
                 </div>
             </div>
@@ -223,8 +229,8 @@ Route::post('contact-us', function(Request $request){
                 <div class="form-col">
                     <div class="form-group">
                         <label for="email" class="form-label">البريد الإلكتروني *</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}"
-                            required>
+                        <input type="email" class="form-control" id="email" name="email"
+                            value="{{ old('email', auth()->user()?->email) }}" required>
                     </div>
                 </div>
 

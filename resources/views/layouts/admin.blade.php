@@ -71,14 +71,17 @@
         }
 
         .sidebar .nav-link:hover {
-            background-color: #ffffff1a;
-            color: var(--hover-primary);
+            background-color: #f0fdf4;
+            color: #0e6939;
             transform: translateX(-5px);
         }
 
         .sidebar .nav-link.active {
-            background-color: #ffffff33;
-            color: white;
+            background-color: #0e6939;
+            color: white !important;
+            border-radius: 8px;
+            margin: 4px 12px;
+            padding: 10px 14px;
         }
 
         .sidebar .nav-link i {
@@ -188,6 +191,11 @@
         .btn-danger {
             background-color: #dc3545;
             border-color: #dc3545;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: .85; }
         }
 
         @media (max-width: 768px) {
@@ -356,7 +364,7 @@
             </a>
             <a class="nav-link {{ request()->routeIs('admin.transactions.*') ? 'active' : '' }}" href="{{ route('admin.transactions.index') }}">
                 <i class="fas fa-list-check"></i>
-                الطلبات
+                المعاملات
             </a>
             @if(Auth::user()->role == 'مدير')
             <a class="nav-link" href="{{ route('admin.users.index') }}">
@@ -504,9 +512,18 @@
             </a>
             @endif
 
-            <a class="nav-link" href="{{ route('admin.contact-messages') }}">
-                <i class="fas fa-message"></i>
-                الرسائل
+            <a class="nav-link {{ request()->routeIs('admin.contact-messages*') ? 'active' : '' }}"
+               href="{{ route('admin.contact-messages') }}"
+               style="display:flex;align-items:center;justify-content:space-between;">
+                <span>
+                    <i class="fas fa-message"></i>
+                    الرسائل
+                </span>
+                @if(!empty($adminUnreadMessages) && $adminUnreadMessages > 0)
+                <span style="background:#dc2626;color:#fff;border-radius:50px;padding:1px 8px;font-size:.72rem;font-weight:700;min-width:20px;text-align:center;animation:pulse-badge 1.5s infinite;">
+                    {{ $adminUnreadMessages }}
+                </span>
+                @endif
             </a>
 
             <a class="nav-link" href="{{ route('logout') }}"

@@ -70,7 +70,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">
-        <h6 class="m-0 font-weight-bold text-dark">كل الطلبات</h6>
+        <h6 class="m-0 font-weight-bold text-dark">كل المعاملات</h6>
     </div>
     <div class="card-body">
         <div class="add-section mb-4">

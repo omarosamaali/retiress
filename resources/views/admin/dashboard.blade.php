@@ -342,7 +342,7 @@
 <div class="row" style="margin-bottom: 20px;">
     <div class="col-12">
         <div class="table-container" style="max-width: 100%; margin-top: 20px;">
-            <p style="margin-bottom: 20px;">جميع الطلبات الخاصة ب
+            <p style="margin-bottom: 20px;">جميع المعاملات الخاصة ب
                 طلبات العضوية والخدمات والبرامج</p>
             <table>
                 <thead>
