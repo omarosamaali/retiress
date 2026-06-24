@@ -136,6 +136,26 @@ class ContactMessageController extends Controller
         return view('admin.contact-messages', compact('messages', 'unreadCount'));
     }
 
+    // إشعارات الموظفين - رسائل + اشتراكات + طلبات عضوية جديدة
+    public function staffNotifications(Request $request)
+    {
+        $since = $request->query('since')
+            ? \Carbon\Carbon::createFromTimestampMs($request->query('since'))
+            : now()->subSeconds(10);
+
+        $newMessages     = ContactMessage::where('created_at', '>', $since)->count();
+        $newSubscriptions= \App\Models\Transaction::where('created_at', '>', $since)->count();
+        $newMemberships  = \App\Models\MemberApplication::where('created_at', '>', $since)->count();
+
+        return response()->json([
+            'messages'      => $newMessages,
+            'subscriptions' => $newSubscriptions,
+            'memberships'   => $newMemberships,
+            'total'         => $newMessages + $newSubscriptions + $newMemberships,
+            'server_time'   => now()->timestamp * 1000,
+        ]);
+    }
+
     // إحصائيات
     public function stats()
     {

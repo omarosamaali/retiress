@@ -546,7 +546,44 @@
         <div class="header">
             <div class="d-flex justify-content-between align-items-center">
                 <h4 class="mb-0" style="font-weight: 700; color: #212529;">@yield('page-title', 'لوحة التحكم')</h4>
-                <div>
+                <div class="d-flex align-items-center gap-3">
+
+                    <!-- Staff Notifications Bell -->
+                    <div class="dropdown" id="staff-notif-wrapper" style="position:relative;">
+                        <button id="staff-notif-btn" data-bs-toggle="dropdown" aria-expanded="false"
+                            style="background:none;border:none;cursor:pointer;position:relative;padding:4px 8px;">
+                            <i class="fas fa-bell" style="font-size:1.3rem;color:#555;"></i>
+                            <span id="staff-notif-badge" style="display:none;position:absolute;top:-4px;right:-4px;background:#dc2626;color:#fff;border-radius:50%;width:18px;height:18px;font-size:.65rem;font-weight:700;line-height:18px;text-align:center;">0</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" id="staff-notif-dropdown"
+                            style="min-width:280px;padding:0;border-radius:10px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.15);">
+                            <li style="background:#f8f9fa;padding:10px 16px;border-bottom:1px solid #dee2e6;">
+                                <strong style="font-size:.85rem;color:#212529;">الإشعارات الجديدة</strong>
+                            </li>
+                            <li id="notif-messages" style="display:none;">
+                                <a href="{{ route('admin.contact-messages') }}" class="dropdown-item d-flex align-items-center gap-2" style="padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+                                    <i class="fas fa-envelope" style="color:#0284c7;width:18px;"></i>
+                                    <span>رسائل جديدة: <strong id="notif-messages-count">0</strong></span>
+                                </a>
+                            </li>
+                            <li id="notif-subscriptions" style="display:none;">
+                                <a href="{{ route('admin.transactions.index') }}" class="dropdown-item d-flex align-items-center gap-2" style="padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+                                    <i class="fas fa-calendar-check" style="color:#16a34a;width:18px;"></i>
+                                    <span>اشتراكات جديدة: <strong id="notif-subscriptions-count">0</strong></span>
+                                </a>
+                            </li>
+                            <li id="notif-memberships" style="display:none;">
+                                <a href="{{ route('admin.transactions.index') }}" class="dropdown-item d-flex align-items-center gap-2" style="padding:12px 16px;">
+                                    <i class="fas fa-user-plus" style="color:#b68a35;width:18px;"></i>
+                                    <span>طلبات عضوية جديدة: <strong id="notif-memberships-count">0</strong></span>
+                                </a>
+                            </li>
+                            <li id="notif-empty" style="padding:14px 16px;text-align:center;color:#888;font-size:.83rem;">
+                                لا توجد إشعارات جديدة
+                            </li>
+                        </ul>
+                    </div>
+
                     <span style="font-weight: 700; color: #212529;">مرحباً، {{ Auth::user()->name }}</span>
                 </div>
             </div>
@@ -669,73 +706,129 @@
     })();
     </script>
 
-    <!-- New contact message polling notification -->
+    <!-- Staff notifications polling -->
     <script>
     (function () {
-        var POLL_INTERVAL = 5000; // 5 seconds
-        var LS_KEY = 'admin_last_unread_msg_count';
-        var statsUrl = '{{ route("admin.contact-stats") }}';
-        var messagesUrl = '{{ route("admin.contact-messages") }}';
+        var POLL = 5000;
+        var LS_KEY = 'staff_notif_last_ts';
+        var url = '{{ route("admin.staff-notifications") }}';
         var stack = document.getElementById('admin-toast-stack');
 
+        var badge    = document.getElementById('staff-notif-badge');
+        var liMsg    = document.getElementById('notif-messages');
+        var liSub    = document.getElementById('notif-subscriptions');
+        var liMem    = document.getElementById('notif-memberships');
+        var liEmpty  = document.getElementById('notif-empty');
+        var cntMsg   = document.getElementById('notif-messages-count');
+        var cntSub   = document.getElementById('notif-subscriptions-count');
+        var cntMem   = document.getElementById('notif-memberships-count');
+
         function dismissToast(el) {
-            el.classList.remove('show');
-            el.classList.add('hide');
-            setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 380);
+            el.classList.remove('show'); el.classList.add('hide');
+            setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 380);
         }
 
-        function showMsgToast(count) {
+        function toast(icon, color, title, msg, link) {
             var el = document.createElement('div');
             el.className = 'admin-toast toast-blue';
+            el.style.borderRightColor = color;
             el.innerHTML =
-                '<i class="fas fa-envelope admin-toast__icon"></i>' +
+                '<i class="' + icon + ' admin-toast__icon" style="color:'+color+'"></i>' +
                 '<div class="admin-toast__body">' +
-                    '<div class="admin-toast__title">رسالة جديدة من زوار الموقع</div>' +
-                    '<div class="admin-toast__msg">لديك <strong>' + count + '</strong> رسالة غير مقروءة' +
-                        ' &nbsp;<a href="' + messagesUrl + '" style="color:#0284c7;font-weight:700;text-decoration:underline;">عرض الرسائل</a>' +
+                    '<div class="admin-toast__title">' + title + '</div>' +
+                    '<div class="admin-toast__msg">' + msg +
+                        (link ? ' &nbsp;<a href="'+link+'" style="color:'+color+';font-weight:700;text-decoration:underline;">عرض</a>' : '') +
                     '</div>' +
                 '</div>' +
                 '<button class="admin-toast__close" aria-label="إغلاق"><i class="fa-solid fa-xmark"></i></button>';
-
             stack.appendChild(el);
-            requestAnimationFrame(function () {
-                requestAnimationFrame(function () { el.classList.add('show'); });
+            requestAnimationFrame(function(){
+                requestAnimationFrame(function(){ el.classList.add('show'); });
             });
-
-            el.querySelector('.admin-toast__close').addEventListener('click', function () {
-                dismissToast(el);
-            });
-
-            setTimeout(function () { if (el.parentNode) dismissToast(el); }, 10000);
+            el.querySelector('.admin-toast__close').addEventListener('click', function(){ dismissToast(el); });
+            setTimeout(function(){ if(el.parentNode) dismissToast(el); }, 10000);
         }
 
-        function checkNewMessages() {
-            fetch(statsUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(function (r) { return r.json(); })
-                .then(function (data) {
-                    var current = parseInt(data.unread || 0, 10);
-                    var last = parseInt(localStorage.getItem(LS_KEY) || '-1', 10);
+        function updateBell(data) {
+            var total = data.total || 0;
 
-                    if (last === -1) {
-                        // First load — just record current count, don't notify
-                        localStorage.setItem(LS_KEY, current);
-                        return;
-                    }
+            // Badge
+            if (total > 0) {
+                badge.textContent = total > 99 ? '99+' : total;
+                badge.style.display = 'block';
+            } else {
+                badge.style.display = 'none';
+            }
 
-                    if (current > last) {
-                        showMsgToast(current);
-                    }
+            // Dropdown rows
+            liEmpty.style.display = total === 0 ? 'block' : 'none';
 
-                    localStorage.setItem(LS_KEY, current);
+            if (data.messages > 0) {
+                cntMsg.textContent = data.messages; liMsg.style.display = 'block';
+            } else { liMsg.style.display = 'none'; }
+
+            if (data.subscriptions > 0) {
+                cntSub.textContent = data.subscriptions; liSub.style.display = 'block';
+            } else { liSub.style.display = 'none'; }
+
+            if (data.memberships > 0) {
+                cntMem.textContent = data.memberships; liMem.style.display = 'block';
+            } else { liMem.style.display = 'none'; }
+        }
+
+        var lastTs = parseInt(localStorage.getItem(LS_KEY) || '0', 10);
+
+        // First ever visit: record current time, show nothing from the past
+        if (lastTs === 0) {
+            lastTs = Date.now();
+            localStorage.setItem(LS_KEY, lastTs);
+        }
+
+        function poll() {
+            fetch(url + '?since=' + lastTs, { headers: {'X-Requested-With':'XMLHttpRequest'} })
+                .then(function(r){ return r.json(); })
+                .then(function(data) {
+                    var newTs = data.server_time || Date.now();
+
+                    updateBell(data);
+
+                    if (data.messages > 0)
+                        toast('fas fa-envelope', '#0284c7', 'رسالة جديدة من الموقع',
+                            data.messages + ' رسالة جديدة وصلت',
+                            '{{ route("admin.contact-messages") }}');
+
+                    if (data.subscriptions > 0)
+                        toast('fas fa-calendar-check', '#16a34a', 'اشتراك جديد في إعلان',
+                            data.subscriptions + ' اشتراك جديد',
+                            '{{ route("admin.transactions.index") }}');
+
+                    if (data.memberships > 0)
+                        toast('fas fa-user-plus', '#b68a35', 'طلب عضوية جديد',
+                            data.memberships + ' طلب عضوية جديد',
+                            '{{ route("admin.transactions.index") }}');
+
+                    // Update timestamp AFTER showing notifications
+                    lastTs = newTs;
+                    localStorage.setItem(LS_KEY, lastTs);
                 })
-                .catch(function () { /* silent fail */ });
+                .catch(function(){});
         }
 
-        // Start polling after 1s delay (let page finish loading)
-        setTimeout(function () {
-            checkNewMessages();
-            setInterval(checkNewMessages, POLL_INTERVAL);
-        }, 1000);
+        // Reset bell when dropdown opens (mark as seen)
+        var btn = document.getElementById('staff-notif-btn');
+        if (btn) {
+            btn.addEventListener('click', function() {
+                setTimeout(function(){
+                    badge.style.display = 'none';
+                    liMsg.style.display = 'none';
+                    liSub.style.display = 'none';
+                    liMem.style.display = 'none';
+                    liEmpty.style.display = 'block';
+                }, 300);
+            });
+        }
+
+        setTimeout(function(){ poll(); setInterval(poll, POLL); }, 1000);
     })();
     </script>
 </body>

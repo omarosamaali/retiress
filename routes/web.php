@@ -46,6 +46,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', CheckUserStatus::cla
     Route::patch('contact-messages/{contactMessage}/toggle-read', [ContactMessageController::class, 'toggleRead'])->name('contact-messages.toggle-read');
     Route::get('contact-messages-filter', [ContactMessageController::class, 'filter'])->name('contact-messages.filter');
     Route::get('contact-stats', [ContactMessageController::class, 'stats'])->name('contact-stats');
+    Route::get('staff-notifications', [ContactMessageController::class, 'staffNotifications'])->name('staff-notifications');
 });
 
 
