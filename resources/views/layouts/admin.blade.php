@@ -668,6 +668,76 @@
         });
     })();
     </script>
+
+    <!-- New contact message polling notification -->
+    <script>
+    (function () {
+        var POLL_INTERVAL = 30000; // 30 seconds
+        var LS_KEY = 'admin_last_unread_msg_count';
+        var statsUrl = '{{ route("admin.contact-stats") }}';
+        var messagesUrl = '{{ route("admin.contact-messages") }}';
+        var stack = document.getElementById('admin-toast-stack');
+
+        function dismissToast(el) {
+            el.classList.remove('show');
+            el.classList.add('hide');
+            setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 380);
+        }
+
+        function showMsgToast(count) {
+            var el = document.createElement('div');
+            el.className = 'admin-toast toast-blue';
+            el.innerHTML =
+                '<i class="fas fa-envelope admin-toast__icon"></i>' +
+                '<div class="admin-toast__body">' +
+                    '<div class="admin-toast__title">رسالة جديدة من زوار الموقع</div>' +
+                    '<div class="admin-toast__msg">لديك <strong>' + count + '</strong> رسالة غير مقروءة' +
+                        ' &nbsp;<a href="' + messagesUrl + '" style="color:#0284c7;font-weight:700;text-decoration:underline;">عرض الرسائل</a>' +
+                    '</div>' +
+                '</div>' +
+                '<button class="admin-toast__close" aria-label="إغلاق"><i class="fa-solid fa-xmark"></i></button>';
+
+            stack.appendChild(el);
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () { el.classList.add('show'); });
+            });
+
+            el.querySelector('.admin-toast__close').addEventListener('click', function () {
+                dismissToast(el);
+            });
+
+            setTimeout(function () { if (el.parentNode) dismissToast(el); }, 10000);
+        }
+
+        function checkNewMessages() {
+            fetch(statsUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    var current = parseInt(data.unread || 0, 10);
+                    var last = parseInt(localStorage.getItem(LS_KEY) || '-1', 10);
+
+                    if (last === -1) {
+                        // First load — just record current count, don't notify
+                        localStorage.setItem(LS_KEY, current);
+                        return;
+                    }
+
+                    if (current > last) {
+                        showMsgToast(current);
+                    }
+
+                    localStorage.setItem(LS_KEY, current);
+                })
+                .catch(function () { /* silent fail */ });
+        }
+
+        // Start polling after 5s delay (let page finish loading)
+        setTimeout(function () {
+            checkNewMessages();
+            setInterval(checkNewMessages, POLL_INTERVAL);
+        }, 5000);
+    })();
+    </script>
 </body>
 
 </html>
