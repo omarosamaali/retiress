@@ -145,7 +145,7 @@ class CheckUserStatus
     {
         $status = $user->status;
 
-        if ($status === 'غير فعال') {
+        if (in_array($status, ['غير فعال', 'بانتظار التفعيل', 'بإنتظار إستكمال البيانات'], true)) {
             return true;
         }
 

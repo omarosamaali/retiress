@@ -33,13 +33,12 @@ class RegisterControllerUser extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'role' => 'عضو',
+                'status' => 'بانتظار التفعيل',
             ]);
-
-            auth()->login($user);
 
             return response()->json([
                 'success' => true,
-                'message' => 'تم تسجيل الحساب بنجاح!',
+                'message' => 'تم تسجيل حسابك بنجاح! حسابك في انتظار مراجعة الإدارة وسيتم تفعيله قريباً.',
                 'redirect' => route('members.login')
             ], 201);
         } catch (\Exception $e) {
