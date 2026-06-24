@@ -50,7 +50,16 @@
         if (currentStep > 1) showStep(currentStep - 1);
     });
 
+    // Remove Turnstile widget before submit to prevent captcha blocking
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.cf-turnstile').forEach(function (el) { el.remove(); });
+        var ti = document.getElementById('captcha_token');
+        if (ti) ti.remove();
+    });
+
     form?.addEventListener('submit', function (e) {
+        // Remove any remaining Turnstile elements that could block submission
+        document.querySelectorAll('.cf-turnstile').forEach(function (el) { el.remove(); });
         if (!validateStep(3)) {
             e.preventDefault();
             return;

@@ -272,6 +272,14 @@
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>window.membershipWizardInitialStep = {{ $errors->any() ? 3 : 1 }};</script>
+    <script>
+    // Remove any Turnstile widgets to prevent captcha blocking
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.cf-turnstile').forEach(function(el) { el.remove(); });
+        var ti = document.getElementById('captcha_token');
+        if (ti) ti.remove();
+    });
+    </script>
     <script src="{{ asset('assets/js/membership-wizard.js') }}" defer></script>
 </body>
 </html>
