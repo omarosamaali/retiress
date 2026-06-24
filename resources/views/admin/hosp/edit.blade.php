@@ -137,25 +137,6 @@
                 </div>
             </div>
 
-            <h6 class="mt-4 mb-3 text-black">الأسماء والأوصاف المترجمة (للقراءة فقط - تتحدث تلقائياً):</h6>
-            <div class="row">
-                @foreach ($targetLanguages as $code => $name)
-                    <div class="col-md-12 mb-3 border rounded-lg p-2">
-                        <label for="title_{{ $code }}" class="form-label font-bold">{{ $name }}
-                            (العنوان)
-                            :</label>
-                        <span class="text-right">
-                            {{ old('title_' . $code, $hosp->{'title_' . $code}) }}
-                        </span>
-                        <br>
-                        <label for="description_{{ $code }}" class="form-label font-bold">{{ $name }}
-                            (الوصف):</label>
-                        <span class="text-right">
-                            {{ old('description_' . $code, $hosp->{'description_' . $code}) }}
-                        </span>
-                    </div>
-                @endforeach
-            </div>
 
             <div class="btn-section text-center">
                 <a href="{{ route('admin.about-us.index') }}" class="back-btn">

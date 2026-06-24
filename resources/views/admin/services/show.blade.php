@@ -135,48 +135,6 @@
         </div>
     </div>
 
-    <h6 class="mt-4 mb-3">الأسماء والأوصاف المترجمة:</h6>
-    <div class="row">
-        @foreach ($targetLanguages as $code => $name)
-        @php
-        $nameColumn = 'name_' . $code;
-        $targetAudienceColumn = 'target_audience_' . $code;
-        $descriptionColumn = 'description_' . $code;
-        $requiredDocumentsColumn = 'required_documents_' . $code;
-        $serviceCharterColumn = 'service_charter_' . $code;
-        $disclaimerColumn = 'disclaimer_' . $code;
-
-        $translatedName = $service->$nameColumn;
-        $translatedTargetAudience = $service->$targetAudienceColumn;
-        $translatedDescription = $service->$descriptionColumn;
-        $translatedRequiredDocuments = $service->$requiredDocumentsColumn;
-        $translatedServiceCharter = $service->$serviceCharterColumn;
-        $translatedDisclaimer = $service->$disclaimerColumn;
-        @endphp
-        <div class="col-md-12 mb-3">
-            <div class="detail-item border rounded-lg p-2">
-                <strong class="text-black">{{ $name }} (الإسم):</strong>
-                <span>{{ $translatedName ?? 'غير متوفر' }}</span>
-                <br>
-                <strong class="text-black">{{ $name }} (الجمهور المستهدف):</strong>
-                <span>{{ $translatedTargetAudience ?? 'غير متوفر' }}</span>
-                <br>
-                <strong class="text-black">{{ $name }} (الوصف):</strong>
-                <span>{{ $translatedDescription ?? 'غير متوفر' }}</span>
-                <br>
-                <strong class="text-black">{{ $name }} (الوثائق المطلوبه):</strong>
-                <span>{{ $translatedRequiredDocuments ?? 'غير متوفر' }}</span>
-                <br>
-                <strong class="text-black">{{ $name }} (ميثاق الخدمات):</strong>
-                <span>{{ $translatedServiceCharter ?? 'غير متوفر' }}</span>
-                <br>
-                <strong class="text-black">{{ $name }} (إخلاء المسؤولية):</strong>
-                <span>{{ $translatedDisclaimer ?? 'غير متوفر' }}</span>
-                <br>
-            </div>
-        </div>
-        @endforeach
-    </div>
     <div class="btn-section">
         <a href="{{ route('admin.services.index') }}" class="back-btn">
             <i class="fas fa-arrow-right ms-1"></i>

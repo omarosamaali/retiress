@@ -191,28 +191,6 @@
         </div>
     </div>
 
-    <h6 class="mt-4 mb-3">الأسماء والأوصاف المترجمة:</h6>
-    <div class="row">
-        @foreach ($targetLanguages as $code => $name)
-        @php
-        $titleColumn = 'title_' . $code;
-        $descColumn = 'description_' . $code;
-        $translatedTitle = $feature->$titleColumn;
-        $translatedDesc = $feature->$descColumn;
-        @endphp
-        @if ($translatedTitle || $translatedDesc)
-        <div class="col-md-12 mb-3">
-            <div class="detail-item border rounded-lg p-2">
-                <strong class="text-black">{{ $name }} (العنوان):</strong>
-                <span>{{ $translatedTitle ?? 'غير متوفر' }}</span>
-                <br>
-                <strong class="text-black">{{ $name }} (الوصف):</strong>
-                <span>{{ $translatedDesc ?? 'غير متوفر' }}</span>
-            </div>
-        </div>
-        @endif
-        @endforeach
-    </div>
 
     <div class="btn-section">
         <a href="{{ route('admin.feature.index') }}" class="back-btn">

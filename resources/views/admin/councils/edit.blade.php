@@ -163,19 +163,6 @@
             </div>
         </div>
 
-        <h6 class="mt-4 mb-3 text-black">الأسماء والأوصاف المترجمة (للقراءة فقط - تتحدث تلقائياً):</h6>
-        <div class="row">
-            @foreach ($targetLanguages as $code => $name)
-            <div class="col-md-12 mb-3 border rounded-lg p-2">
-                <label for="name_{{ $code }}" class="form-label font-bold">{{ $name }}
-                    (الإسم)
-                    :</label>
-                <span class="text-right">
-                    {{ old('name_' . $code, $council->{'name_' . $code}) }}
-                </span>
-            </div>
-            @endforeach
-        </div>
 
         <div class="btn-section text-center">
             <a href="{{ route('admin.council.index') }}" class="back-btn">
