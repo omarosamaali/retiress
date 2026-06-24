@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ContactMessage;
 use App\Support\Turnstile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use App\Mail\ContactMessageNotification;
@@ -19,9 +20,21 @@ class ContactMessageController extends Controller
 
     public function store(Request $request)
     {
-        // UAE-only restriction via Cloudflare country header
+        // UAE-only restriction
         $country = $request->header('CF-IPCountry', '');
-        if ($country !== '' && $country !== 'AE') {
+
+        if (empty($country)) {
+            // Cloudflare header absent → use GeoIP API
+            $ip = $request->header('CF-Connecting-IP') ?: $request->ip();
+            try {
+                $country = trim(Http::timeout(4)->get("https://ipinfo.io/{$ip}/country")->body());
+            } catch (\Throwable $e) {
+                Log::warning('GeoIP check failed: ' . $e->getMessage());
+                $country = '';
+            }
+        }
+
+        if ($country !== '' && strtoupper($country) !== 'AE') {
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['location' => 'عذراً، هذه الخدمة متاحة فقط داخل دولة الإمارات العربية المتحدة.']);
