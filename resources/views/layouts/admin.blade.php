@@ -415,8 +415,8 @@
                 <i class="fas fa-list-check"></i>
                 المعاملات
             </a>
-            @if(Auth::user()->role == 'مدير')
-            <a class="nav-link" href="{{ route('admin.users.index') }}">
+            @if(in_array(Auth::user()->role, ['مدير', 'مدخل بيانات', 'موظف استقبال']))
+            <a class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
                 <i class="fas fa-users"></i>
                 المستخدمين
             </a>
