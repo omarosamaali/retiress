@@ -567,6 +567,15 @@
             </a>
             @endif
 
+            <a class="nav-link {{ request()->routeIs('admin.chat*') ? 'active' : '' }}"
+               href="{{ route('admin.chat') }}"
+               style="display:flex;align-items:center;justify-content:space-between;">
+                <span>
+                    <i class="fas fa-comments"></i>
+                    المحادثات
+                </span>
+            </a>
+
             <a class="nav-link {{ request()->routeIs('admin.contact-messages*') ? 'active' : '' }}"
                href="{{ route('admin.contact-messages') }}"
                style="display:flex;align-items:center;justify-content:space-between;">

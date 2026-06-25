@@ -179,6 +179,21 @@ Route::post('contact-us', function(Request $request){
 <body ng-app="myApp">
     <x-guest-header></x-guest-header>
 
+    @auth
+    <div style="max-width:800px;margin:157px auto 0;padding:0 15px;">
+        <a href="{{ route('chat') }}" style="display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#016330,#02833f);color:#fff;border-radius:12px;padding:16px 24px;text-decoration:none;margin-bottom:20px;box-shadow:0 4px 16px rgba(1,99,48,.25);">
+            <div style="background:rgba(255,255,255,.2);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fas fa-comments" style="font-size:1.4rem;"></i>
+            </div>
+            <div>
+                <div style="font-weight:700;font-size:1rem;margin-bottom:3px;">تحدث مع فريق الإدارة مباشرةً</div>
+                <div style="font-size:.85rem;opacity:.85;">للرد الفوري تواصل معنا عبر المحادثة المباشرة</div>
+            </div>
+            <i class="fas fa-chevron-left" style="margin-right:auto;opacity:.7;"></i>
+        </a>
+    </div>
+    @endauth
+
     <div class="contact-form-container">
         <h2 class="contact-form-title">نموذج التواصل معنا</h2>
 
