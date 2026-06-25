@@ -43,6 +43,24 @@ class ChatController extends Controller
         }
 
         $contacts = $this->memberContactsForStaff();
+        $staffId  = $user->id;
+
+        // آخر رسالة وعدد غير المقروء لكل عضو
+        $contacts = $contacts->map(function ($contact) use ($staffId) {
+            $last = Message::where(function ($q) use ($staffId, $contact) {
+                $q->where('from_user_id', $staffId)->where('to_user_id', $contact->id)
+                  ->orWhere('from_user_id', $contact->id)->where('to_user_id', $staffId);
+            })->latest()->first();
+
+            $contact->last_message    = $last?->message;
+            $contact->last_message_at = $last?->created_at;
+            $contact->unread_count    = Message::where('from_user_id', $contact->id)
+                ->where('to_user_id', $staffId)
+                ->whereNull('read_at')
+                ->count();
+
+            return $contact;
+        })->sortByDesc('last_message_at')->values();
 
         return view('admin.chat.index', [
             'contacts' => $contacts,
