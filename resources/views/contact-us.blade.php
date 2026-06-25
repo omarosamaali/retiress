@@ -245,7 +245,7 @@ Route::post('contact-us', function(Request $request){
                         <label for="phone" class="form-label">رقم الهاتف *</label>
                         <input type="tel" class="form-control" id="phone" name="phone"
                             value="{{ old('phone', $userPhone) }}"
-                            {{ $authUser ? 'readonly style=background:#f5f5f5;cursor:not-allowed' : '' }} required>
+                            {{ ($authUser && $userPhone) ? 'readonly style=background:#f5f5f5;cursor:not-allowed' : '' }} required>
                     </div>
                 </div>
             </div>
