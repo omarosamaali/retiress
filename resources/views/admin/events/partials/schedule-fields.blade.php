@@ -24,3 +24,21 @@
         @enderror
     </div>
 </div>
+
+<div class="col-md-6">
+    <div class="mb-3">
+        <label for="subscription_deadline" class="form-label">
+            <i class="fas fa-hourglass-end text-warning me-1"></i>
+            آخر موعد للتسجيل
+            <small class="text-muted">(اختياري)</small>
+        </label>
+        <input type="datetime-local" class="form-control" id="subscription_deadline" name="subscription_deadline"
+            value="{{ old('subscription_deadline', $event && $event->subscription_deadline ? $event->subscription_deadline->format('Y-m-d\TH:i') : '') }}">
+        <div class="form-text text-muted" style="font-size:.78rem;">
+            بعد هذا الوقت سيتوقف زر الاشتراك تلقائياً
+        </div>
+        @error('subscription_deadline')
+            <div class="{{ $errorClass }}">{{ $message }}</div>
+        @enderror
+    </div>
+</div>

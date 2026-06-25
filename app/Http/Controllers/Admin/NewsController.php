@@ -38,6 +38,7 @@ class NewsController extends Controller
             'sub_image' => 'nullable|array',
             'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
+            'youtube_url' => 'nullable|url|max:500',
         ]);
 
         $newsData = [
@@ -45,6 +46,7 @@ class NewsController extends Controller
             'description_ar' => $request->description_ar,
             'status' => $request->status,
             'sub_image' => [],
+            'youtube_url' => $request->youtube_url ?: null,
         ];
 
         $tr = new GoogleTranslate('ar');
@@ -114,6 +116,7 @@ class NewsController extends Controller
             'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|boolean',
             'created_at' => 'nullable|date',
+            'youtube_url' => 'nullable|url|max:500',
         ]);
 
         $newsData = [
@@ -121,6 +124,7 @@ class NewsController extends Controller
             'description_ar' => $request->description_ar,
             'status' => $request->status,
             'created_at' => $request->created_at,
+            'youtube_url' => $request->youtube_url ?: null,
             'sub_image' => $news->sub_image ?? [], // Preserve existing or initialize as empty array
         ];
 

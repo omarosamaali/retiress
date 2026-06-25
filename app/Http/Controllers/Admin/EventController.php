@@ -46,6 +46,7 @@ class EventController extends Controller
             'status' => 'required|boolean',
             'starts_at' => 'nullable|date',
             'ends_at' => 'nullable|date|after_or_equal:starts_at',
+            'subscription_deadline' => 'nullable|date',
         ]);
 
         $eventData = [
@@ -57,6 +58,7 @@ class EventController extends Controller
             'price' => $request->is_payed === 'on' ? $request->price : null,
             'starts_at' => $request->starts_at,
             'ends_at' => $request->ends_at,
+            'subscription_deadline' => $request->subscription_deadline ?: null,
         ];
 
         $tr = new GoogleTranslate('ar');
@@ -158,6 +160,7 @@ class EventController extends Controller
             'status' => 'required|boolean',
             'starts_at' => 'nullable|date',
             'ends_at' => 'nullable|date|after_or_equal:starts_at',
+            'subscription_deadline' => 'nullable|date',
         ]);
 
         $eventData = [
@@ -168,6 +171,7 @@ class EventController extends Controller
             'status' => $request->status,
             'starts_at' => $request->starts_at,
             'ends_at' => $request->ends_at,
+            'subscription_deadline' => $request->subscription_deadline ?: null,
             'price' => $request->is_payed === 'on' ? $request->price : null,
         ];
 

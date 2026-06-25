@@ -31,14 +31,16 @@ class Event extends Model
         'price',
         'starts_at',
         'ends_at',
+        'subscription_deadline',
         'status',
         'created_at',
     ];
 
     protected $casts = [
-        'starts_at' => 'datetime',
-        'ends_at' => 'datetime',
-        'status' => 'boolean',
+        'starts_at'             => 'datetime',
+        'ends_at'               => 'datetime',
+        'subscription_deadline' => 'datetime',
+        'status'                => 'boolean',
     ];
 
     public function getMainImageUrlAttribute()
@@ -111,6 +113,19 @@ class Event extends Model
     public function isExpired(): bool
     {
         return $this->ends_at !== null && \Carbon\Carbon::parse($this->ends_at)->isPast();
+    }
+
+    public function isRegistrationClosed(): bool
+    {
+        return $this->subscription_deadline !== null
+            && \Carbon\Carbon::parse($this->subscription_deadline)->isPast();
+    }
+
+    public function getSubscriptionDeadlineTimestampAttribute(): ?int
+    {
+        return $this->subscription_deadline
+            ? \Carbon\Carbon::parse($this->subscription_deadline)->timestamp
+            : null;
     }
 
     public function isFree(): bool

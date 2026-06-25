@@ -5385,6 +5385,25 @@
                             {!! app()->getLocale() == 'ar' ? $news->description_ar : $news->description_en !!}
                         </div>
 
+                        {{-- فيديو YouTube --}}
+                        @if($news->youtube_embed_url)
+                        <div style="margin:28px 0;">
+                            <p style="font-weight:700;color:#1e293b;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+                                <i class="fab fa-youtube" style="color:#dc2626;font-size:1.2rem;"></i>
+                                الفيديو المرفق
+                            </p>
+                            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.12);">
+                                <iframe
+                                    src="{{ $news->youtube_embed_url }}"
+                                    style="position:absolute;top:0;right:0;width:100%;height:100%;border:none;"
+                                    allowfullscreen
+                                    loading="lazy"
+                                    title="{{ $news->title_ar }}">
+                                </iframe>
+                            </div>
+                        </div>
+                        @endif
+
                         {{-- الصور الفرعية --}}
                         @if(isset($news->sub_image) && is_array($news->sub_image) && count($news->sub_image) > 0)
                         <div class="news-article__gallery">

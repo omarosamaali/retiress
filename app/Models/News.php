@@ -16,6 +16,7 @@ class News extends Model
         'description_en',
         'main_image',
         'sub_image',
+        'youtube_url',
         'price',
         'status',
         'created_at',
@@ -51,5 +52,24 @@ class News extends Model
     public function getStatusTextAttribute()
     {
         return $this->status == 1 ? 'فعال' : 'غير فعال';
+    }
+
+    public function getYoutubeEmbedUrlAttribute(): ?string
+    {
+        if (! $this->youtube_url) return null;
+
+        $url = trim($this->youtube_url);
+
+        // youtu.be/ID
+        if (preg_match('/youtu\.be\/([a-zA-Z0-9_-]{11})/', $url, $m)) {
+            return 'https://www.youtube.com/embed/' . $m[1];
+        }
+
+        // youtube.com/watch?v=ID or /embed/ID
+        if (preg_match('/(?:v=|\/embed\/)([a-zA-Z0-9_-]{11})/', $url, $m)) {
+            return 'https://www.youtube.com/embed/' . $m[1];
+        }
+
+        return null;
     }
 }

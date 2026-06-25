@@ -132,6 +132,22 @@
 
                 <div class="col-md-12">
                     <div class="mb-3">
+                        <label for="youtube_url" class="form-label">
+                            <i class="fab fa-youtube text-danger me-1"></i>
+                            رابط فيديو YouTube
+                            <small class="text-muted">(اختياري)</small>
+                        </label>
+                        <input type="url" class="form-control" id="youtube_url" name="youtube_url"
+                            value="{{ old('youtube_url') }}"
+                            placeholder="https://www.youtube.com/watch?v=...">
+                        @error('youtube_url')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="mb-3">
                         <label class="form-label">وصف الأخبار (بالعربية)</label>
                         <div class="ql-wrapper"><div id="quill_description_ar"></div></div>
                         <textarea id="description_ar" name="description_ar" style="display:none;">{{ old('description_ar') }}</textarea>

@@ -126,6 +126,32 @@
 
     {{-- زر الاشتراك --}}
     @elseif ($canSubscribe ?? false)
+    @php
+        $registrationClosed = $event->isRegistrationClosed();
+        $deadlineTs         = $event->subscription_deadline_timestamp;
+    @endphp
+
+    {{-- countdown timer (يظهر فقط إذا في deadline لم ينته بعد) --}}
+    @if ($event->subscription_deadline && ! $registrationClosed)
+    <div id="reg-deadline-box" style="background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;">
+        <i class="fa-solid fa-hourglass-half" style="color:#ea580c;font-size:1.3rem;flex-shrink:0;"></i>
+        <div>
+            <div style="font-size:.8rem;color:#9a3412;font-weight:700;margin-bottom:4px;">ينتهي التسجيل خلال</div>
+            <div id="reg-countdown" style="font-size:1.15rem;font-weight:800;color:#c2410c;letter-spacing:.04em;font-variant-numeric:tabular-nums;">--:--:--</div>
+        </div>
+    </div>
+    @endif
+
+    {{-- رسالة انتهاء التسجيل --}}
+    @if ($registrationClosed)
+    <div style="background:#fef2f2;border:1.5px solid #fca5a5;border-radius:10px;padding:14px 16px;text-align:center;margin-bottom:4px;">
+        <i class="fa-solid fa-ban" style="color:#dc2626;font-size:1.3rem;margin-bottom:6px;display:block;"></i>
+        <p style="margin:0;font-size:.9rem;color:#b91c1c;font-weight:700;">انتهى وقت التسجيل</p>
+        <p style="margin:4px 0 0;font-size:.8rem;color:#6b7280;">
+            أُغلق باب التسجيل في {{ \Carbon\Carbon::parse($event->subscription_deadline)->translatedFormat('d/m/Y - h:i A') }}
+        </p>
+    </div>
+    @else
     <div style="background:#fffbeb;border:1.5px dashed #fcd34d;border-radius:12px;padding:18px 20px;text-align:center;">
         <p style="margin:0 0 6px;font-size:.83rem;color:#92400e;">{{ __('app.event_subscribe_active_membership_hint') }}</p>
         <p style="margin:0 0 14px;font-size:.83rem;color:#92400e;">
@@ -138,12 +164,74 @@
         <form action="{{ route('events.subscribe', $event->id) }}" method="POST" style="display:inline;">
             @csrf
             <input type="hidden" name="type" value="event">
-            <button type="submit" style="background:#b68a35;color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:.93rem;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;display:inline-flex;align-items:center;gap:7px;transition:background .18s;"
+            <button type="submit" id="subscribe-btn"
+                style="background:#b68a35;color:#fff;border:none;border-radius:10px;padding:10px 28px;font-size:.93rem;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;display:inline-flex;align-items:center;gap:7px;transition:background .18s;"
                 onmouseover="this.style.background='#8a6520'" onmouseout="this.style.background='#b68a35'">
                 <i class="fa-solid fa-circle-plus"></i> {{ __('app.subscribe_to_service') }}
             </button>
         </form>
     </div>
+    @endif
+
+    @if ($deadlineTs)
+    <script>
+    (function(){
+        var deadline = {{ $deadlineTs }} * 1000;
+        var countdownEl = document.getElementById('reg-countdown');
+        var subscribeBtn = document.getElementById('subscribe-btn');
+        var deadlineBox = document.getElementById('reg-deadline-box');
+
+        function tick() {
+            var now = Date.now();
+            var diff = deadline - now;
+
+            if (diff <= 0) {
+                // انتهى الوقت — أوقف الزر وأخفِ العداد
+                if (subscribeBtn) {
+                    subscribeBtn.disabled = true;
+                    subscribeBtn.style.background = '#9ca3af';
+                    subscribeBtn.style.cursor = 'not-allowed';
+                    subscribeBtn.onmouseover = null;
+                    subscribeBtn.onmouseout  = null;
+                    subscribeBtn.innerHTML = '<i class="fa-solid fa-ban"></i> انتهى التسجيل';
+                }
+                if (deadlineBox) {
+                    deadlineBox.style.background = '#fef2f2';
+                    deadlineBox.style.borderColor = '#fca5a5';
+                    deadlineBox.querySelector('i').style.color = '#dc2626';
+                    deadlineBox.querySelector('div > div:first-child').textContent = 'انتهى التسجيل';
+                    if (countdownEl) countdownEl.textContent = '00:00:00';
+                }
+                return;
+            }
+
+            var d  = Math.floor(diff / 86400000);
+            var h  = Math.floor((diff % 86400000) / 3600000);
+            var m  = Math.floor((diff % 3600000)  / 60000);
+            var s  = Math.floor((diff % 60000)     / 1000);
+
+            var text = (d > 0 ? d + ' يوم  ' : '')
+                + String(h).padStart(2,'0') + ':'
+                + String(m).padStart(2,'0') + ':'
+                + String(s).padStart(2,'0');
+
+            if (countdownEl) countdownEl.textContent = text;
+
+            // تحذير آخر ساعة
+            if (diff < 3600000 && deadlineBox) {
+                deadlineBox.style.background = '#fef2f2';
+                deadlineBox.style.borderColor = '#fca5a5';
+                deadlineBox.querySelector('i').style.color = '#dc2626';
+                if (countdownEl) countdownEl.style.color = '#dc2626';
+            }
+
+            setTimeout(tick, 1000);
+        }
+
+        tick();
+    })();
+    </script>
+    @endif
 
     {{-- سبب الحجب --}}
     @elseif (! ($userSubscription && $userSubscription->isOpenSubscription()) && ($subscribeBlockReason ?? null))
