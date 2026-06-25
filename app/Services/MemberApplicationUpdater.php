@@ -79,6 +79,11 @@ class MemberApplicationUpdater
         $data['email'] = $validated['membership_email'];
         unset($data['membership_email']);
 
+        // marital_status column is NOT NULL — store empty string instead of null
+        if (array_key_exists('marital_status', $data) && $data['marital_status'] === null) {
+            $data['marital_status'] = '';
+        }
+
         if ($request->has('professional_experiences')) {
             $data['professional_experiences'] = $this->cleanExperiences(
                 $request->input('professional_experiences', [])
