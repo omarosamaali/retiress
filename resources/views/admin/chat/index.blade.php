@@ -10,7 +10,7 @@
         :contacts="$contacts"
         :contacts-title="__('app.registered_members')"
         :empty-hint="__('app.select_member_to_chat')"
-        :messages-base-url="url('/admin/messages')"
+        :messages-base-url="url('/admin/chat/messages')"
         :send-url="route('admin.chat.send')"
     />
 @endsection
