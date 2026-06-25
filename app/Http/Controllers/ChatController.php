@@ -21,12 +21,9 @@ class ChatController extends Controller
             return redirect()->route('admin.chat');
         }
 
-        // الأعضاء يتواصلون مع الموظفين — نختار أول موظف تلقائياً
-        $contacts = User::where('role', 'مدخل بيانات')
-            ->orderBy('name')
-            ->get();
+        // الأعضاء يتواصلون مع جميع الموظفين — نختار أول موظف تلقائياً
+        $contacts = User::staff()->orderBy('name')->get();
 
-        // دائماً اختر أول موظف تلقائياً (لا حاجة لاختيار يدوي)
         $autoContact = $contacts->first();
 
         return view('members.chat.index', [

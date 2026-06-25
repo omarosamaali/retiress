@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\ManageMembershipController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\Admin\MemberBroadcastNotificationController;
 
@@ -60,6 +61,11 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::post('/messages/{message}/update-status-and-reply', [MessageController::class, 'adminUpdateStatusAndReply'])->name('messages.update-status-and-reply');
 
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+    // المحادثات المباشرة مع الأعضاء
+    Route::get('/chat', [ChatController::class, 'adminChat'])->name('chat');
+    Route::get('/chat/messages/{userId}', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::post('/chat/send-message', [ChatController::class, 'sendMessage'])->name('chat.send');
     Route::get('/member-notifications', [MemberBroadcastNotificationController::class, 'create'])->name('member-notifications.create');
     Route::get('/member-notifications/all', [MemberBroadcastNotificationController::class, 'index'])->name('member-notifications.index');
     Route::post('/member-notifications', [MemberBroadcastNotificationController::class, 'store'])->name('member-notifications.store');

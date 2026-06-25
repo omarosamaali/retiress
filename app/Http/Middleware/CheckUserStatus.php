@@ -44,6 +44,10 @@ class CheckUserStatus
         'admin.news.edit',
         'admin.news.update',
         'admin.news.destroy',
+        // المحادثات المباشرة
+        'admin.chat',
+        'admin.chat.messages',
+        'admin.chat.send',
         // الإعلانات والفعاليات
         'admin.event.index',
         'admin.event.create',
