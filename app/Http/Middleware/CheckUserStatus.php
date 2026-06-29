@@ -10,80 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserStatus
 {
-    private const DATA_ENTRY_ALLOWED_ROUTES = [
-        'admin.dashboard',
-        'profile.edit',
-        'profile.update',
-        'profile.destroy',
-        // الرسائل
-        'admin.contact-messages',
-        'admin.contact-messages.show',
-        'admin.contact-messages.destroy',
-        'admin.contact-messages.toggle-read',
-        'admin.contact-messages.filter',
-        'admin.contact-stats',
-        'admin.staff-notifications',
-        // المعاملات
-        'admin.transactions.index',
-        'admin.transactions.update-status',
-        'admin.transactions.activate',
-        'admin.transactions.approve',
-        'admin.transactions.confirm_payment',
-        'admin.transactions.deactivate',
-        'admin.transactions.reject',
-        // إشعارات الأعضاء
-        'admin.member-notifications.create',
-        'admin.member-notifications.store',
-        'admin.member-notifications.index',
-        'admin.member-notifications.show',
-        // الأخبار
-        'admin.news.index',
-        'admin.news.create',
-        'admin.news.store',
-        'admin.news.show',
-        'admin.news.edit',
-        'admin.news.update',
-        'admin.news.destroy',
-        // إدارة الأعضاء (طلبات العضوية)
-        'admin.manageMembership.index',
-        'admin.manageMembership.create',
-        'admin.manageMembership.store',
-        'admin.manageMembership.show',
-        'admin.manageMembership.edit',
-        'admin.manageMembership.update',
-        'admin.manageMembership.destroy',
-        'admin.manageMembership.activity',
-        // إدارة المستخدمين
-        'admin.users.index',
-        'admin.users.create',
-        'admin.users.store',
-        'admin.users.show',
-        'admin.users.edit',
-        'admin.users.update',
-        'admin.users.destroy',
-        'admin.users.clear-push',
-        // المحادثات المباشرة
-        'admin.chat',
-        'admin.chat.messages',
-        'admin.chat.send',
-        // الإعلانات والفعاليات
-        'admin.event.index',
-        'admin.event.create',
-        'admin.event.store',
-        'admin.event.show',
-        'admin.event.edit',
-        'admin.event.update',
-        'admin.event.destroy',
-        // منبر الخبراء
-        'admin.magazines.index',
-        'admin.magazines.create',
-        'admin.magazines.store',
-        'admin.magazines.show',
-        'admin.magazines.edit',
-        'admin.magazines.update',
-        'admin.magazines.destroy',
-    ];
-
     public function handle(Request $request, Closure $next): Response
     {
         $excludedRoutes = [
@@ -133,16 +59,6 @@ class CheckUserStatus
                 return redirect('/')->with('error', 'ليس لديك صلاحية للوصول إلى لوحة الإدارة.');
             }
 
-            if ($user->role === 'مدخل بيانات' && ! in_array($currentRoute, self::DATA_ENTRY_ALLOWED_ROUTES, true)) {
-                Log::warning('Data entry user tried to access forbidden route', [
-                    'user_id' => $user->id,
-                    'attempted_route' => $currentRoute,
-                ]);
-
-                return redirect()
-                    ->route('admin.dashboard')
-                    ->with('error', 'ليس لديك صلاحية للوصول لهذه الصفحة.');
-            }
         }
 
         return $next($request);
