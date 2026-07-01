@@ -233,7 +233,8 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="expiration_date" class="form-label font-bold">تاريخ إنتهاء العضوية</label>
-                    <input type="datetime-local" class="form-control" id="expiration_date" name="expiration_date" value="{{ old('expiration_date', $member->expiration_date) }}" required>
+                    <input type="datetime-local" class="form-control" id="expiration_date" name="expiration_date" value="{{ old('expiration_date', $member->expiration_date) }}">
+                    <small class="text-muted">مطلوب فقط عند تفعيل العضوية (حالة "فعال")</small>
                     @error('status')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -320,7 +321,7 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="home_phone" class="form-label font-bold">هاتف المنزل </label>
-                    <input readonly type="text" class="form-control" id="home_phone" name="home_phone" value="{{ old('home_phone', $member->home_phone) }}" required>
+                    <input readonly type="text" class="form-control" id="home_phone" name="home_phone" value="{{ old('home_phone', $member->home_phone) }}">
                     @error('home_phone')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -448,7 +449,7 @@ $__docs = [
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="po_box" class="form-label font-bold">صندوق البريد</label>
-                    <input readonly type="text" class="form-control" id="po_box" name="po_box" value="{{ old('po_box', $member->po_box) }}" required>
+                    <input readonly type="text" class="form-control" id="po_box" name="po_box" value="{{ old('po_box', $member->po_box) }}">
                     @error('po_box')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -458,7 +459,7 @@ $__docs = [
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="retirement_date" class="form-label font-bold">تاريخ التقاعد</label>
-                    <input type="datetime-local" class="form-control" id="retirement_date" name="retirement_date" value="{{ old('retirement_date', $member->retirement_date ? $member->retirement_date->format('Y-m-d\TH:i') : '') }}" required>
+                    <input type="datetime-local" class="form-control" id="retirement_date" name="retirement_date" value="{{ old('retirement_date', $member->retirement_date ? $member->retirement_date->format('Y-m-d\TH:i') : '') }}">
                     @error('retirement_date')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
@@ -483,7 +484,7 @@ $__docs = [
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="early_reason" class="form-label font-bold">تاريخ التقاعد </label>
-                    <input readonly type="text" class="form-control" id="early_reason" name="early_reason" value="{{ old('early_reason', $member->early_reason) }}" required>
+                    <input readonly type="text" class="form-control" id="early_reason" name="early_reason" value="{{ old('early_reason', $member->early_reason) }}">
                     @error('early_reason')
                     <div class="text-black">{{ $message }}</div>
                     @enderror
