@@ -152,16 +152,32 @@
         </p>
     </div>
     @else
-    <div style="background:#fffbeb;border:1.5px dashed #fcd34d;border-radius:12px;padding:18px 20px;text-align:center;">
-        <p style="margin:0 0 6px;font-size:.83rem;color:#92400e;">{{ __('app.event_subscribe_active_membership_hint') }}</p>
-        <p style="margin:0 0 14px;font-size:.83rem;color:#92400e;">
+    <div style="background:#fffbeb;border:1.5px dashed #fcd34d;border-radius:12px;padding:18px 20px;">
+
+        @php $memberApp = auth()->user()->memberApplication; @endphp
+
+        {{-- عرض بيانات العضوية إن وُجدت وكانت فعالة --}}
+        @if ($memberApp && (string) $memberApp->status === '3' && $memberApp->expiration_date && !\Carbon\Carbon::parse($memberApp->expiration_date)->isPast())
+        <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <i class="fa-solid fa-id-card" style="color:#16a34a;font-size:1.1rem;flex-shrink:0;"></i>
+            <div style="font-size:.85rem;color:#166534;">
+                <div style="font-weight:700;margin-bottom:2px;">عضوية فعالة ✓</div>
+                <div>رقم العضوية: <strong style="direction:ltr;display:inline-block;">{{ $memberApp->membership_number }}</strong></div>
+                <div>تنتهي في: <strong>{{ \Carbon\Carbon::parse($memberApp->expiration_date)->format('d/m/Y') }}</strong></div>
+            </div>
+        </div>
+        @endif
+
+        {{-- رسالة الجمهور --}}
+        <p style="margin:0 0 14px;font-size:.83rem;color:#92400e;text-align:center;">
             @if ($event->isForMembersOnly())
                 {{ __('app.event_subscribe_members_only_hint') }}
             @else
                 {{ __('app.event_subscribe_public_hint') }}
             @endif
         </p>
-        <form action="{{ route('events.subscribe', $event->id) }}" method="POST" style="display:inline;">
+
+        <form action="{{ route('events.subscribe', $event->id) }}" method="POST" style="text-align:center;">
             @csrf
             <input type="hidden" name="type" value="event">
             <button type="submit" id="subscribe-btn"
@@ -250,7 +266,7 @@
                     </span>
                 </div>
                 @endif
-                @if (in_array($subscribeBlockReason, ['members_only_audience','membership_required','membership_inactive','member_role_required'], true))
+                @if (in_array($subscribeBlockReason, ['members_only_audience','membership_required','membership_inactive','member_role_required','membership_expiring_soon'], true))
                 <a href="{{ route('members.membership-show') }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:8px;font-size:.82rem;color:#ea580c;font-weight:600;text-decoration:none;">
                     <i class="fa-solid fa-id-card"></i>{{ __('app.register_membership') }}
                 </a>

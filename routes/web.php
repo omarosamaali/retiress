@@ -188,6 +188,7 @@ Route::post('/members/renewal', [MemberApplicationsController::class, 'renew'])-
 Route::middleware('auth')->group(function () {
     Route::get('/members/application/edit', [MemberApplicationsController::class, 'editApplication'])->name('members.application.edit');
     Route::post('/members/application/update', [MemberApplicationsController::class, 'updateApplication'])->name('members.application.update');
+    Route::post('/members/membership/upload-receipt', [MemberApplicationsController::class, 'uploadMembershipReceipt'])->name('members.membership.upload-receipt');
 });
 
 Route::get('/members/membership', function () {

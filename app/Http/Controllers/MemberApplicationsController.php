@@ -95,6 +95,7 @@ class MemberApplicationsController extends Controller
         }
 
         $data['user_id'] = $user_id;
+        $data['status'] = '1'; // قيد التفعيل — ينتظر مراجعة الموظف
         $data['membership_number'] = $this->generateMembershipNumber();
         $data['pension'] = $request->input('pension');
         if ($request->has('professional_experience')) {
@@ -259,6 +260,40 @@ class MemberApplicationsController extends Controller
 
         return redirect()->route('members.application.edit')
             ->with('success', 'تم تحديث بيانات طلب العضوية بنجاح.');
+    }
+
+    public function uploadMembershipReceipt(Request $request)
+    {
+        $application = \App\Models\MemberApplication::where('user_id', Auth::id())->firstOrFail();
+
+        if ((string) $application->status !== '0') {
+            return redirect()->back()->with('error', 'لا يمكن رفع إيصال الدفع في هذه المرحلة.');
+        }
+
+        $request->validate([
+            'payment_receipt' => 'required|file|mimes:jpeg,png,jpg,pdf|max:5120',
+        ], [
+            'payment_receipt.required' => 'يرجى اختيار ملف الإيصال.',
+            'payment_receipt.mimes'    => 'يجب أن يكون الملف صورة أو PDF.',
+        ]);
+
+        if ($application->payment_receipt) {
+            Storage::disk('public')->delete($application->payment_receipt);
+        }
+
+        $path = $request->file('payment_receipt')->store('membership_receipts', 'public');
+        $application->update([
+            'payment_receipt' => $path,
+            'status'          => '1', // بانتظار التفعيل — أُرسل الإيصال، ينتظر تأكيد الموظف
+        ]);
+
+        \App\Http\Controllers\PushController::sendToStaff(
+            'تم رفع إيصال دفع عضوية',
+            ($application->full_name ?? 'عضو') . ' رفع إيصال دفع العضوية. يرجى المراجعة.',
+            '/admin/manageMembership'
+        );
+
+        return redirect()->back()->with('success', 'تم رفع إيصال الدفع بنجاح. سيتم مراجعته من قبل الموظفين.');
     }
 
     private function generateMembershipNumber()

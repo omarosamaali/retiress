@@ -26,7 +26,7 @@ class Transaction extends Model
         'active',
     ];
 
-    protected $fillable = ['user_id', 'event_id','service_id', 'status', 'subscribed_at', 'receipt_image','type']; // أضف 'receipt_image' هنا
+    protected $fillable = ['user_id', 'event_id', 'service_id', 'status', 'subscribed_at', 'receipt_image', 'type', 'membership_number'];
 
     protected $casts = [
         'subscribed_at' => 'datetime',

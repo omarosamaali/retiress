@@ -68,6 +68,7 @@ class MemberApplication extends Model
         'professional_experiences',
         'previous_experience',
         'pension',
+        'payment_receipt',
     ];
 
     /**

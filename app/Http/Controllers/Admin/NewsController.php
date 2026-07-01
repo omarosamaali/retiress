@@ -34,9 +34,9 @@ class NewsController extends Controller
         $request->validate([
             'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'sub_image' => 'nullable|array',
-            'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'sub_image.*' => 'file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
             'youtube_url' => 'nullable|url|max:500',
         ]);
@@ -111,9 +111,9 @@ class NewsController extends Controller
         $request->validate([
             'title_ar' => ['required', 'string', 'max:255'],
             'description_ar' => 'required|string',
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'sub_image' => 'nullable|array',
-            'sub_image.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'sub_image.*' => 'file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
             'created_at' => 'nullable|date',
             'youtube_url' => 'nullable|url|max:500',

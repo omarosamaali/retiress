@@ -509,6 +509,7 @@ return [
     'event_subscribe_blocked_membership_required' => 'No membership application found. You must register as a member first.',
     'event_subscribe_blocked_membership_inactive' => 'Cannot subscribe: your membership is not active (pending payment, pending approval, expired, or any status other than active).',
     'event_subscribe_blocked_member_role_required' => 'Announcement subscriptions are available to association members only.',
+    'event_subscribe_blocked_membership_expiring_soon' => 'Cannot subscribe: your membership expires in less than 3 months. Please renew your membership first.',
     'event_subscribe_members_only_hint' => 'This announcement is for registered members only.',
     'event_subscribe_public_hint' => 'This announcement is open to everyone, but an active association membership is required.',
     'event_subscribe_active_membership_hint' => 'Your association membership must be active (not pending payment, approval, or expired).',

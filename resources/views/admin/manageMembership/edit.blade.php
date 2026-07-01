@@ -169,7 +169,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     @endif
-    <form method="POST" action="{{ route('admin.manageMembership.update', $member->id) }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('admin.manageMembership.update', $member->id) }}" enctype="multipart/form-data" id="membership-edit-form">
         @csrf
         @method('PUT')
 
@@ -239,6 +239,25 @@
                     @enderror
                 </div>
             </div>
+     {{-- إيصال الدفع --}}
+     @if($member->payment_receipt)
+     <div class="col-md-6">
+         <div class="mb-3">
+             <label class="form-label font-bold">إيصال الدفع المرفق</label>
+             @php $ext = pathinfo($member->payment_receipt, PATHINFO_EXTENSION); @endphp
+             @if(in_array(strtolower($ext), ['jpg','jpeg','png']))
+             <br><a href="{{ asset('storage/'.$member->payment_receipt) }}" target="_blank">
+                 <img src="{{ asset('storage/'.$member->payment_receipt) }}" style="max-width:200px;border-radius:6px;border:1px solid #ccc;">
+             </a>
+             @else
+             <br><a href="{{ asset('storage/'.$member->payment_receipt) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                 عرض الإيصال (PDF)
+             </a>
+             @endif
+         </div>
+     </div>
+     @endif
+
      <div class="col-md-6">
          <div class="mb-3">
              <label for="pension" class="form-label font-bold">جهة صرف المعاش التقاعدي</label>
@@ -501,6 +520,45 @@ $__docs = [
             </div>
         </div>
         @endif
+
+        {{-- Modal تأكيد تفعيل العضوية --}}
+        <div class="modal fade" id="activateConfirmModal" tabindex="-1" aria-labelledby="activateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="border-radius:12px;overflow:hidden;">
+                    <div class="modal-header" style="background:#166534;color:#fff;">
+                        <h5 class="modal-title" id="activateModalLabel">
+                            <i class="fas fa-check-circle me-2"></i> تأكيد تفعيل العضوية
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" style="font-size:.92rem;">
+                        <div class="alert alert-warning d-flex align-items-center gap-2 mb-3">
+                            <i class="fas fa-triangle-exclamation fs-5"></i>
+                            <span>هل أنت متأكد من صحة جميع البيانات قبل التفعيل؟</span>
+                        </div>
+                        <table class="table table-sm table-bordered mb-0">
+                            <tbody>
+                                <tr><th style="width:40%">الاسم</th><td id="confirm-name">—</td></tr>
+                                <tr><th>رقم العضوية</th><td id="confirm-membership-number" style="direction:ltr;">—</td></tr>
+                                <tr><th>تاريخ الانتهاء</th><td id="confirm-expiration">—</td></tr>
+                                <tr><th>رقم الهاتف</th><td id="confirm-phone">—</td></tr>
+                                <tr><th>رقم الهوية</th><td id="confirm-national-id">—</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="text-muted mt-3 mb-0" style="font-size:.82rem;">
+                            <i class="fas fa-info-circle me-1"></i>
+                            بعد التفعيل سيصل إشعار للعضو بأن عضويته أصبحت فعالة.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">مراجعة البيانات</button>
+                        <button type="button" class="btn btn-success" id="confirmActivateBtn">
+                            <i class="fas fa-check me-1"></i> نعم، تفعيل العضوية
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="section">
             <div class="section-header mb-4 d-flex align-items-center justify-content-between">
@@ -768,6 +826,44 @@ $__docs = [
         container.insertAdjacentHTML('beforeend', html);
         renumberRows(container, fieldName);
     }
+
+    // تأكيد تفعيل العضوية
+    (function () {
+        var form      = document.getElementById('membership-edit-form');
+        var statusSel = document.getElementById('status');
+        var modal     = document.getElementById('activateConfirmModal');
+        var confirmBtn = document.getElementById('confirmActivateBtn');
+        var formShouldSubmit = false;
+
+        if (!form || !statusSel) return;
+
+        form.addEventListener('submit', function (e) {
+            if (formShouldSubmit) return; // تم التأكيد، اسمح بالإرسال
+
+            if (statusSel.value === '3') {
+                e.preventDefault();
+
+                // ملء بيانات الملخص في الـ modal
+                document.getElementById('confirm-name').textContent            = document.getElementById('full_name')?.value || '—';
+                document.getElementById('confirm-membership-number').textContent = document.getElementById('membership_number')?.value || '—';
+                document.getElementById('confirm-expiration').textContent       = document.getElementById('expiration_date')?.value || '—';
+                document.getElementById('confirm-phone').textContent            = document.getElementById('mobile_phone')?.value || '—';
+                document.getElementById('confirm-national-id').textContent      = document.getElementById('national_id')?.value || '—';
+
+                var bsModal = new bootstrap.Modal(modal);
+                bsModal.show();
+            }
+        });
+
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', function () {
+                formShouldSubmit = true;
+                var bsModal = bootstrap.Modal.getInstance(modal);
+                if (bsModal) bsModal.hide();
+                form.submit();
+            });
+        }
+    })();
 
     function removeRow(btn) {
         var card = btn.closest('.experience-card');

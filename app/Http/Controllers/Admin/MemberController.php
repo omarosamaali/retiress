@@ -37,7 +37,7 @@ class MemberController extends Controller
             'position_ar' => 'required|string|max:255',
             'committee_id' => 'nullable|integer|exists:committees,id',
             'council_id' => 'nullable|integer|exists:councils,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
         ]);
 
@@ -98,7 +98,7 @@ class MemberController extends Controller
         $request->validate([
             'name_ar' => 'required|string|max:255',
             'position_ar' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'committee_id' => 'nullable|integer|exists:committees,id',
             'council_id' => 'nullable|integer|exists:councils,id',
             'status' => 'required|boolean',

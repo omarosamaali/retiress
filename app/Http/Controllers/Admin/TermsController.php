@@ -45,8 +45,8 @@ class TermsController extends Controller
         $request->validate([
             'title_ar' => 'required|string|max:255|unique:about_us,title_ar',
             'description_ar' => 'required|string',
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
+            'sub_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
         ]);
 
@@ -107,8 +107,8 @@ class TermsController extends Controller
         $request->validate([
             'title_ar' => 'required|string|max:255|unique:about_us,title_ar,' . $aboutUs->id,
             'description_ar' => 'required|string',
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
+            'sub_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
         ]);
 

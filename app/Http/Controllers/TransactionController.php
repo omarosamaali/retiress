@@ -50,12 +50,7 @@ class TransactionController extends Controller
         }
 
         $request->validate([
-            'receipt_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // قواعد التحقق للصورة
-        ], [
-            'receipt_image.required' => __('validation.receipt_image_required'),
-            'receipt_image.image' => __('validation.receipt_image_image'),
-            'receipt_image.mimes' => __('validation.receipt_image_mimes'),
-            'receipt_image.max' => __('validation.receipt_image_max'),
+            'receipt_image' => 'required|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
         ]);
         if ($request->hasFile('receipt_image')) {
             if ($transaction->receipt_image) {
@@ -82,17 +77,20 @@ class TransactionController extends Controller
         if ($existingTransaction) {
             return redirect()->route('members.record')->with('error', __('app.already_subscribed'));
         }
-        $initialStatus = 'pending';
         Transaction::create([
             'user_id' => Auth::id(),
             'event_id' => null,
             'service_id' => $service->id,
-            'status' => $initialStatus,
+            'status' => 'pending',
             'type' => $request->type,
         ]);
-        // Mail::raw('رائع تم الإشتراك في ' . $service->name_ar . ' بنجاح', function ($message) use ($service) {
-        //     $message->to([Auth::user()->email, 'contact@uaeretired.ae'])->subject('تم الإشتراك في خدمة  ');
-        // });
+
+        PushController::sendToStaff(
+            'اشتراك جديد في خدمة',
+            Auth::user()->name . ' طلب الاشتراك في "' . $service->name_ar . '"',
+            '/admin/transactions'
+        );
+
         return redirect()->route('members.record')->with('success', __('app.subscription_success'));
     }
 
@@ -137,10 +135,9 @@ class TransactionController extends Controller
             'subscribed_at' => now(),
         ]);
 
-        // Push notification للموظفين
-        \App\Http\Controllers\PushController::sendToStaff(
+        PushController::sendToStaff(
             'اشتراك جديد في إعلان',
-            $user->name . ' سجّل في "' . $event->title_ar . '"',
+            $user->name . ' طلب الاشتراك في "' . $event->title_ar . '"',
             '/admin/transactions'
         );
 
@@ -190,6 +187,25 @@ class TransactionController extends Controller
                 return redirect()->back()->with('error', 'لا يمكن تحديد نوع المعاملة.');
             }
             $transaction->save();
+
+            // إشعار للمستخدم
+            if ($transaction->user_id) {
+                $itemName = $transaction->service?->name_ar ?? $transaction->event?->title_ar ?? 'الاشتراك';
+                if ($transaction->status === 'waiting_for_payment') {
+                    PushController::sendToUser($transaction->user_id,
+                        'تمت الموافقة — بانتظار الدفع',
+                        'تمت الموافقة على اشتراكك في "' . $itemName . '". يرجى إتمام عملية الدفع.',
+                        '/members/record'
+                    );
+                } else {
+                    PushController::sendToUser($transaction->user_id,
+                        'تم قبول اشتراكك ✓',
+                        'تم تفعيل اشتراكك في "' . $itemName . '" بنجاح.',
+                        '/members/record'
+                    );
+                }
+            }
+
             return redirect()->back()->with('success', $message);
         }
         return redirect()->back()->with('error', 'لا يمكن الموافقة على هذه المعاملة في حالتها الحالية.');
@@ -198,8 +214,18 @@ class TransactionController extends Controller
     public function confirmPayment(Transaction $transaction)
     {
         if ($transaction->status === 'waiting_for_payment' || $transaction->status === 'waiting_for_activation') {
-            $transaction->status = 'active'; // التفعيل النهائي بعد تأكيد الأدمن للدفع
+            $transaction->status = 'active';
             $transaction->save();
+
+            if ($transaction->user_id) {
+                $itemName = $transaction->service?->name_ar ?? $transaction->event?->title_ar ?? 'الاشتراك';
+                PushController::sendToUser($transaction->user_id,
+                    'تم تأكيد الدفع وتفعيل اشتراكك ✓',
+                    'تم تأكيد دفعك وتفعيل اشتراكك في "' . $itemName . '".',
+                    '/members/record'
+                );
+            }
+
             return redirect()->back()->with('success', 'تم تأكيد الدفع وتفعيل الخدمة بنجاح.');
         }
         return redirect()->back()->with('error', 'لا يمكن تأكيد الدفع لهذه المعاملة إلا إذا كانت "بانتظار الدفع" أو "بانتظار التفعيل".');
@@ -210,6 +236,16 @@ class TransactionController extends Controller
         if ($transaction->status !== 'rejected' && $transaction->status !== 'expired' && $transaction->status !== 'deactivated') {
             $transaction->status = 'rejected';
             $transaction->save();
+
+            if ($transaction->user_id) {
+                $itemName = $transaction->service?->name_ar ?? $transaction->event?->title_ar ?? 'الاشتراك';
+                PushController::sendToUser($transaction->user_id,
+                    'تم رفض طلب الاشتراك',
+                    'تم رفض طلب اشتراكك في "' . $itemName . '". يرجى التواصل مع الإدارة.',
+                    '/members/record'
+                );
+            }
+
             return redirect()->back()->with('success', 'تم رفض الطلب بنجاح.');
         }
 
@@ -225,6 +261,16 @@ class TransactionController extends Controller
         if ($transaction->status === 'active') {
             $transaction->status = 'deactivated';
             $transaction->save();
+
+            if ($transaction->user_id) {
+                $itemName = $transaction->service?->name_ar ?? $transaction->event?->title_ar ?? 'الاشتراك';
+                PushController::sendToUser($transaction->user_id,
+                    'تم إيقاف اشتراكك',
+                    'تم إيقاف اشتراكك في "' . $itemName . '" من قبل الإدارة.',
+                    '/members/record'
+                );
+            }
+
             return redirect()->back()->with('success', 'تم إلغاء تفعيل الخدمة بنجاح.');
         }
 

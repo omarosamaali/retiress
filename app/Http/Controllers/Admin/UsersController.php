@@ -63,7 +63,7 @@ class UsersController extends Controller
                 'subscription_6_months_price' => 'nullable|numeric|min:0',
                 'subscription_12_months_price' => 'nullable|numeric|min:0',
                 'profit_transfer_details' => 'string', // الآن اختيارية إذا لم تكن تريدها مطلوبة
-                'official_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // <--- هذا هو التعديل الرئيسي
+                'official_image' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:5120', // <--- هذا هو التعديل الرئيسي
             ]);
 
             // ...
@@ -116,7 +116,7 @@ class UsersController extends Controller
                 'subscription_6_months_price' => 'nullable|numeric|min:0',
                 'subscription_12_months_price' => 'nullable|numeric|min:0',
                 'profit_transfer_details' => 'string',
-                'official_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+                'official_image' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:5120',
             ]);
 
             $userDataToUpdate = [

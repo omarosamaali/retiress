@@ -54,6 +54,7 @@
                         <th>المستخدم</th>
                         <th>النوع</th>
                         <th>الخدمة / الإعلان</th>
+                        <th>رقم العضوية</th>
                         <th>الحالة</th>
                         <th>تاريخ الاشتراك</th>
                         <th>الإجراءات</th>
@@ -75,6 +76,27 @@
                                 {{ $t->event->title_ar ?? $t->event->title_en ?? '—' }}
                             @else
                                 —
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            @if($t->membership_number)
+                                @php
+                                    $memberApp = \App\Models\MemberApplication::where('membership_number', $t->membership_number)->first();
+                                    $isValid = $memberApp && $memberApp->expiration_date && \Carbon\Carbon::parse($memberApp->expiration_date)->isFuture();
+                                @endphp
+                                <div style="font-weight:600;font-size:.85rem;direction:ltr;">{{ $t->membership_number }}</div>
+                                @if($memberApp)
+                                    @if($isValid)
+                                        <span class="badge bg-success" style="font-size:.72rem;">✓ فعالة</span>
+                                    @else
+                                        <span class="badge bg-warning text-dark" style="font-size:.72rem;">⚠ منتهية</span>
+                                    @endif
+                                    <div style="font-size:.75rem;color:#6b7280;margin-top:2px;">{{ $memberApp->full_name ?? '' }}</div>
+                                @else
+                                    <span class="badge bg-danger" style="font-size:.72rem;">✗ غير موجود</span>
+                                @endif
+                            @else
+                                <span class="text-muted" style="font-size:.8rem;">—</span>
                             @endif
                         </td>
                         <td class="text-center">
@@ -120,7 +142,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center text-muted py-4">لا توجد معاملات</td>
+                        <td colspan="8" class="text-center text-muted py-4">لا توجد معاملات</td>
                     </tr>
                     @endforelse
                 </tbody>

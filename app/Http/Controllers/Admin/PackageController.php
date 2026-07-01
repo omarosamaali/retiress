@@ -48,7 +48,7 @@ class PackageController extends Controller
     {
         $request->validate([
             'name_ar' => 'required|string|max:255|unique:packages,name_ar',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
         ]);
 
@@ -109,7 +109,7 @@ class PackageController extends Controller
     {
         $request->validate([
             'name_ar' => 'required|string|max:255|unique:packages,name_ar,' . $package->id,
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
         ]);
 

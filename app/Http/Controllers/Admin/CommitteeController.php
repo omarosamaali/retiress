@@ -32,7 +32,7 @@ class CommitteeController extends Controller
         $request->validate([
             'name_ar' => 'required|string|max:255',
             'description_ar' => 'required|string', // تأكد أن النوع مطابق لقاعدة البيانات (longText أو text)
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // nullable إذا لم تكن الصورة إجبارية
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120', // nullable إذا لم تكن الصورة إجبارية
             'status' => 'required|boolean',
         ]);
 
@@ -105,7 +105,7 @@ class CommitteeController extends Controller
         $request->validate([
             'name_ar' => 'required|string|max:255',
             'description_ar' => 'required|string', // **أضف هذا لحقل الوصف**
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
         ]);
 

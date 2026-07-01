@@ -7152,6 +7152,39 @@ $daysRemaining = now()->diffInDays($expirationDate, false); // false عشان ي
                             @endif
                     </h3>
                 </div>
+
+                {{-- رفع إيصال الدفع — يظهر فقط عندما الحالة "بانتظار الدفع" (0) --}}
+                @if($membership->status == '0')
+                <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:10px;padding:20px;margin:20px 0;">
+                    <h4 style="color:#856404;margin-bottom:10px;">💳 بانتظار إتمام الدفع</h4>
+                    <p style="color:#856404;margin-bottom:15px;">يرجى إتمام عملية الدفع ثم رفع إيصال الدفع هنا للمراجعة.</p>
+                    @if($membership->payment_receipt)
+                    <div style="margin-bottom:12px;">
+                        <strong>الإيصال المرفق الحالي:</strong>
+                        @php $ext = pathinfo($membership->payment_receipt, PATHINFO_EXTENSION); @endphp
+                        @if(in_array(strtolower($ext), ['jpg','jpeg','png']))
+                        <br><img src="{{ asset('storage/'.$membership->payment_receipt) }}" style="max-width:250px;border-radius:6px;margin-top:8px;">
+                        @else
+                        <a href="{{ asset('storage/'.$membership->payment_receipt) }}" target="_blank" style="color:#0d6efd;">عرض الإيصال (PDF)</a>
+                        @endif
+                    </div>
+                    @endif
+                    <form method="POST" action="{{ route('members.membership.upload-receipt') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div style="margin-bottom:10px;">
+                            <label style="display:block;margin-bottom:6px;font-weight:600;">رفع إيصال الدفع (صورة أو PDF)</label>
+                            <input type="file" name="payment_receipt" accept="image/*,.pdf" required
+                                style="display:block;width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;">
+                            @error('payment_receipt')<span style="color:red;font-size:13px;">{{ $message }}</span>@enderror
+                        </div>
+                        <button type="submit"
+                            style="background:#198754;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:15px;cursor:pointer;">
+                            رفع الإيصال
+                        </button>
+                    </form>
+                </div>
+                @endif
+
                 <div class="container-imgs"
                     style="display: flex; align-items: center; justify-content: space-between; margin: 30px 0px;">
                     @if ($membership->front_id)

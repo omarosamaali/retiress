@@ -28,7 +28,7 @@ class FeatureController extends Controller
             'title_ar' => 'required|string|max:255',
             'main_image' => 'nullable|image|max:2048',
             'sub_images' => 'nullable|array|max:10',
-            'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'sub_images.*' => 'file|mimes:jpeg,png,jpg,gif,webp,pdf|max:5120',
             'description_ar' => 'required|string',
             'status' => 'required|boolean', // إضافة حقل الحالة
         ]);
@@ -113,7 +113,7 @@ class FeatureController extends Controller
             'title_ar' => 'required|string|max:255',
             'main_image' => 'nullable|image|max:2048',
             'sub_images' => 'nullable|array|max:10',
-            'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'sub_images.*' => 'file|mimes:jpeg,png,jpg,gif,webp,pdf|max:5120',
             'description_ar' => 'required|string',
             'status' => 'required|boolean',
         ]);

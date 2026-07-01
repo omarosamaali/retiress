@@ -81,7 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isAdmin()
     {
-        return $this->role === 'مدير';
+        return $this->canAccessAdminPanel();
     }
 
     public function canAccessAdminPanel(): bool
@@ -131,18 +131,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getSubscribeToEventBlockReason(Event $event): ?string
     {
-        if (! $this->isActive()) {
-            return 'account_inactive';
-        }
-
         if (! $event->isVisibleTo($this)) {
             return 'not_visible';
         }
 
-        if ($this->role !== 'عضو') {
-            return 'member_role_required';
+        // إعلانات للجميع — أي مستخدم مسجل يمكنه الاشتراك
+        if (! $event->isForMembersOnly()) {
+            return null;
         }
 
+        // إعلانات للأعضاء فقط — يجب عضوية فعالة بأكثر من 3 أشهر
         if (! $this->memberApplication) {
             return 'membership_required';
         }
@@ -151,7 +149,20 @@ class User extends Authenticatable implements MustVerifyEmail
             return 'membership_inactive';
         }
 
+        if (! $this->hasMembershipWithMonthsRemaining(3)) {
+            return 'membership_expiring_soon';
+        }
+
         return null;
+    }
+
+    public function hasMembershipWithMonthsRemaining(int $months): bool
+    {
+        $application = $this->memberApplication;
+        if (! $application || ! $application->expiration_date) {
+            return false;
+        }
+        return \Carbon\Carbon::parse($application->expiration_date)->isAfter(now()->addMonths($months));
     }
 
     public function getRoleBadgeClass()

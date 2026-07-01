@@ -57,8 +57,8 @@ class AboutUsController extends Controller
         $request->validate([
             'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
+            'sub_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
             'key' => 'required|string',
         ]);
@@ -135,8 +135,8 @@ class AboutUsController extends Controller
         $request->validate([
             'title_ar' => 'required|string|max:255',
             'description_ar' => 'required|string',
-            'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'sub_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'main_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
+            'sub_image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
         ]);
 

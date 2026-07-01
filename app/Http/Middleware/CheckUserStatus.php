@@ -38,15 +38,7 @@ class CheckUserStatus
 
         $user = Auth::user();
 
-        if ($this->isAccountInactive($user)) {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect('/login')->withErrors([
-                'email' => 'حسابك غير فعال حالياً. يرجى التواصل مع الإدارة.',
-            ]);
-        }
+        // حسابات غير الفعالة مسموح لها بالوصول للموقع وتقديم طلب عضوية
 
         if ($this->isAdminRequest($request, $currentRoute)) {
             if (! $user->canAccessAdminPanel()) {
@@ -77,6 +69,19 @@ class CheckUserStatus
         }
 
         return $request->is('admin', 'admin/*');
+    }
+
+    private function isMembershipRoute(?string $routeName): bool
+    {
+        return in_array($routeName, [
+            'members.my-membership',
+            'members.membership-show',
+            'members.application.store',
+            'members.renewal',
+            'members.application.edit',
+            'members.application.update',
+            'members.membership',
+        ], true);
     }
 
     private function isAccountInactive($user): bool

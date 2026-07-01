@@ -30,7 +30,7 @@ class ServiceController extends Controller
             'disclaimer_ar' => 'required|string',
             'chanel' => 'required|string',
             'price' => 'nullable|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'status' => 'required|boolean',
             'is_payed' => 'nullable|boolean',
         ]);
@@ -120,7 +120,7 @@ class ServiceController extends Controller
             'required_documents_ar' => 'required|string',
             'service_charter_ar' => 'required|string',
             'disclaimer_ar' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'chanel' => 'required|string',
             'price' => 'nullable|numeric',
             'status' => 'required|boolean',

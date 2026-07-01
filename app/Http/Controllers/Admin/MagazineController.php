@@ -27,10 +27,10 @@ class MagazineController extends Controller
         $request->validate([
             'title_ar' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'main_image' => 'nullable|image|max:2048',
             'sub_images' => 'nullable|array|max:10',
-            'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'sub_images.*' => 'file|mimes:jpeg,png,jpg,gif,webp,pdf|max:5120',
             'description_ar' => 'required|string',
             'status' => 'required|boolean',
         ]);
@@ -98,10 +98,10 @@ class MagazineController extends Controller
         $request->validate([
             'title_ar' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:5120',
             'main_image' => 'nullable|image|max:2048',
             'sub_images' => 'nullable|array|max:10',
-            'sub_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'sub_images.*' => 'file|mimes:jpeg,png,jpg,gif,webp,pdf|max:5120',
             'description_ar' => 'required|string',
             'status' => 'required|boolean',
         ]);

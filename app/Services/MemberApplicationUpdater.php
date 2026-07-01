@@ -112,10 +112,32 @@ class MemberApplicationUpdater
                 ->store('member_applications_documents/'.$userId, 'public');
         }
 
+        $oldStatus = (string) $application->status;
+        $newStatus = isset($data['status']) ? (string) $data['status'] : $oldStatus;
+
         $application->update($data);
         $application->refresh();
 
         $this->syncUserRoleForActiveMembership($application);
+
+        // إشعار المستخدم عند تغيير الحالة
+        if ($oldStatus !== $newStatus && $application->user_id) {
+            if ($newStatus === '0') {
+                \App\Http\Controllers\PushController::sendToUser(
+                    $application->user_id,
+                    'طلب عضويتك — بانتظار الدفع',
+                    'تمت مراجعة طلبك. يرجى إتمام عملية الدفع ورفع إيصال الدفع.',
+                    '/members/my-membership'
+                );
+            } elseif ($newStatus === '3') {
+                \App\Http\Controllers\PushController::sendToUser(
+                    $application->user_id,
+                    'تم تفعيل عضويتك ✓',
+                    'مبروك! تم تفعيل عضويتك بنجاح.',
+                    '/members/my-membership'
+                );
+            }
+        }
     }
 
     private function cleanExperiences(array $rows): array

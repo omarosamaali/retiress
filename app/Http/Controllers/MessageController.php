@@ -23,7 +23,7 @@ class MessageController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'file' => 'nullable|file|mimes:jpg,png,mp4|max:10240',
+            'file' => 'nullable|file|mimes:jpg,png,mp4,pdf|max:10240',
         ]);
 
         $filePath = null;
@@ -141,7 +141,7 @@ class MessageController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,mp4,mov,avi|max:20480', // 20MB
+            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,pdf|max:20480', // 20MB
         ]);
 
         $filePath = null;
@@ -173,7 +173,7 @@ class MessageController extends Controller
 
         $request->validate([
             'content' => 'required|string',
-            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,mp4,mov,avi|max:20480', // 20MB
+            'file' => 'nullable|file|mimes:jpeg,png,jpg,gif,mp4,mov,avi,pdf|max:20480', // 20MB
         ]);
 
         $filePath = null;
@@ -237,7 +237,7 @@ class MessageController extends Controller
 
         $request->validate([
             'content' => 'nullable|string',
-            'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,avi|max:20480',
+            'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,avi,pdf|max:20480',
         ]);
 
         $message = Message::findOrFail($id);
@@ -311,7 +311,7 @@ class MessageController extends Controller
 
         $request->validate([
             'content' => 'nullable|string',
-            'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,avi|max:20480',
+            'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,avi,pdf|max:20480',
             'status' => 'required|string|in:unread,opened,replied,closed',
         ]);
 
@@ -353,7 +353,7 @@ class MessageController extends Controller
 
         $request->validate([
             'content' => 'required_without_all:file|nullable|string',
-            'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,avi|max:20480',
+            'file' => 'nullable|file|mimes:jpg,jpeg,png,gif,mp4,mov,avi,pdf|max:20480',
         ]);
 
         $message = Message::findOrFail($id);
