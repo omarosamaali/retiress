@@ -33,12 +33,12 @@ class RegisterControllerUser extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'role' => 'عضو',
-                'status' => 'بانتظار التفعيل',
+                'status' => 'فعال',
             ]);
 
             // Push notification للموظفين
             \App\Http\Controllers\PushController::sendToStaff(
-                'عضو جديد بانتظار التفعيل',
+                'عضو جديد',
                 $request->name . ' سجّل حساباً جديداً',
                 '/admin/users'
             );

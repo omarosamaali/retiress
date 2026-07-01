@@ -189,7 +189,18 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="detail-item">
                             <span class="detail-label">{{ $label }}:</span>
-                            <img src="{{ asset('storage/' . $path) }}" alt="{{ $label }}" class="image-preview w-100">
+                            @php $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION)); @endphp
+                            @if ($ext === 'pdf')
+                                <a href="{{ asset('storage/' . $path) }}" target="_blank"
+                                   style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:#fef2f2;border:1.5px solid #fca5a5;border-radius:8px;color:#dc2626;font-weight:600;text-decoration:none;margin-top:4px;">
+                                    <i class="fas fa-file-pdf fa-lg"></i>
+                                    عرض {{ $label }} (PDF)
+                                </a>
+                            @else
+                                <a href="{{ asset('storage/' . $path) }}" target="_blank">
+                                    <img src="{{ asset('storage/' . $path) }}" alt="{{ $label }}" class="image-preview w-100" style="cursor:zoom-in;">
+                                </a>
+                            @endif
                         </div>
                     </div>
                 @endif
