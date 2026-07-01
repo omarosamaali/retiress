@@ -48,14 +48,18 @@
                                         type="email" class="form-control-k7o fsbsy" required>
                                     <div class="error-message" id="email-error"></div>
                                 </div>
-                                <div class="input-3ob">
+                                <div class="input-3ob" style="position:relative;">
                                     <div class="label-dav input-fja">
                                         <div class="input-f96">
                                             <span class="input-fo3"><i class="fa-evk fa-pp5"></i></span>
                                         </div>
-                                        <input value="123456789" placeholder="{{ __('app.password_placeholder') }}"
+                                        <input placeholder="{{ __('app.password_placeholder') }}"
                                             id="password" name="password" type="password" class="form-control-k7o fsbsy"
-                                            required>
+                                            required style="padding-left:44px;">
+                                        <button type="button" id="togglePassword"
+                                            style="position:absolute;top:50%;left:12px;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#95a4af;padding:0;line-height:1;z-index:2;">
+                                            <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                                        </button>
                                         <div class="error-message" id="password-error"></div>
                                     </div>
                                 </div>
@@ -178,6 +182,17 @@
             });
         });
     });
+        // أيقونة إظهار/إخفاء كلمة المرور
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eyeIcon');
+        if (togglePassword) {
+            togglePassword.addEventListener('click', function() {
+                const isHidden = passwordInput.type === 'password';
+                passwordInput.type = isHidden ? 'text' : 'password';
+                eyeIcon.className = isHidden ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+            });
+        }
     </script>
     </div>
 </body>

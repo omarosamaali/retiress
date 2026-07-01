@@ -31,12 +31,7 @@ class LoginControllerUser extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            if ($user->status === 'بانتظار التفعيل') {
-                return response()->json(['errors' => ['email' => ['حسابك في انتظار مراجعة الإدارة. سيتم إشعارك عند التفعيل.']]], 422);
-            }
-            if (in_array($user->status, ['غير فعال', 'بإنتظار إستكمال البيانات'])) {
-                return response()->json(['errors' => ['email' => ['حسابك غير فعال حالياً. يرجى التواصل مع الإدارة.']]], 422);
-            }
+            // لا يوجد تحقق من حالة الحساب — كل الحسابات مسموح لها بتسجيل الدخول
         }
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {

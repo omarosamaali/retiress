@@ -69,7 +69,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-            'status' => $request->status ?? 'بانتظار التفعيل', // الحالة الأولية
+            'status' => $request->status ?? 'فعال',
             'email_verified_at' => null, // يجب أن تكون null حتى يتم تأكيد الـ OTP
             'otp_expires_at' => null, // سيتم تعيينه لاحقاً إذا كان طاهياً
         ];

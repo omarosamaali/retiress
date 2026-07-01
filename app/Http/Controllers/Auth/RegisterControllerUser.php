@@ -45,7 +45,7 @@ class RegisterControllerUser extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'تم تسجيل حسابك بنجاح! حسابك في انتظار مراجعة الإدارة وسيتم تفعيله قريباً.',
+                'message' => 'تم تسجيل حسابك بنجاح! يمكنك تسجيل الدخول الآن.',
                 'redirect' => route('members.login')
             ], 201);
         } catch (\Exception $e) {
