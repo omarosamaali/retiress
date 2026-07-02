@@ -726,10 +726,12 @@
     @endif
     @endauth
 
-    {{-- اشتراك Push — يشتغل في كل الأحوال (browser + PWA) --}}
+    {{-- اشتراك Push — للمستخدمين المسجّلين فقط --}}
+    @auth
     <script>
     (function() {
         if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+        var currentUserId = {{ auth()->id() }};
 
         function urlB64ToUint8(b) {
             var pad = '='.repeat((4 - b.length % 4) % 4);
@@ -745,7 +747,7 @@
             return fetch('/push/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf },
-                body: JSON.stringify({ endpoint: d.endpoint, keys: { p256dh: d.keys.p256dh, auth: d.keys.auth } })
+                body: JSON.stringify({ endpoint: d.endpoint, keys: { p256dh: d.keys.p256dh, auth: d.keys.auth }, user_id: currentUserId })
             });
         }
 
@@ -805,6 +807,7 @@
             .catch(function(e) { console.warn('VAPID fetch failed:', e); });
     })();
     </script>
+    @endauth
 
     {{-- CSS كارت العضو — يُحمَّل دائماً للمسجلين والزوار --}}
     <style>

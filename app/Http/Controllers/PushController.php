@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\PushSubscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Minishlink\WebPush\WebPush;
 use Minishlink\WebPush\Subscription;
 
@@ -11,16 +13,28 @@ class PushController extends Controller
 {
     public function subscribe(Request $request)
     {
+        // رفض الاشتراك من غير مستخدم مسجّل — يمنع ربط subscription بـ null أو مستخدم خاطئ
+        if (!Auth::check()) {
+            return response()->json(['status' => 'skipped'], 200);
+        }
+
         $request->validate([
-            'endpoint'   => 'required|string',
+            'endpoint'    => 'required|string',
             'keys.p256dh' => 'required|string',
             'keys.auth'   => 'required|string',
         ]);
 
+        $userId = Auth::id();
+
+        // حذف أي subscription قديم بنفس الـ endpoint إذا كان تابع لمستخدم آخر
+        PushSubscription::where('endpoint', $request->endpoint)
+            ->where('member_id', '!=', $userId)
+            ->delete();
+
         PushSubscription::updateOrCreate(
             ['endpoint' => $request->endpoint],
             [
-                'member_id'  => auth()->id() ?? null,
+                'member_id'  => $userId,
                 'p256dh_key' => $request->input('keys.p256dh'),
                 'auth_token' => $request->input('keys.auth'),
             ]
@@ -138,7 +152,7 @@ class PushController extends Controller
                 }
             }
         } catch (\Throwable $e) {
-            \Log::error('User push notification failed: ' . $e->getMessage());
+            Log::error('User push notification failed: ' . $e->getMessage());
         }
     }
 
@@ -188,7 +202,7 @@ class PushController extends Controller
                 }
             }
         } catch (\Throwable $e) {
-            \Log::error('Staff push notification failed: ' . $e->getMessage());
+            Log::error('Staff push notification failed: ' . $e->getMessage());
         }
     }
 }
