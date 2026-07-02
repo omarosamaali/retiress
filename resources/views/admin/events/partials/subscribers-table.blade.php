@@ -55,10 +55,27 @@
         @endforeach
     </div>
 
+    {{-- شريط الحذف الجماعي --}}
+    <form id="bulk-delete-form" action="{{ route('admin.transactions.bulk-destroy') }}" method="POST"
+          onsubmit="return confirm('هل أنت متأكد من حذف السجلات المحددة نهائياً؟')">
+        @csrf
+        <div id="bulk-actions-bar" style="display:none; align-items:center; gap:10px; background:#fff3cd; border:1px solid #ffc107; border-radius:8px; padding:10px 16px; margin-bottom:12px;">
+            <span id="selected-count" style="font-weight:700; color:#856404;"></span>
+            <button type="submit" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i> حذف المحددة
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="clearSelection()">
+                إلغاء التحديد
+            </button>
+        </div>
+
     <div class="table-responsive">
         <table class="table table-hover table-bordered">
             <thead class="table-light">
                 <tr>
+                    <th style="width:40px;">
+                        <input type="checkbox" id="select-all" title="تحديد الكل" style="cursor:pointer; width:16px; height:16px;">
+                    </th>
                     <th>#</th>
                     <th>تاريخ الاشتراك</th>
                     <th>اسم المشترك</th>
@@ -72,6 +89,10 @@
             <tbody>
                 @forelse ($eventTransactions as $index => $transaction)
                     <tr>
+                        <td>
+                            <input type="checkbox" name="ids[]" value="{{ $transaction->id }}"
+                                   class="row-checkbox" style="cursor:pointer; width:16px; height:16px;">
+                        </td>
                         <td>{{ $index + 1 }}</td>
                         <td>
                             {{ $transaction->subscribed_at
@@ -160,7 +181,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="text-center py-4 text-muted">
+                        <td colspan="9" class="text-center py-4 text-muted">
                             لا يوجد مشتركون{{ ($subscriptionStatusFilter ?? 'all') !== 'all' ? ' بهذه الحالة' : '' }} لهذا الإعلان.
                         </td>
                     </tr>
@@ -168,4 +189,42 @@
             </tbody>
         </table>
     </div>
+    </form>
 </div>
+
+<script>
+(function () {
+    const selectAll   = document.getElementById('select-all');
+    const bar         = document.getElementById('bulk-actions-bar');
+    const countLabel  = document.getElementById('selected-count');
+
+    function updateBar() {
+        const checked = document.querySelectorAll('.row-checkbox:checked');
+        if (checked.length > 0) {
+            bar.style.display = 'flex';
+            countLabel.textContent = 'محدد: ' + checked.length + ' سجل';
+        } else {
+            bar.style.display = 'none';
+        }
+        const all = document.querySelectorAll('.row-checkbox');
+        selectAll.checked = all.length > 0 && checked.length === all.length;
+        selectAll.indeterminate = checked.length > 0 && checked.length < all.length;
+    }
+
+    selectAll.addEventListener('change', function () {
+        document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = this.checked);
+        updateBar();
+    });
+
+    document.querySelectorAll('.row-checkbox').forEach(cb => {
+        cb.addEventListener('change', updateBar);
+    });
+
+    window.clearSelection = function () {
+        document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = false);
+        selectAll.checked = false;
+        selectAll.indeterminate = false;
+        updateBar();
+    };
+})();
+</script>

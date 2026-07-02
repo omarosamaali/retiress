@@ -6,7 +6,9 @@
     ],
     "additionalDirectories": [
       "f:\\retiress\\resources\\views\\components",
-      "f:\\retiress\\resources\\views\\admin\\events\\partials"
+      "f:\\retiress\\resources\\views\\admin\\events\\partials",
+      "f:\\retiress\\resources\\views\\members\\panel",
+      "f:\\retiress\\resources\\views\\admin\\events"
     ]
   }
 }

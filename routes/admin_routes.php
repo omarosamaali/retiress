@@ -45,6 +45,7 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::post('transactions/{transaction}/reject', [TransactionController::class, 'reject'])->name('transactions.reject');
     Route::post('transactions/{transaction}/deactivate', [TransactionController::class, 'deactivate'])->name('transactions.deactivate');
     Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+    Route::post('transactions/bulk-delete', [TransactionController::class, 'bulkDestroy'])->name('transactions.bulk-destroy');
 
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::get('/settings/create', [SettingsController::class, 'create'])->name('settings.create');
@@ -79,6 +80,7 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::resource('packages', PackageController::class);
     Route::resource('plans', PlanController::class);
     Route::resource('event', EventController::class);
+    Route::get('event/{event}/print', [EventController::class, 'printView'])->name('event.print');
     Route::resource('news', NewsController::class);
     Route::resource('magazines', MagazineController::class);
     Route::resource('feature', FeatureController::class);

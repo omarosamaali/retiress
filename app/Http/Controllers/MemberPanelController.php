@@ -109,15 +109,29 @@ class MemberPanelController extends Controller
     public function invoices(): View
     {
         $user = Auth::user();
-        abort_unless($user->isMemberRole(), 403);
+        abort_unless($user->isMemberRole() || $user->memberApplication, 403);
 
-        $invoiceTransactions = Transaction::with('event')
+        // العضوية — تحتاج دفع إذا status=0، أو يمكن تجديدها إذا status=3/4
+        $membershipApp = $user->memberApplication;
+
+        // معاملات بانتظار الدفع (إعلانات أو خدمات)
+        $pendingPaymentTransactions = Transaction::with(['event', 'service'])
             ->where('user_id', $user->id)
-            ->whereNotNull('event_id')
-            ->whereHas('event', fn($q) => $q->where('price', '>', 0))
+            ->where('status', 'waiting_for_payment')
             ->orderByDesc('subscribed_at')
             ->get();
 
-        return view('members.panel.invoices', compact('invoiceTransactions'));
+        // كل المعاملات (للتاريخ)
+        $allTransactions = Transaction::with(['event', 'service'])
+            ->where('user_id', $user->id)
+            ->whereNotIn('status', ['waiting_for_payment'])
+            ->orderByDesc('subscribed_at')
+            ->get();
+
+        return view('members.panel.invoices', compact(
+            'membershipApp',
+            'pendingPaymentTransactions',
+            'allTransactions'
+        ));
     }
 }

@@ -75,7 +75,7 @@ class TransactionController extends Controller
             ->whereIn('status', ['pending', 'waiting_for_payment', 'waiting_for_activation', 'active'])
             ->exists();
         if ($existingTransaction) {
-            return redirect()->route('members.record')->with('error', __('app.already_subscribed'));
+            return redirect()->route('services.show', $service->id)->with('error', __('app.already_subscribed'));
         }
         Transaction::create([
             'user_id' => Auth::id(),
@@ -91,7 +91,7 @@ class TransactionController extends Controller
             '/admin/transactions'
         );
 
-        return redirect()->route('members.record')->with('success', __('app.subscription_success'));
+        return redirect()->route('services.show', $service->id)->with('success', __('app.subscription_success'));
     }
 
     /**
@@ -281,5 +281,15 @@ class TransactionController extends Controller
     {
         $transaction->delete();
         return redirect()->back()->with('success', 'تم حذف الاشتراك بنجاح.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids)) {
+            return redirect()->back()->with('error', 'لم يتم تحديد أي سجل للحذف.');
+        }
+        Transaction::whereIn('id', $ids)->delete();
+        return redirect()->back()->with('success', 'تم حذف ' . count($ids) . ' سجل بنجاح.');
     }
 }

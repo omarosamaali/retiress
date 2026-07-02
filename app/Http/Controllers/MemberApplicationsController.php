@@ -296,6 +296,30 @@ class MemberApplicationsController extends Controller
         return redirect()->back()->with('success', 'تم رفع إيصال الدفع بنجاح. سيتم مراجعته من قبل الموظفين.');
     }
 
+    /**
+     * طلب تجديد العضوية — يحول الحالة إلى "بانتظار الدفع" مباشرة
+     */
+    public function requestRenewal(Request $request)
+    {
+        $application = \App\Models\MemberApplication::where('user_id', Auth::id())->firstOrFail();
+
+        if (!in_array((string) $application->status, ['3', '4'])) {
+            return redirect()->route('members.panel.invoices')
+                ->with('error', 'لا يمكن تجديد العضوية في وضعها الحالي.');
+        }
+
+        $application->update(['status' => '0']);
+
+        \App\Http\Controllers\PushController::sendToStaff(
+            'طلب تجديد عضوية',
+            ($application->full_name ?? 'عضو') . ' طلب تجديد عضويته. يرجى المراجعة.',
+            '/admin/manageMembership'
+        );
+
+        return redirect()->route('members.panel.invoices')
+            ->with('success', 'تم إرسال طلب التجديد. يرجى رفع إيصال الدفع.');
+    }
+
     private function generateMembershipNumber()
     {
         $maxAttempts = 10;

@@ -35,10 +35,6 @@
                         <a href="{{ route('members.recordEvents') }}">الإعلانات</a>
                     </li> --}}
 
-                    <li>
-                        <a href="{{ route('members.record') }}">سجل المعاملات</a>
-                    </li>
-
                     <li><a href="{{ route('chat') }}">اتصل بنا</a></li>
                     @auth
                     <form action="{{ route('members.logout') }}" method="POST" style="margin-top: 1rem;">

@@ -242,6 +242,7 @@
                             <div class="action-buttons">
                                 <a href="{{ route('admin.event.show', $item->id) }}" class="btn btn-info btn-sm" title="عرض"><i class="fas fa-eye"></i></a>
                                 <a href="{{ route('admin.event.edit', $item->id) }}" class="btn btn-warning btn-sm" title="تعديل"><i class="fas fa-edit"></i></a>
+                                <a href="{{ route('admin.event.print', $item->id) }}" target="_blank" class="btn btn-secondary btn-sm" title="طباعة"><i class="fas fa-print"></i></a>
                                 <button class="btn btn-danger btn-sm" title="حذف" onclick="confirmDelete({{ $item->id }})"><i class="fas fa-trash"></i></button>
                             </div>
                         </td>

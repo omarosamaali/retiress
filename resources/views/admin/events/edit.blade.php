@@ -88,10 +88,16 @@
 
 @section('content')
 <div class="add-section">
-    <h5 class="mb-4">
-        <i class="fas fa-newspaper ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
-        تعديل الإعلان: {{ $event->title_ar }}
-    </h5>
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+        <h5 class="mb-0">
+            <i class="fas fa-newspaper ms-2 text-primary" style="margin-left: 10px; font-size: 1rem;"></i>
+            تعديل الإعلان: {{ $event->title_ar }}
+        </h5>
+        <a href="{{ route('admin.event.print', $event->id) }}" target="_blank"
+           class="btn btn-secondary btn-sm" title="طباعة قائمة المشتركين">
+            <i class="fas fa-print"></i> طباعة المشتركين
+        </a>
+    </div>
 
     @if ($errors->any())
     <div class="alert alert-danger alert-dismissible fade show" role="alert">

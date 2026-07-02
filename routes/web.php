@@ -55,10 +55,7 @@ Route::get('faq', function () {
     return view('faq',  compact('faqs'));
 })->name('faq');
 
-Route::get('/member/records', [TransactionController::class, 'record'])->name('members.record');
-
 Route::middleware(['auth'])->name('members.')->group(function () {
-    Route::get('/my-transactions', [TransactionController::class, 'record'])->name('record');
     Route::post('/subscribe/{service}', [TransactionController::class, 'subscribe'])->name('subscribe');
     // المسار الجديد لرفع الإيصال
     Route::post('/transactions/{transaction}/upload-receipt', [TransactionController::class, 'uploadReceipt'])->name('upload_receipt');
@@ -96,6 +93,7 @@ Route::get('/members/committee-members/{id}', function ($id) {
 Route::middleware('auth')->group(function () {
     Route::get('/members/panel', [\App\Http\Controllers\MemberPanelController::class, 'index'])->name('members.panel');
     Route::get('/members/panel/invoices', [\App\Http\Controllers\MemberPanelController::class, 'invoices'])->name('members.panel.invoices');
+    Route::post('/members/membership/request-renewal', [\App\Http\Controllers\MemberApplicationsController::class, 'requestRenewal'])->name('members.membership.request-renewal');
     Route::get('/members/notifications', [\App\Http\Controllers\MemberNotificationController::class, 'index'])->name('members.notifications.index');
     Route::post('/members/notifications/{userNotification}/dismiss', [\App\Http\Controllers\MemberNotificationController::class, 'dismiss'])->name('members.notifications.dismiss');
     Route::post('/members/notifications/{userNotification}/read', [\App\Http\Controllers\MemberNotificationController::class, 'read'])->name('members.notifications.read');
@@ -103,16 +101,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/members/recordEvents', function () {
         return view('members.sidebar.recordEvents');
     })->name('members.recordEvents');
-    Route::get('/members/record', function () {
-        $transactions = Transaction::with(['service', 'event'])
-            ->where('user_id', Auth::id())
-            ->orderByDesc('subscribed_at')
-            ->get();
-        $memberships = MemberApplication::where('user_id', Auth::id())->get();
-
-        return view('members.sidebar.record', compact('transactions', 'memberships'));
-    })->name('members.record');
-
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
     Route::get('/members/profile', [GuestProfileController::class, 'edit'])->name('members.profile');
     Route::put('/members/profile', [GuestProfileController::class, 'update'])->name('members.profile.update');

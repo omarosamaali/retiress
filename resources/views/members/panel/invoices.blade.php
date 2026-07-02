@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+<html lang="{{ app()->getLocale() }}" dir="rtl">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,134 +9,107 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styleU.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <style>
-        .inv-page {
-            max-width: 1100px;
-            margin: 90px auto 40px;
-            padding: 0 16px;
-        }
-        .inv-breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: #64748b;
-            margin-bottom: 20px;
-        }
-        .inv-breadcrumb a { color: #016330; text-decoration: none; }
-        .inv-breadcrumb a:hover { text-decoration: underline; }
-        .inv-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .inv-title i { color: #059669; }
-        .inv-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 14px;
-        }
-        @media (max-width: 900px) { .inv-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 600px) { .inv-grid { grid-template-columns: repeat(2, 1fr); } }
+        .inv-page { max-width: 900px; margin: 90px auto 60px; padding: 0 16px; }
+        .inv-breadcrumb { display:flex; align-items:center; gap:8px; font-size:13px; color:#64748b; margin-bottom:20px; }
+        .inv-breadcrumb a { color:#b68a35; text-decoration:none; }
+        .inv-title { font-size:1.4rem; font-weight:800; color:#1e293b; margin-bottom:24px; display:flex; align-items:center; gap:10px; }
+        .inv-title i { color:#b68a35; }
 
+        /* بطاقة واحدة */
         .inv-card {
-            background: #fff;
-            border-radius: 14px;
-            box-shadow: 0 1px 8px rgba(0,0,0,.08);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #e2e8f0;
-            transition: transform .15s, box-shadow .15s;
+            background:#fff;
+            border-radius:14px;
+            box-shadow:0 2px 12px rgba(0,0,0,.07);
+            border:1px solid #e2e8f0;
+            margin-bottom:16px;
+            overflow:hidden;
         }
-        .inv-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,.13); }
+        .inv-card--urgent { border-color:#f59e0b; box-shadow:0 2px 12px rgba(245,158,11,.15); }
+        .inv-card--done   { border-color:#d1fae5; opacity:.85; }
 
-        .inv-card__thumb {
-            width: 100%;
-            aspect-ratio: 4/3;
-            object-fit: cover;
-            background: #f1f5f9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-size: 2rem;
+        .inv-card__header {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:14px 20px;
+            background:#fafafa;
+            border-bottom:1px solid #f1f5f9;
+            gap:12px;
+            flex-wrap:wrap;
         }
-        .inv-card__thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .inv-card__title { font-weight:700; font-size:15px; color:#1e293b; display:flex; align-items:center; gap:8px; }
+        .inv-badge {
+            display:inline-block; font-size:11px; font-weight:700;
+            padding:3px 10px; border-radius:20px;
+        }
+        .inv-badge--pending  { background:#fffbeb; color:#b45309; border:1px solid #fde68a; }
+        .inv-badge--waiting  { background:#ede9fe; color:#6d28d9; border:1px solid #ddd6fe; }
+        .inv-badge--active   { background:#e8f3ed; color:#016330; border:1px solid #a7f3d0; }
+        .inv-badge--rejected { background:#fef2f2; color:#b91c1c; border:1px solid #fecaca; }
+        .inv-badge--done     { background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; }
+
+        .inv-card__body { padding:16px 20px; }
+
+        .inv-info-row { display:flex; gap:24px; flex-wrap:wrap; margin-bottom:14px; }
+        .inv-info-item { display:flex; flex-direction:column; gap:2px; }
+        .inv-info-item label { font-size:11px; color:#94a3b8; font-weight:600; text-transform:uppercase; }
+        .inv-info-item span { font-size:14px; color:#1e293b; font-weight:600; }
+
+        /* فورم رفع الإيصال */
+        .inv-upload-box {
+            background:#f8fafc;
+            border:2px dashed #cbd5e1;
+            border-radius:10px;
+            padding:16px;
+            margin-top:14px;
+        }
+        .inv-upload-box label { display:block; font-weight:700; font-size:13px; color:#475569; margin-bottom:8px; }
+        .inv-upload-box input[type=file] {
+            display:block; width:100%; padding:8px;
+            border:1px solid #e2e8f0; border-radius:6px;
+            background:#fff; font-size:13px;
+        }
+        .inv-upload-btn {
+            margin-top:10px;
+            display:inline-flex; align-items:center; gap:6px;
+            background:#b68a35; color:#fff; border:none;
+            padding:9px 22px; border-radius:8px; font-size:14px; font-weight:700;
+            cursor:pointer; transition:background .18s;
+        }
+        .inv-upload-btn:hover { background:#8a6828; }
+
+        .inv-receipt-preview {
+            display:flex; align-items:center; gap:10px;
+            background:#f0fdf4; border:1px solid #bbf7d0;
+            border-radius:8px; padding:10px 14px; margin-top:10px;
+        }
+        .inv-receipt-preview i { color:#16a34a; font-size:18px; }
+
+        /* زر التجديد */
+        .inv-renew-btn {
+            display:inline-flex; align-items:center; gap:8px;
+            background:#b68a35; color:#fff; border:none;
+            padding:11px 28px; border-radius:10px;
+            font-size:15px; font-weight:800; cursor:pointer; transition:background .18s;
+        }
+        .inv-renew-btn:hover { background:#8a6828; }
+
+        /* قسم التاريخ */
+        .inv-section-title {
+            font-size:14px; font-weight:700; color:#64748b;
+            margin:28px 0 10px;
+            display:flex; align-items:center; gap:8px;
+        }
+        .inv-section-title::after {
+            content:''; flex:1; height:1px; background:#e2e8f0;
         }
 
-        .inv-card__body {
-            padding: 12px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .inv-card__event {
-            font-size: 12px;
-            font-weight: 700;
-            color: #1e293b;
-            line-height: 1.3;
-        }
-        .inv-card__date {
-            font-size: 10px;
-            color: #64748b;
-        }
-        .inv-card__amount {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            font-size: 13px;
-            font-weight: 800;
-            color: #059669;
-            margin-top: auto;
-        }
-        .inv-card__amount img { height: 13px; width: auto; vertical-align: middle; }
-        .inv-card__status {
-            display: inline-block;
-            font-size: 10px;
-            font-weight: 600;
-            padding: 2px 7px;
-            border-radius: 20px;
-            margin-top: 4px;
-        }
-        .inv-card__actions {
-            padding: 8px 12px 12px;
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .inv-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 6px;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-        }
-        .inv-btn--view { background: #e8f3ed; color: #016330; }
-        .inv-btn--receipt { background: #e8f0fe; color: #1a73e8; }
-        .inv-btn--view:hover { background: #d1fae5; }
-        .inv-btn--receipt:hover { background: #dbeafe; }
+        .inv-empty { text-align:center; padding:40px 20px; color:#94a3b8; }
+        .inv-empty i { font-size:2.5rem; display:block; margin-bottom:10px; }
 
-        .inv-empty {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            color: #94a3b8;
-            font-size: 1rem;
+        @media (max-width:600px) {
+            .inv-info-row { gap:14px; }
+            .inv-card__header { padding:12px 14px; }
+            .inv-card__body { padding:12px 14px; }
         }
-        .inv-empty i { font-size: 3rem; display: block; margin-bottom: 12px; }
     </style>
 </head>
 <body class="mp-body">
@@ -153,81 +126,267 @@
         <div class="inv-title">
             <i class="fa-solid fa-file-invoice-dollar"></i>
             فواتيري
-            <span style="font-size:14px;font-weight:600;color:#64748b;margin-right:4px;">({{ $invoiceTransactions->count() }})</span>
         </div>
 
-        <div class="inv-grid">
-            @forelse ($invoiceTransactions as $transaction)
-                @php
-                    $__ev     = $transaction->event;
-                    $__title  = $__ev ? (app()->getLocale() == 'ar' ? $__ev->title_ar : $__ev->title_en) : '—';
-                    $__price  = $__ev?->price ?? 0;
-                    $__isFree = $__ev?->isFree() ?? true;
-                    $__date   = $transaction->subscribed_at
-                        ? \Carbon\Carbon::parse($transaction->subscribed_at)->format('d/m/Y — h:i A')
-                        : ($transaction->created_at?->format('d/m/Y — h:i A') ?? '—');
-                    $__statusColors = [
-                        'active'                => ['bg'=>'#e8f3ed','color'=>'#016330'],
-                        'waiting_for_payment'   => ['bg'=>'#fffbeb','color'=>'#b45309'],
-                        'waiting_for_activation'=> ['bg'=>'#ede9fe','color'=>'#6d28d9'],
-                        'pending'               => ['bg'=>'#fef9c3','color'=>'#854d0e'],
-                        'rejected'              => ['bg'=>'#fef2f2','color'=>'#b91c1c'],
-                        'expired'               => ['bg'=>'#f1f5f9','color'=>'#475569'],
-                        'deactivated'           => ['bg'=>'#f1f5f9','color'=>'#475569'],
-                    ];
-                    $__sc = $__statusColors[$transaction->status] ?? ['bg'=>'#f1f5f9','color'=>'#475569'];
-                @endphp
-                <div class="inv-card">
-                    {{-- Thumbnail --}}
-                    <div class="inv-card__thumb">
-                        @if ($transaction->receipt_image)
-                            <a href="{{ \Illuminate\Support\Facades\Storage::url($transaction->receipt_image) }}" target="_blank"
-                               style="display:block;width:100%;height:100%;">
-                                <img src="{{ \Illuminate\Support\Facades\Storage::url($transaction->receipt_image) }}"
-                                     alt="إيصال {{ $__title }}">
-                            </a>
-                        @else
-                            <i class="fa-solid fa-file-invoice"></i>
-                        @endif
-                    </div>
+        {{-- رسائل النجاح/الخطأ --}}
+        @if (session('success'))
+            <div style="background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-weight:600;">
+                <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
+            </div>
+        @endif
+        @if (session('error'))
+            <div style="background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;padding:12px 16px;border-radius:8px;margin-bottom:16px;font-weight:600;">
+                <i class="fa-solid fa-circle-xmark"></i> {{ session('error') }}
+            </div>
+        @endif
 
-                    <div class="inv-card__body">
-                        <div class="inv-card__event">{{ \Illuminate\Support\Str::limit($__title, 50) }}</div>
-                        <div class="inv-card__date"><i class="fa-regular fa-clock"></i> {{ $__date }}</div>
-                        <div class="inv-card__amount">
-                            @if ($__isFree)
-                                <span style="color:#016330;">مجاني</span>
-                            @else
-                                {{ number_format((float) $__price, 0) }}
-                                <img src="{{ asset('assets/images/drhm.svg') }}" alt="درهم">
-                            @endif
-                        </div>
-                        <span class="inv-card__status" style="background:{{ $__sc['bg'] }};color:{{ $__sc['color'] }};">
-                            {{ $transaction->status_label }}
-                        </span>
-                    </div>
+        {{-- ========== قسم: تحتاج إجراء ========== --}}
+        @php
+            $hasPendingItems = false;
+            $membershipNeedsPayment = $membershipApp && (string)$membershipApp->status === '0';
+            $membershipCanRenew     = $membershipApp && in_array((string)$membershipApp->status, ['3','4']);
+            if ($membershipNeedsPayment || $pendingPaymentTransactions->count()) $hasPendingItems = true;
+        @endphp
 
-                    <div class="inv-card__actions">
-                        @if ($__ev)
-                            <a href="{{ route('events.show', $__ev) }}" class="inv-btn inv-btn--view">
-                                <i class="fa-solid fa-eye"></i> الإعلان
-                            </a>
-                        @endif
-                        @if ($transaction->receipt_image)
-                            <a href="{{ \Illuminate\Support\Facades\Storage::url($transaction->receipt_image) }}"
-                               target="_blank" class="inv-btn inv-btn--receipt">
-                                <i class="fa-solid fa-image"></i> الإيصال
-                            </a>
-                        @endif
-                    </div>
-                </div>
-            @empty
-                <div class="inv-empty">
-                    <i class="fa-solid fa-file-invoice"></i>
-                    <span>لا توجد فواتير بعد</span>
-                </div>
-            @endforelse
+        @if ($hasPendingItems || $membershipCanRenew)
+        <div class="inv-section-title">
+            <i class="fa-solid fa-triangle-exclamation" style="color:#f59e0b;"></i>
+            تحتاج إجراء
         </div>
+        @endif
+
+        {{-- === بطاقة العضوية — بانتظار الدفع === --}}
+        @if ($membershipNeedsPayment)
+        <div class="inv-card inv-card--urgent">
+            <div class="inv-card__header">
+                <div class="inv-card__title">
+                    <i class="fa-solid fa-id-card" style="color:#b68a35;"></i>
+                    تجديد / اشتراك العضوية
+                </div>
+                <span class="inv-badge inv-badge--pending">بانتظار الدفع</span>
+            </div>
+            <div class="inv-card__body">
+                <div class="inv-info-row">
+                    <div class="inv-info-item">
+                        <label>الاسم</label>
+                        <span>{{ $membershipApp->full_name }}</span>
+                    </div>
+                    <div class="inv-info-item">
+                        <label>رقم العضوية</label>
+                        <span>{{ $membershipApp->membership_number ?? '—' }}</span>
+                    </div>
+                    @if ($membershipApp->expiration_date)
+                    <div class="inv-info-item">
+                        <label>تاريخ الانتهاء الحالي</label>
+                        <span>{{ \Carbon\Carbon::parse($membershipApp->expiration_date)->format('d/m/Y') }}</span>
+                    </div>
+                    @endif
+                </div>
+
+                @if ($membershipApp->payment_receipt)
+                <div class="inv-receipt-preview">
+                    <i class="fa-solid fa-paperclip"></i>
+                    <span style="flex:1;font-size:13px;color:#166534;">تم رفع الإيصال — بانتظار مراجعة الموظفين</span>
+                    @php $ext = pathinfo($membershipApp->payment_receipt, PATHINFO_EXTENSION); @endphp
+                    @if (in_array(strtolower($ext), ['jpg','jpeg','png']))
+                        <a href="{{ asset('storage/'.$membershipApp->payment_receipt) }}" target="_blank"
+                           style="color:#16a34a;font-size:12px;font-weight:700;text-decoration:none;">
+                            <i class="fa-solid fa-eye"></i> عرض
+                        </a>
+                    @else
+                        <a href="{{ asset('storage/'.$membershipApp->payment_receipt) }}" target="_blank"
+                           style="color:#16a34a;font-size:12px;font-weight:700;text-decoration:none;">
+                            <i class="fa-solid fa-file-pdf"></i> عرض PDF
+                        </a>
+                    @endif
+                </div>
+                @endif
+
+                <div class="inv-upload-box">
+                    <label><i class="fa-solid fa-upload"></i> رفع إيصال الدفع (صورة أو PDF)</label>
+                    <form method="POST" action="{{ route('members.membership.upload-receipt') }}" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="payment_receipt" accept="image/*,.pdf" required>
+                        @error('payment_receipt')
+                            <span style="color:#b91c1c;font-size:12px;display:block;margin-top:4px;">{{ $message }}</span>
+                        @enderror
+                        <button type="submit" class="inv-upload-btn">
+                            <i class="fa-solid fa-paper-plane"></i> إرسال الإيصال
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        {{-- === معاملات إعلانات/خدمات بانتظار الدفع === --}}
+        @foreach ($pendingPaymentTransactions as $txn)
+        @php
+            $txnTitle = $txn->event?->title_ar ?? $txn->service?->name_ar ?? 'معاملة';
+            $txnPrice = $txn->event?->price ?? $txn->service?->price ?? 0;
+        @endphp
+        <div class="inv-card inv-card--urgent">
+            <div class="inv-card__header">
+                <div class="inv-card__title">
+                    <i class="fa-solid fa-calendar-check" style="color:#b68a35;"></i>
+                    {{ \Illuminate\Support\Str::limit($txnTitle, 60) }}
+                </div>
+                <span class="inv-badge inv-badge--pending">بانتظار الدفع</span>
+            </div>
+            <div class="inv-card__body">
+                <div class="inv-info-row">
+                    <div class="inv-info-item">
+                        <label>النوع</label>
+                        <span>{{ $txn->event ? 'إعلان / فعالية' : 'خدمة' }}</span>
+                    </div>
+                    <div class="inv-info-item">
+                        <label>المبلغ</label>
+                        <span>{{ $txnPrice > 0 ? number_format($txnPrice, 0) . ' درهم' : 'مجاني' }}</span>
+                    </div>
+                    <div class="inv-info-item">
+                        <label>تاريخ الاشتراك</label>
+                        <span>{{ $txn->subscribed_at ? \Carbon\Carbon::parse($txn->subscribed_at)->format('d/m/Y') : '—' }}</span>
+                    </div>
+                </div>
+
+                @if ($txn->receipt_image)
+                <div class="inv-receipt-preview">
+                    <i class="fa-solid fa-paperclip"></i>
+                    <span style="flex:1;font-size:13px;color:#166534;">تم رفع الإيصال — بانتظار مراجعة الموظفين</span>
+                    <a href="{{ \Illuminate\Support\Facades\Storage::url($txn->receipt_image) }}" target="_blank"
+                       style="color:#16a34a;font-size:12px;font-weight:700;text-decoration:none;">
+                        <i class="fa-solid fa-eye"></i> عرض
+                    </a>
+                </div>
+                @endif
+
+                <div class="inv-upload-box">
+                    <label><i class="fa-solid fa-upload"></i> رفع إيصال الدفع (صورة أو PDF)</label>
+                    <form method="POST" action="{{ route('members.upload_receipt', $txn) }}" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="receipt_image" accept="image/*,.pdf" required>
+                        <button type="submit" class="inv-upload-btn">
+                            <i class="fa-solid fa-paper-plane"></i> إرسال الإيصال
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endforeach
+
+        {{-- === بطاقة التجديد — عضوية فعالة أو منتهية === --}}
+        @if ($membershipCanRenew && !$membershipNeedsPayment)
+        <div class="inv-section-title">
+            <i class="fa-solid fa-rotate-right" style="color:#b68a35;"></i>
+            تجديد العضوية
+        </div>
+        <div class="inv-card">
+            <div class="inv-card__header">
+                <div class="inv-card__title">
+                    <i class="fa-solid fa-id-card" style="color:#b68a35;"></i>
+                    تجديد العضوية
+                </div>
+                @if ((string)$membershipApp->status === '4')
+                    <span class="inv-badge inv-badge--rejected">منتهية</span>
+                @else
+                    <span class="inv-badge inv-badge--active">فعالة</span>
+                @endif
+            </div>
+            <div class="inv-card__body">
+                <div class="inv-info-row">
+                    <div class="inv-info-item">
+                        <label>الاسم</label>
+                        <span>{{ $membershipApp->full_name }}</span>
+                    </div>
+                    <div class="inv-info-item">
+                        <label>رقم العضوية</label>
+                        <span>{{ $membershipApp->membership_number ?? '—' }}</span>
+                    </div>
+                    @if ($membershipApp->expiration_date)
+                    <div class="inv-info-item">
+                        <label>تاريخ الانتهاء</label>
+                        <span>{{ \Carbon\Carbon::parse($membershipApp->expiration_date)->format('d/m/Y') }}</span>
+                    </div>
+                    @endif
+                </div>
+                <form method="POST" action="{{ route('members.membership.request-renewal') }}"
+                      onsubmit="return confirm('هل تريد تقديم طلب تجديد العضوية؟')">
+                    @csrf
+                    <button type="submit" class="inv-renew-btn">
+                        <i class="fa-solid fa-rotate-right"></i> تجديد العضوية الآن
+                    </button>
+                </form>
+                <p style="font-size:12px;color:#64748b;margin-top:10px;">
+                    بعد الضغط سيتم تحويل الطلب لـ "بانتظار الدفع" وستتمكن من رفع إيصال الدفع من هذه الصفحة.
+                </p>
+            </div>
+        </div>
+        @endif
+
+        {{-- ========== قسم: سجل المعاملات السابقة ========== --}}
+        @if ($allTransactions->count())
+        <div class="inv-section-title">
+            <i class="fa-solid fa-clock-rotate-left" style="color:#64748b;"></i>
+            سجل المعاملات
+        </div>
+
+        @foreach ($allTransactions as $txn)
+        @php
+            $txnTitle = $txn->event?->title_ar ?? $txn->service?->name_ar ?? 'معاملة';
+            $txnPrice = $txn->event?->price ?? $txn->service?->price ?? 0;
+            $badgeMap = [
+                'active'                 => 'inv-badge--active',
+                'waiting_for_activation' => 'inv-badge--waiting',
+                'pending'                => 'inv-badge--pending',
+                'rejected'               => 'inv-badge--rejected',
+                'expired'                => 'inv-badge--rejected',
+                'deactivated'            => 'inv-badge--rejected',
+            ];
+            $badgeClass = $badgeMap[$txn->status] ?? 'inv-badge--pending';
+        @endphp
+        <div class="inv-card inv-card--done">
+            <div class="inv-card__header">
+                <div class="inv-card__title" style="font-size:13px;">
+                    <i class="fa-regular fa-calendar-check" style="color:#94a3b8;"></i>
+                    {{ \Illuminate\Support\Str::limit($txnTitle, 70) }}
+                </div>
+                <span class="inv-badge {{ $badgeClass }}">{{ $txn->status_label }}</span>
+            </div>
+            @if ($txnPrice > 0 || $txn->receipt_image)
+            <div class="inv-card__body" style="padding:10px 20px;">
+                <div class="inv-info-row" style="margin-bottom:0;">
+                    @if ($txnPrice > 0)
+                    <div class="inv-info-item">
+                        <label>المبلغ</label>
+                        <span>{{ number_format($txnPrice, 0) }} درهم</span>
+                    </div>
+                    @endif
+                    <div class="inv-info-item">
+                        <label>التاريخ</label>
+                        <span>{{ $txn->subscribed_at ? \Carbon\Carbon::parse($txn->subscribed_at)->format('d/m/Y') : '—' }}</span>
+                    </div>
+                    @if ($txn->receipt_image)
+                    <div class="inv-info-item">
+                        <label>الإيصال</label>
+                        <a href="{{ \Illuminate\Support\Facades\Storage::url($txn->receipt_image) }}" target="_blank"
+                           style="color:#b68a35;font-size:13px;font-weight:700;text-decoration:none;">
+                            <i class="fa-solid fa-eye"></i> عرض
+                        </a>
+                    </div>
+                    @endif
+                </div>
+            </div>
+            @endif
+        </div>
+        @endforeach
+        @endif
+
+        @if (!$hasPendingItems && !$membershipCanRenew && !$allTransactions->count())
+        <div class="inv-empty">
+            <i class="fa-solid fa-file-invoice"></i>
+            <span>لا توجد فواتير أو معاملات بعد</span>
+        </div>
+        @endif
 
     </div>
 

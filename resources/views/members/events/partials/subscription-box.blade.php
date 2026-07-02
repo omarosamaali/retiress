@@ -42,9 +42,6 @@
         {{ __('app.subscription_status') }}: <strong>{{ session('subscription_status_label') }}</strong>
     </div>
     @endif
-    <a href="{{ route('members.record') }}" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:.82rem;color:#16a34a;font-weight:600;text-decoration:none;">
-        <i class="fa-solid fa-list"></i> {{ __('app.view_transaction_record') }}
-    </a>
 </div>
 @endif
 
@@ -109,11 +106,6 @@
             <i class="fa-solid fa-rotate-right" style="margin-left:4px;"></i>{{ __('app.subscription_expired_can_resubscribe') }}
         </p>
         @endif
-        <div style="margin-top:14px;border-top:1px solid {{ $cardBorder }};padding-top:10px;">
-            <a href="{{ route('members.record') }}" style="display:inline-flex;align-items:center;gap:6px;font-size:.83rem;font-weight:600;color:{{ $iconColor }};text-decoration:none;">
-                <i class="fa-solid fa-list"></i>{{ __('app.view_transaction_record') }}
-            </a>
-        </div>
     </div>
     @endif
 

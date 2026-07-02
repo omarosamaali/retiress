@@ -116,6 +116,17 @@ class EventController extends Controller
         return view('admin.events.edit', compact('event', 'targetLanguages') + $subscriberData);
     }
 
+    public function printView(Event $event)
+    {
+        $approvedTransactions = Transaction::with('user')
+            ->where('event_id', $event->id)
+            ->where('status', 'active')
+            ->orderByDesc('subscribed_at')
+            ->get();
+
+        return view('admin.events.print', compact('event', 'approvedTransactions'));
+    }
+
     protected function subscriberDataForEvent(Event $event, ?string $statusFilter = null): array
     {
         $query = Transaction::with('user')
