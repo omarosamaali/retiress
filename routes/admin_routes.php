@@ -81,6 +81,7 @@ Route::middleware(['auth', CheckUserStatus::class])->prefix('admin')->name('admi
     Route::resource('plans', PlanController::class);
     Route::resource('event', EventController::class);
     Route::get('event/{event}/print', [EventController::class, 'printView'])->name('event.print');
+    Route::get('event/{event}/export-subscribers', [EventController::class, 'exportApprovedSubscribers'])->name('event.export-subscribers');
     Route::resource('news', NewsController::class);
     Route::resource('magazines', MagazineController::class);
     Route::resource('feature', FeatureController::class);

@@ -55,6 +55,15 @@
         @endforeach
     </div>
 
+    <div class="d-flex flex-wrap gap-2 mb-3 justify-content-end">
+        <a href="{{ route('admin.event.export-subscribers', $event) }}"
+           class="btn btn-success btn-sm"
+           title="تحميل Excel للمشتركين المعتمدين فقط">
+            <i class="fas fa-file-excel"></i>
+            Excel (المعتمدون)
+        </a>
+    </div>
+
     {{-- شريط الحذف الجماعي (منفصل عن الجدول لتجنب تداخل النماذج) --}}
     <form id="bulk-delete-form" action="{{ route('admin.transactions.bulk-destroy') }}" method="POST"
           onsubmit="return confirm('هل أنت متأكد من حذف السجلات المحددة نهائياً؟')">

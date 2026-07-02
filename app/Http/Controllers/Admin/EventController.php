@@ -13,6 +13,8 @@ use Illuminate\Validation\Rule;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Mail;
 use App\Models\MemberApplication;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 class EventController extends Controller
 {
     public function index(Request $request)
@@ -125,6 +127,55 @@ class EventController extends Controller
             ->get();
 
         return view('admin.events.print', compact('event', 'approvedTransactions'));
+    }
+
+    public function exportApprovedSubscribers(Event $event): StreamedResponse
+    {
+        $transactions = $this->approvedSubscribersForEvent($event);
+        $safeTitle = preg_replace('/[^\p{L}\p{N}\-_]+/u', '-', $event->title_ar) ?: 'event';
+        $filename = 'subscribers-' . $event->id . '-' . trim($safeTitle, '-') . '.csv';
+
+        return response()->streamDownload(function () use ($transactions, $event) {
+            $handle = fopen('php://output', 'w');
+            fprintf($handle, "\xEF\xBB\xBF");
+
+            fputcsv($handle, [
+                '#',
+                'عنوان الإعلان',
+                'تاريخ الاشتراك',
+                'اسم المشترك',
+                'البريد',
+                'نوع المعاملة',
+                'حالة الاشتراك',
+            ]);
+
+            foreach ($transactions as $index => $transaction) {
+                fputcsv($handle, [
+                    $index + 1,
+                    $event->title_ar,
+                    $transaction->subscribed_at
+                        ? $transaction->subscribed_at->format('d/m/Y H:i')
+                        : '—',
+                    $transaction->user?->name ?? '—',
+                    $transaction->user?->email ?? '—',
+                    $transaction->type_label,
+                    $transaction->status_label,
+                ]);
+            }
+
+            fclose($handle);
+        }, $filename, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+        ]);
+    }
+
+    protected function approvedSubscribersForEvent(Event $event)
+    {
+        return Transaction::with('user')
+            ->where('event_id', $event->id)
+            ->whereIn('status', Transaction::APPROVED_SUBSCRIPTION_STATUSES)
+            ->orderByDesc('subscribed_at')
+            ->get();
     }
 
     protected function subscriberDataForEvent(Event $event, ?string $statusFilter = null): array
