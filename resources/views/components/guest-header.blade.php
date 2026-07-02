@@ -325,13 +325,13 @@
                 </a>
                 {{-- عضويتي --}}
                 @if(isset($__hIsMember) && $__hIsMember)
-                <a href="{{ route('members.my-membership') }}" class="mob-icon-btn" style="text-decoration:none;" title="عضويتي">
-                    <i class="fa-solid fa-id-badge" style="color:#b68a35 !important;"></i>
+                <a href="{{ route('members.my-membership') }}" class="mob-renewal-btn" style="background:#b68a35;text-decoration:none;">
+                    <i class="fa-solid fa-id-badge"></i> عضويتي
                 </a>
                 @endif
                 {{-- المميزات --}}
-                <a href="{{ route('magazines.feature') }}" class="mob-icon-btn" style="text-decoration:none;" title="المميزات">
-                    <i class="fa-solid fa-star" style="color:#f5c542 !important;"></i>
+                <a href="{{ route('magazines.feature') }}" class="mob-renewal-btn" style="background:#5a6a7a;text-decoration:none;">
+                    <i class="fa-solid fa-star"></i> المميزات
                 </a>
                 {{-- زر التجديد --}}
                 @if(isset($__hShowRenewal) && $__hShowRenewal)
