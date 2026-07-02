@@ -41,7 +41,7 @@ class Transaction extends Model
             'active' => 'فعال',
             'rejected' => 'مرفوض',
             'expired' => 'منتهي',
-            'deactivated' => 'معطّل',
+            'deactivated' => 'غير فعال',
             default => $this->status ?? '—',
         };
     }

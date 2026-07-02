@@ -55,7 +55,7 @@
         @endforeach
     </div>
 
-    {{-- شريط الحذف الجماعي --}}
+    {{-- شريط الحذف الجماعي (منفصل عن الجدول لتجنب تداخل النماذج) --}}
     <form id="bulk-delete-form" action="{{ route('admin.transactions.bulk-destroy') }}" method="POST"
           onsubmit="return confirm('هل أنت متأكد من حذف السجلات المحددة نهائياً؟')">
         @csrf
@@ -68,6 +68,7 @@
                 إلغاء التحديد
             </button>
         </div>
+    </form>
 
     <div class="table-responsive">
         <table class="table table-hover table-bordered">
@@ -91,7 +92,8 @@
                     <tr>
                         <td>
                             <input type="checkbox" name="ids[]" value="{{ $transaction->id }}"
-                                   class="row-checkbox" style="cursor:pointer; width:16px; height:16px;">
+                                   form="bulk-delete-form" class="row-checkbox"
+                                   style="cursor:pointer; width:16px; height:16px;">
                         </td>
                         <td>{{ $index + 1 }}</td>
                         <td>
@@ -125,49 +127,32 @@
                             @endif
                         </td>
                         <td>
-                            <span class="badge {{ $transaction->status_badge_class }}">
+                            <span class="badge {{ $transaction->status_badge_class }} txn-status-badge"
+                                  data-transaction-id="{{ $transaction->id }}">
                                 {{ $transaction->status_label }}
                             </span>
                         </td>
-                        <td style="min-width: 200px;">
-                            <div class="d-flex flex-wrap gap-1">
-                                {{-- زر الإجراء الرئيسي --}}
-                                @if ($transaction->status === 'pending')
-                                    <form action="{{ route('admin.transactions.approve', $transaction) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-primary btn-sm">موافقة</button>
-                                    </form>
-                                @elseif ($transaction->status === 'waiting_for_payment')
-                                    <span class="badge bg-warning text-dark" style="line-height:1.8;">بانتظار رفع الإيصال</span>
-                                @elseif ($transaction->status === 'waiting_for_activation')
-                                    <form action="{{ route('admin.transactions.activate', $transaction) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">تفعيل</button>
-                                    </form>
-                                @elseif ($transaction->status === 'active')
-                                    <form action="{{ route('admin.transactions.deactivate', $transaction) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-warning btn-sm">إلغاء التفعيل</button>
-                                    </form>
-                                @elseif ($transaction->status === 'deactivated')
-                                    <form action="{{ route('admin.transactions.activate', $transaction) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm">تفعيل</button>
-                                    </form>
-                                @endif
+                        <td style="min-width: 220px;">
+                            <div class="d-flex flex-wrap gap-2 align-items-center">
+                                <form action="{{ route('admin.transactions.update-status', $transaction) }}" method="POST"
+                                      class="txn-status-form flex-grow-1" data-transaction-id="{{ $transaction->id }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <select name="status"
+                                            class="form-select form-select-sm txn-status-select"
+                                            aria-label="تغيير حالة الاشتراك">
+                                        @foreach (\App\Models\Transaction::SUBSCRIPTION_STATUSES as $statusKey)
+                                            @php
+                                                $statusSample = new \App\Models\Transaction(['status' => $statusKey]);
+                                            @endphp
+                                            <option value="{{ $statusKey }}"
+                                                {{ $transaction->status === $statusKey ? 'selected' : '' }}>
+                                                {{ $statusSample->status_label }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </form>
 
-                                {{-- زر الرفض — يظهر لأي حالة غير مرفوض/منتهي --}}
-                                @if (!in_array($transaction->status, ['rejected', 'expired', 'deactivated']))
-                                    <form action="{{ route('admin.transactions.reject', $transaction) }}" method="POST" class="d-inline"
-                                          onsubmit="return confirm('هل تريد رفض هذا الطلب؟')">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger btn-sm">رفض</button>
-                                    </form>
-                                @else
-                                    <span class="badge bg-danger" style="line-height:1.8;">{{ $transaction->status_label }}</span>
-                                @endif
-
-                                {{-- زر الحذف --}}
                                 <form action="{{ route('admin.transactions.destroy', $transaction) }}" method="POST" class="d-inline"
                                       onsubmit="return confirm('هل أنت متأكد من حذف هذا الاشتراك نهائياً؟')">
                                     @csrf
@@ -189,11 +174,43 @@
             </tbody>
         </table>
     </div>
-    </form>
 </div>
 
 <script>
 (function () {
+    const statusMeta = @json(collect(\App\Models\Transaction::SUBSCRIPTION_STATUSES)->mapWithKeys(function ($statusKey) {
+        $sample = new \App\Models\Transaction(['status' => $statusKey]);
+        return [$statusKey => [
+            'label' => $sample->status_label,
+            'badge' => $sample->status_badge_class,
+        ]];
+    }));
+
+    document.querySelectorAll('.txn-status-select').forEach(function (select) {
+        select.dataset.previousValue = select.value;
+
+        select.addEventListener('change', function () {
+            const newStatus = this.value;
+            const previousStatus = this.dataset.previousValue;
+            const label = statusMeta[newStatus]?.label ?? newStatus;
+
+            if (! confirm('هل تريد تغيير حالة الاشتراك إلى «' + label + '»؟')) {
+                this.value = previousStatus;
+                return;
+            }
+
+            const transactionId = this.closest('.txn-status-form')?.dataset.transactionId;
+            const badge = document.querySelector('.txn-status-badge[data-transaction-id="' + transactionId + '"]');
+
+            if (badge && statusMeta[newStatus]) {
+                badge.textContent = statusMeta[newStatus].label;
+                badge.className = 'badge txn-status-badge ' + statusMeta[newStatus].badge;
+            }
+
+            this.closest('form').submit();
+        });
+    });
+
     const selectAll   = document.getElementById('select-all');
     const bar         = document.getElementById('bulk-actions-bar');
     const countLabel  = document.getElementById('selected-count');
