@@ -323,6 +323,12 @@
                 <a href="https://wa.me/97167044998" target="_blank" class="mob-icon-btn mob-icon-btn--wa" style="text-decoration:none;" title="واتساب">
                     <i class="fa-brands fa-whatsapp"></i>
                 </a>
+                {{-- زر التجديد --}}
+                @if(isset($__hShowRenewal) && $__hShowRenewal)
+                <a href="{{ route('members.my-membership') }}" class="mob-renewal-btn">
+                    <i class="fa-solid fa-rotate-right"></i> {{ __('app.renewal') }}
+                </a>
+                @endif
             </div>
             <a href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" class="mob-lang">
                 {{ app()->getLocale() == 'ar' ? 'English' : 'عربي' }}
@@ -335,11 +341,6 @@
                 <span class="mob-site-name">جمعية الإمارات للمتقاعدين</span>
             </a>
             <div class="mob-row2-actions">
-                @if(isset($__hShowRenewal) && $__hShowRenewal)
-                <a href="{{ route('members.my-membership') }}" class="mob-renewal-btn">
-                    <i class="fa-solid fa-rotate-right"></i> {{ __('app.renewal') }}
-                </a>
-                @endif
                 <a href="{{ route('magazines.feature') }}" class="mob-membership-btn">
                     <i class="fas fa-star"></i>
                     المميزات
