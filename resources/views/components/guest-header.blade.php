@@ -323,6 +323,16 @@
                 <a href="https://wa.me/97167044998" target="_blank" class="mob-icon-btn mob-icon-btn--wa" style="text-decoration:none;" title="واتساب">
                     <i class="fa-brands fa-whatsapp"></i>
                 </a>
+                {{-- عضويتي --}}
+                @if(isset($__hIsMember) && $__hIsMember)
+                <a href="{{ route('members.my-membership') }}" class="mob-icon-btn" style="text-decoration:none;" title="عضويتي">
+                    <i class="fa-solid fa-id-badge" style="color:#b68a35 !important;"></i>
+                </a>
+                @endif
+                {{-- المميزات --}}
+                <a href="{{ route('magazines.feature') }}" class="mob-icon-btn" style="text-decoration:none;" title="المميزات">
+                    <i class="fa-solid fa-star" style="color:#f5c542 !important;"></i>
+                </a>
                 {{-- زر التجديد --}}
                 @if(isset($__hShowRenewal) && $__hShowRenewal)
                 <a href="{{ route('members.my-membership') }}" class="mob-renewal-btn">
@@ -340,18 +350,6 @@
                 <img src="{{ asset('assets/images/new-logo.png') }}" alt="logo" class="mob-logo" style="height:36px;width:auto;">
                 <span class="mob-site-name">جمعية الإمارات للمتقاعدين</span>
             </a>
-            <div class="mob-row2-actions">
-                @if(isset($__hIsMember) && $__hIsMember)
-                <a href="{{ route('members.my-membership') }}" class="mob-membership-btn">
-                    <i class="fa-solid fa-id-badge"></i>
-                    عضويتي
-                </a>
-                @endif
-                <a href="{{ route('magazines.feature') }}" class="mob-membership-btn">
-                    <i class="fas fa-star"></i>
-                    المميزات
-                </a>
-            </div>
         </div>
     </div>
     @if(request()->is('/'))
