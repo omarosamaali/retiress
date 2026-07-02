@@ -271,9 +271,18 @@
             $__hEarlyUser    = \Illuminate\Support\Facades\Auth::user();
             $__hIsMember     = (bool) $__hEarlyUser?->isMemberRole();
             $__hNotifCount   = $headerNotificationCount ?? 0;
+
+            // حساب حالة التجديد مبكراً لاستخدامه في شريط الموبايل
+            $__hShowRenewal  = false;
+            if ($__hIsMember) {
+                $__hEarlyApp    = $__hEarlyUser?->memberApplication;
+                $__hEarlyStatus = $__hEarlyApp?->membershipDisplayStatus()['key'] ?? 'pending';
+                $__hShowRenewal = in_array($__hEarlyStatus, ['expiring', 'expired']);
+            }
         } catch (\Throwable $e) {
-            $__hIsMember   = false;
-            $__hNotifCount = 0;
+            $__hIsMember    = false;
+            $__hNotifCount  = 0;
+            $__hShowRenewal = false;
         }
     }
 @endphp
