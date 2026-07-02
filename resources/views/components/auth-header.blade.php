@@ -37,6 +37,11 @@
 
                     <li><a href="{{ route('chat') }}">اتصل بنا</a></li>
                     @auth
+                    @if (Auth::user()->canAccessAdminPanel())
+                    <li>
+                        <a href="{{ route('admin.dashboard') }}">{{ __('app.dashboard') }}</a>
+                    </li>
+                    @endif
                     <form action="{{ route('members.logout') }}" method="POST" style="margin-top: 1rem;">
                         @csrf
                         <button id="submit" style="margin: unset !important; padding-right: 17px;" type="submit"><i style="padding-left:
@@ -75,6 +80,13 @@
                 @auth
                 <div class="member-header-welcome d-flex align-items-center flex-wrap gap-1">
                     @include('components.member-header-tools')
+                    @if (Auth::user()->canAccessAdminPanel())
+                    <a href="{{ route('admin.dashboard') }}"
+                        style="display:inline-flex; align-items:center; gap:5px; background:#212529; color:#fff; border-radius:6px; padding:4px 10px; font-size:.78rem; font-weight:700; text-decoration:none;">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        {{ __('app.dashboard') }}
+                    </a>
+                    @endif
                     <span>{{ __('app.welcome') }}.. {{ Auth::user()->name }}</span>
                 </div>
                 @endauth

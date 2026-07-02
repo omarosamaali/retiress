@@ -354,6 +354,14 @@
     </div>
     @if(request()->is('/'))
     @auth
+    @if (Auth::user()->canAccessAdminPanel())
+    <a href="{{ route('admin.dashboard') }}"
+    class="mob-auth-btn mob-auth-btn--login mob-auth-fixed-wrap"
+    style="position: fixed; left: 13px; top: 80px; z-index:9999;">
+        <i class="fa-solid fa-gauge-high"></i>
+        {{ __('app.dashboard') }}
+    </a>
+    @endif
     <form action="{{ route('members.logout') }}" method="POST"
     class="mob-auth-fixed-wrap"
     style="position: fixed; left: 13px; top: 118px; margin:0; z-index:9999;">
@@ -445,6 +453,14 @@
                     <li>
                         <a href="{{ route('contact-us') }}">{{ __('app.contact_us') }}</a>
                     </li>
+
+                    @auth
+                    @if (Auth::user()->canAccessAdminPanel())
+                    <li>
+                        <a href="{{ route('admin.dashboard') }}">{{ __('app.dashboard') }}</a>
+                    </li>
+                    @endif
+                    @endauth
 
                     <div class="lang-II mobile-btn">
                         <a class="container-btns-sidebar" href="{{ route('set.locale', app()->getLocale() == 'ar' ? 'en' : 'ar') }}" title="{{ app()->getLocale() == 'ar' ? __('app.switch_to_english') : __('app.switch_to_arabic') }}">
@@ -539,6 +555,15 @@
                             <i class="fa-solid fa-rotate-right"></i> {{ __('app.renewal') }}
                         </a>
                         @endif
+                    </div>
+                    @elseif ($__hUser?->canAccessAdminPanel())
+                    <div>
+                        <a href="{{ route('admin.dashboard') }}"
+                            style="display:inline-flex; align-items:center; gap:5px; background:#212529; color:#fff; border-radius:6px; padding:4px 12px; font-size:.82rem; font-weight:700; text-decoration:none; transition:background .18s;"
+                            onmouseover="this.style.background='#0e6939'" onmouseout="this.style.background='#212529'">
+                            <i class="fa-solid fa-gauge-high"></i>
+                            {{ __('app.dashboard') }}
+                        </a>
                     </div>
                     @elseif (!$__hUser?->isStaff())
                     {{-- مستخدم مسجّل لكن ليس عضواً فعالاً بعد --}}

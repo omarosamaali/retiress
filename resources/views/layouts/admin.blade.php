@@ -469,8 +469,13 @@
                     </li>
                 </ul>
             </div>
-            @elseif(Auth::user()->role === 'مدخل بيانات')
-            {{-- مدخل بيانات: الإعلانات فقط --}}
+            @endif
+
+            @if(in_array(Auth::user()->role, ['مدخل بيانات', 'موظف استقبال']))
+            <a class="nav-link {{ request()->routeIs('admin.membership.*') ? 'active' : '' }}" href="{{ route('admin.membership.index') }}">
+                <i class="fas fa-id-card"></i>
+                إدخال بيانات العضوية
+            </a>
             <a class="nav-link {{ request()->routeIs('admin.event.*') ? 'active' : '' }}" href="{{ route('admin.event.index') }}">
                 <i class="fas fa-bullhorn"></i>
                 الإعلانات والفعاليات
