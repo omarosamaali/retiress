@@ -341,6 +341,12 @@
                 <span class="mob-site-name">جمعية الإمارات للمتقاعدين</span>
             </a>
             <div class="mob-row2-actions">
+                @if(isset($__hIsMember) && $__hIsMember)
+                <a href="{{ route('members.my-membership') }}" class="mob-membership-btn">
+                    <i class="fa-solid fa-id-badge"></i>
+                    عضويتي
+                </a>
+                @endif
                 <a href="{{ route('magazines.feature') }}" class="mob-membership-btn">
                     <i class="fas fa-star"></i>
                     المميزات
@@ -516,6 +522,9 @@
                         </div>
                         <a href="{{ route('members.panel') }}" class="member-panel-link" style="gap: 5px !important;">
                             <i class="fa-solid fa-table-cells-large"></i> {{ __('app.my_panel') }}
+                        </a>
+                        <a href="{{ route('members.my-membership') }}" class="member-panel-link" style="gap: 5px !important;">
+                            <i class="fa-solid fa-id-badge"></i> عضويتي
                         </a>
                         <div class="member-notifications-wrap">
                             <button style="padding: 3px 8px; gap: 5px !important;" type="button"
