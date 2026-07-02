@@ -58,9 +58,9 @@
     <div class="d-flex flex-wrap gap-2 mb-3 justify-content-end">
         <a href="{{ route('admin.event.export-subscribers', $event) }}"
            class="btn btn-success btn-sm"
-           title="تحميل Excel للمشتركين المعتمدين فقط">
+           title="تحميل Excel للاشتراكات الفعالة فقط">
             <i class="fas fa-file-excel"></i>
-            Excel (المعتمدون)
+            Excel (الفعالون)
         </a>
     </div>
 

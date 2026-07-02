@@ -131,7 +131,7 @@ class EventController extends Controller
 
     public function exportApprovedSubscribers(Event $event): StreamedResponse
     {
-        $transactions = $this->approvedSubscribersForEvent($event);
+        $transactions = $this->activeSubscribersForEvent($event);
         $safeTitle = preg_replace('/[^\p{L}\p{N}\-_]+/u', '-', $event->title_ar) ?: 'event';
         $filename = 'subscribers-' . $event->id . '-' . trim($safeTitle, '-') . '.csv';
 
@@ -169,11 +169,11 @@ class EventController extends Controller
         ]);
     }
 
-    protected function approvedSubscribersForEvent(Event $event)
+    protected function activeSubscribersForEvent(Event $event)
     {
         return Transaction::with('user')
             ->where('event_id', $event->id)
-            ->whereIn('status', Transaction::APPROVED_SUBSCRIPTION_STATUSES)
+            ->where('status', 'active')
             ->orderByDesc('subscribed_at')
             ->get();
     }

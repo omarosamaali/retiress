@@ -25,14 +25,6 @@ class Transaction extends Model
         'waiting_for_activation',
         'active',
     ];
-
-    /** حالات الاشتراك بعد موافقة الإدارة (يُستبعد pending و rejected وغيرها) */
-    public const APPROVED_SUBSCRIPTION_STATUSES = [
-        'waiting_for_payment',
-        'waiting_for_activation',
-        'active',
-    ];
-
     protected $fillable = ['user_id', 'event_id', 'service_id', 'status', 'subscribed_at', 'receipt_image', 'type', 'membership_number'];
 
     protected $casts = [
