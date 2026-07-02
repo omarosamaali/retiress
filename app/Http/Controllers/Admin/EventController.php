@@ -145,6 +145,8 @@ class EventController extends Controller
                 'تاريخ الاشتراك',
                 'اسم المشترك',
                 'البريد',
+                'رقم الهاتف',
+                'رقم الهوية',
                 'نوع المعاملة',
                 'حالة الاشتراك',
             ]);
@@ -158,6 +160,8 @@ class EventController extends Controller
                         : '—',
                     $transaction->user?->name ?? '—',
                     $transaction->user?->email ?? '—',
+                    $transaction->user?->phone_number ?? '—',
+                    $transaction->user?->memberApplication?->national_id ?? '—',
                     $transaction->type_label,
                     $transaction->status_label,
                 ]);
@@ -171,7 +175,7 @@ class EventController extends Controller
 
     protected function activeSubscribersForEvent(Event $event)
     {
-        return Transaction::with('user')
+        return Transaction::with(['user', 'user.memberApplication'])
             ->where('event_id', $event->id)
             ->where('status', 'active')
             ->orderByDesc('subscribed_at')

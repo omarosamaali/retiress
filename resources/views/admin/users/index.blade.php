@@ -406,7 +406,7 @@
 
                 </td>
                 <td>
-                    <div class="action-buttons">
+                    <div class="action-buttons" style="width: 122px;">
                         <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-info btn-sm" title="عرض">
                             <i class="fas fa-eye"></i>
                         </a>
