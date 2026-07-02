@@ -103,6 +103,23 @@
     .mob-membership-btn i {
         font-size: .7rem;
     }
+    .mob-renewal-btn {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        background: #b68a35;
+        color: #fff !important;
+        border-radius: 20px;
+        padding: 5px 10px;
+        font-size: .7rem;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .mob-renewal-btn i {
+        font-size: .7rem;
+    }
     .mob-row2-actions {
         display: flex;
         flex-direction: column;
@@ -309,9 +326,14 @@
                 <span class="mob-site-name">جمعية الإمارات للمتقاعدين</span>
             </a>
             <div class="mob-row2-actions">
+                @if(isset($__hShowRenewal) && $__hShowRenewal)
+                <a href="{{ route('members.my-membership') }}" class="mob-renewal-btn">
+                    <i class="fa-solid fa-rotate-right"></i> {{ __('app.renewal') }}
+                </a>
+                @endif
                 <a href="{{ route('magazines.feature') }}" class="mob-membership-btn">
                     <i class="fas fa-star"></i>
-                    المميزات 
+                    المميزات
                 </a>
             </div>
         </div>

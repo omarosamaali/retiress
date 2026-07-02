@@ -3,6 +3,9 @@
     "allow": [
       "Bash(git config *)",
       "Bash(git update-index *)"
+    ],
+    "additionalDirectories": [
+      "f:\\retiress\\resources\\views\\components"
     ]
   }
 }
