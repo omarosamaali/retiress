@@ -139,10 +139,26 @@
             <i class="fas fa-users ms-2"></i>
             إدارة المستخدمين والأعضاء
         </h5>
-        <a href="{{ route('admin.users.create') }}" class="btn btn-success">
-            <i class="fas fa-id-card ms-1"></i>
-            تسجيل عضو جديد
-        </a>
+        <div class="d-flex flex-wrap gap-2">
+            {{-- زر إصلاح طارئ: يحول أدوار العملاء الخاطئة من مدير لعضو --}}
+            @php
+                $wrongRoleCount = \App\Models\User::where('role','مدير')->whereHas('memberApplication')->count();
+            @endphp
+            @if($wrongRoleCount > 0)
+            <form action="{{ route('admin.users.fix-customer-roles') }}" method="POST"
+                  onsubmit="return confirm('سيتم تحويل {{ $wrongRoleCount }} حساب من دور مدير إلى عضو. متأكد؟')">
+                @csrf
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-exclamation-triangle ms-1"></i>
+                    إصلاح {{ $wrongRoleCount }} حساب (أدوار خاطئة)
+                </button>
+            </form>
+            @endif
+            <a href="{{ route('admin.users.create') }}" class="btn btn-success">
+                <i class="fas fa-id-card ms-1"></i>
+                تسجيل عضو جديد
+            </a>
+        </div>
     </div>
 </div>
 

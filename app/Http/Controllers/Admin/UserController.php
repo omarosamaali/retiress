@@ -311,4 +311,31 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')
             ->with('success', 'تم حذف المستخدم بنجاح');
     }
+
+    /**
+     * إصلاح طارئ: تحويل أدوار العملاء من 'مدير' لـ 'عضو'
+     * يستهدف فقط المستخدمين الذين عندهم طلب عضوية (member_application) ودورهم 'مدير' بالخطأ
+     */
+    public function fixCustomerRoles()
+    {
+        $affected = User::where('role', 'مدير')
+            ->whereHas('memberApplication')
+            ->get(['id', 'name', 'email', 'role']);
+
+        $count = $affected->count();
+
+        if ($count === 0) {
+            return redirect()->back()->with('success', 'لا يوجد مستخدمون بحاجة إلى إصلاح.');
+        }
+
+        User::where('role', 'مدير')
+            ->whereHas('memberApplication')
+            ->update(['role' => 'عضو']);
+
+        Log::warning("تم إصلاح أدوار {$count} مستخدم من 'مدير' إلى 'عضو' — كانوا عملاء بامتلاكهم طلب عضوية.", [
+            'fixed_users' => $affected->map(fn($u) => ['id' => $u->id, 'email' => $u->email])->toArray(),
+        ]);
+
+        return redirect()->back()->with('success', "تم إصلاح {$count} حساب: تحويل دورهم من 'مدير' إلى 'عضو' بنجاح.");
+    }
 }
