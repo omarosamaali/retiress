@@ -145,6 +145,16 @@
                                 @else
                                     <span class="badge bg-danger" style="line-height:1.8;">{{ $transaction->status_label }}</span>
                                 @endif
+
+                                {{-- زر الحذف --}}
+                                <form action="{{ route('admin.transactions.destroy', $transaction) }}" method="POST" class="d-inline"
+                                      onsubmit="return confirm('هل أنت متأكد من حذف هذا الاشتراك نهائياً؟')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="حذف">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

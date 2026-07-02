@@ -276,4 +276,10 @@ class TransactionController extends Controller
 
         return redirect()->back()->with('error', 'لا يمكن إلغاء تفعيل هذه الخدمة إلا إذا كانت "فعالة".');
     }
+
+    public function destroy(Transaction $transaction)
+    {
+        $transaction->delete();
+        return redirect()->back()->with('success', 'تم حذف الاشتراك بنجاح.');
+    }
 }
