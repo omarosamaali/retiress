@@ -407,6 +407,12 @@
         </div>
 
         <nav class="nav flex-column">
+            @php
+                $adminSidebarRole = Auth::user()->role;
+                $usersMenuRoles = ['مدير', 'مدخل بيانات', 'موظف استقبال'];
+                $associationMenuRoles = ['مدير', 'مشرف', 'موظف استقبال', 'مدخل بيانات'];
+                $mediaCenterRoles = ['مدير', 'مشرف', 'مدخل بيانات', 'موظف استقبال'];
+            @endphp
             <a class="nav-link" href="{{ route('admin.dashboard') }}">
                 <i class="fas fa-home"></i>
                 الرئيسية
@@ -415,15 +421,15 @@
                 <i class="fas fa-list-check"></i>
                 المعاملات
             </a>
-            @if(in_array(Auth::user()->role, ['مدير', 'مدخل بيانات', 'موظف استقبال']))
+            @if(in_array($adminSidebarRole, $usersMenuRoles, true))
             <a class="nav-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
                 <i class="fas fa-users"></i>
                 المستخدمين
             </a>
             @endif
 
-            {{-- قائمة الجمعية - للمدير والمشرف فقط --}}
-            @if(in_array(Auth::user()->role, ['مدير', 'مشرف']))
+            {{-- قائمة الجمعية - للمدير والمشرف وموظف الاستقبال --}}
+            @if(in_array($adminSidebarRole, $associationMenuRoles, true))
             <div class="dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -471,19 +477,8 @@
             </div>
             @endif
 
-            @if(in_array(Auth::user()->role, ['مدخل بيانات', 'موظف استقبال']))
-            <a class="nav-link {{ request()->routeIs('admin.membership.*') ? 'active' : '' }}" href="{{ route('admin.membership.index') }}">
-                <i class="fas fa-id-card"></i>
-                إدخال بيانات العضوية
-            </a>
-            <a class="nav-link {{ request()->routeIs('admin.event.*') ? 'active' : '' }}" href="{{ route('admin.event.index') }}">
-                <i class="fas fa-bullhorn"></i>
-                الإعلانات والفعاليات
-            </a>
-            @endif
-
-            {{-- المركز الإعلامي - للمدير والمشرف ومدخل البيانات --}}
-            @if(in_array(Auth::user()->role, ['مدير', 'مشرف', 'مدخل بيانات']))
+            {{-- المركز الإعلامي --}}
+            @if(in_array($adminSidebarRole, $mediaCenterRoles, true))
             <div class="dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
