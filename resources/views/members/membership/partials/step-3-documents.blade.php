@@ -1,6 +1,10 @@
 <div class="membership-step-panel d-none" data-step-panel="3">
     <h3 class="membership-step-heading">{{ __('app.membership_step_3_title') }}</h3>
-    <p class="text-muted small mb-3">{{ __('app.membership_step_3_hint') }}</p>
+                    <p class="text-muted small mb-3">{{ __('app.membership_step_3_hint') }}</p>
+                    <p class="text-muted small mb-3" style="color:#b45309 !important;">
+                        <i class="fa-solid fa-circle-info" style="margin-left:4px;"></i>
+                        الحد الأقصى لحجم كل ملف: 4 ميجابايت. يُفضّل ضغط الصور قبل الرفع لتسريع الإرسال.
+                    </p>
 
     <div class="row g-3">
         @foreach ([

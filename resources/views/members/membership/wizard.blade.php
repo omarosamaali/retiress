@@ -183,9 +183,38 @@
         .alert { border-radius: 10px; font-size: .9rem; }
         .alert-success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
         .alert-danger { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+
+        #membershipSubmitOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.45);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 14px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        #membershipSubmitOverlay .spinner {
+            width: 42px;
+            height: 42px;
+            border: 4px solid rgba(255,255,255,.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: mwiz-spin .8s linear infinite;
+        }
+        @keyframes mwiz-spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
+    <div id="membershipSubmitOverlay" aria-live="polite" aria-busy="true">
+        <div class="spinner"></div>
+        <div>جاري إرسال طلب العضوية... يرجى الانتظار</div>
+    </div>
+
     <div id="renewalModal" class="membership-renewal-modal" style="display:none;">
         <div class="modal-content">
             <span class="close" id="closeRenewalModal">&times;</span>
@@ -272,6 +301,32 @@
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>window.membershipWizardInitialStep = {{ $errors->any() ? 3 : 1 }};</script>
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({ icon: 'success', title: @json(session('success')), confirmButtonText: 'حسناً' });
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({ icon: 'error', title: @json(session('error')), confirmButtonText: 'حسناً' });
+            });
+        </script>
+    @endif
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'يرجى مراجعة البيانات',
+                    html: {!! json_encode('<ul style="text-align:right;margin:0;padding-right:1.2rem;">' . collect($errors->all())->map(fn ($e) => '<li>' . e($e) . '</li>')->implode('') . '</ul>') !!},
+                    confirmButtonText: 'حسناً',
+                });
+            });
+        </script>
+    @endif
     <script>
     // Remove any Turnstile widgets to prevent captcha blocking
     document.addEventListener('DOMContentLoaded', function() {

@@ -160,8 +160,8 @@ class EventController extends Controller
                         : '—',
                     $transaction->user?->name ?? '—',
                     $transaction->user?->email ?? '—',
-                    $transaction->user?->resolvedPhone() ?? '—',
-                    $transaction->user?->memberApplication?->national_id ?? '—',
+                    $this->csvExcelText($transaction->user?->resolvedPhone()),
+                    $this->csvExcelText($transaction->user?->memberApplication?->national_id),
                     $transaction->type_label,
                     $transaction->status_label,
                 ]);
@@ -301,5 +301,14 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('admin.event.index')->with('success', 'تم حذف الإعلان بنجاح!');
+    }
+
+    private function csvExcelText(?string $value): string
+    {
+        if ($value === null || $value === '' || $value === '—') {
+            return '—';
+        }
+
+        return "\t" . $value;
     }
 }

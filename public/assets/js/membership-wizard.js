@@ -2,6 +2,8 @@
     let currentStep = 1;
     const totalSteps = 3;
     let professionalRowCount = 1;
+    const MAX_FILE_BYTES = 4 * 1024 * 1024;
+    const FILE_FIELD_IDS = ['passport_photo', 'national_id_photo', 'personal_photo', 'educational_qualification_photo', 'retirement_card_photo'];
 
     const form = document.getElementById('membershipWizardForm');
     const prevBtn = document.getElementById('wizardPrevBtn');
@@ -41,6 +43,48 @@
         return true;
     }
 
+    function formatFileSize(bytes) {
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    function validateFileSize(input) {
+        const file = input.files[0];
+        if (!file) return true;
+        if (file.size <= MAX_FILE_BYTES) return true;
+
+        const label = input.closest('div')?.querySelector('label')?.textContent?.trim() || 'الملف';
+        Swal.fire({
+            icon: 'error',
+            title: 'حجم الملف كبير جداً',
+            text: label + ' حجمه ' + formatFileSize(file.size) + '. الحد الأقصى 4 ميجابايت لكل ملف.',
+        });
+        input.value = '';
+        const preview = document.getElementById('preview_' + input.id);
+        if (preview) {
+            preview.src = '#';
+            preview.style.display = 'none';
+        }
+        return false;
+    }
+
+    function validateAllFiles() {
+        for (let i = 0; i < FILE_FIELD_IDS.length; i++) {
+            const input = document.getElementById(FILE_FIELD_IDS[i]);
+            if (input && !validateFileSize(input)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function setSubmitting(isSubmitting) {
+        const overlay = document.getElementById('membershipSubmitOverlay');
+        if (overlay) overlay.style.display = isSubmitting ? 'flex' : 'none';
+        [prevBtn, nextBtn, submitBtn].forEach(function (btn) {
+            if (btn) btn.disabled = isSubmitting;
+        });
+    }
+
     nextBtn?.addEventListener('click', function () {
         if (!validateStep(currentStep)) return;
         if (currentStep < totalSteps) showStep(currentStep + 1);
@@ -58,12 +102,16 @@
     });
 
     form?.addEventListener('submit', function (e) {
-        // Remove any remaining Turnstile elements that could block submission
         document.querySelectorAll('.cf-turnstile').forEach(function (el) { el.remove(); });
         if (!validateStep(3)) {
             e.preventDefault();
             return;
         }
+        if (!validateAllFiles()) {
+            e.preventDefault();
+            return;
+        }
+        setSubmitting(true);
     });
 
     const contractType = document.getElementById('contract_type');
@@ -95,8 +143,13 @@
         const input = document.getElementById(id);
         const preview = document.getElementById('preview_' + id);
         input?.addEventListener('change', function () {
+            if (!validateFileSize(input)) return;
             const file = input.files[0];
             if (!file || !preview) return;
+            if (file.size > 1024 * 1024 || !file.type.startsWith('image/')) {
+                preview.style.display = 'none';
+                return;
+            }
             const reader = new FileReader();
             reader.onload = function (e) {
                 preview.src = e.target.result;
