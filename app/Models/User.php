@@ -119,6 +119,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->status === 'فعال';
     }
 
+    public function resolvedPhone(): ?string
+    {
+        return $this->phone_number
+            ?: $this->memberApplication?->mobile_phone
+            ?: $this->memberApplication?->home_phone;
+    }
+
     public function canViewMemberOnlyAnnouncements(): bool
     {
         return $this->isActive() && $this->role === 'عضو';

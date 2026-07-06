@@ -120,7 +120,7 @@ class EventController extends Controller
 
     public function printView(Event $event)
     {
-        $approvedTransactions = Transaction::with('user')
+        $approvedTransactions = Transaction::with(['user', 'user.memberApplication'])
             ->where('event_id', $event->id)
             ->where('status', 'active')
             ->orderByDesc('subscribed_at')
@@ -160,7 +160,7 @@ class EventController extends Controller
                         : '—',
                     $transaction->user?->name ?? '—',
                     $transaction->user?->email ?? '—',
-                    $transaction->user?->phone_number ?? '—',
+                    $transaction->user?->resolvedPhone() ?? '—',
                     $transaction->user?->memberApplication?->national_id ?? '—',
                     $transaction->type_label,
                     $transaction->status_label,
@@ -184,7 +184,7 @@ class EventController extends Controller
 
     protected function subscriberDataForEvent(Event $event, ?string $statusFilter = null): array
     {
-        $query = Transaction::with('user')
+        $query = Transaction::with(['user', 'user.memberApplication'])
             ->where('event_id', $event->id)
             ->orderByDesc('subscribed_at');
 

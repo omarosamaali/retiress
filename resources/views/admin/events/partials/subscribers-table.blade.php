@@ -90,6 +90,7 @@
                     <th>تاريخ الاشتراك</th>
                     <th>اسم المشترك</th>
                     <th>البريد</th>
+                    <th>رقم الهاتف</th>
                     <th>نوع المعاملة</th>
                     <th>الإيصال</th>
                     <th>حالة الاشتراك</th>
@@ -112,6 +113,7 @@
                         </td>
                         <td>{{ $transaction->user?->name ?? '—' }}</td>
                         <td style="direction: ltr; text-align: right;">{{ $transaction->user?->email ?? '—' }}</td>
+                        <td style="direction: ltr; text-align: right;">{{ $transaction->user?->resolvedPhone() ?? '—' }}</td>
                         <td>
                             @php
                                 $__evType = $transaction->event?->type_label ?? '—';
@@ -175,7 +177,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="9" class="text-center py-4 text-muted">
+                        <td colspan="10" class="text-center py-4 text-muted">
                             لا يوجد مشتركون{{ ($subscriptionStatusFilter ?? 'all') !== 'all' ? ' بهذه الحالة' : '' }} لهذا الإعلان.
                         </td>
                     </tr>

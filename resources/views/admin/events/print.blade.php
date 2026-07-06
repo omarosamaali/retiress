@@ -298,6 +298,7 @@
                 <th style="width:36px;">#</th>
                 <th>اسم المشترك</th>
                 <th>البريد الإلكتروني</th>
+                <th>رقم الهاتف</th>
                 <th>تاريخ الاشتراك</th>
                 <th>الحالة</th>
             </tr>
@@ -309,6 +310,9 @@
                 <td><strong>{{ $txn->user?->name ?? '—' }}</strong></td>
                 <td style="direction:ltr; text-align:right; font-size:11px; color:#475569;">
                     {{ $txn->user?->email ?? '—' }}
+                </td>
+                <td style="direction:ltr; text-align:right; font-size:11px; color:#475569;">
+                    {{ $txn->user?->resolvedPhone() ?? '—' }}
                 </td>
                 <td>
                     {{ $txn->subscribed_at
