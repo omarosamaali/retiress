@@ -43,7 +43,7 @@
             }
         }
 
-        @media (min-width: 769px) and (max-width: 1279px) {
+        @media (min-width: 769px) {
             .membership {
                 margin-top: 181px !important;
                 padding: 0 22px !important;
