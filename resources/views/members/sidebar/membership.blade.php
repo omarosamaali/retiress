@@ -39,6 +39,43 @@
             }
         }
 
+        @media (min-width: 769px) and (max-width: 1200px) {
+            .membership {
+                margin-top: 120px !important;
+                padding: 0 22px !important;
+            }
+
+            #membershipCta {
+                position: static !important;
+                z-index: auto !important;
+                width: auto !important;
+                min-width: 220px !important;
+                height: auto !important;
+                border-radius: 10px !important;
+                font-size: 16px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+                padding: 10px 20px !important;
+                line-height: 1.4 !important;
+                margin-top: 8px !important;
+            }
+
+            .container--grid {
+                grid-template-columns: 1fr !important;
+                gap: 14px !important;
+            }
+
+            .title--t5n {
+                font-size: 28px;
+            }
+
+            .title--t6n {
+                font-size: 18px;
+            }
+        }
+
         .title--t5n {
             font-size: 32px;
             margin-bottom: 0px;

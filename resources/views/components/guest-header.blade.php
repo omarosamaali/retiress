@@ -33,6 +33,39 @@
         #mobile-top-bar { display: none !important; }
         .mob-auth-fixed-wrap { display: none !important; }
     }
+    @media (min-width: 769px) and (max-width: 1200px) {
+        #headerholder .fixedheader {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
+        #headerholder .fixedheader .btns {
+            display: flex !important;
+            align-items: center !important;
+            flex-wrap: wrap !important;
+            justify-content: flex-end !important;
+            gap: 6px !important;
+        }
+
+        .member-header-welcome {
+            flex-wrap: wrap !important;
+            row-gap: 6px !important;
+        }
+
+        .member-header-tools {
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+        }
+
+        .member-header-tools .member-panel-link,
+        .member-header-tools .member-renewal-btn,
+        .member-header-tools .member-notifications-btn,
+        .member-header-tools .member-card-trigger {
+            font-size: 0.74rem !important;
+            padding: 3px 8px !important;
+            gap: 4px !important;
+        }
+    }
 
     #mobile-top-bar {
         display: none;
@@ -1101,7 +1134,7 @@ body.portrait-lock-active {
     var mql = window.matchMedia('(orientation: landscape)');
 
     function isSmallScreen() {
-        return Math.min(window.innerWidth, window.innerHeight) <= 1024;
+        return window.innerWidth <= 768;
     }
 
     function isLandscape() {
