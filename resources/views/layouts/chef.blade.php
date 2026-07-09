@@ -338,6 +338,13 @@
     </style>
 </head>
 <body class="bg-light">
+    <div id="portrait-only-overlay" aria-live="polite" aria-hidden="true">
+        <div id="portrait-only-overlay__card">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+            <h3>التطبيق مخصص للوضع الطولي فقط</h3>
+            <p>يرجى تدوير الهاتف للوضع العمودي لمتابعة الاستخدام.</p>
+        </div>
+    </div>
 
     @yield('content')
 
@@ -350,6 +357,87 @@
     <script src="{{ asset('assets/js/settings.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     <script src="{{ asset('index.js') }}"></script>
+    <style>
+        #portrait-only-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 1000002;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.9);
+            direction: rtl;
+            padding: 24px;
+        }
+        #portrait-only-overlay__card {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+        }
+        #portrait-only-overlay__card i {
+            font-size: 2rem;
+            color: #b68a35;
+            margin-bottom: 10px;
+        }
+        #portrait-only-overlay__card h3 {
+            margin: 0 0 8px;
+            font-size: 1.08rem;
+            font-weight: 800;
+            color: #1f2937;
+        }
+        #portrait-only-overlay__card p {
+            margin: 0;
+            font-size: 0.92rem;
+            color: #4b5563;
+            line-height: 1.75;
+        }
+        @media (min-width: 1025px) {
+            #portrait-only-overlay {
+                display: none !important;
+            }
+        }
+        body.portrait-lock-active {
+            overflow: hidden !important;
+            touch-action: none;
+        }
+    </style>
+    <script>
+        (function () {
+            var overlay = document.getElementById('portrait-only-overlay');
+            if (!overlay) return;
+
+            var mql = window.matchMedia('(orientation: landscape)');
+
+            function isSmallScreen() {
+                return Math.min(window.innerWidth, window.innerHeight) <= 1024;
+            }
+
+            function isLandscape() {
+                return mql.matches || window.innerWidth > window.innerHeight;
+            }
+
+            function syncPortraitOnlyState() {
+                var shouldShow = isSmallScreen() && isLandscape();
+                overlay.style.display = shouldShow ? 'flex' : 'none';
+                overlay.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
+                document.body.classList.toggle('portrait-lock-active', shouldShow);
+            }
+
+            syncPortraitOnlyState();
+            window.addEventListener('resize', syncPortraitOnlyState, { passive: true });
+            window.addEventListener('orientationchange', syncPortraitOnlyState, { passive: true });
+
+            if (typeof mql.addEventListener === 'function') {
+                mql.addEventListener('change', syncPortraitOnlyState);
+            } else if (typeof mql.addListener === 'function') {
+                mql.addListener(syncPortraitOnlyState);
+            }
+        })();
+    </script>
 </body>
 
 </html>

@@ -20,7 +20,7 @@
         }
 
         @media (max-width: 768px) {
-            #reg {
+            #membershipCta {
                 position: fixed !important;
                 z-index: 99999 !important;
                 bottom: 20px !important;
@@ -111,7 +111,7 @@
 
             @if($__moreThan3)
                 {{-- عضوية فعالة وباقي أكثر من 3 أشهر — أظهر رسالة فقط --}}
-                <button type="button" id="reg" class="btn-qhr btn-primary-t6n" onclick="showMembershipActiveMsg()">
+                <button type="button" id="membershipCta" class="btn-qhr btn-primary-t6n" onclick="showMembershipActiveMsg()">
                     إضغط لتجديد العضوية
                 </button>
                 <script>
@@ -132,17 +132,17 @@
                 </style>
             @elseif($__memApp)
                 {{-- لديه عضوية لكن منتهية أو ستنتهي قريباً — توجيه للتجديد --}}
-                <a href="{{ route('members.my-membership') }}" id="reg" class="btn-qhr btn-primary-t6n">
+                <a href="{{ route('members.my-membership') }}" id="membershipCta" class="btn-qhr btn-primary-t6n">
                     إضغط لتجديد العضوية
                 </a>
             @else
                 {{-- لا يملك عضوية — توجيه للتسجيل الجديد --}}
-                <a href="{{ route('members.membership-show') }}" id="reg" class="btn-qhr btn-primary-t6n">
+                <a href="{{ route('members.membership-show') }}" id="membershipCta" class="btn-qhr btn-primary-t6n">
                     إضغط للتسجيل
                 </a>
             @endif
             @else
-            <a href="#" id="reg" class="btn-qhr btn-primary-t6n">{{ __('app.register') }}</a>
+            <a href="{{ route('members.login') }}" id="membershipCta" class="btn-qhr btn-primary-t6n">{{ __('app.register') }}</a>
             @endauth
         </div>
 
@@ -257,7 +257,7 @@
                 </div>
             </div>
 
-            <a href="{{ route('magazines.feature') }}" id="reg" style="margin-top: 20px;"
+            <a href="{{ route('magazines.feature') }}" style="margin-top: 20px;"
                 class="btn-qhr btn-primary-t6n">
                 {{ __('app.مميزات العضوية') }}
             </a>
@@ -303,7 +303,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const regLink = document.getElementById('reg');
+            const regLink = document.getElementById('membershipCta');
+            if (!regLink) return;
             regLink.addEventListener('click', function(e) {
                 @guest
                 e.preventDefault();

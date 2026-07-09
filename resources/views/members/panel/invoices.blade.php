@@ -144,7 +144,22 @@
         @php
             $hasPendingItems = false;
             $membershipNeedsPayment = $membershipApp && (string)$membershipApp->status === '0';
-            $membershipCanRenew     = $membershipApp && in_array((string)$membershipApp->status, ['3','4']);
+            $membershipExpirationDate = $membershipApp?->expiration_date
+                ? \Carbon\Carbon::parse($membershipApp->expiration_date)
+                : null;
+            $membershipMonthsLeft = $membershipExpirationDate
+                ? (int) now()->diffInMonths($membershipExpirationDate, false)
+                : null;
+            $membershipIsExpired = $membershipApp
+                && (
+                    (string) $membershipApp->status === '4'
+                    || ($membershipExpirationDate && $membershipExpirationDate->isPast())
+                );
+            $membershipIsExpiringSoon = $membershipApp
+                && (string) $membershipApp->status === '3'
+                && $membershipMonthsLeft !== null
+                && $membershipMonthsLeft <= 3;
+            $membershipCanRenew = $membershipApp && ($membershipIsExpired || $membershipIsExpiringSoon);
             if ($membershipNeedsPayment || $pendingPaymentTransactions->count()) $hasPendingItems = true;
         @endphp
 
@@ -309,8 +324,11 @@
                     </div>
                     @endif
                 </div>
-                <form method="POST" action="{{ route('members.membership.request-renewal') }}"
-                      onsubmit="return confirm('هل تريد تقديم طلب تجديد العضوية؟')">
+                <form method="POST"
+                      action="{{ route('members.membership.request-renewal') }}"
+                      class="js-renew-form"
+                      data-confirm-title="تأكيد طلب التجديد"
+                      data-confirm-text="هل تريد تقديم طلب تجديد العضوية الآن؟">
                     @csrf
                     <button type="submit" class="inv-renew-btn">
                         <i class="fa-solid fa-rotate-right"></i> تجديد العضوية الآن
@@ -391,8 +409,30 @@
     </div>
 
     <x-footer-section></x-footer-section>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/jquery.js') }}"></script>
     <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
     <script src="{{ asset('assets/js/scriptU.js') }}"></script>
+    <script>
+        document.querySelectorAll('.js-renew-form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: form.dataset.confirmTitle || 'تأكيد',
+                    text: form.dataset.confirmText || 'هل أنت متأكد؟',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'نعم',
+                    cancelButtonText: 'إلغاء',
+                    confirmButtonColor: '#b68a35',
+                    cancelButtonColor: '#6b7280'
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
