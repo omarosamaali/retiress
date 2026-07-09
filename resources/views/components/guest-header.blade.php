@@ -33,7 +33,7 @@
         #mobile-top-bar { display: none !important; }
         .mob-auth-fixed-wrap { display: none !important; }
     }
-    @media (min-width: 769px) and (max-width: 1200px) {
+    @media (min-width: 769px) and (max-width: 1279px) {
         #headerholder .fixedheader {
             padding-left: 10px !important;
             padding-right: 10px !important;
@@ -64,6 +64,15 @@
             font-size: 0.74rem !important;
             padding: 3px 8px !important;
             gap: 4px !important;
+        }
+
+        .member-header-welcome > span {
+            font-size: 0.78rem !important;
+        }
+
+        .header-logout-btn {
+            font-size: 0.72rem !important;
+            padding: 3px 7px !important;
         }
     }
 

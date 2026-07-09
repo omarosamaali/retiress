@@ -28,8 +28,12 @@
                 width: 100px !important;
                 height: 100px !important;
                 border-radius: 50px !important;
-                background: green !important;
+                background: linear-gradient(160deg, #8a6520 0%, #b68a35 50%, #8a6520 100%) !important;
+                color: #fff !important;
+                border: 2px solid rgba(255, 255, 255, 0.35) !important;
+                box-shadow: 0 8px 20px rgba(138, 101, 32, 0.35) !important;
                 font-size: 15px !important;
+                font-weight: 800 !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
@@ -39,7 +43,7 @@
             }
         }
 
-        @media (min-width: 769px) and (max-width: 1200px) {
+        @media (min-width: 769px) and (max-width: 1279px) {
             .membership {
                 margin-top: 120px !important;
                 padding: 0 22px !important;
@@ -49,17 +53,24 @@
                 position: static !important;
                 z-index: auto !important;
                 width: auto !important;
-                min-width: 220px !important;
+                max-width: 340px !important;
+                min-width: 250px !important;
                 height: auto !important;
-                border-radius: 10px !important;
-                font-size: 16px !important;
+                border-radius: 12px !important;
+                background: linear-gradient(160deg, #8a6520 0%, #b68a35 50%, #8a6520 100%) !important;
+                color: #fff !important;
+                border: 1px solid rgba(255, 255, 255, 0.25) !important;
+                box-shadow: 0 8px 18px rgba(138, 101, 32, 0.28) !important;
+                font-size: 15px !important;
+                font-weight: 800 !important;
                 display: inline-flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 text-align: center !important;
-                padding: 10px 20px !important;
+                padding: 11px 20px !important;
                 line-height: 1.4 !important;
                 margin-top: 8px !important;
+                text-decoration: none !important;
             }
 
             .container--grid {
